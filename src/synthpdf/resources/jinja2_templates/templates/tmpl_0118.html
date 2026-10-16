@@ -1,0 +1,742 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f3f2f1;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #201f1e;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f2f1;
+  }
+
+  /* Diagonal color slash motif — top left */
+  .diagonal-slash-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 8px;
+    background: #0078d4;
+    transform-origin: top left;
+    transform: rotate(0deg);
+    z-index: 10;
+  }
+
+  .diagonal-slash-accent {
+    position: absolute;
+    top: 0;
+    left: 260px;
+    width: 0;
+    height: 0;
+    border-left: 40px solid #0078d4;
+    border-top: 8px solid transparent;
+    border-bottom: 0;
+    z-index: 10;
+  }
+
+  .diagonal-slash-secondary {
+    position: absolute;
+    top: 0;
+    left: 300px;
+    width: 494px;
+    height: 8px;
+    background: #005a9e;
+    z-index: 10;
+  }
+
+  /* Bottom diagonal slash */
+  .diagonal-slash-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(135deg, #00b294 0%, #00b294 35%, #0078d4 35%, #0078d4 65%, #005a9e 65%, #005a9e 100%);
+    z-index: 10;
+  }
+
+  /* Side accent stripe */
+  .side-accent {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #0078d4 0%, #005a9e 60%, #00b294 100%);
+    z-index: 10;
+  }
+
+  /* Header area */
+  .header {
+    padding: 28px 48px 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #d2d0ce;
+    margin: 8px 0 0 4px;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .doc-classification {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    color: #605e5c;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .page-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0078d4;
+    line-height: 1.15;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .page-subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #005a9e;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .header-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    min-width: 160px;
+  }
+
+  .report-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    color: #605e5c;
+    letter-spacing: 0.12em;
+  }
+
+  .report-date {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    color: #201f1e;
+    font-weight: 700;
+  }
+
+  .report-period {
+    font-size: 9px;
+    color: #605e5c;
+  }
+
+  /* Main content */
+  .content {
+    padding: 16px 48px 12px 48px;
+    margin-left: 4px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    gap: 10px;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 2px 0;
+  }
+
+  .divider-label::before {
+    content: '';
+    flex: 0 0 3px;
+    height: 14px;
+    background: #00b294;
+    display: block;
+  }
+
+  .divider-label-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #005a9e;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+  }
+
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #0078d4 0%, #d2d0ce 100%);
+    display: block;
+  }
+
+  /* KPI metric cards */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 14px 12px 12px 12px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e1dfdd;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--kpi-color, #0078d4);
+  }
+
+  /* Diagonal slash on KPI cards */
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: var(--kpi-color, #0078d4);
+    opacity: 0.07;
+    transform: rotate(45deg);
+  }
+
+  .kpi-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: #605e5c;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    color: #201f1e;
+    line-height: 1.1;
+  }
+
+  .kpi-unit {
+    font-size: 10px;
+    color: #605e5c;
+    font-weight: 400;
+  }
+
+  .kpi-change {
+    font-size: 9px;
+    margin-top: 4px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .kpi-change.positive { color: #00b294; }
+  .kpi-change.negative { color: #d13438; }
+
+  /* Narrative section */
+  .narrative-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .narrative-block {
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 16px;
+    border: 1px solid #e1dfdd;
+  }
+
+  .narrative-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #0078d4;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .narrative-text {
+    font-size: 10px;
+    line-height: 1.6;
+    color: #201f1e;
+  }
+
+  /* Percentage donuts */
+  .donut-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .donut-card {
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #e1dfdd;
+    position: relative;
+  }
+
+  .donut-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, transparent 30%, var(--donut-color, #0078d4) 30%);
+    opacity: 0.5;
+  }
+
+  .donut-svg {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #e1dfdd;
+    stroke-width: 6;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dasharray 0.3s;
+  }
+
+  .donut-center-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    fill: #201f1e;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .donut-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .donut-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #201f1e;
+  }
+
+  .donut-desc {
+    font-size: 9px;
+    color: #605e5c;
+    line-height: 1.4;
+  }
+
+  /* Data table */
+  .data-table-container {
+    background: #ffffff;
+    border-radius: 3px;
+    border: 1px solid #e1dfdd;
+    overflow: hidden;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+  }
+
+  .data-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #ffffff;
+    background: #005a9e;
+    padding: 7px 10px;
+    text-align: left;
+    border-bottom: 2px solid #0078d4;
+  }
+
+  .data-table thead th:first-child {
+    border-left: 3px solid #00b294;
+  }
+
+  .data-table tbody td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #f3f2f1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #faf9f8;
+  }
+
+  .data-table tbody tr:hover {
+    background: #f3f2f1;
+  }
+
+  .data-table .numeric {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+  }
+
+  .data-table .highlight-cell {
+    color: #0078d4;
+    font-weight: 700;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    left: 4px;
+    right: 0;
+    padding: 8px 48px 6px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #d2d0ce;
+  }
+
+  .footer-left {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7px;
+    color: #605e5c;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-center {
+    font-size: 7px;
+    color: #605e5c;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: #0078d4;
+    font-weight: 700;
+  }
+
+  /* Decorative diagonal slashes in background */
+  .bg-diagonal {
+    position: absolute;
+    width: 180px;
+    height: 600px;
+    background: linear-gradient(135deg, transparent 48%, #0078d4 48%, #0078d4 49%, transparent 49%);
+    opacity: 0.025;
+    top: 200px;
+    right: -40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bg-diagonal-2 {
+    position: absolute;
+    width: 120px;
+    height: 500px;
+    background: linear-gradient(135deg, transparent 48%, #005a9e 48%, #005a9e 49.5%, transparent 49.5%);
+    opacity: 0.03;
+    top: 300px;
+    right: 20px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content > * {
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Diagonal slash motif — top bar -->
+  <div class="diagonal-slash-top"></div>
+  <div class="diagonal-slash-accent"></div>
+  <div class="diagonal-slash-secondary"></div>
+  <div class="diagonal-slash-bottom"></div>
+  <div class="side-accent"></div>
+
+  <!-- Background decorative diagonals -->
+  <div class="bg-diagonal"></div>
+  <div class="bg-diagonal-2"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="doc-classification">{{ doc_classification }}</span>
+      <h1 class="page-title">{{ page_title }}</h1>
+      <h2 class="page-subtitle">{{ section_heading }}</h2>
+    </div>
+    <div class="header-right">
+      <span class="report-id">{{ report_id }}</span>
+      <span class="report-date">{{ report_date }}</span>
+      <span class="report-period">{{ report_period }}</span>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Section: Key Performance Indicators -->
+    <div class="divider-label">
+      <span class="divider-label-text">{{ kpi_section_label }}</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-value">{{ kpi_1_value }}<span class="kpi-unit"> {{ kpi_1_unit }}</span></div>
+        <div class="kpi-change {{ kpi_1_trend }}">{{ kpi_1_change }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-value">{{ kpi_2_value }}<span class="kpi-unit"> {{ kpi_2_unit }}</span></div>
+        <div class="kpi-change {{ kpi_2_trend }}">{{ kpi_2_change }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-value">{{ kpi_3_value }}<span class="kpi-unit"> {{ kpi_3_unit }}</span></div>
+        <div class="kpi-change {{ kpi_3_trend }}">{{ kpi_3_change }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-value">{{ kpi_4_value }}<span class="kpi-unit"> {{ kpi_4_unit }}</span></div>
+        <div class="kpi-change {{ kpi_4_trend }}">{{ kpi_4_change }}</div>
+      </div>
+    </div>
+
+    <!-- Section: Narrative Analysis -->
+    <div class="divider-label">
+      <span class="divider-label-text">{{ narrative_section_label }}</span>
+    </div>
+
+    <div class="narrative-grid">
+      <div class="narrative-block">
+        <div class="narrative-heading">{{ narrative_1_heading }}</div>
+        <div class="narrative-text">{{ narrative_1_text }}</div>
+      </div>
+      <div class="narrative-block">
+        <div class="narrative-heading">{{ narrative_2_heading }}</div>
+        <div class="narrative-text">{{ narrative_2_text }}</div>
+      </div>
+    </div>
+
+    <!-- Section: Allocation Breakdown (Donuts) -->
+    <div class="divider-label">
+      <span class="divider-label-text">{{ donut_section_label }}</span>
+    </div>
+
+    <div class="donut-row">
+      <div class="donut-card" style="--donut-color: {{ donut_1_color }};">
+        <svg class="donut-svg" viewBox="0 0 64 64">
+          <circle class="donut-track" cx="32" cy="32" r="26"/>
+          <circle class="donut-fill" cx="32" cy="32" r="26" stroke="{{ donut_1_color }}" stroke-dasharray="{{ donut_1_dasharray }}" stroke-dashoffset="0"/>
+          <text class="donut-center-text" x="32" y="32">{{ donut_1_percent }}</text>
+        </svg>
+        <div class="donut-info">
+          <span class="donut-label">{{ donut_1_label }}</span>
+          <span class="donut-desc">{{ donut_1_desc }}</span>
+        </div>
+      </div>
+      <div class="donut-card" style="--donut-color: {{ donut_2_color }};">
+        <svg class="donut-svg" viewBox="0 0 64 64">
+          <circle class="donut-track" cx="32" cy="32" r="26"/>
+          <circle class="donut-fill" cx="32" cy="32" r="26" stroke="{{ donut_2_color }}" stroke-dasharray="{{ donut_2_dasharray }}" stroke-dashoffset="0"/>
+          <text class="donut-center-text" x="32" y="32">{{ donut_2_percent }}</text>
+        </svg>
+        <div class="donut-info">
+          <span class="donut-label">{{ donut_2_label }}</span>
+          <span class="donut-desc">{{ donut_2_desc }}</span>
+        </div>
+      </div>
+      <div class="donut-card" style="--donut-color: {{ donut_3_color }};">
+        <svg class="donut-svg" viewBox="0 0 64 64">
+          <circle class="donut-track" cx="32" cy="32" r="26"/>
+          <circle class="donut-fill" cx="32" cy="32" r="26" stroke="{{ donut_3_color }}" stroke-dasharray="{{ donut_3_dasharray }}" stroke-dashoffset="0"/>
+          <text class="donut-center-text" x="32" y="32">{{ donut_3_percent }}</text>
+        </svg>
+        <div class="donut-info">
+          <span class="donut-label">{{ donut_3_label }}</span>
+          <span class="donut-desc">{{ donut_3_desc }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Operational Data Table -->
+    <div class="divider-label">
+      <span class="divider-label-text">{{ table_section_label }}</span>
+    </div>
+
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ table_col_1 }}</th>
+            <th>{{ table_col_2 }}</th>
+            <th>{{ table_col_3 }}</th>
+            <th>{{ table_col_4 }}</th>
+            <th>{{ table_col_5 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.col_1 }}</td>
+            <td class="numeric">{{ row.col_2 }}</td>
+            <td class="numeric">{{ row.col_3 }}</td>
+            <td class="numeric highlight-cell">{{ row.col_4 }}</td>
+            <td class="numeric">{{ row.col_5 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-left">{{ footer_classification }} &mdash; {{ footer_company }}</span>
+    <span class="footer-center">{{ footer_disclaimer }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0118",
+  "variables": {
+    "page_title": "string — Main page heading (e.g., 'Production Analytics')",
+    "section_heading": "string — Subtitle below main heading (e.g., 'Q4 2025 Upstream Operations Summary')",
+    "doc_classification": "string — Document classification label (e.g., 'INTERNAL — OPERATIONAL REPORT')",
+    "report_id": "string — Report identifier code (e.g., 'RPT-OPS-2025-0412')",
+    "report_date": "string — Publication date (e.g., '27 MAR 2026')",
+    "report_period": "string — Reporting period (e.g., 'Fiscal Year 2025, Q4')",
+    "kpi_section_label": "string — Label for KPI divider (e.g., 'Key Performance Indicators')",
+    "kpi_1_label": "string — KPI 1 label (e.g., 'Daily Output')",
+    "kpi_1_value": "string — KPI 1 value (e.g., '2.41')",
+    "kpi_1_unit": "string — KPI 1 unit (e.g., 'M bbl/d')",
+    "kpi_1_change": "string — KPI 1 change indicator (e.g., '+3.2% YoY')",
+    "kpi_1_trend": "string — CSS class for trend direction ('positive' or 'negative')",
+    "kpi_1_color": "string — Hex color for KPI card accent (e.g., '#0078d4')",
+    "kpi_2_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_unit": "string",
+    "kpi_2_change": "string",
+    "kpi_2_trend": "string",
+    "kpi_2_color": "string",
+    "kpi_3_label": "string",
+    "kpi_3_value": "string",
+    "kpi_3_unit": "string",
+    "kpi_3_change": "string",
+    "kpi_3_trend": "string",
+    "kpi_3_color": "string",
+    "kpi_4_label": "string",
+    "kpi_4_value": "string",
+    "kpi_4_unit": "string",
+    "kpi_4_change": "string",
+    "kpi_4_trend": "string",
+    "kpi_4_color": "string",
+    "narrative_section_label": "string — Label for narrative divider (e.g., 'Operational Analysis')",
+    "narrative_1_heading": "string — First narrative block heading",
+    "narrative_1_text": "string — First narrative block body text",
+    "narrative_2_heading": "string — Second narrative block heading",
+    "narrative_2_text": "string — Second narrative block body text",
+    "donut_section_label": "string — Label for donut chart divider (e.g., 'Resource Allocation')",
+    "donut_1_color": "string — Hex color for donut 1 (e.g., '#0078d4')",
+    "donut_1_percent": "string — Display percentage (e.g., '42%')",
+    "donut_1_dasharray": "string — SVG dasharray for donut fill (e.g., '68.6 163.4' for 42%)",
+    "donut_1_label": "string — Donut 1 title",
+    "donut_1_desc": "string — Donut 1 description",
+    "donut_2_color": "string",
+    "donut_2_percent": "string",
+    "donut_2_dasharray": "string",
+    "donut_2_label": "string",
+    "donut_2_desc": "string",
+    "donut_3_color": "string",
+    "donut_3_percent": "string",
+    "donut_3_dasharray": "string",
+    "donut_3_label": "string",
+    "donut_3_desc": "string",
+    "table_section_label": "string — Label for data table divider (e.g., 'Field Performance Data')",
+    "table_col_1": "string — Table column 1 header",
+    "table_col_2": "string — Table column 2 header",
+    "table_col_3": "string — Table column 3 header",
+    "table_col_4": "string — Table column 4 header",
+    "table_col_5": "string — Table column 5 header",
+    "table_rows": "array of objects — Each row: { col_1: string, col_2: string, col_3: string, col_4: string, col_5: string }",
+    "footer_classification": "string — Footer classification (e.g., 'CONFIDENTIAL')",
+    "footer_company": "string — Company name (e.g., 'Meridian Energy Corp.')",
+    "footer_disclaimer": "string — Footer disclaimer text",
+    "page_number": "string — Page number (e.g., 'PAGE 07 / 24')"
+  }
+}
+END_TEMPLATE_VARIABLES -->

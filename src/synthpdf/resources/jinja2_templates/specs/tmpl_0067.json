@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0067",
+  "industry": "investment_banking",
+  "page_role": "kpi_dashboard",
+  "layout": {
+    "name": "dashboard_metrics",
+    "description": "KPI cards, gauges, and metric tiles dominate. Feels like a business intelligence dashboard printed to PDF."
+  },
+  "color_palette": {
+    "name": "pharma_clean",
+    "primary": "#003087",
+    "secondary": "#0053a0",
+    "accent": "#00a651",
+    "bg": "#ffffff",
+    "surface": "#f0f4fb",
+    "text": "#1a1a1a",
+    "muted": "#5c6876"
+  },
+  "typography": {
+    "name": "expressive_brand",
+    "heading_font": "'Arial Black', Gadget, sans-serif",
+    "body_font": "Verdana, Geneva, sans-serif",
+    "heading_weight": "800",
+    "h1_size": "42px",
+    "h2_size": "28px",
+    "h3_size": "16px",
+    "body_size": "11px",
+    "line_height": "1.4",
+    "letter_spacing": "0.03em"
+  },
+  "elements": [
+    "timeline_nodes",
+    "sidebar_annotation",
+    "comparison_columns",
+    "chart_placeholder_box",
+    "callout_box",
+    "numbered_list_items"
+  ],
+  "density": "balanced",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by Deloitte industry reports \u2014 teal accents, clear hierarchy, business-formal",
+  "seed": 349499
+}

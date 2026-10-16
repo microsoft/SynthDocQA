@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0001",
+  "industry": "retail_consumer_goods",
+  "page_role": "executive_summary",
+  "layout": {
+    "name": "editorial_magazine",
+    "description": "Asymmetric, bold hero image dominates top half, text wraps below. Strong typographic hierarchy. Feels like a premium magazine spread."
+  },
+  "color_palette": {
+    "name": "tech_azure",
+    "primary": "#0078d4",
+    "secondary": "#005a9e",
+    "accent": "#00b294",
+    "bg": "#f3f2f1",
+    "surface": "#ffffff",
+    "text": "#201f1e",
+    "muted": "#605e5c"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "divider_with_label",
+    "quote_attribution",
+    "hero_image_placeholder",
+    "percentage_donut"
+  ],
+  "density": "sparse",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by Deloitte industry reports \u2014 teal accents, clear hierarchy, business-formal",
+  "seed": 231148
+}

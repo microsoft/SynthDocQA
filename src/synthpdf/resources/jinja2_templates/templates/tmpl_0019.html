@@ -1,0 +1,563 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #2c3e50;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ecf0f1;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-18deg);
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(44, 62, 80, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Top accent bar */
+  .top-bar {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #e74c3c 0%, #e74c3c 30%, #2c3e50 30%, #2c3e50 100%);
+  }
+
+  /* Main grid: sidebar + content */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    height: calc(1123px - 6px - 48px);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Sidebar annotation area */
+  .sidebar {
+    padding: 60px 28px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .sidebar-label {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #7f8c8d;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 8px;
+    display: inline-block;
+  }
+
+  .sidebar-annotation {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #7f8c8d;
+    border-left: 3px solid #34495e;
+    padding-left: 12px;
+  }
+
+  .sidebar-annotation strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  /* Tag / badge row in sidebar */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+    background: #2c3e50;
+    color: #ffffff;
+  }
+
+  .tag--accent {
+    background: #e74c3c;
+    color: #ffffff;
+  }
+
+  .tag--muted {
+    background: transparent;
+    color: #7f8c8d;
+    border: 1px solid #7f8c8d;
+  }
+
+  /* Content area */
+  .content {
+    padding: 60px 56px 40px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Section header */
+  .section-overline {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #e74c3c;
+    margin-bottom: 10px;
+  }
+
+  .page-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .section-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #34495e;
+    margin-bottom: 20px;
+  }
+
+  .intro-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #34495e;
+    max-width: 440px;
+    margin-bottom: 32px;
+  }
+
+  /* Hero image placeholder */
+  .hero-image {
+    width: 100%;
+    height: 140px;
+    background: #2c3e50;
+    border-radius: 3px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-placeholder {
+    color: rgba(255,255,255,0.3);
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* KPI metric cards row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    padding: 18px 16px;
+    border-radius: 3px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(44, 62, 80, 0.08);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .kpi-card:nth-child(1)::before { background: {{ kpi_1_color }}; }
+  .kpi-card:nth-child(2)::before { background: {{ kpi_2_color }}; }
+  .kpi-card:nth-child(3)::before { background: {{ kpi_3_color }}; }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #2c3e50;
+    line-height: 1.0;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+
+  /* Timeline */
+  .timeline {
+    flex: 1;
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #e74c3c 0%, #34495e 50%, #7f8c8d 100%);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 22px;
+    padding-bottom: 2px;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -24px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid #e74c3c;
+    z-index: 2;
+  }
+
+  .timeline-item:nth-child(even) .timeline-dot {
+    border-color: #2c3e50;
+  }
+
+  .timeline-item:nth-child(3n) .timeline-dot {
+    border-color: #34495e;
+  }
+
+  .timeline-year {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: #2c3e50;
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+
+  .timeline-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 3px;
+  }
+
+  .timeline-desc {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #7f8c8d;
+  }
+
+  /* Progress bars section */
+  .progress-section {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+
+  .progress-section-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2c3e50;
+    margin-bottom: 12px;
+  }
+
+  .progress-item {
+    margin-bottom: 10px;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .progress-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #34495e;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .progress-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: #2c3e50;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: #dfe6e9;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  /* Footnotes strip */
+  .footnotes-strip {
+    width: 100%;
+    height: 48px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footnote-text {
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    max-width: 520px;
+  }
+
+  .footnote-page {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: #e74c3c;
+  }
+
+  /* Thin divider accent */
+  .divider-accent {
+    width: 48px;
+    height: 3px;
+    background: #e74c3c;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top accent bar -->
+  <div class="top-bar"></div>
+
+  <!-- Main two-column grid -->
+  <div class="main-grid">
+
+    <!-- Sidebar annotation column -->
+    <div class="sidebar">
+      <div>
+        <div class="sidebar-label">{{ sidebar_label }}</div>
+      </div>
+
+      <div class="sidebar-annotation">
+        <strong>{{ annotation_title }}</strong>
+        {{ annotation_text }}
+      </div>
+
+      <div class="tag-row">
+        {% for tag in tags %}
+        <span class="tag {% if loop.index == 1 %}tag--accent{% elif loop.index > 3 %}tag--muted{% endif %}">{{ tag.label }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="sidebar-annotation" style="margin-top: auto;">
+        <strong>{{ sidebar_note_title }}</strong>
+        {{ sidebar_note_text }}
+      </div>
+    </div>
+
+    <!-- Content column -->
+    <div class="content">
+
+      <!-- Page header -->
+      <div class="section-overline">{{ section_overline }}</div>
+      <div class="page-title">{{ page_title }}</div>
+      <div class="section-heading">{{ section_heading }}</div>
+      <p class="intro-text">{{ body_paragraph_1 }}</p>
+
+      <!-- Hero image placeholder -->
+      <div class="hero-image">
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" onerror="this.style.display='none'; this.parentElement.querySelector('.hero-image-placeholder').style.display='block';">
+        <span class="hero-image-placeholder" style="display:none; position:absolute;">{{ hero_image_alt }}</span>
+      </div>
+
+      <!-- KPI metric cards -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-value">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ kpi_2_value }}</div>
+          <div class="kpi-label">{{ kpi_2_label }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ kpi_3_value }}</div>
+          <div class="kpi-label">{{ kpi_3_label }}</div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline">
+        {% for event in timeline_events %}
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">{{ event.year }}</div>
+          <div class="timeline-title">{{ event.title }}</div>
+          <div class="timeline-desc">{{ event.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Progress bars -->
+      <div class="progress-section">
+        <div class="divider-accent"></div>
+        <div class="progress-section-title">{{ progress_section_title }}</div>
+        {% for bar in progress_bars %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">{{ bar.label }}</span>
+            <span class="progress-value">{{ bar.value }}%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: {{ bar.value }}%; background: {{ bar.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footnotes strip -->
+  <div class="footnotes-strip">
+    <div class="footnote-text">{{ footnote_text }}</div>
+    <div class="footnote-page">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0019",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "section_overline": "string",
+    "body_paragraph_1": "string",
+    "watermark_text": "string",
+    "sidebar_label": "string",
+    "annotation_title": "string",
+    "annotation_text": "string",
+    "sidebar_note_title": "string",
+    "sidebar_note_text": "string",
+    "tags": "[{label: string}]",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "timeline_events": "[{year: string, title: string, description: string}]",
+    "progress_section_title": "string",
+    "progress_bars": "[{label: string, value: number, color: string (hex color)}]",
+    "footnote_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

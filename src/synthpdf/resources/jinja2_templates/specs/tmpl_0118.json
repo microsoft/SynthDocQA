@@ -1,0 +1,40 @@
+{
+  "id": "tmpl_0118",
+  "industry": "oil_gas_energy",
+  "page_role": "data_narrative",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "tech_azure",
+    "primary": "#0078d4",
+    "secondary": "#005a9e",
+    "accent": "#00b294",
+    "bg": "#f3f2f1",
+    "surface": "#ffffff",
+    "text": "#201f1e",
+    "muted": "#605e5c"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "divider_with_label",
+    "percentage_donut",
+    "kpi_metric_cards"
+  ],
+  "density": "dense",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 137414
+}

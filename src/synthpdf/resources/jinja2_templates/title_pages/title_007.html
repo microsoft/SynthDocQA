@@ -1,0 +1,46 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb; }
+.page { width: 100%; height: 100%; display: flex; flex-direction: column; }
+.top-bar { background: linear-gradient(90deg, {{ primary_color|default('#1a237e') }}, {{ accent_color|default('#3949ab') }}); padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; }
+.top-company { font-size: 14px; font-weight: 700; color: white; letter-spacing: 2px; text-transform: uppercase; }
+.top-meta { font-size: 12px; color: rgba(255,255,255,0.55); }
+.body { flex: 1; display: flex; }
+.left-pane { flex: 1; padding: 60px 64px; display: flex; flex-direction: column; justify-content: center; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: {{ accent_color|default('#3949ab') }}; margin-bottom: 24px; }
+.title { font-size: 50px; font-weight: 800; color: #111; line-height: 1.15; margin-bottom: 20px; }
+.subtitle-txt { font-size: 16px; color: #666; line-height: 1.6; max-width: 520px; }
+.right-pane { width: 380px; padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.kpi-card { background: white; border-left: 4px solid {{ primary_color|default('#1a237e') }}; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.kpi-card-2 { background: white; border-left: 4px solid {{ accent_color|default('#3949ab') }}; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.kpi-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+.kpi-value { font-size: 28px; font-weight: 800; color: {{ primary_color|default('#1a237e') }}; }
+.kpi-unit { font-size: 12px; color: #aaa; margin-left: 4px; font-weight: 400; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-bar">
+    <span class="top-company">{{ company_name|default('Sample Organization') }}</span>
+    <span class="top-meta">{{ report_type|default('Annual Report') }} &mdash; {{ year|default('2025') }}</span>
+  </div>
+  <div class="body">
+    <div class="left-pane">
+      <div class="label">{{ report_type|default('Annual Report') }}</div>
+      <div class="title">{{ document_title|default('Strategic Performance Review') }}</div>
+      <div class="subtitle-txt">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+    </div>
+    <div class="right-pane">
+      <div class="kpi-card"><div class="kpi-label">Revenue Growth</div><div class="kpi-value">+12.4<span class="kpi-unit">%</span></div></div>
+      <div class="kpi-card-2"><div class="kpi-label">EBITDA Margin</div><div class="kpi-value">28.7<span class="kpi-unit">%</span></div></div>
+      <div class="kpi-card"><div class="kpi-label">Market Position</div><div class="kpi-value">#3<span class="kpi-unit"> Global</span></div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1c1c1c;
+    background: #fdfcff;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Left Pane ── */
+  .left-pane {
+    background: linear-gradient(160deg, #6c3483 0%, #1a5276 100%);
+    padding: 56px 44px 48px 44px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .left-pane::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    background: rgba(23, 165, 137, 0.12);
+    transform: rotate(35deg);
+    z-index: 0;
+  }
+
+  .left-pane::after {
+    content: '';
+    position: absolute;
+    bottom: 80px;
+    left: -30px;
+    width: 160px;
+    height: 160px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    transform: rotate(20deg);
+    z-index: 0;
+  }
+
+  .geo-triangle-1 {
+    position: absolute;
+    top: 180px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 70px solid rgba(23, 165, 137, 0.08);
+    transform: rotate(-15deg);
+    z-index: 0;
+  }
+
+  .geo-diamond-1 {
+    position: absolute;
+    bottom: 200px;
+    right: 60px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.04);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .left-pane > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-bar {
+    display: flex;
+    gap: 24px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 48px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-bar .active {
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom: 1.5px solid #17a589;
+    padding-bottom: 2px;
+  }
+
+  .page-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 36px;
+    max-width: 320px;
+  }
+
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px 0;
+  }
+
+  .divider-label .line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .divider-label .label-text {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #17a589;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .left-body-text {
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.78);
+    margin-bottom: 16px;
+  }
+
+  .quote-block {
+    margin-top: auto;
+    padding-top: 28px;
+  }
+
+  .quote-mark {
+    font-size: 52px;
+    line-height: 1;
+    color: #17a589;
+    font-family: Georgia, 'Times New Roman', serif;
+    margin-bottom: -8px;
+    opacity: 0.7;
+  }
+
+  .quote-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    font-style: italic;
+    margin-bottom: 16px;
+    max-width: 310px;
+  }
+
+  .quote-attribution {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .quote-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(23, 165, 137, 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .quote-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .quote-attr-text .attr-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .quote-attr-text .attr-role {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ── Right Pane ── */
+  .right-pane {
+    background: #fdfcff;
+    padding: 56px 40px 48px 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .right-pane::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(108, 52, 131, 0.04);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .geo-angle-right {
+    position: absolute;
+    bottom: 120px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border: 1.5px solid rgba(108, 52, 131, 0.06);
+    transform: rotate(30deg);
+    z-index: 0;
+  }
+
+  .right-pane > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a5276;
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .section-subheading {
+    font-size: 11px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: #f4ecf7;
+    border-radius: 8px;
+    padding: 18px 16px 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--kpi-accent, #6c3483);
+    border-radius: 8px 0 0 8px;
+  }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+
+  .kpi-delta {
+    font-size: 10px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  .kpi-delta.positive { color: #17a589; }
+  .kpi-delta.negative { color: #c0392b; }
+
+  .divider-label-dark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 18px 0;
+  }
+
+  .divider-label-dark .line {
+    flex: 1;
+    height: 1px;
+    background: rgba(26, 82, 118, 0.12);
+  }
+
+  .divider-label-dark .label-text {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #6c3483;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .icon-circle {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .icon-text-content .icon-text-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1c1c1c;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .icon-text-content .icon-text-desc {
+    font-size: 10px;
+    color: #7d7d7d;
+    line-height: 1.5;
+  }
+
+  .two-col-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .two-col-text p {
+    font-size: 11px;
+    line-height: 1.65;
+    color: #1c1c1c;
+  }
+
+  .figure-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .figure-label .fig-tag {
+    background: #f4ecf7;
+    color: #6c3483;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .figure-label .fig-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1c1c1c;
+  }
+
+  .bottom-bar {
+    margin-top: auto;
+    background: #f4ecf7;
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .bottom-bar-text {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #1c1c1c;
+  }
+
+  .bottom-bar-text strong {
+    color: #6c3483;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40px;
+  }
+
+  .page-number {
+    font-size: 11px;
+    color: #7d7d7d;
+  }
+
+  .accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6c3483 0%, #17a589 100%);
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- LEFT PANE -->
+  <div class="left-pane">
+    <div class="geo-triangle-1"></div>
+    <div class="geo-diamond-1"></div>
+
+    <div class="nav-bar">
+      <span>{{ nav_item_1 }}</span>
+      <span class="active">{{ nav_item_2 }}</span>
+      <span>{{ nav_item_3 }}</span>
+      <span>{{ nav_item_4 }}</span>
+    </div>
+
+    <h1 class="page-title">{{ page_title }}</h1>
+    <p class="page-subtitle">{{ page_subtitle }}</p>
+
+    <div class="divider-label">
+      <span class="line"></span>
+      <span class="label-text">{{ left_divider_label }}</span>
+      <span class="line"></span>
+    </div>
+
+    <p class="left-body-text">{{ body_paragraph_1 }}</p>
+    <p class="left-body-text">{{ body_paragraph_2 }}</p>
+
+    <div class="divider-label">
+      <span class="line"></span>
+      <span class="label-text">{{ left_divider_label_2 }}</span>
+      <span class="line"></span>
+    </div>
+
+    <p class="left-body-text">{{ body_paragraph_3 }}</p>
+
+    <div class="quote-block">
+      <div class="quote-mark">&ldquo;</div>
+      <p class="quote-text">{{ quote_text }}</p>
+      <div class="quote-attribution">
+        <div class="quote-avatar">
+          <img src="{{ quote_avatar_url }}" alt="{{ quote_author }}">
+        </div>
+        <div class="quote-attr-text">
+          <div class="attr-name">{{ quote_author }}</div>
+          <div class="attr-role">{{ quote_author_title }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANE -->
+  <div class="right-pane">
+    <div class="accent-bar"></div>
+    <div class="geo-angle-right"></div>
+
+    <h2 class="section-heading">{{ section_heading }}</h2>
+    <p class="section-subheading">{{ section_subheading }}</p>
+
+    <div class="kpi-grid">
+      {% for kpi in kpi_cards %}
+      <div class="kpi-card" style="--kpi-accent: {{ kpi.color }};">
+        <div class="kpi-value">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <div class="kpi-delta {{ kpi.delta_direction }}">{{ kpi.delta }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="divider-label-dark">
+      <span class="line"></span>
+      <span class="label-text">{{ right_divider_label }}</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="figure-label">
+      <span class="fig-tag">{{ figure_tag }}</span>
+      <span class="fig-title">{{ figure_title }}</span>
+    </div>
+
+    <div class="icon-text-grid">
+      {% for item in icon_text_items %}
+      <div class="icon-text-item">
+        <div class="icon-circle" style="background: {{ item.icon_bg }};">{{ item.icon }}</div>
+        <div class="icon-text-content">
+          <div class="icon-text-title">{{ item.title }}</div>
+          <div class="icon-text-desc">{{ item.description }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="divider-label-dark">
+      <span class="line"></span>
+      <span class="label-text">{{ right_divider_label_2 }}</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="two-col-text">
+      <p>{{ right_col_text_1 }}</p>
+      <p>{{ right_col_text_2 }}</p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-text">{{ bottom_bar_text }}</div>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-number">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0094",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "nav_item_1": "string",
+    "nav_item_2": "string",
+    "nav_item_3": "string",
+    "nav_item_4": "string",
+    "left_divider_label": "string",
+    "left_divider_label_2": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "body_paragraph_3": "string",
+    "quote_text": "string",
+    "quote_avatar_url": "string",
+    "quote_author": "string",
+    "quote_author_title": "string",
+    "section_heading": "string",
+    "section_subheading": "string",
+    "kpi_cards": [
+      {
+        "value": "string",
+        "label": "string",
+        "color": "string (hex)",
+        "delta": "string",
+        "delta_direction": "string (positive|negative)"
+      }
+    ],
+    "right_divider_label": "string",
+    "right_divider_label_2": "string",
+    "figure_tag": "string",
+    "figure_title": "string",
+    "icon_text_items": [
+      {
+        "icon": "string",
+        "icon_bg": "string (hex)",
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "right_col_text_1": "string",
+    "right_col_text_2": "string",
+    "bottom_bar_text": "string (supports <strong> tags)",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

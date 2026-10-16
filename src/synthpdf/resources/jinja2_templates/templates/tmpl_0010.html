@@ -1,0 +1,613 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #0d2137;
+    background: #e3f2fd;
+  }
+
+  .page-container {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    background: #e3f2fd;
+    overflow: hidden;
+  }
+
+  /* Dotted pattern overlay */
+  .page-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #1565c0 0.6px, transparent 0.6px);
+    background-size: 18px 18px;
+    opacity: 0.04;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Top accent bar */
+  .top-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #1565c0 0%, #0277bd 60%, #f9a825 100%);
+    z-index: 10;
+  }
+
+  /* Navigation tabs */
+  .nav-tabs {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    padding: 18px 48px 0 48px;
+    margin-top: 6px;
+    gap: 0;
+  }
+
+  .nav-logo {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1565c0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-right: 32px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-tab {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 14px 10px 14px;
+    border-bottom: 2px solid transparent;
+    cursor: default;
+  }
+
+  .nav-tab.active {
+    color: #1565c0;
+    border-bottom-color: #1565c0;
+    font-weight: 600;
+  }
+
+  .nav-divider {
+    width: calc(100% - 96px);
+    height: 1px;
+    background: #b0bec5;
+    margin: 0 48px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Section divider hero area */
+  .hero-section {
+    position: relative;
+    z-index: 5;
+    padding: 36px 48px 20px 48px;
+  }
+
+  .section-number {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 56px;
+    color: #1565c0;
+    opacity: 0.13;
+    line-height: 1;
+    margin-bottom: -10px;
+  }
+
+  .section-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #0d2137;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .section-subtitle {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #0277bd;
+    margin-bottom: 10px;
+  }
+
+  .accent-line {
+    width: 52px;
+    height: 3px;
+    background: #f9a825;
+    margin-bottom: 12px;
+  }
+
+  /* Tag/badge row */
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .tag-badge {
+    display: inline-block;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: #ffffff;
+    color: #1565c0;
+    border: 1px solid #1565c0;
+  }
+
+  .tag-badge.accent {
+    background: #f9a825;
+    color: #0d2137;
+    border-color: #f9a825;
+  }
+
+  .tag-badge.secondary {
+    background: #0277bd;
+    color: #ffffff;
+    border-color: #0277bd;
+  }
+
+  /* Card mosaic grid */
+  .card-mosaic {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    padding: 18px 48px 0 48px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(13, 33, 55, 0.07);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #0277bd 0.4px, transparent 0.4px);
+    background-size: 12px 12px;
+    opacity: 0.025;
+    pointer-events: none;
+  }
+
+  .card-top-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+
+  /* Card spanning variations */
+  .card-wide {
+    grid-column: span 2;
+  }
+
+  .card-tall {
+    grid-row: span 2;
+  }
+
+  .card-full {
+    grid-column: span 3;
+  }
+
+  /* KPI card */
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  .kpi-sublabel {
+    font-size: 9px;
+    color: #546e7a;
+    margin-top: 4px;
+  }
+
+  /* Card headings */
+  .card h3 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #0d2137;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Two-column body text */
+  .two-col-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .two-col-text p {
+    font-size: 10px;
+    line-height: 1.55;
+    color: #0d2137;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #e3f2fd;
+    border: 1.5px dashed #1565c0;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .chart-placeholder-label {
+    font-size: 9px;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  /* Simulated bar chart within placeholder */
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 80px;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    justify-content: center;
+  }
+
+  .chart-bar {
+    width: 18px;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.6;
+  }
+
+  /* Data table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+
+  .data-table thead th {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #546e7a;
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 2px solid #1565c0;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #e3f2fd;
+    color: #0d2137;
+    font-size: 9.5px;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table .num {
+    text-align: right;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+  }
+
+  .data-table .highlight-cell {
+    color: #1565c0;
+    font-weight: 600;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 48px;
+    background: #0d2137;
+  }
+
+  .bottom-bar-left {
+    font-size: 8px;
+    color: #ffffff;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .bottom-bar-right {
+    font-size: 8px;
+    color: #ffffff;
+    opacity: 0.6;
+  }
+
+  .bottom-bar-page {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #f9a825;
+  }
+
+  /* Decorative corner dots */
+  .corner-dots {
+    position: absolute;
+    z-index: 2;
+    opacity: 0.07;
+  }
+
+  .corner-dots.top-right {
+    top: 60px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-image: radial-gradient(circle, #1565c0 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+  }
+
+  .corner-dots.bottom-left {
+    bottom: 50px;
+    left: 20px;
+    width: 40px;
+    height: 80px;
+    background-image: radial-gradient(circle, #0277bd 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+  }
+
+  /* Vertical side accent */
+  .side-accent {
+    position: absolute;
+    left: 0;
+    top: 120px;
+    width: 4px;
+    height: 180px;
+    background: linear-gradient(180deg, #1565c0, #0277bd, transparent);
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+  <div class="top-accent"></div>
+
+  <div class="corner-dots top-right"></div>
+  <div class="corner-dots bottom-left"></div>
+  <div class="side-accent"></div>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <div class="nav-logo">{{ firm_name }}</div>
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+  <div class="nav-divider"></div>
+
+  <!-- Hero Section Divider -->
+  <div class="hero-section">
+    <div class="section-number">{{ section_number }}</div>
+    <h1 class="section-title">{{ page_title }}</h1>
+    <h2 class="section-subtitle">{{ section_heading }}</h2>
+    <div class="accent-line"></div>
+    <div class="tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge {% if tag.style %}{{ tag.style }}{% endif %}">{{ tag.label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Card Mosaic Grid -->
+  <div class="card-mosaic">
+
+    <!-- KPI Card 1 -->
+    <div class="card">
+      <div class="card-top-stripe" style="background: {{ kpi_1_color }};"></div>
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_1_description }}</div>
+    </div>
+
+    <!-- KPI Card 2 -->
+    <div class="card">
+      <div class="card-top-stripe" style="background: {{ kpi_2_color }};"></div>
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_2_description }}</div>
+    </div>
+
+    <!-- KPI Card 3 -->
+    <div class="card">
+      <div class="card-top-stripe" style="background: {{ kpi_3_color }};"></div>
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_3_description }}</div>
+    </div>
+
+    <!-- Two-Column Body Text Card (wide) -->
+    <div class="card card-wide">
+      <div class="card-top-stripe" style="background: #1565c0;"></div>
+      <h3>{{ body_card_title }}</h3>
+      <div class="two-col-text">
+        <p>{{ body_paragraph_1 }}</p>
+        <p>{{ body_paragraph_2 }}</p>
+      </div>
+    </div>
+
+    <!-- Chart Placeholder Card (tall) -->
+    <div class="card card-tall">
+      <div class="card-top-stripe" style="background: #f9a825;"></div>
+      <h3>{{ chart_title }}</h3>
+      <div class="chart-placeholder">
+        <div class="chart-bars">
+          {% for bar in chart_bars %}
+          <div class="chart-bar" style="height: {{ bar.height }}px; background: {{ bar.color }};"></div>
+          {% endfor %}
+        </div>
+        <div class="chart-placeholder-label" style="position: absolute; bottom: 6px;">{{ chart_subtitle }}</div>
+      </div>
+      <div style="margin-top: 8px; font-size: 9px; color: #546e7a;">{{ chart_footnote }}</div>
+    </div>
+
+    <!-- Data Table Card (wide, spanning 2 columns) -->
+    <div class="card card-wide">
+      <div class="card-top-stripe" style="background: #0277bd;"></div>
+      <h3>{{ table_title }}</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td class="highlight-cell">{{ row.col_1 }}</td>
+            <td>{{ row.col_2 }}</td>
+            <td class="num">{{ row.col_3 }}</td>
+            <td class="num">{{ row.col_4 }}</td>
+            <td class="num">{{ row.col_5 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-left">{{ footer_disclaimer }}</div>
+    <div>
+      <span class="bottom-bar-right">{{ footer_date }}</span>
+      <span class="bottom-bar-page" style="margin-left: 16px;">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0010",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "section_number": "string",
+    "firm_name": "string",
+    "nav_tabs": "[{label: string, active: boolean}]",
+    "tags": "[{label: string, style: string|null}]",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_1_description": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_2_description": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_3_description": "string",
+    "body_card_title": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "chart_title": "string",
+    "chart_subtitle": "string",
+    "chart_footnote": "string",
+    "chart_bars": "[{height: number, color: string}]",
+    "table_title": "string",
+    "table_headers": "[string]",
+    "table_rows": "[{col_1: string, col_2: string, col_3: string, col_4: string, col_5: string}]",
+    "footer_disclaimer": "string",
+    "footer_date": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

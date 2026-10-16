@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0112",
+  "industry": "insurance_risk",
+  "page_role": "table_of_contents",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "fintech_gradient",
+    "primary": "#6c3483",
+    "secondary": "#1a5276",
+    "accent": "#17a589",
+    "bg": "#fdfcff",
+    "surface": "#f4ecf7",
+    "text": "#1c1c1c",
+    "muted": "#7d7d7d"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "comparison_columns",
+    "percentage_donut",
+    "kpi_metric_cards",
+    "page_number_footer",
+    "progress_bars"
+  ],
+  "density": "balanced",
+  "motif": "none",
+  "design_direction": "Inspired by World Economic Forum reports \u2014 international, multi-stakeholder, formal blue",
+  "seed": 525721
+}

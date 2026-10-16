@@ -1,0 +1,523 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f3f2f1;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #201f1e;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f2f1;
+  }
+
+  .header-band {
+    width: 100%;
+    height: 72px;
+    background: #005a9e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .header-band .org-name {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .header-band .doc-label {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .accent-line {
+    width: 100%;
+    height: 3px;
+    background: #00b294;
+  }
+
+  .title-section {
+    padding: 28px 48px 20px 48px;
+  }
+
+  .title-section h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: #0078d4;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+
+  .title-section .subtitle {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    color: #605e5c;
+    max-width: 520px;
+    line-height: 1.5;
+  }
+
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 14px;
+    padding: 0 48px 14px 48px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #0078d4;
+  }
+
+  .card-hero {
+    grid-column: span 2;
+    grid-row: span 2;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-hero::before {
+    display: none;
+  }
+
+  .card-hero .hero-img-wrap {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #005a9e 0%, #0078d4 60%, #00b294 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .card-hero .hero-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-hero .hero-img-wrap .placeholder-text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .card-hero .hero-body {
+    padding: 18px 22px;
+    flex: 1;
+  }
+
+  .card-hero .hero-body h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #005a9e;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .card-hero .hero-body p {
+    font-size: 11px;
+    color: #605e5c;
+    line-height: 1.5;
+  }
+
+  .card-event .year-badge {
+    display: inline-block;
+    background: #0078d4;
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .card-event h3 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #201f1e;
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .card-event p {
+    font-size: 11px;
+    color: #605e5c;
+    line-height: 1.5;
+  }
+
+  .card-kpi {
+    text-align: center;
+    padding: 22px 16px;
+  }
+
+  .card-kpi::before {
+    width: 100%;
+    height: 4px;
+    left: 0;
+  }
+
+  .card-kpi .kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .card-kpi .kpi-label {
+    font-size: 10px;
+    color: #605e5c;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    height: 6px;
+    background: #f3f2f1;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .card-icon-grid {
+    grid-column: span 3;
+    padding: 22px 24px;
+  }
+
+  .card-icon-grid::before {
+    width: 100%;
+    height: 4px;
+    background: #00b294;
+    left: 0;
+  }
+
+  .card-icon-grid h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #005a9e;
+    margin-bottom: 14px;
+  }
+
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .icon-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  .icon-circle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .icon-text-item .icon-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #201f1e;
+    margin-bottom: 3px;
+  }
+
+  .icon-text-item .icon-desc {
+    font-size: 10px;
+    color: #605e5c;
+    line-height: 1.4;
+  }
+
+  .card-summary {
+    grid-column: span 2;
+  }
+
+  .card-summary h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #005a9e;
+    margin-bottom: 8px;
+  }
+
+  .card-summary p {
+    font-size: 11px;
+    color: #605e5c;
+    line-height: 1.55;
+  }
+
+  .card-progress-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 18px;
+  }
+
+  .card-progress-stack::before {
+    background: #00b294;
+  }
+
+  .progress-item .progress-label {
+    font-size: 10px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    color: #201f1e;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .progress-item .progress-value {
+    font-size: 10px;
+    color: #605e5c;
+    text-align: right;
+    margin-bottom: 2px;
+  }
+
+  .progress-item .progress-bar-wrap {
+    margin-top: 2px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #005a9e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .footer span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.04em;
+  }
+
+  .footer .page-num {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #ffffff;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header-band">
+    <span class="org-name">{{ organization_name }}</span>
+    <span class="doc-label">{{ document_type }}</span>
+  </div>
+  <div class="accent-line"></div>
+
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- Card Mosaic -->
+  <div class="mosaic-grid">
+
+    <!-- Hero Image Card (spans 2 cols, 2 rows) -->
+    <div class="card card-hero">
+      <div class="hero-img-wrap">
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <span class="placeholder-text" style="display:none;position:absolute;">Hero Image</span>
+      </div>
+      <div class="hero-body">
+        <h2>{{ hero_card_heading }}</h2>
+        <p>{{ hero_card_description }}</p>
+      </div>
+    </div>
+
+    <!-- Timeline Event Cards (right column) -->
+    {% for event in timeline_events[:2] %}
+    <div class="card card-event">
+      <span class="year-badge">{{ event.year }}</span>
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.description }}</p>
+    </div>
+    {% endfor %}
+
+    <!-- KPI Cards Row -->
+    {% for kpi in kpis %}
+    <div class="card card-kpi">
+      <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width: {{ kpi.progress }}%; background: {{ kpi.color }};"></div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Icon + Text Grid Card (full width) -->
+    <div class="card card-icon-grid">
+      <h2>{{ icon_grid_heading }}</h2>
+      <div class="icon-text-grid">
+        {% for pillar in pillars %}
+        <div class="icon-text-item">
+          <div class="icon-circle" style="background: {{ pillar.color }};">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="{{ pillar.icon_path }}"/>
+            </svg>
+          </div>
+          <span class="icon-label">{{ pillar.label }}</span>
+          <span class="icon-desc">{{ pillar.description }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Summary Card (spans 2 columns) -->
+    <div class="card card-summary">
+      <h2>{{ summary_heading }}</h2>
+      <p>{{ summary_paragraph }}</p>
+    </div>
+
+    <!-- Progress Bars Card -->
+    <div class="card card-progress-stack">
+      {% for bar in progress_bars %}
+      <div class="progress-item">
+        <div class="progress-label">{{ bar.label }}</div>
+        <div class="progress-value">{{ bar.value }}%</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width: {{ bar.value }}%; background: {{ bar.color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Additional Timeline Event Cards -->
+    {% for event in timeline_events[2:] %}
+    <div class="card card-event">
+      <span class="year-badge" style="background: {{ event.badge_color if event.badge_color else '#005a9e' }};">{{ event.year }}</span>
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.description }}</p>
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>{{ footer_text }}</span>
+    <span class="page-num">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0048",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "organization_name": "string",
+    "document_type": "string",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "hero_card_heading": "string",
+    "hero_card_description": "string",
+    "timeline_events": "array of objects [{year: string, title: string, description: string, badge_color: string (optional hex)}]",
+    "kpis": "array of objects [{value: string, label: string, color: string (hex), progress: number (0-100)}]",
+    "icon_grid_heading": "string",
+    "pillars": "array of objects [{label: string, description: string, color: string (hex), icon_path: string (SVG path d attribute)}]",
+    "summary_heading": "string",
+    "summary_paragraph": "string",
+    "progress_bars": "array of objects [{label: string, value: number (0-100), color: string (hex)}]",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

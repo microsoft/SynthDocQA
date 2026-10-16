@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0084",
+  "industry": "management_consulting",
+  "page_role": "kpi_dashboard",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "ngo_hopeful",
+    "primary": "#1565c0",
+    "secondary": "#0277bd",
+    "accent": "#f9a825",
+    "bg": "#e3f2fd",
+    "surface": "#ffffff",
+    "text": "#0d2137",
+    "muted": "#546e7a"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "top_navigation_tabs",
+    "data_table",
+    "logo_or_brand_strip",
+    "numbered_list_items",
+    "pull_quote_block"
+  ],
+  "density": "sparse",
+  "motif": "circular_decorative_element",
+  "design_direction": "Inspired by Pfizer regulatory submissions \u2014 clinical, precise, structured, neutral",
+  "seed": 383542
+}

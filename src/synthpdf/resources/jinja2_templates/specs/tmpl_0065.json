@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0065",
+  "industry": "ngo_sustainability",
+  "page_role": "product_showcase",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "two_column_body_text",
+    "footnotes_strip",
+    "timeline_nodes",
+    "divider_with_label",
+    "percentage_donut",
+    "callout_box"
+  ],
+  "density": "balanced",
+  "motif": "soft_gradient_bands",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 41797
+}

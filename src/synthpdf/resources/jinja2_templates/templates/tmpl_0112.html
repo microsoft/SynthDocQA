@@ -1,0 +1,628 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fdfcff;
+    color: #1c1c1c;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HERO SECTION — Top Third ===== */
+  .hero {
+    width: 100%;
+    height: 374px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 60%, #17a589 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 56px 40px 56px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -80px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: rgba(23, 165, 137, 0.12);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 120px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(108, 52, 131, 0.10);
+  }
+
+  /* Brand strip at top of hero */
+  .brand-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: #17a589;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-logo-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .brand-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .brand-year {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.04em;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-label {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.55;
+    max-width: 520px;
+  }
+
+  /* Accent bar below hero */
+  .accent-bar {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #17a589 0%, #6c3483 50%, #1a5276 100%);
+  }
+
+  /* ===== KPI METRIC CARDS ROW ===== */
+  .kpi-row {
+    display: flex;
+    gap: 0;
+    padding: 20px 56px;
+    background: #f4ecf7;
+    border-bottom: 1px solid rgba(108, 52, 131, 0.1);
+  }
+
+  .kpi-card {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    position: relative;
+  }
+
+  .kpi-card:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: rgba(108, 52, 131, 0.15);
+  }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .kpi-label {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+  }
+
+  /* ===== COLUMNS AREA — Bottom Two-Thirds ===== */
+  .columns-area {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 28px 56px 48px 56px;
+  }
+
+  .toc-column {
+    padding: 0 18px;
+    position: relative;
+  }
+
+  .toc-column:first-child {
+    padding-left: 0;
+  }
+
+  .toc-column:last-child {
+    padding-right: 0;
+  }
+
+  .toc-column:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(108, 52, 131, 0.08);
+  }
+
+  .column-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #6c3483;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #6c3483;
+  }
+
+  /* TOC Entry Styles */
+  .toc-section {
+    margin-bottom: 18px;
+  }
+
+  .toc-section-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a5276;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    line-height: 1.3;
+  }
+
+  .toc-section-title .page-num {
+    font-family: Calibri, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #6c3483;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .toc-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+    border-bottom: 1px dotted rgba(125, 125, 125, 0.25);
+  }
+
+  .toc-entry-text {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    color: #1c1c1c;
+    line-height: 1.55;
+    flex: 1;
+    padding-right: 8px;
+  }
+
+  .toc-entry .page-num {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    color: #7d7d7d;
+    flex-shrink: 0;
+  }
+
+  /* Progress bars for section completeness */
+  .progress-container {
+    margin-top: 6px;
+    margin-bottom: 14px;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 3px;
+    background: rgba(108, 52, 131, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-label {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 9px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  /* Donut chart */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 10px;
+    background: #f4ecf7;
+    border-radius: 6px;
+  }
+
+  .donut-svg {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .donut-info {
+    flex: 1;
+  }
+
+  .donut-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #6c3483;
+    line-height: 1.2;
+  }
+
+  .donut-label {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 9px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== PAGE FOOTER ===== */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: #1a5276;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+  }
+
+  .footer-text {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-page-num {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #ffffff;
+    background: #6c3483;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero">
+    <div class="brand-strip">
+      <div class="brand-logo">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3h5v5H3V3zm7 0h5v5h-5V3zM3 10h5v5H3v-5zm7 2.5L12.5 10 15 12.5 12.5 15 10 12.5z" fill="#ffffff"/>
+          </svg>
+        </div>
+        <span class="brand-name">{{ company_name }}</span>
+      </div>
+      <span class="brand-year">{{ report_year }}</span>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-label">{{ hero_label }}</div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_description }}</p>
+    </div>
+  </div>
+
+  <div class="accent-bar"></div>
+
+  <!-- ===== KPI METRIC CARDS ===== -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- ===== THREE-COLUMN TOC ===== -->
+  <div class="columns-area">
+
+    <!-- Column 1 -->
+    <div class="toc-column">
+      <div class="column-heading">{{ column_1_heading }}</div>
+
+      {% for section in column_1_sections %}
+      <div class="toc-section">
+        <div class="toc-section-title">
+          <span>{{ section.title }}</span>
+          <span class="page-num">{{ section.page }}</span>
+        </div>
+        {% for entry in section.entries %}
+        <div class="toc-entry">
+          <span class="toc-entry-text">{{ entry.text }}</span>
+          <span class="page-num">{{ entry.page }}</span>
+        </div>
+        {% endfor %}
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ section.progress }}%; background: {{ section.progress_color }};"></div>
+          </div>
+          <div class="progress-label">{{ section.progress }}% of report</div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Donut chart -->
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="18" fill="none" stroke="#f4ecf7" stroke-width="6"/>
+          <circle cx="24" cy="24" r="18" fill="none" stroke="{{ donut_1_color }}" stroke-width="6"
+            stroke-dasharray="{{ donut_1_dash }} 113.1" stroke-dashoffset="28.3" stroke-linecap="round" transform="rotate(-90 24 24)"/>
+        </svg>
+        <div class="donut-info">
+          <div class="donut-value">{{ donut_1_value }}</div>
+          <div class="donut-label">{{ donut_1_label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="toc-column">
+      <div class="column-heading">{{ column_2_heading }}</div>
+
+      {% for section in column_2_sections %}
+      <div class="toc-section">
+        <div class="toc-section-title">
+          <span>{{ section.title }}</span>
+          <span class="page-num">{{ section.page }}</span>
+        </div>
+        {% for entry in section.entries %}
+        <div class="toc-entry">
+          <span class="toc-entry-text">{{ entry.text }}</span>
+          <span class="page-num">{{ entry.page }}</span>
+        </div>
+        {% endfor %}
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ section.progress }}%; background: {{ section.progress_color }};"></div>
+          </div>
+          <div class="progress-label">{{ section.progress }}% of report</div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Donut chart -->
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="18" fill="none" stroke="#f4ecf7" stroke-width="6"/>
+          <circle cx="24" cy="24" r="18" fill="none" stroke="{{ donut_2_color }}" stroke-width="6"
+            stroke-dasharray="{{ donut_2_dash }} 113.1" stroke-dashoffset="28.3" stroke-linecap="round" transform="rotate(-90 24 24)"/>
+        </svg>
+        <div class="donut-info">
+          <div class="donut-value">{{ donut_2_value }}</div>
+          <div class="donut-label">{{ donut_2_label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="toc-column">
+      <div class="column-heading">{{ column_3_heading }}</div>
+
+      {% for section in column_3_sections %}
+      <div class="toc-section">
+        <div class="toc-section-title">
+          <span>{{ section.title }}</span>
+          <span class="page-num">{{ section.page }}</span>
+        </div>
+        {% for entry in section.entries %}
+        <div class="toc-entry">
+          <span class="toc-entry-text">{{ entry.text }}</span>
+          <span class="page-num">{{ entry.page }}</span>
+        </div>
+        {% endfor %}
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ section.progress }}%; background: {{ section.progress_color }};"></div>
+          </div>
+          <div class="progress-label">{{ section.progress }}% of report</div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Donut chart -->
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="18" fill="none" stroke="#f4ecf7" stroke-width="6"/>
+          <circle cx="24" cy="24" r="18" fill="none" stroke="{{ donut_3_color }}" stroke-width="6"
+            stroke-dasharray="{{ donut_3_dash }} 113.1" stroke-dashoffset="28.3" stroke-linecap="round" transform="rotate(-90 24 24)"/>
+        </svg>
+        <div class="donut-info">
+          <div class="donut-value">{{ donut_3_value }}</div>
+          <div class="donut-label">{{ donut_3_label }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== PAGE FOOTER ===== -->
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_text }}</span>
+    <div class="footer-page-num">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0112",
+  "variables": {
+    "page_title": "string",
+    "company_name": "string",
+    "report_year": "string",
+    "hero_label": "string",
+    "hero_description": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "column_1_heading": "string",
+    "column_1_sections": "array of {title: string, page: string, entries: array of {text: string, page: string}, progress: number, progress_color: string}",
+    "column_2_heading": "string",
+    "column_2_sections": "array of {title: string, page: string, entries: array of {text: string, page: string}, progress: number, progress_color: string}",
+    "column_3_heading": "string",
+    "column_3_sections": "array of {title: string, page: string, entries: array of {text: string, page: string}, progress: number, progress_color: string}",
+    "donut_1_value": "string",
+    "donut_1_label": "string",
+    "donut_1_color": "string (hex color)",
+    "donut_1_dash": "number (stroke-dasharray value, max 113.1)",
+    "donut_2_value": "string",
+    "donut_2_label": "string",
+    "donut_2_color": "string (hex color)",
+    "donut_2_dash": "number (stroke-dasharray value, max 113.1)",
+    "donut_3_value": "string",
+    "donut_3_label": "string",
+    "donut_3_color": "string (hex color)",
+    "donut_3_dash": "number (stroke-dasharray value, max 113.1)",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

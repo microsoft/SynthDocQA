@@ -1,0 +1,118 @@
+THIRD-PARTY COMPONENTS AND ASSETS — STAGING INVENTORY
+
+The root LICENSE.txt applies to authorized first-party code. It does not
+relicense upstream software, font files, templates, or other third-party assets.
+This inventory is not a legal clearance or approval to publish.
+
+Redistributed assets
+--------------------
+The following files are actually present in the staging source tree, rather
+than merely referenced as install-time dependencies:
+
+1. Font binaries in src/synthpdf/resources/fonts:
+   Caveat-Bold.ttf
+   Caveat-Regular.ttf
+   DancingScript-Regular.ttf
+   Gochi-Hand.ttf
+   GrandHotel.ttf
+   IndieFlower-Regular.ttf
+   Kalam-Bold.ttf
+   Kalam-Regular.ttf
+   PatrickHand-Regular.ttf
+   ShadowsIntoLight.ttf
+
+   License: SIL Open Font License 1.1, not MIT. Embedded font metadata identifies
+   the license and copyright holders. The original ten TTF files are retained
+   byte-for-byte, without modification, to preserve handwriting behavior.
+   Full copyright statements, reserved font names where specified, and the
+   complete OFL 1.1 license are included in these per-family notice files in
+   src/synthpdf/resources/fonts:
+
+   Caveat-Bold.ttf, Caveat-Regular.ttf -> Caveat-OFL.txt
+   DancingScript-Regular.ttf -> DancingScript-OFL.txt
+   Gochi-Hand.ttf -> GochiHand-OFL.txt
+   GrandHotel.ttf -> GrandHotel-OFL.txt
+   IndieFlower-Regular.ttf -> IndieFlower-OFL.txt
+   Kalam-Bold.ttf, Kalam-Regular.ttf -> Kalam-OFL.txt
+   PatrickHand-Regular.ttf -> PatrickHand-OFL.txt
+   ShadowsIntoLight.ttf -> ShadowsIntoLight-OFL.txt
+
+   Copyright holders identified by the embedded metadata are the Caveat Project
+   Authors; Dancing Script Project Authors; Huerta Tipografica; Brian J.
+   Bonislawsky DBA Astigmatic (AOETI); Kimberly Geswein (Indie Flower and
+   Shadows Into Light); Indian Type Foundry (Kalam); and Patrick Wagesreiter.
+   Consult the corresponding notice for the complete copyright statement and
+   any reserved font names. The complete license body was recovered from
+   embedded font metadata and retained with each family's copyright statement.
+
+   Include these notices with the font files and retain the fonts' OFL license.
+   Upstream release versions, acquisition provenance, and organizational/legal
+   release clearance still require confirmation. Embedded license evidence is
+   not organizational approval to publish this staging package.
+
+2. Copied HTML/Jinja resources in src/synthpdf/resources/jinja2_templates:
+   templates/ (107 HTML files), title_pages/ (10 HTML files), and specs/
+   (107 matching specification files). Also included in src/synthpdf/compose/templates:
+   base.md.j2, sections/image_section.md.j2, sections/table_section.md.j2,
+   and sections/text_section.md.j2.
+
+   Original authorship/provenance and any upstream license or modification
+   history are unconfirmed. The owner must verify the original source's
+   ownership and authority to release these templates before publication.
+   Do not infer MIT licensing from the Jinja engine's license or add Microsoft
+   ownership to upstream content without evidence.
+
+3. Topic resources in src/synthpdf/resources/theme:
+   topics.yaml, the internally sampled topic pool used by the generator.
+   Confirm first-party ownership or record applicable upstream provenance and
+   licenses before publication.
+
+4. Neutral generated placeholder PNGs in src/synthpdf/resources/placeholders:
+   183 replacement images preserving the original dimensional slots. These are
+   neutral staging replacements, not redistributions of the original branding.
+   Confirm release ownership/authorization as part of the final archive review.
+
+Apart from the font license evidence described above, no third-party license or
+Microsoft ownership is asserted for unverified resources by this file.
+Publication requires confirmation or exclusion of uncleared assets. Reconcile
+this source inventory with the final wheel/source archive, including any added
+files; preserve all upstream notices. CLA enforcement, organizational/legal
+signoffs, and final publication authorization remain pending.
+
+Policy documentation
+--------------------
+LICENSE.txt, SECURITY.md, and CODE_OF_CONDUCT.md were copied from
+microsoft/repo-templates, revision
+e9c5e27ff1fa70dd4cff5690ad6da3c7b6472b81, shared/LICENSE,
+shared/SECURITY.md, and shared/CODE_OF_CONDUCT.md respectively.
+Upstream: https://github.com/microsoft/repo-templates
+Copyright (c) Microsoft Corporation.
+License: MIT (see LICENSE.txt).
+Modifications: none to the copied policy text.
+
+Dependency references (not bundled asset licenses)
+-------------------------------------------------
+The generator pyproject.toml declares these install-time dependencies:
+pydantic, numpy, jinja2, markdown, matplotlib, pillow, pypdf, pyyaml, click,
+openai, httpx, azure-identity, python-dotenv, openpyxl, pandas, seaborn, scipy,
+reportlab, PyMuPDF, and playwright.
+Optional fallback renderers: weasyprint, xhtml2pdf.
+Development/build tooling: pytest, build, hatchling.
+Playwright is pinned to 1.58.0; the package requires Python 3.10 or later.
+Other versions and constraints are maintained in pyproject.toml.
+The experiment guide documents its separate dependency requirements.
+
+Installing these dependencies retrieves upstream packages; they are not vendored
+by this source tree. Playwright's Chromium browser is obtained through external
+browser setup, not provided by this source tree. These components retain their
+own licenses and notices. Check the final wheel/source archive and resolved
+dependency licenses before distribution; this file does not claim dependency
+redistribution clearance.
+
+Required final inventory
+------------------------
+For each redistributed component, record its exact package path, upstream source
+and version, inclusion type, local modifications, copyright/license text,
+redistribution obligations, and clearance evidence. Confirm that required notices
+are included in both source and wheel distributions. Unconfirmed asset rights
+remain a publication blocker.

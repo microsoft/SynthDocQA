@@ -1,0 +1,42 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; }
+.layout { display: flex; width: 100%; height: 100%; }
+.sidebar { width: 280px; background: {{ primary_color|default('#1a237e') }}; display: flex; flex-direction: column; padding: 48px 36px; }
+.sb-logo { width: 56px; height: 56px; border: 2px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: white; margin-bottom: 32px; }
+.sb-name { font-size: 16px; font-weight: 700; color: white; letter-spacing: 1px; margin-bottom: 8px; }
+.sb-tagline { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.sb-spacer { flex: 1; }
+.sb-year { font-size: 52px; font-weight: 900; color: rgba(255,255,255,0.07); line-height: 1; }
+.sb-type { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+.main { flex: 1; background: white; display: flex; flex-direction: column; justify-content: center; padding: 72px 80px; }
+.main-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: {{ accent_color|default('#3949ab') }}; margin-bottom: 28px; }
+.main-title { font-size: 52px; font-weight: 800; color: #111; line-height: 1.15; max-width: 840px; margin-bottom: 28px; }
+.main-divider { width: 60px; height: 3px; background: {{ primary_color|default('#1a237e') }}; margin-bottom: 24px; }
+.main-subtitle { font-size: 18px; color: #666; font-weight: 300; line-height: 1.6; max-width: 640px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sb-logo">{{ initials|default('SO') }}</div>
+    <div class="sb-name">{{ company_name|default('Sample Organization') }}</div>
+    <div class="sb-tagline">{{ tagline|default('Data-Driven Decisions') }}</div>
+    <div class="sb-spacer"></div>
+    <div class="sb-year">{{ year|default('2025') }}</div>
+    <div class="sb-type">{{ report_type|default('Annual Report') }}</div>
+  </div>
+  <div class="main">
+    <div class="main-label">{{ report_type|default('Annual Report') }}</div>
+    <div class="main-title">{{ document_title|default('Strategic Performance Review') }}</div>
+    <div class="main-divider"></div>
+    <div class="main-subtitle">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,744 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #2c3e50;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    background: #ecf0f1;
+    overflow: hidden;
+  }
+
+  .page::before {
+    content: "{{ watermark_text }}";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 140px;
+    font-weight: 700;
+    color: rgba(44, 62, 80, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip {
+    width: 100%;
+    height: 56px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand-strip::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #e74c3c;
+  }
+
+  .brand-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: #e74c3c;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-logo-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+  }
+
+  .brand-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip-meta {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .brand-strip-meta strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .header-section {
+    padding: 18px 32px 12px 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-section h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 2px 0;
+    line-height: 1.15;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: #7f8c8d;
+    margin-bottom: 4px;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 3px;
+    background: #e74c3c;
+    margin-top: 8px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 14px 16px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #34495e;
+  }
+
+  .card.accent-red::before { background: #e74c3c; }
+  .card.accent-primary::before { background: #2c3e50; }
+  .card.accent-secondary::before { background: #34495e; }
+
+  .kpi-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90px;
+  }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .kpi-trend { font-size: 10px; margin-top: 2px; }
+  .kpi-trend.positive { color: #27ae60; }
+  .kpi-trend.negative { color: #e74c3c; }
+  .kpi-trend.neutral { color: #7f8c8d; }
+
+  .card-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ecf0f1;
+  }
+
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .mini-table thead th {
+    text-align: left;
+    font-weight: 600;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 9px;
+    padding: 3px 6px 5px 0;
+    border-bottom: 1.5px solid #2c3e50;
+  }
+
+  .mini-table thead th:last-child { text-align: right; }
+
+  .mini-table tbody td {
+    padding: 4px 6px 4px 0;
+    border-bottom: 1px solid #ecf0f1;
+    color: #2c3e50;
+    vertical-align: top;
+  }
+
+  .mini-table tbody td:last-child { text-align: right; font-weight: 600; }
+  .mini-table tbody tr:last-child td { border-bottom: none; }
+
+  .risk-bar-container { margin-bottom: 8px; }
+
+  .risk-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+
+  .risk-bar-label span:first-child { color: #2c3e50; font-weight: 600; }
+  .risk-bar-label span:last-child { color: #7f8c8d; }
+
+  .risk-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #ecf0f1;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .risk-bar-fill { height: 100%; border-radius: 3px; }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  .card-list { list-style: none; padding: 0; margin: 0; }
+
+  .card-list li {
+    font-size: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-list li:last-child { border-bottom: none; }
+  .card-list li .label { color: #2c3e50; }
+  .card-list li .value { font-weight: 600; color: #34495e; }
+
+  .quote-text {
+    font-size: 11px;
+    font-style: italic;
+    color: #34495e;
+    line-height: 1.55;
+    margin-bottom: 8px;
+    padding-left: 12px;
+    border-left: 3px solid #e74c3c;
+  }
+
+  .quote-attribution {
+    font-size: 9px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 28px;
+    margin-top: 6px;
+  }
+
+  .sparkline-bar {
+    flex: 1;
+    background: #34495e;
+    border-radius: 1px 1px 0 0;
+    min-width: 4px;
+    opacity: 0.7;
+  }
+
+  .sparkline-bar:last-child { opacity: 1; background: #e74c3c; }
+
+  .tag {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: #ecf0f1;
+    color: #7f8c8d;
+  }
+
+  .tag.high { background: rgba(231, 76, 60, 0.12); color: #e74c3c; }
+  .tag.medium { background: rgba(243, 156, 18, 0.12); color: #e67e22; }
+  .tag.low { background: rgba(39, 174, 96, 0.12); color: #27ae60; }
+
+  .footnotes-strip {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid #bdc3c7;
+    padding: 7px 32px;
+    z-index: 3;
+  }
+
+  .footnotes-strip p {
+    font-size: 8px;
+    color: #7f8c8d;
+    line-height: 1.45;
+    margin-bottom: 1px;
+  }
+
+  .footnotes-strip p:last-child { margin-bottom: 0; }
+
+  .footnote-ref {
+    font-size: 7px;
+    vertical-align: super;
+    color: #e74c3c;
+    font-weight: 600;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 36px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 3;
+  }
+
+  .footer-text { font-size: 8px; color: rgba(255,255,255,0.55); }
+  .footer-page { font-size: 8px; color: rgba(255,255,255,0.55); font-weight: 600; }
+
+  .footer-classification {
+    font-size: 8px;
+    color: #e74c3c;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .mosaic-row-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 0 32px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mosaic-row-2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 10px;
+    padding: 0 32px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mosaic-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 10px;
+    padding: 0 32px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mosaic-row-4 {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 10px;
+    padding: 0 32px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mosaic-row-5 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 0 32px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="brand-logo-area">
+      <div class="brand-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+      </div>
+      <span class="brand-name">{{ company_name }}</span>
+    </div>
+    <div class="brand-strip-meta">
+      <strong>{{ report_title_short }}</strong><br>
+      {{ report_period }} &nbsp;|&nbsp; {{ classification_label }}
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1>{{ page_title }}</h1>
+    <div class="header-subtitle">{{ page_subtitle }}</div>
+    <div class="header-divider"></div>
+  </div>
+
+  <!-- Row 1: 4 KPI cards -->
+  <div class="mosaic-row-1">
+    <div class="card accent-red kpi-card">
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-trend {{ kpi_1_trend_direction }}">{{ kpi_1_trend }}</div>
+    </div>
+    <div class="card accent-primary kpi-card">
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-trend {{ kpi_2_trend_direction }}">{{ kpi_2_trend }}</div>
+    </div>
+    <div class="card accent-secondary kpi-card">
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-trend {{ kpi_3_trend_direction }}">{{ kpi_3_trend }}</div>
+    </div>
+    <div class="card accent-red kpi-card">
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-trend {{ kpi_4_trend_direction }}">{{ kpi_4_trend }}</div>
+    </div>
+  </div>
+
+  <!-- Row 2: Wide table + 2 stacked -->
+  <div class="mosaic-row-2">
+    <div class="card accent-primary">
+      <div class="card-heading">{{ claims_table_heading }}</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            {% for header in claims_table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in claims_table_rows %}
+          <tr>
+            <td><span class="status-dot" style="background: {{ row.status_color }};"></span>{{ row.line_of_business }}</td>
+            <td>{{ row.incurred }}</td>
+            <td>{{ row.reserves }}</td>
+            <td>{{ row.loss_ratio }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card accent-red">
+      <div class="card-heading">{{ risk_appetite_heading }}</div>
+      {% for bar in risk_bars %}
+      <div class="risk-bar-container">
+        <div class="risk-bar-label">
+          <span>{{ bar.label }}</span>
+          <span>{{ bar.value }}</span>
+        </div>
+        <div class="risk-bar-track">
+          <div class="risk-bar-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="card accent-secondary">
+      <div class="card-heading">{{ exposure_heading }}</div>
+      <ul class="card-list">
+        {% for item in exposure_items %}
+        <li>
+          <span class="label">{{ item.label }}</span>
+          <span class="value">{{ item.value }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Row 3: 2 small + 1 wide -->
+  <div class="mosaic-row-3">
+    <div class="card accent-secondary">
+      <div class="card-heading">{{ solvency_heading }}</div>
+      <div class="kpi-card" style="min-height: auto; padding-top: 4px;">
+        <div class="kpi-value" style="color: {{ solvency_ratio_color }}; font-size: 26px;">{{ solvency_ratio_value }}</div>
+        <div class="kpi-label">{{ solvency_ratio_label }}</div>
+        <div class="sparkline">
+          {% for bar in solvency_sparkline %}
+          <div class="sparkline-bar" style="height: {{ bar.height }}%;"></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card accent-red">
+      <div class="card-heading">{{ alerts_heading }}</div>
+      <ul class="card-list">
+        {% for alert in risk_alerts %}
+        <li>
+          <span class="label"><span class="tag {{ alert.severity }}">{{ alert.severity_label }}</span>&nbsp; {{ alert.description }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card accent-primary">
+      <div class="card-heading">{{ portfolio_heading }}</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            {% for header in portfolio_table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in portfolio_table_rows %}
+          <tr>
+            <td>{{ row.segment }}</td>
+            <td>{{ row.gwp }}</td>
+            <td>{{ row.share }}</td>
+            <td>{{ row.combined_ratio }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Row 4: Wide commentary + small KPI -->
+  <div class="mosaic-row-4">
+    <div class="card accent-primary">
+      <div class="card-heading">{{ commentary_heading }}</div>
+      <div class="quote-text">{{ commentary_quote }}</div>
+      <div class="quote-attribution">— {{ commentary_author }}, {{ commentary_author_title }}</div>
+    </div>
+
+    <div class="card accent-red kpi-card">
+      <div class="kpi-label">{{ kpi_5_label }}</div>
+      <div class="kpi-value" style="color: {{ kpi_5_color }}; font-size: 26px;">{{ kpi_5_value }}</div>
+      <div class="kpi-trend {{ kpi_5_trend_direction }}">{{ kpi_5_trend }}</div>
+    </div>
+  </div>
+
+  <!-- Row 5: 3 equal cards -->
+  <div class="mosaic-row-5">
+    <div class="card accent-secondary">
+      <div class="card-heading">{{ cat_exposure_heading }}</div>
+      <ul class="card-list">
+        {% for item in cat_exposure_items %}
+        <li>
+          <span class="label">{{ item.peril }}</span>
+          <span class="value">{{ item.pml }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card accent-primary">
+      <div class="card-heading">{{ reinsurance_heading }}</div>
+      <ul class="card-list">
+        {% for item in reinsurance_items %}
+        <li>
+          <span class="label">{{ item.label }}</span>
+          <span class="value">{{ item.value }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card accent-red">
+      <div class="card-heading">{{ regulatory_heading }}</div>
+      <ul class="card-list">
+        {% for item in regulatory_items %}
+        <li>
+          <span class="label">{{ item.metric }}</span>
+          <span class="value"><span class="tag {{ item.status_class }}">{{ item.status }}</span></span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footnotes strip -->
+  <div class="footnotes-strip">
+    <p><span class="footnote-ref">1</span> {{ footnote_1 }}</p>
+    <p><span class="footnote-ref">2</span> {{ footnote_2 }}</p>
+    <p><span class="footnote-ref">3</span> {{ footnote_3 }}</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-text">{{ footer_company }} &nbsp;&bull;&nbsp; {{ footer_disclaimer }}</span>
+    <span class="footer-classification">{{ footer_classification }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0009",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "watermark_text": "string",
+    "company_name": "string",
+    "report_title_short": "string",
+    "report_period": "string",
+    "classification_label": "string",
+    "kpi_1_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_color": "string",
+    "kpi_1_trend": "string",
+    "kpi_1_trend_direction": "string",
+    "kpi_2_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_color": "string",
+    "kpi_2_trend": "string",
+    "kpi_2_trend_direction": "string",
+    "kpi_3_label": "string",
+    "kpi_3_value": "string",
+    "kpi_3_color": "string",
+    "kpi_3_trend": "string",
+    "kpi_3_trend_direction": "string",
+    "kpi_4_label": "string",
+    "kpi_4_value": "string",
+    "kpi_4_color": "string",
+    "kpi_4_trend": "string",
+    "kpi_4_trend_direction": "string",
+    "claims_table_heading": "string",
+    "claims_table_headers": "list of strings",
+    "claims_table_rows": "list of objects {line_of_business: string, status_color: string, incurred: string, reserves: string, loss_ratio: string}",
+    "risk_appetite_heading": "string",
+    "risk_bars": "list of objects {label: string, value: string, percent: number, color: string}",
+    "exposure_heading": "string",
+    "exposure_items": "list of objects {label: string, value: string}",
+    "solvency_heading": "string",
+    "solvency_ratio_value": "string",
+    "solvency_ratio_label": "string",
+    "solvency_ratio_color": "string",
+    "solvency_sparkline": "list of objects {height: number}",
+    "alerts_heading": "string",
+    "risk_alerts": "list of objects {severity: string, severity_label: string, description: string}",
+    "portfolio_heading": "string",
+    "portfolio_table_headers": "list of strings",
+    "portfolio_table_rows": "list of objects {segment: string, gwp: string, share: string, combined_ratio: string}",
+    "commentary_heading": "string",
+    "commentary_quote": "string",
+    "commentary_author": "string",
+    "commentary_author_title": "string",
+    "kpi_5_label": "string",
+    "kpi_5_value": "string",
+    "kpi_5_color": "string",
+    "kpi_5_trend": "string",
+    "kpi_5_trend_direction": "string",
+    "cat_exposure_heading": "string",
+    "cat_exposure_items": "list of objects {peril: string, pml: string}",
+    "reinsurance_heading": "string",
+    "reinsurance_items": "list of objects {label: string, value: string}",
+    "regulatory_heading": "string",
+    "regulatory_items": "list of objects {metric: string, status: string, status_class: string}",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "footnote_3": "string",
+    "footer_company": "string",
+    "footer_disclaimer": "string",
+    "footer_classification": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

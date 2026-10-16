@@ -1,0 +1,664 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0d2137;
+    background: #e3f2fd;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 48px 56px auto;
+    grid-template-columns: 1fr;
+    background: #e3f2fd;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .top-nav {
+    width: 100%;
+    height: 48px;
+    background: #0d2137;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 0;
+  }
+
+  .nav-tab {
+    height: 100%;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.6);
+    border-bottom: 3px solid transparent;
+    cursor: default;
+  }
+
+  .nav-tab.active {
+    color: #ffffff;
+    border-bottom-color: #f9a825;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1565c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+  }
+
+  .nav-logo-text {
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* === BRAND STRIP === */
+  .brand-strip {
+    width: 100%;
+    height: 56px;
+    background: linear-gradient(135deg, #1565c0 0%, #0277bd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .brand-strip-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .brand-strip-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+    font-family: Arial, sans-serif;
+  }
+
+  /* === MAIN CONTENT AREA === */
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* === FULL BLEED VISUAL SECTION (60-70%) === */
+  .visual-hero {
+    position: relative;
+    width: 100%;
+    height: 620px;
+    overflow: hidden;
+  }
+
+  .visual-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .visual-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(13,33,55,0.15) 0%, rgba(13,33,55,0.65) 60%, rgba(13,33,55,0.88) 100%);
+  }
+
+  /* === KPI CARDS OVERLAY === */
+  .kpi-row {
+    position: absolute;
+    bottom: 28px;
+    left: 32px;
+    right: 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    z-index: 2;
+  }
+
+  .kpi-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 6px;
+    padding: 18px 16px 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--kpi-color, #1565c0);
+  }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    color: var(--kpi-color, #1565c0);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+
+  .kpi-delta {
+    font-size: 10px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  .kpi-delta.positive { color: #2e7d32; }
+  .kpi-delta.negative { color: #c62828; }
+
+  /* === CIRCULAR DECORATIVE ELEMENTS === */
+  .circle-deco-1 {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid rgba(249,168,37,0.4);
+    z-index: 1;
+  }
+
+  .circle-deco-2 {
+    position: absolute;
+    top: 50px;
+    right: 70px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(249,168,37,0.15);
+    z-index: 1;
+  }
+
+  .circle-deco-3 {
+    position: absolute;
+    top: 80px;
+    left: 32px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f9a825;
+    z-index: 1;
+  }
+
+  .circle-deco-4 {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(249,168,37,0.5);
+    z-index: 1;
+  }
+
+  /* === HERO TITLE OVERLAY === */
+  .hero-title-panel {
+    position: absolute;
+    top: 28px;
+    left: 32px;
+    z-index: 2;
+    max-width: 480px;
+  }
+
+  .hero-title-panel h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: #ffffff;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+
+  .hero-title-panel .hero-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+    max-width: 380px;
+  }
+
+  /* === LOWER CONTENT SECTION === */
+  .lower-section {
+    background: #ffffff;
+    padding: 24px 32px 16px;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* === DATA TABLE === */
+  .data-table-block h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #0d2137;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1565c0;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .data-table thead th {
+    background: #0d2137;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:not(:first-child) {
+    text-align: right;
+  }
+
+  .data-table tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #e0e8ee;
+    color: #0d2137;
+    font-size: 11px;
+  }
+
+  .data-table tbody td:not(:first-child) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f5f9fd;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 2px solid #1565c0;
+    font-weight: 700;
+  }
+
+  /* === PULL QUOTE + NUMBERED LIST === */
+  .sidebar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .pull-quote {
+    background: #e3f2fd;
+    border-left: 4px solid #f9a825;
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+    position: relative;
+  }
+
+  .pull-quote::before {
+    content: '\201C';
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 48px;
+    color: rgba(21,101,192,0.2);
+    position: absolute;
+    top: -4px;
+    left: 10px;
+    line-height: 1;
+  }
+
+  .pull-quote p {
+    font-size: 12px;
+    font-style: italic;
+    color: #0d2137;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pull-quote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1565c0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: numbered-list;
+  }
+
+  .numbered-list-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #0d2137;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #f9a825;
+  }
+
+  .numbered-list li {
+    counter-increment: numbered-list;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #e8eef3;
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.4;
+  }
+
+  .numbered-list li::before {
+    content: counter(numbered-list);
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1565c0;
+    color: #fff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    height: 36px;
+    background: #0d2137;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .footer-text {
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-page {
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 700;
+  }
+
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #f9a825 0%, #1565c0 50%, #0277bd 100%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAVIGATION TABS -->
+  <nav class="top-nav">
+    <div class="nav-logo">
+      <div class="nav-logo-circle">{{ logo_letter }}</div>
+      <span class="nav-logo-text">{{ company_name }}</span>
+    </div>
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <!-- BRAND STRIP -->
+  <div class="brand-strip">
+    <span class="brand-strip-title">{{ page_title }}</span>
+    <span class="brand-strip-subtitle">{{ report_period }} &bull; {{ report_classification }}</span>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- FULL BLEED VISUAL HERO -->
+    <div class="visual-hero">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="visual-hero-overlay"></div>
+
+      <!-- Circular Decorative Elements -->
+      <div class="circle-deco-1"></div>
+      <div class="circle-deco-2"></div>
+      <div class="circle-deco-3"></div>
+      <div class="circle-deco-4"></div>
+
+      <!-- Hero Title Panel -->
+      <div class="hero-title-panel">
+        <h1>{{ section_heading }}</h1>
+        <p class="hero-subtitle">{{ body_paragraph_1 }}</p>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-row">
+        <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+          <div class="kpi-value">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+          <div class="kpi-delta {{ kpi_1_trend }}">{{ kpi_1_delta }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+          <div class="kpi-value">{{ kpi_2_value }}</div>
+          <div class="kpi-label">{{ kpi_2_label }}</div>
+          <div class="kpi-delta {{ kpi_2_trend }}">{{ kpi_2_delta }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+          <div class="kpi-value">{{ kpi_3_value }}</div>
+          <div class="kpi-label">{{ kpi_3_label }}</div>
+          <div class="kpi-delta {{ kpi_3_trend }}">{{ kpi_3_delta }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+          <div class="kpi-value">{{ kpi_4_value }}</div>
+          <div class="kpi-label">{{ kpi_4_label }}</div>
+          <div class="kpi-delta {{ kpi_4_trend }}">{{ kpi_4_delta }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOWER SECTION: TABLE + SIDEBAR -->
+    <div class="lower-section">
+
+      <!-- DATA TABLE -->
+      <div class="data-table-block">
+        <h2>{{ table_heading }}</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for col in table_columns %}
+              <th>{{ col }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              {% for cell in row.cells %}
+              <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SIDEBAR: PULL QUOTE + NUMBERED LIST -->
+      <div class="sidebar-block">
+
+        <!-- Pull Quote -->
+        <div class="pull-quote">
+          <p>{{ pull_quote_text }}</p>
+          <cite>{{ pull_quote_author }}, {{ pull_quote_role }}</cite>
+        </div>
+
+        <!-- Numbered List -->
+        <div>
+          <div class="numbered-list-title">{{ numbered_list_heading }}</div>
+          <ol class="numbered-list">
+            {% for item in numbered_list_items %}
+            <li>{{ item.text }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER ACCENT BAR -->
+    <div class="footer-accent-bar"></div>
+
+    <!-- FOOTER -->
+    <div class="page-footer">
+      <span class="footer-text">{{ footer_disclaimer }}</span>
+      <span class="footer-page">{{ page_number }}</span>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0084",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "company_name": "string",
+    "logo_letter": "string",
+    "report_period": "string",
+    "report_classification": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "nav_tabs": "[{label: string, active: boolean}]",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_1_delta": "string",
+    "kpi_1_trend": "string (positive|negative)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_2_delta": "string",
+    "kpi_2_trend": "string (positive|negative)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_3_delta": "string",
+    "kpi_3_trend": "string (positive|negative)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "kpi_4_delta": "string",
+    "kpi_4_trend": "string (positive|negative)",
+    "table_heading": "string",
+    "table_columns": "[string]",
+    "table_rows": "[{cells: [string]}]",
+    "pull_quote_text": "string",
+    "pull_quote_author": "string",
+    "pull_quote_role": "string",
+    "numbered_list_heading": "string",
+    "numbered_list_items": "[{text: string}]",
+    "footer_disclaimer": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

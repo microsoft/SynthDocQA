@@ -1,0 +1,791 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fff8f0;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #3e2723;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fff8f0;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: "{{ watermark_text }}";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 160px;
+    font-weight: 700;
+    color: rgba(92, 64, 51, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Top accent band */
+  .top-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #5c4033 0%, #795548 40%, #8bc34a 100%);
+  }
+
+  /* Header area */
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 28px 44px 0 44px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    flex: 1;
+  }
+
+  .header-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #8d6e63;
+    margin-bottom: 4px;
+  }
+
+  .header h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #5c4033;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: #795548;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .header-right {
+    text-align: right;
+    padding-top: 6px;
+  }
+
+  .header-right .report-date {
+    font-size: 11px;
+    color: #8d6e63;
+    font-weight: 600;
+  }
+
+  .header-right .report-period {
+    font-size: 10px;
+    color: #8d6e63;
+    margin-top: 2px;
+  }
+
+  /* Tag / badge row */
+  .tag-row {
+    position: relative;
+    z-index: 1;
+    padding: 12px 44px 0 44px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .tag--primary {
+    background: #5c4033;
+    color: #ffffff;
+  }
+
+  .tag--secondary {
+    background: #795548;
+    color: #ffffff;
+  }
+
+  .tag--accent {
+    background: #8bc34a;
+    color: #3e2723;
+  }
+
+  .tag--outline {
+    background: transparent;
+    border: 1px solid #8d6e63;
+    color: #8d6e63;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    position: relative;
+    z-index: 1;
+    padding: 18px 44px 10px 44px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .divider-label::before {
+    content: "";
+    flex: 0 0 4px;
+    height: 14px;
+    background: #8bc34a;
+    border-radius: 1px;
+  }
+
+  .divider-label span {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #5c4033;
+    white-space: nowrap;
+  }
+
+  .divider-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #8d6e63 0%, transparent 100%);
+  }
+
+  /* Hero image placeholder */
+  .hero-image-area {
+    position: relative;
+    z-index: 1;
+    margin: 0 44px;
+    height: 120px;
+    background: linear-gradient(135deg, #5c4033 0%, #795548 60%, #8bc34a 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .hero-image-area .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(92,64,51,0.7) 0%, rgba(92,64,51,0.1) 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+  }
+
+  .hero-overlay-text {
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    max-width: 340px;
+  }
+
+  /* KPI Cards Grid */
+  .kpi-grid {
+    position: relative;
+    z-index: 1;
+    padding: 0 44px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 14px 14px 12px 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(62,39,35,0.07);
+  }
+
+  .kpi-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .kpi-card--green::before { background: #8bc34a; }
+  .kpi-card--brown::before { background: #5c4033; }
+  .kpi-card--tan::before { background: #795548; }
+  .kpi-card--muted::before { background: #8d6e63; }
+
+  .kpi-card .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 9.5px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-delta {
+    margin-top: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .kpi-delta--up {
+    background: rgba(139,195,74,0.15);
+    color: #558b2f;
+  }
+
+  .kpi-delta--down {
+    background: rgba(92,64,51,0.1);
+    color: #5c4033;
+  }
+
+  .kpi-delta--neutral {
+    background: rgba(141,110,99,0.12);
+    color: #8d6e63;
+  }
+
+  /* Secondary metrics row */
+  .metrics-row {
+    position: relative;
+    z-index: 1;
+    padding: 0 44px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .metric-tile {
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(62,39,35,0.07);
+    border-left: 3px solid;
+  }
+
+  .metric-tile--primary { border-left-color: #5c4033; }
+  .metric-tile--secondary { border-left-color: #795548; }
+  .metric-tile--accent { border-left-color: #8bc34a; }
+
+  .metric-tile .metric-label {
+    font-size: 9.5px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .metric-tile .metric-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #3e2723;
+    line-height: 1.15;
+  }
+
+  .metric-tile .metric-sub {
+    font-size: 10px;
+    color: #8d6e63;
+    margin-top: 3px;
+  }
+
+  /* Gauge row */
+  .gauge-row {
+    position: relative;
+    z-index: 1;
+    padding: 0 44px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .gauge-card {
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 4px rgba(62,39,35,0.07);
+  }
+
+  .gauge-card .gauge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .gauge-card .gauge-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5c4033;
+  }
+
+  .gauge-card .gauge-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #3e2723;
+  }
+
+  .gauge-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #f0e6dd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .gauge-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .gauge-bar-fill--primary { background: linear-gradient(90deg, #5c4033, #795548); }
+  .gauge-bar-fill--accent { background: linear-gradient(90deg, #8bc34a, #7cb342); }
+
+  .gauge-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 9px;
+    color: #8d6e63;
+  }
+
+  /* Table area */
+  .table-section {
+    position: relative;
+    z-index: 1;
+    padding: 0 44px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #5c4033;
+    color: #ffffff;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 4px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 4px 0 0;
+  }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0e6dd;
+    color: #3e2723;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(255,248,240,0.6);
+  }
+
+  .data-table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 4px;
+  }
+
+  .data-table tbody tr:last-child td:last-child {
+    border-radius: 0 0 4px 0;
+  }
+
+  .table-status {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 2px;
+    font-size: 8.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .table-status--on-track {
+    background: rgba(139,195,74,0.18);
+    color: #558b2f;
+  }
+
+  .table-status--at-risk {
+    background: rgba(121,85,72,0.15);
+    color: #795548;
+  }
+
+  .table-status--delayed {
+    background: rgba(92,64,51,0.12);
+    color: #5c4033;
+  }
+
+  /* Quote / attribution block */
+  .quote-block {
+    position: relative;
+    z-index: 1;
+    margin: 0 44px;
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 16px 20px 14px 20px;
+    box-shadow: 0 1px 4px rgba(62,39,35,0.07);
+    border-left: 4px solid #8bc34a;
+  }
+
+  .quote-block .quote-mark {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    color: #8bc34a;
+    line-height: 0.8;
+    margin-bottom: 2px;
+  }
+
+  .quote-block .quote-text {
+    font-size: 12px;
+    font-style: italic;
+    color: #3e2723;
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+
+  .quote-block .quote-attribution {
+    font-size: 10px;
+    color: #8d6e63;
+    font-weight: 600;
+  }
+
+  .quote-block .quote-attribution span {
+    font-weight: 400;
+    color: #8d6e63;
+  }
+
+  /* Page footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    height: 36px;
+    padding: 0 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #5c4033;
+    color: #ffffff;
+    font-size: 8.5px;
+    letter-spacing: 0.04em;
+  }
+
+  .page-footer .footer-left {
+    font-weight: 400;
+    opacity: 0.85;
+  }
+
+  .page-footer .footer-center {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 8px;
+    opacity: 0.7;
+  }
+
+  .page-footer .footer-right {
+    font-weight: 600;
+  }
+
+  /* Utility spacing */
+  .gap-sm { height: 10px; }
+  .gap-md { height: 14px; }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top accent band -->
+  <div class="top-band"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-label">{{ header_label }}</div>
+      <h1>{{ page_title }}</h1>
+      <div class="header-subtitle">{{ header_subtitle }}</div>
+    </div>
+    <div class="header-right">
+      <div class="report-date">{{ report_date }}</div>
+      <div class="report-period">{{ report_period }}</div>
+    </div>
+  </div>
+
+  <!-- Tags -->
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag tag--{{ tag.style }}">{{ tag.label }}</span>
+    {% endfor %}
+  </div>
+
+  <!-- Section: Key Performance Indicators -->
+  <div class="divider-label"><span>{{ kpi_section_heading }}</span></div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card kpi-card--green">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-delta kpi-delta--{{ kpi_1_trend }}">{{ kpi_1_delta }}</div>
+    </div>
+    <div class="kpi-card kpi-card--brown">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-delta kpi-delta--{{ kpi_2_trend }}">{{ kpi_2_delta }}</div>
+    </div>
+    <div class="kpi-card kpi-card--tan">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-delta kpi-delta--{{ kpi_3_trend }}">{{ kpi_3_delta }}</div>
+    </div>
+    <div class="kpi-card kpi-card--muted">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-delta kpi-delta--{{ kpi_4_trend }}">{{ kpi_4_delta }}</div>
+    </div>
+  </div>
+
+  <div class="gap-md"></div>
+
+  <!-- Hero image area -->
+  <div class="hero-image-area">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    <div class="hero-overlay">
+      <div class="hero-overlay-text">{{ hero_overlay_text }}</div>
+    </div>
+  </div>
+
+  <!-- Section: Operational Metrics -->
+  <div class="divider-label"><span>{{ metrics_section_heading }}</span></div>
+
+  <!-- Secondary metrics tiles -->
+  <div class="metrics-row">
+    {% for metric in secondary_metrics %}
+    <div class="metric-tile metric-tile--{{ metric.style }}">
+      <div class="metric-label">{{ metric.label }}</div>
+      <div class="metric-value">{{ metric.value }}</div>
+      <div class="metric-sub">{{ metric.subtext }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="gap-sm"></div>
+
+  <!-- Gauge indicators -->
+  <div class="gauge-row">
+    <div class="gauge-card">
+      <div class="gauge-header">
+        <span class="gauge-title">{{ gauge_1_title }}</span>
+        <span class="gauge-value">{{ gauge_1_value }}</span>
+      </div>
+      <div class="gauge-bar-bg">
+        <div class="gauge-bar-fill gauge-bar-fill--primary" style="width: {{ gauge_1_percent }}%;"></div>
+      </div>
+      <div class="gauge-meta">
+        <span>{{ gauge_1_min_label }}</span>
+        <span>{{ gauge_1_max_label }}</span>
+      </div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-header">
+        <span class="gauge-title">{{ gauge_2_title }}</span>
+        <span class="gauge-value">{{ gauge_2_value }}</span>
+      </div>
+      <div class="gauge-bar-bg">
+        <div class="gauge-bar-fill gauge-bar-fill--accent" style="width: {{ gauge_2_percent }}%;"></div>
+      </div>
+      <div class="gauge-meta">
+        <span>{{ gauge_2_min_label }}</span>
+        <span>{{ gauge_2_max_label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Project Pipeline -->
+  <div class="divider-label"><span>{{ table_section_heading }}</span></div>
+
+  <!-- Data table -->
+  <div class="table-section">
+    <table class="data-table">
+      <thead>
+        <tr>
+          {% for col in table_columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.col_1 }}</td>
+          <td>{{ row.col_2 }}</td>
+          <td>{{ row.col_3 }}</td>
+          <td>{{ row.col_4 }}</td>
+          <td><span class="table-status table-status--{{ row.status_style }}">{{ row.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gap-md"></div>
+
+  <!-- Quote attribution -->
+  <div class="quote-block">
+    <div class="quote-mark">&ldquo;</div>
+    <div class="quote-text">{{ quote_text }}</div>
+    <div class="quote-attribution">{{ quote_author }} <span>&mdash; {{ quote_role }}</span></div>
+  </div>
+
+  <!-- Page footer -->
+  <div class="page-footer">
+    <div class="footer-left">{{ footer_left }}</div>
+    <div class="footer-center">{{ footer_classification }}</div>
+    <div class="footer-right">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0025",
+  "variables": {
+    "page_title": "string",
+    "header_label": "string",
+    "header_subtitle": "string",
+    "report_date": "string",
+    "report_period": "string",
+    "watermark_text": "string",
+    "tags": "array of {label: string, style: string ('primary'|'secondary'|'accent'|'outline')}",
+    "kpi_section_heading": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_delta": "string",
+    "kpi_1_trend": "string ('up'|'down'|'neutral')",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_2_delta": "string",
+    "kpi_2_trend": "string ('up'|'down'|'neutral')",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_3_delta": "string",
+    "kpi_3_trend": "string ('up'|'down'|'neutral')",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "kpi_4_delta": "string",
+    "kpi_4_trend": "string ('up'|'down'|'neutral')",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "hero_overlay_text": "string",
+    "metrics_section_heading": "string",
+    "secondary_metrics": "array of {label: string, value: string, subtext: string, style: string ('primary'|'secondary'|'accent')}",
+    "gauge_1_title": "string",
+    "gauge_1_value": "string",
+    "gauge_1_percent": "number (0-100)",
+    "gauge_1_min_label": "string",
+    "gauge_1_max_label": "string",
+    "gauge_2_title": "string",
+    "gauge_2_value": "string",
+    "gauge_2_percent": "number (0-100)",
+    "gauge_2_min_label": "string",
+    "gauge_2_max_label": "string",
+    "table_section_heading": "string",
+    "table_columns": "array of string",
+    "table_rows": "array of {col_1: string, col_2: string, col_3: string, col_4: string, status: string, status_style: string ('on-track'|'at-risk'|'delayed')}",
+    "quote_text": "string",
+    "quote_author": "string",
+    "quote_role": "string",
+    "footer_left": "string",
+    "footer_classification": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

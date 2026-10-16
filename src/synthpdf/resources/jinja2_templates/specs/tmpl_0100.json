@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0100",
+  "industry": "big_tech",
+  "page_role": "financial_highlights",
+  "layout": {
+    "name": "two_pane_split",
+    "description": "Page is divided vertically into two distinct panels, each with different background color or texture. Each pane tells its own story."
+  },
+  "color_palette": {
+    "name": "energy_red",
+    "primary": "#cc0000",
+    "secondary": "#990000",
+    "accent": "#f5a623",
+    "bg": "#ffffff",
+    "surface": "#fdf8f8",
+    "text": "#1a0000",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "comparison_columns",
+    "icon_with_text_grid",
+    "chart_placeholder_box",
+    "percentage_donut",
+    "quote_attribution"
+  ],
+  "density": "dense",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by McKinsey & Company consulting reports \u2014 very formal, data-driven, charcoal tones",
+  "seed": 638577
+}

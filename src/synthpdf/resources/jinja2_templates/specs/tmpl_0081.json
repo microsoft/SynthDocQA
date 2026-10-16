@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0081",
+  "industry": "financial_services_wealth",
+  "page_role": "team_or_org_chart",
+  "layout": {
+    "name": "data_dense_grid",
+    "description": "Tight 3-4 column grid packed with metrics, mini-tables, and charts. Small typography, lots of information per cm2. Bloomberg/Reuters style."
+  },
+  "color_palette": {
+    "name": "healthcare_teal",
+    "primary": "#006d77",
+    "secondary": "#83c5be",
+    "accent": "#e29578",
+    "bg": "#ffffff",
+    "surface": "#edf6f9",
+    "text": "#1a1a2e",
+    "muted": "#4a7c82"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "colored_section_band",
+    "comparison_columns",
+    "two_column_body_text",
+    "quote_attribution",
+    "hero_image_placeholder",
+    "footnotes_strip",
+    "timeline_nodes"
+  ],
+  "density": "sparse",
+  "motif": "none",
+  "design_direction": "Inspired by Apple's product launch materials \u2014 extreme whitespace, single focal element",
+  "seed": 954851
+}

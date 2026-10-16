@@ -1,0 +1,535 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #201f1e;
+    background: #f3f2f1;
+    position: relative;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f2f1;
+  }
+
+  /* Large background watermark */
+  .page-container::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: rgba(0, 120, 212, 0.04);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+
+  /* Hero Section — top third */
+  .hero {
+    width: 100%;
+    height: 374px;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 60%, #003f72 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 44px 60px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -120px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(0, 178, 148, 0.10);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #00b294 0%, #0078d4 50%, #005a9e 100%);
+  }
+
+  .hero-department {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.70);
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    max-width: 580px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  /* Sidebar Annotation */
+  .sidebar-annotation {
+    position: absolute;
+    top: 420px;
+    left: 0;
+    width: 44px;
+    height: auto;
+    z-index: 10;
+  }
+
+  .sidebar-annotation-bar {
+    width: 4px;
+    height: 160px;
+    background: #00b294;
+    margin-left: 20px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-annotation-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #605e5c;
+    margin-left: 14px;
+  }
+
+  /* KPI Metric Cards Row */
+  .kpi-row {
+    display: flex;
+    gap: 16px;
+    padding: 28px 60px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .kpi-card {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 18px 16px 14px 16px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .kpi-card:nth-child(1)::before { background: {{ kpi_1_color }}; }
+  .kpi-card:nth-child(2)::before { background: {{ kpi_2_color }}; }
+  .kpi-card:nth-child(3)::before { background: {{ kpi_3_color }}; }
+  .kpi-card:nth-child(4)::before { background: {{ kpi_4_color }}; }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: #201f1e;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #605e5c;
+    line-height: 1.4;
+  }
+
+  /* Section heading between KPI and columns */
+  .section-divider {
+    padding: 8px 60px 0 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: #005a9e;
+    margin-bottom: 4px;
+  }
+
+  .section-rule {
+    width: 50px;
+    height: 2px;
+    background: #00b294;
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  /* Content Columns */
+  .columns-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    padding: 20px 60px 0 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #0078d4;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 120, 212, 0.15);
+  }
+
+  .column-body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: #201f1e;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+  }
+
+  .column-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .column-list li {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    color: #201f1e;
+    line-height: 1.5;
+    padding: 5px 0 5px 16px;
+    position: relative;
+    border-bottom: 1px solid rgba(96, 94, 92, 0.08);
+  }
+
+  .column-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00b294;
+  }
+
+  /* Quote / Attribution block */
+  .quote-block {
+    padding: 20px 60px 0 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-container {
+    background: #ffffff;
+    border-left: 4px solid #0078d4;
+    padding: 18px 24px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: #201f1e;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+
+  .quote-text::before {
+    content: '\201C';
+    font-size: 28px;
+    color: #0078d4;
+    vertical-align: -6px;
+    margin-right: 2px;
+    font-style: normal;
+  }
+
+  .quote-attribution {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    color: #605e5c;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .quote-role {
+    font-weight: 400;
+    color: #605e5c;
+  }
+
+  /* Page Number Footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    background: #ffffff;
+    border-top: 1px solid rgba(96, 94, 92, 0.12);
+    z-index: 10;
+  }
+
+  .footer-left {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 9px;
+    color: #605e5c;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 9px;
+    color: #605e5c;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-page-number {
+    font-weight: 600;
+    color: #0078d4;
+  }
+
+  /* Decorative geometric elements in hero */
+  .hero-geo {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(0, 178, 148, 0.25);
+    border-radius: 50%;
+  }
+
+  .hero-geo-inner {
+    position: absolute;
+    top: 50px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.10);
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-geo"></div>
+    <div class="hero-geo-inner"></div>
+    <div class="hero-department">{{ department_name }}</div>
+    <h1 class="hero-title">{{ page_title }}</h1>
+    <p class="hero-subtitle">{{ hero_subtitle }}</p>
+  </div>
+
+  <!-- Sidebar Annotation -->
+  <div class="sidebar-annotation">
+    <div class="sidebar-annotation-bar"></div>
+    <span class="sidebar-annotation-text">{{ sidebar_label }}</span>
+  </div>
+
+  <!-- KPI Metric Cards -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- Section Heading -->
+  <div class="section-divider">
+    <h2 class="section-heading">{{ section_heading }}</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <!-- Three Content Columns -->
+  <div class="columns-area">
+    <div class="column">
+      <h3 class="column-heading">{{ column_1_heading }}</h3>
+      <p class="column-body">{{ column_1_body }}</p>
+      <ul class="column-list">
+        {% for item in column_1_features %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="column">
+      <h3 class="column-heading">{{ column_2_heading }}</h3>
+      <p class="column-body">{{ column_2_body }}</p>
+      <ul class="column-list">
+        {% for item in column_2_features %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="column">
+      <h3 class="column-heading">{{ column_3_heading }}</h3>
+      <p class="column-body">{{ column_3_body }}</p>
+      <ul class="column-list">
+        {% for item in column_3_features %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Quote / Attribution -->
+  <div class="quote-block">
+    <div class="quote-container">
+      <p class="quote-text">{{ quote_text }}</p>
+      <div class="quote-attribution">{{ quote_author }} <span class="quote-role">— {{ quote_role }}</span></div>
+    </div>
+  </div>
+
+  <!-- Page Footer -->
+  <div class="page-footer">
+    <div class="footer-left">{{ footer_document_title }}</div>
+    <div class="footer-right">Page <span class="footer-page-number">{{ page_number }}</span> of {{ total_pages }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0103",
+  "variables": {
+    "page_title": "string",
+    "department_name": "string",
+    "hero_subtitle": "string",
+    "watermark_text": "string",
+    "sidebar_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "section_heading": "string",
+    "column_1_heading": "string",
+    "column_1_body": "string",
+    "column_1_features": "list of strings",
+    "column_2_heading": "string",
+    "column_2_body": "string",
+    "column_2_features": "list of strings",
+    "column_3_heading": "string",
+    "column_3_body": "string",
+    "column_3_features": "list of strings",
+    "quote_text": "string",
+    "quote_author": "string",
+    "quote_role": "string",
+    "footer_document_title": "string",
+    "page_number": "string",
+    "total_pages": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

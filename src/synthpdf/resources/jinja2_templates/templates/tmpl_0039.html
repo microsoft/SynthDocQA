@@ -1,0 +1,809 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=794, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #2c3e50;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ecf0f1;
+  }
+
+  /* === TOP HEADER BAR === */
+  .header-bar {
+    width: 100%;
+    height: 96px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: relative;
+  }
+
+  .header-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #e74c3c;
+  }
+
+  .header-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-logo-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid #e74c3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .header-logo-circle-inner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e74c3c;
+  }
+
+  .header-org-name {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .header-doc-label {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10px;
+    color: #7f8c8d;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .header-report-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+  }
+
+  .header-report-year {
+    font-size: 10px;
+    color: #e74c3c;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* === PAGE TITLE SECTION === */
+  .title-section {
+    padding: 32px 48px 20px 48px;
+    position: relative;
+  }
+
+  .title-section h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: #2c3e50;
+    line-height: 1.1;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-decorator {
+    position: absolute;
+    top: 18px;
+    right: 48px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid rgba(231,76,60,0.2);
+  }
+
+  .title-decorator::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(231,76,60,0.08);
+  }
+
+  .title-subtitle {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* === TAG / BADGE ROW === */
+  .tag-row {
+    display: flex;
+    gap: 10px;
+    padding: 0 48px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tag-badge--primary {
+    background: #2c3e50;
+    color: #ffffff;
+  }
+
+  .tag-badge--accent {
+    background: #e74c3c;
+    color: #ffffff;
+  }
+
+  .tag-badge--outline {
+    background: transparent;
+    color: #34495e;
+    border: 1.5px solid #34495e;
+  }
+
+  .tag-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  /* === PULL QUOTE BLOCK === */
+  .pull-quote-block {
+    margin: 0 48px 20px 48px;
+    padding: 18px 24px;
+    background: #ffffff;
+    border-left: 5px solid #e74c3c;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+  }
+
+  .pull-quote-block::before {
+    content: '\201C';
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 48px;
+    color: rgba(231,76,60,0.15);
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    line-height: 1;
+  }
+
+  .pull-quote-text {
+    font-size: 12px;
+    font-style: italic;
+    color: #34495e;
+    line-height: 1.5;
+    padding-left: 8px;
+  }
+
+  .pull-quote-attribution {
+    font-size: 9px;
+    color: #7f8c8d;
+    margin-top: 6px;
+    padding-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* === KPI DASHBOARD GRID === */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 48px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px 18px 16px 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(44,62,80,0.06);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--kpi-color, #2c3e50);
+  }
+
+  .kpi-card-circle {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--kpi-color, #2c3e50);
+    opacity: 0.06;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7f8c8d;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--kpi-color, #2c3e50);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .kpi-unit {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  /* === PROGRESS BAR === */
+  .progress-bar-wrapper {
+    margin-top: 8px;
+  }
+
+  .progress-bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #7f8c8d;
+    margin-bottom: 4px;
+  }
+
+  .progress-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #ecf0f1;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--kpi-color, #2c3e50);
+    transition: width 0.3s;
+  }
+
+  /* === TOC / ICON-TEXT GRID === */
+  .section-heading {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #2c3e50;
+    padding: 0 48px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-heading-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, #e74c3c, transparent);
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    padding: 0 48px;
+    margin-bottom: 20px;
+  }
+
+  .toc-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(44,62,80,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-entry::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--entry-color, #34495e);
+    opacity: 0.3;
+  }
+
+  .toc-icon-circle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: var(--entry-color, #34495e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .toc-entry-content {
+    flex: 1;
+  }
+
+  .toc-entry-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #2c3e50;
+    margin-bottom: 2px;
+  }
+
+  .toc-entry-desc {
+    font-size: 9px;
+    color: #7f8c8d;
+    line-height: 1.4;
+  }
+
+  .toc-entry-page {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--entry-color, #34495e);
+    min-width: 28px;
+    text-align: right;
+    align-self: center;
+  }
+
+  /* === HERO IMAGE PLACEHOLDER === */
+  .hero-image-placeholder {
+    margin: 0 48px 20px 48px;
+    height: 120px;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 60%, #e74c3c 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .hero-overlay-text {
+    position: absolute;
+    bottom: 14px;
+    left: 20px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #ffffff;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    z-index: 2;
+  }
+
+  .hero-circle-deco {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,0.1);
+  }
+
+  .hero-circle-deco-sm {
+    position: absolute;
+    bottom: -20px;
+    left: 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(231,76,60,0.15);
+  }
+
+  /* === CALLOUT BOX === */
+  .callout-box {
+    margin: 0 48px 16px 48px;
+    padding: 16px 20px;
+    background: #2c3e50;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .callout-box::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(231,76,60,0.12);
+  }
+
+  .callout-icon-circle {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: #e74c3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #ffffff;
+  }
+
+  .callout-text {
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  .callout-text strong {
+    font-weight: 700;
+    color: #e74c3c;
+  }
+
+  /* === FOOTNOTES STRIP === */
+  .footnotes-strip {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    padding: 10px 48px;
+    background: #ffffff;
+    border-top: 1px solid rgba(44,62,80,0.1);
+  }
+
+  .footnote-item {
+    font-size: 7.5px;
+    color: #7f8c8d;
+    line-height: 1.5;
+    margin-bottom: 2px;
+  }
+
+  .footnote-sup {
+    font-weight: 700;
+    color: #e74c3c;
+    margin-right: 3px;
+  }
+
+  /* === FOOTER === */
+  .footer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .footer-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #e74c3c;
+  }
+
+  .footer-text {
+    font-size: 8px;
+    color: #7f8c8d;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-page {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer-page-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e74c3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #ffffff;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER BAR -->
+  <div class="header-bar">
+    <div class="header-logo-area">
+      <div class="header-logo-circle">
+        <div class="header-logo-circle-inner"></div>
+      </div>
+      <div>
+        <div class="header-org-name">{{ organization_name }}</div>
+        <div class="header-doc-label">{{ document_classification }}</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-report-title">{{ report_title }}</div>
+      <div class="header-report-year">{{ report_period }}</div>
+    </div>
+  </div>
+
+  <!-- PAGE TITLE -->
+  <div class="title-section">
+    <div class="title-decorator"></div>
+    <h1>{{ page_title }}</h1>
+    <div class="title-subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- TAG / BADGE ROW -->
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag-badge tag-badge--{{ tag.style }}">
+      <span class="tag-badge-dot"></span>
+      {{ tag.label }}
+    </span>
+    {% endfor %}
+  </div>
+
+  <!-- KPI DASHBOARD METRICS -->
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+      <div class="kpi-card-circle"></div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-value">{{ kpi_1_value }}<span class="kpi-unit"> {{ kpi_1_unit }}</span></div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-header">
+          <span>{{ kpi_1_progress_label }}</span>
+          <span>{{ kpi_1_progress_pct }}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ kpi_1_progress_pct }}%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+      <div class="kpi-card-circle"></div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-value">{{ kpi_2_value }}<span class="kpi-unit"> {{ kpi_2_unit }}</span></div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-header">
+          <span>{{ kpi_2_progress_label }}</span>
+          <span>{{ kpi_2_progress_pct }}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ kpi_2_progress_pct }}%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+      <div class="kpi-card-circle"></div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-value">{{ kpi_3_value }}<span class="kpi-unit"> {{ kpi_3_unit }}</span></div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-header">
+          <span>{{ kpi_3_progress_label }}</span>
+          <span>{{ kpi_3_progress_pct }}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ kpi_3_progress_pct }}%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE -->
+  <div class="pull-quote-block">
+    <div class="pull-quote-text">{{ pull_quote_text }}</div>
+    <div class="pull-quote-attribution">{{ pull_quote_attribution }}</div>
+  </div>
+
+  <!-- SECTION HEADING: TABLE OF CONTENTS -->
+  <div class="section-heading">
+    {{ section_heading }}
+    <span class="section-heading-line"></span>
+  </div>
+
+  <!-- TOC ICON-TEXT GRID -->
+  <div class="toc-grid">
+    {% for entry in toc_entries %}
+    <div class="toc-entry" style="--entry-color: {{ entry.color }};">
+      <div class="toc-icon-circle" style="background: {{ entry.color }};">{{ entry.number }}</div>
+      <div class="toc-entry-content">
+        <div class="toc-entry-title">{{ entry.title }}</div>
+        <div class="toc-entry-desc">{{ entry.description }}</div>
+      </div>
+      <div class="toc-entry-page" style="color: {{ entry.color }};">{{ entry.page }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- HERO IMAGE PLACEHOLDER -->
+  <div class="hero-image-placeholder">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" onerror="this.style.display='none'">
+    <div class="hero-circle-deco"></div>
+    <div class="hero-circle-deco-sm"></div>
+    <div class="hero-overlay-text">{{ hero_caption }}</div>
+  </div>
+
+  <!-- CALLOUT BOX -->
+  <div class="callout-box">
+    <div class="callout-icon-circle">{{ callout_icon }}</div>
+    <div class="callout-text">{{ callout_text }}</div>
+  </div>
+
+  <!-- FOOTNOTES STRIP -->
+  <div class="footnotes-strip">
+    {% for fn in footnotes %}
+    <div class="footnote-item">
+      <span class="footnote-sup">{{ fn.marker }}</span>{{ fn.text }}
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-bar">
+    <div class="footer-text">{{ footer_text }}</div>
+    <div class="footer-page">
+      <span>{{ footer_label }}</span>
+      <span class="footer-page-circle">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0039",
+  "variables": {
+    "page_title": "string — Main page heading, e.g. 'Table of Contents'",
+    "page_subtitle": "string — Subtitle beneath the heading",
+    "organization_name": "string — Company or division name in header",
+    "document_classification": "string — e.g. 'CONTROLLED UNCLASSIFIED'",
+    "report_title": "string — Report name in header",
+    "report_period": "string — e.g. 'FY 2025 Annual Report'",
+    "tags": "list of objects — each with 'label' (string) and 'style' (string: 'primary'|'accent'|'outline')",
+    "kpi_1_value": "string — Numeric display value for KPI card 1",
+    "kpi_1_label": "string — Label for KPI card 1",
+    "kpi_1_unit": "string — Unit suffix for KPI 1",
+    "kpi_1_color": "string — Hex color for KPI 1 accent",
+    "kpi_1_progress_label": "string — Progress bar label for KPI 1",
+    "kpi_1_progress_pct": "number — Percentage 0-100 for progress bar fill",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_unit": "string",
+    "kpi_2_color": "string",
+    "kpi_2_progress_label": "string",
+    "kpi_2_progress_pct": "number",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_unit": "string",
+    "kpi_3_color": "string",
+    "kpi_3_progress_label": "string",
+    "kpi_3_progress_pct": "number",
+    "pull_quote_text": "string — Inspirational or strategic quote",
+    "pull_quote_attribution": "string — Attribution for the quote",
+    "section_heading": "string — Heading above the TOC grid, e.g. 'Report Sections'",
+    "toc_entries": "list of objects — each with 'number' (string), 'title' (string), 'description' (string), 'page' (string), 'color' (string hex)",
+    "hero_image_url": "string — URL or path for the hero image",
+    "hero_image_alt": "string — Alt text for hero image",
+    "hero_caption": "string — Overlay caption on hero image",
+    "callout_icon": "string — Single character or short icon text",
+    "callout_text": "string — Callout message (supports <strong> tags)",
+    "footnotes": "list of objects — each with 'marker' (string) and 'text' (string)",
+    "footer_text": "string — Footer disclaimer or copyright",
+    "footer_label": "string — Label next to page number, e.g. 'PAGE'",
+    "page_number": "string — Page number"
+  }
+}
+END_TEMPLATE_VARIABLES -->

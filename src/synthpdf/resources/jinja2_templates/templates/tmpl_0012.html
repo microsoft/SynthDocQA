@@ -1,0 +1,567 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f9f7f4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #0d0d0d;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  /* Fine grid lines decorative motif */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(to right, rgba(184, 150, 12, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184, 150, 12, 0.04) 1px, transparent 1px);
+    background-size: 39.7px 39.7px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(to right, rgba(184, 150, 12, 0.07) 1px, transparent 1px);
+    background-size: 198.5px 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-band {
+    width: 100%;
+    height: 72px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: relative;
+  }
+
+  .header-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #b8960c 0%, #b8960c 40%, #2d2d2d 100%);
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-logo-mark {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #b8960c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #b8960c;
+    letter-spacing: 0;
+  }
+
+  .header-firm-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-classification {
+    font-size: 10px;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+
+  .accent-strip {
+    width: 100%;
+    height: 36px;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(184, 150, 12, 0.2);
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+    justify-content: space-between;
+  }
+
+  .accent-strip-left {
+    font-size: 9px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .accent-strip-right {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.05em;
+  }
+
+  .title-section {
+    padding: 32px 48px 20px 48px;
+    border-bottom: 1px solid rgba(184, 150, 12, 0.15);
+  }
+
+  .title-section h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #1a1a1a;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+
+  .title-section h1 span {
+    color: #b8960c;
+  }
+
+  .title-subtitle {
+    font-size: 13px;
+    color: #888888;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  .section-band {
+    width: 100%;
+    background: #2d2d2d;
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-band-label {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .section-band-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(184, 150, 12, 0.3);
+  }
+
+  .body-content {
+    padding: 24px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .body-column p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #0d0d0d;
+    margin-bottom: 12px;
+    text-align: justify;
+  }
+
+  .body-column h3 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #2d2d2d;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(184, 150, 12, 0.2);
+  }
+
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 0 48px 20px 48px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #ffffff;
+    padding: 14px 16px;
+    border: 1px solid rgba(184, 150, 12, 0.12);
+    border-left: 3px solid #b8960c;
+  }
+
+  .icon-text-item-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b8960c;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .icon-text-item-content h4 {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+
+  .icon-text-item-content p {
+    font-size: 11px;
+    color: #888888;
+    line-height: 1.5;
+  }
+
+  .disclosure-table-wrapper {
+    padding: 0 48px 20px 48px;
+  }
+
+  .disclosure-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .disclosure-table thead th {
+    background: #1a1a1a;
+    color: #ffffff;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 9px;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 2px solid #b8960c;
+  }
+
+  .disclosure-table tbody td {
+    padding: 7px 12px;
+    border-bottom: 1px solid rgba(184, 150, 12, 0.1);
+    color: #0d0d0d;
+    font-size: 11px;
+    vertical-align: top;
+  }
+
+  .disclosure-table tbody tr:nth-child(even) td {
+    background: rgba(184, 150, 12, 0.03);
+  }
+
+  .table-note {
+    font-size: 9px;
+    color: #888888;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(184, 150, 12, 0.3), transparent);
+    margin: 0 48px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #b8960c;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-firm {
+    font-size: 10px;
+    color: #b8960c;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-divider-v {
+    width: 1px;
+    height: 16px;
+    background: #2d2d2d;
+  }
+
+  .footer-text {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-page {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-page span {
+    color: #b8960c;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .grid-accent {
+    position: relative;
+  }
+
+  .grid-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 100%;
+    background-image:
+      linear-gradient(to right, rgba(184, 150, 12, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184, 150, 12, 0.06) 1px, transparent 1px);
+    background-size: 8px 8px;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header Band -->
+  <div class="header-band">
+    <div class="header-logo">
+      <div class="header-logo-mark">{{ firm_logo_initials }}</div>
+      <div class="header-firm-name">{{ firm_name }}</div>
+    </div>
+    <div class="header-classification">{{ document_classification }}</div>
+  </div>
+
+  <!-- Accent Strip -->
+  <div class="accent-strip">
+    <div class="accent-strip-left">{{ document_type_label }} &mdash; {{ reporting_period }}</div>
+    <div class="accent-strip-right">{{ document_reference_number }}</div>
+  </div>
+
+  <!-- Title Section -->
+  <div class="title-section grid-accent">
+    <h1>{{ page_title }} <span>{{ page_title_accent }}</span></h1>
+    <div class="title-subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- Section Band 1 -->
+  <div class="section-band">
+    <span class="section-band-label">{{ section_band_label_1 }}</span>
+    <span class="section-band-line"></span>
+  </div>
+
+  <!-- Two Column Body Text -->
+  <div class="body-content">
+    <div class="body-column">
+      <h3>{{ col1_heading }}</h3>
+      <p>{{ col1_paragraph_1 }}</p>
+      <p>{{ col1_paragraph_2 }}</p>
+    </div>
+    <div class="body-column">
+      <h3>{{ col2_heading }}</h3>
+      <p>{{ col2_paragraph_1 }}</p>
+      <p>{{ col2_paragraph_2 }}</p>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section Band 2 — Key Obligations -->
+  <div class="section-band" style="margin-top: 16px;">
+    <span class="section-band-label">{{ section_band_label_2 }}</span>
+    <span class="section-band-line"></span>
+  </div>
+
+  <!-- Icon + Text Grid -->
+  <div class="icon-text-grid" style="padding-top: 16px;">
+    {% for item in disclosure_items %}
+    <div class="icon-text-item">
+      <div class="icon-text-item-icon">{{ item.icon_letter }}</div>
+      <div class="icon-text-item-content">
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Section Band 3 — Compliance Schedule -->
+  <div class="section-band">
+    <span class="section-band-label">{{ section_band_label_3 }}</span>
+    <span class="section-band-line"></span>
+  </div>
+
+  <!-- Disclosure Table -->
+  <div class="disclosure-table-wrapper" style="padding-top: 16px;">
+    <table class="disclosure-table">
+      <thead>
+        <tr>
+          <th>{{ table_header_1 }}</th>
+          <th>{{ table_header_2 }}</th>
+          <th>{{ table_header_3 }}</th>
+          <th>{{ table_header_4 }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.regulation }}</td>
+          <td>{{ row.requirement }}</td>
+          <td>{{ row.status }}</td>
+          <td>{{ row.effective_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="table-note">{{ table_footnote }}</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <span class="footer-firm">{{ firm_name_short }}</span>
+      <span class="footer-divider-v"></span>
+      <span class="footer-text">{{ footer_disclaimer }}</span>
+    </div>
+    <div class="footer-page">
+      <span>{{ page_number }}</span> / {{ total_pages }}
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0012",
+  "variables": {
+    "page_title": "string",
+    "page_title_accent": "string",
+    "page_subtitle": "string",
+    "firm_name": "string",
+    "firm_name_short": "string",
+    "firm_logo_initials": "string",
+    "document_classification": "string",
+    "document_type_label": "string",
+    "reporting_period": "string",
+    "document_reference_number": "string",
+    "section_band_label_1": "string",
+    "section_band_label_2": "string",
+    "section_band_label_3": "string",
+    "col1_heading": "string",
+    "col1_paragraph_1": "string",
+    "col1_paragraph_2": "string",
+    "col2_heading": "string",
+    "col2_paragraph_1": "string",
+    "col2_paragraph_2": "string",
+    "disclosure_items": [
+      {
+        "icon_letter": "string",
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "table_header_1": "string",
+    "table_header_2": "string",
+    "table_header_3": "string",
+    "table_header_4": "string",
+    "table_rows": [
+      {
+        "regulation": "string",
+        "requirement": "string",
+        "status": "string",
+        "effective_date": "string"
+      }
+    ],
+    "table_footnote": "string",
+    "footer_disclaimer": "string",
+    "page_number": "string",
+    "total_pages": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

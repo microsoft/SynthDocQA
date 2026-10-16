@@ -1,0 +1,725 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #1a0000;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    display: grid;
+    grid-template-rows: 56px 38px auto 280px auto 160px 36px;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+  }
+
+  /* === BRAND STRIP === */
+  .brand-strip {
+    background: #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .brand-logo {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .brand-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.02em;
+  }
+
+  /* === SECTION LABEL BAR === */
+  .section-label-bar {
+    background: #990000;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 12px;
+  }
+
+  .section-label-bar .label-text {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: #f5a623;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .section-label-bar .label-divider {
+    flex: 1;
+    height: 1px;
+    background: rgba(245,166,35,0.35);
+  }
+
+  .section-label-bar .page-ref {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* === HEADER AREA === */
+  .header-area {
+    padding: 28px 40px 18px 40px;
+    background: #ffffff;
+  }
+
+  .header-area h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1a0000;
+    margin-bottom: 6px;
+  }
+
+  .header-area .subtitle {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #cc0000;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .header-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 8px;
+  }
+
+  .header-intro p {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #1a0000;
+  }
+
+  /* === DIVIDER WITH LABEL === */
+  .divider-with-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 40px;
+    margin: 10px 0;
+  }
+
+  .divider-with-label .line {
+    flex: 1;
+    height: 2px;
+    background: #cc0000;
+  }
+
+  .divider-with-label .dlabel {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: #990000;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  /* === TIMELINE SECTION === */
+  .timeline-section {
+    padding: 0 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .timeline-wrapper {
+    position: relative;
+    width: 100%;
+    height: 260px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #cc0000, #990000);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .timeline-spine::before,
+  .timeline-spine::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: #cc0000;
+    border-radius: 50%;
+  }
+
+  .timeline-spine::before { left: -6px; }
+  .timeline-spine::after { right: -6px; background: #990000; }
+
+  .timeline-events {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  .timeline-event {
+    position: absolute;
+    width: 130px;
+  }
+
+  .timeline-event .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #f5a623;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 2px #cc0000;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .timeline-event .connector {
+    position: absolute;
+    left: 50%;
+    width: 2px;
+    background: #cc0000;
+    transform: translateX(-50%);
+  }
+
+  .timeline-event.above { top: 0; }
+  .timeline-event.above .dot { bottom: -7px; }
+  .timeline-event.above .connector { bottom: 0; height: 30px; }
+  .timeline-event.above .event-card { margin-bottom: 36px; }
+
+  .timeline-event.below { bottom: 0; }
+  .timeline-event.below .dot { top: -7px; }
+  .timeline-event.below .connector { top: 0; height: 30px; }
+  .timeline-event.below .event-card { margin-top: 36px; }
+
+  .event-card {
+    background: #fdf8f8;
+    border-left: 3px solid #cc0000;
+    padding: 8px 10px;
+    border-radius: 2px;
+  }
+
+  .event-card .event-year {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: #cc0000;
+    letter-spacing: -0.02em;
+  }
+
+  .event-card .event-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: #1a0000;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 2px 0;
+  }
+
+  .event-card .event-desc {
+    font-size: 10px;
+    line-height: 1.4;
+    color: #666666;
+  }
+
+  .timeline-event:nth-child(1) { left: 2%; }
+  .timeline-event:nth-child(2) { left: 17%; }
+  .timeline-event:nth-child(3) { left: 33%; }
+  .timeline-event:nth-child(4) { left: 49%; }
+  .timeline-event:nth-child(5) { left: 65%; }
+  .timeline-event:nth-child(6) { left: 81%; }
+
+  /* === LOWER CONTENT === */
+  .lower-content {
+    padding: 14px 40px 10px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .data-table-wrapper {
+    background: #fdf8f8;
+    border-radius: 2px;
+    padding: 14px;
+    border-top: 3px solid #cc0000;
+  }
+
+  .data-table-wrapper h3 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #990000;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #990000;
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 8px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(204,0,0,0.1);
+    font-size: 10px;
+    color: #1a0000;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(204,0,0,0.03);
+  }
+
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .chart-placeholder {
+    background: #fdf8f8;
+    border: 2px dashed rgba(204,0,0,0.25);
+    border-radius: 2px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chart-placeholder .chart-icon {
+    font-size: 28px;
+    color: #cc0000;
+    opacity: 0.35;
+    margin-bottom: 4px;
+  }
+
+  .chart-placeholder .chart-label {
+    font-size: 10px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .chart-placeholder .chart-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: #990000;
+    margin-bottom: 2px;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .comparison-col {
+    background: #fdf8f8;
+    padding: 10px 12px;
+    border-radius: 2px;
+    border-top: 3px solid;
+    text-align: center;
+  }
+
+  .comparison-col:first-child { border-top-color: #cc0000; }
+  .comparison-col:last-child { border-top-color: #f5a623; }
+
+  .comparison-col .comp-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .comparison-col:first-child .comp-value { color: #cc0000; }
+  .comparison-col:last-child .comp-value { color: #f5a623; }
+
+  .comparison-col .comp-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* === KPI STRIP === */
+  .kpi-strip {
+    padding: 10px 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .kpi-card {
+    padding: 12px 14px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    background: #fdf8f8;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #cc0000; }
+  .kpi-card:nth-child(2)::before { background: #990000; }
+  .kpi-card:nth-child(3)::before { background: #f5a623; }
+  .kpi-card:nth-child(4)::before { background: #cc0000; }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .kpi-card:nth-child(1) .kpi-value { color: #cc0000; }
+  .kpi-card:nth-child(2) .kpi-value { color: #990000; }
+  .kpi-card:nth-child(3) .kpi-value { color: #f5a623; }
+  .kpi-card:nth-child(4) .kpi-value { color: #cc0000; }
+
+  .kpi-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .kpi-trend {
+    font-size: 10px;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  .kpi-trend.up { color: #cc0000; }
+  .kpi-trend.down { color: #990000; }
+
+  /* === FOOTER === */
+  .page-footer {
+    background: #990000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .page-footer .footer-left {
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .page-footer .footer-center {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .page-footer .page-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #f5a623;
+    letter-spacing: 0.02em;
+  }
+
+  /* === SOLID COLOR BLOCK MOTIFS === */
+  .color-block-left {
+    position: absolute;
+    top: 94px;
+    left: 0;
+    width: 6px;
+    height: 180px;
+    background: #cc0000;
+  }
+
+  .color-block-accent {
+    position: absolute;
+    top: 280px;
+    left: 0;
+    width: 6px;
+    height: 60px;
+    background: #f5a623;
+  }
+
+  .color-block-bottom-right {
+    position: absolute;
+    bottom: 36px;
+    right: 0;
+    width: 80px;
+    height: 4px;
+    background: #f5a623;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Solid color block decorations -->
+  <div class="color-block-left"></div>
+  <div class="color-block-accent"></div>
+  <div class="color-block-bottom-right"></div>
+
+  <!-- BRAND STRIP -->
+  <div class="brand-strip">
+    <div class="brand-logo">{{ brand_name }}</div>
+    <div class="brand-tagline">{{ brand_tagline }}</div>
+  </div>
+
+  <!-- SECTION LABEL BAR -->
+  <div class="section-label-bar">
+    <span class="label-text">{{ section_label }}</span>
+    <span class="label-divider"></span>
+    <span class="page-ref">{{ document_reference }}</span>
+  </div>
+
+  <!-- HEADER AREA -->
+  <div class="header-area">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ section_heading }}</div>
+
+    <div class="divider-with-label" style="padding:0; margin-bottom: 12px;">
+      <span class="line"></span>
+      <span class="dlabel">{{ divider_label_1 }}</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="header-intro">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE SECTION -->
+  <div class="timeline-section">
+    <div class="timeline-wrapper">
+      <div class="timeline-spine"></div>
+      <div class="timeline-events">
+        {% for event in timeline_events %}
+        <div class="timeline-event {{ 'above' if loop.index is odd else 'below' }}" style="left: {{ (loop.index0 * 16.5 + 2) }}%;">
+          <div class="event-card">
+            <div class="event-year">{{ event.year }}</div>
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-desc">{{ event.description }}</div>
+          </div>
+          <div class="connector"></div>
+          <div class="dot"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- LOWER CONTENT -->
+  <div class="lower-content">
+    <!-- Data Table -->
+    <div class="data-table-wrapper">
+      <h3>{{ table_title }}</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.col_1 }}</td>
+            <td>{{ row.col_2 }}</td>
+            <td>{{ row.col_3 }}</td>
+            <td>{{ row.col_4 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Right Column: Chart + Comparison -->
+    <div class="right-column">
+      <div class="chart-placeholder">
+        <div class="chart-title">{{ chart_title }}</div>
+        <div class="chart-icon">&#9638;</div>
+        <div class="chart-label">{{ chart_label }}</div>
+      </div>
+
+      <div class="divider-with-label" style="padding:0;">
+        <span class="line"></span>
+        <span class="dlabel">{{ divider_label_2 }}</span>
+        <span class="line"></span>
+      </div>
+
+      <div class="comparison-columns">
+        <div class="comparison-col">
+          <div class="comp-value">{{ comparison_1_value }}</div>
+          <div class="comp-label">{{ comparison_1_label }}</div>
+        </div>
+        <div class="comparison-col">
+          <div class="comp-value">{{ comparison_2_value }}</div>
+          <div class="comp-label">{{ comparison_2_label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-trend up">{{ kpi_1_trend }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-trend up">{{ kpi_2_trend }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-trend down">{{ kpi_3_trend }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-trend up">{{ kpi_4_trend }}</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_text }}</span>
+    <span class="footer-center">{{ footer_confidentiality }}</span>
+    <span class="page-number">{{ page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0096",
+  "variables": {
+    "brand_name": "string",
+    "brand_tagline": "string",
+    "section_label": "string",
+    "document_reference": "string",
+    "page_title": "string",
+    "section_heading": "string",
+    "divider_label_1": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "divider_label_2": "string",
+    "timeline_events": [
+      {
+        "year": "string",
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "table_title": "string",
+    "table_headers": ["string"],
+    "table_rows": [
+      {
+        "col_1": "string",
+        "col_2": "string",
+        "col_3": "string",
+        "col_4": "string"
+      }
+    ],
+    "chart_title": "string",
+    "chart_label": "string",
+    "comparison_1_value": "string",
+    "comparison_1_label": "string",
+    "comparison_2_value": "string",
+    "comparison_2_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_trend": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_trend": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_trend": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_trend": "string",
+    "footer_text": "string",
+    "footer_confidentiality": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

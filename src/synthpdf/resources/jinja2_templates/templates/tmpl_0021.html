@@ -1,0 +1,707 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fdfcff;
+    color: #1c1c1c;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fdfcff;
+  }
+
+  /* === SOFT GRADIENT BANDS — decorative motif === */
+  .gradient-band-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #6c3483, #1a5276, #17a589);
+  }
+
+  .gradient-band-hero {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    height: 340px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 55%, #17a589 100%);
+    z-index: 0;
+  }
+
+  .gradient-band-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, rgba(253,252,255,0.95));
+  }
+
+  /* === HERO SECTION — editorial magazine: bold hero dominates top === */
+  .hero-section {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 348px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: 1fr;
+    padding: 40px 48px 24px 48px;
+    gap: 24px;
+    align-items: end;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .document-type-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 14px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.35);
+    width: fit-content;
+  }
+
+  .hero-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    max-width: 420px;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.88);
+    max-width: 390px;
+  }
+
+  .hero-image-container {
+    width: 280px;
+    height: 220px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.1);
+    align-self: center;
+  }
+
+  .hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* === TAG / BADGE ROW === */
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 48px;
+    margin-top: -6px;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f4ecf7;
+    color: #6c3483;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(108,52,131,0.15);
+  }
+
+  /* === DIVIDER WITH LABEL === */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 48px 10px 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .divider-label::before {
+    content: '';
+    flex: 0 0 4px;
+    height: 18px;
+    background: #17a589;
+    border-radius: 2px;
+  }
+
+  .divider-label span {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6c3483;
+  }
+
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #6c3483 0%, transparent 100%);
+  }
+
+  /* === MAIN CONTENT GRID — asymmetric editorial layout === */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 20px;
+    padding: 6px 48px 0 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #1a5276;
+  }
+
+  .body-text {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #1c1c1c;
+    text-align: justify;
+  }
+
+  /* === KPI METRIC CARDS === */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .kpi-card {
+    background: #f4ecf7;
+    border-radius: 6px;
+    padding: 14px 12px 12px 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--kpi-color, #6c3483);
+  }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.1;
+    color: var(--kpi-color, #6c3483);
+  }
+
+  .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    line-height: 1.3;
+    color: #7d7d7d;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* === SIDEBAR ANNOTATION === */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .sidebar-annotation {
+    background: linear-gradient(180deg, #f4ecf7 0%, #fdfcff 100%);
+    border-left: 3px solid #6c3483;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 14px 14px 16px;
+  }
+
+  .sidebar-annotation-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6c3483;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-annotation-text {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1c1c1c;
+  }
+
+  /* === PERCENTAGE DONUT === */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #f4ecf7;
+    border-radius: 6px;
+  }
+
+  .donut-svg {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #e8d5f0;
+    stroke-width: 6;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+
+  .donut-center-text {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    fill: #1c1c1c;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .donut-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #1c1c1c;
+  }
+
+  .donut-label strong {
+    display: block;
+    font-size: 12px;
+    color: #6c3483;
+  }
+
+  /* === NUMBERED LIST ITEMS === */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #1c1c1c;
+  }
+
+  .list-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    background: linear-gradient(135deg, #6c3483, #1a5276);
+    color: #fff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    border-radius: 50%;
+    line-height: 1;
+  }
+
+  /* === LOWER CONTENT SECTION === */
+  .lower-section {
+    padding: 10px 48px 0 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .lower-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .lower-divider::before {
+    content: '';
+    flex: 0 0 4px;
+    height: 18px;
+    background: #1a5276;
+    border-radius: 2px;
+  }
+
+  .lower-divider span {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1a5276;
+  }
+
+  .lower-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #1a5276 0%, transparent 100%);
+  }
+
+  .lower-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .lower-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #1a5276;
+    margin-bottom: 8px;
+  }
+
+  /* === SOFT GRADIENT BAND — bottom decorative === */
+  .gradient-band-bottom {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #17a589, #1a5276, #6c3483);
+    opacity: 0.5;
+  }
+
+  /* === PAGE NUMBER FOOTER === */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: linear-gradient(180deg, transparent 0%, rgba(244,236,247,0.4) 100%);
+  }
+
+  .footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #7d7d7d;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-center {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #7d7d7d;
+  }
+
+  .footer-page-number {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer-page-number span {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #6c3483;
+  }
+
+  .footer-page-number em {
+    font-style: normal;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #7d7d7d;
+  }
+
+  /* === DECORATIVE ACCENT SHAPES === */
+  .accent-circle {
+    position: absolute;
+    top: 60px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(23,165,137,0.08);
+    z-index: 0;
+  }
+
+  .accent-diamond {
+    position: absolute;
+    bottom: 130px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    background: rgba(108,52,131,0.04);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Decorative motif: soft gradient bands -->
+  <div class="gradient-band-top"></div>
+  <div class="gradient-band-hero"></div>
+  <div class="accent-circle"></div>
+  <div class="accent-diamond"></div>
+
+  <!-- === HERO SECTION — editorial magazine: asymmetric, bold === -->
+  <div class="hero-section">
+    <div class="hero-text">
+      <div class="document-type-badge">{{ document_type_badge }}</div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_subtitle }}</p>
+    </div>
+    <div class="hero-image-container">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    </div>
+  </div>
+
+  <!-- === TAG / BADGE ROW === -->
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag-badge">{{ tag.label }}</span>
+    {% endfor %}
+  </div>
+
+  <!-- === DIVIDER WITH LABEL === -->
+  <div class="divider-label">
+    <span>{{ divider_label_1 }}</span>
+  </div>
+
+  <!-- === MAIN CONTENT GRID === -->
+  <div class="content-grid">
+    <div class="main-content">
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <p class="body-text">{{ body_paragraph_1 }}</p>
+
+      <!-- KPI METRIC CARDS -->
+      <div class="kpi-row">
+        <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+          <div class="kpi-value">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+          <div class="kpi-value">{{ kpi_2_value }}</div>
+          <div class="kpi-label">{{ kpi_2_label }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+          <div class="kpi-value">{{ kpi_3_value }}</div>
+          <div class="kpi-label">{{ kpi_3_label }}</div>
+        </div>
+      </div>
+
+      <p class="body-text">{{ body_paragraph_2 }}</p>
+    </div>
+
+    <!-- === SIDEBAR === -->
+    <div class="sidebar">
+      <div class="sidebar-annotation">
+        <div class="sidebar-annotation-title">{{ sidebar_title_1 }}</div>
+        <div class="sidebar-annotation-text">{{ sidebar_text_1 }}</div>
+      </div>
+
+      <!-- PERCENTAGE DONUT -->
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 40 40">
+          <circle class="donut-track" cx="20" cy="20" r="16"/>
+          <circle class="donut-fill" cx="20" cy="20" r="16"
+            stroke="{{ donut_color }}"
+            stroke-dasharray="{{ donut_dash_value }} {{ donut_dash_remainder }}"
+          />
+          <text class="donut-center-text" x="20" y="20">{{ donut_display_value }}</text>
+        </svg>
+        <div class="donut-label">
+          <strong>{{ donut_title }}</strong>
+          {{ donut_description }}
+        </div>
+      </div>
+
+      <div class="sidebar-annotation">
+        <div class="sidebar-annotation-title">{{ sidebar_title_2 }}</div>
+        <div class="sidebar-annotation-text">{{ sidebar_text_2 }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === LOWER SECTION WITH DIVIDER === -->
+  <div class="lower-section">
+    <div class="lower-divider">
+      <span>{{ divider_label_2 }}</span>
+    </div>
+
+    <div class="lower-grid">
+      <div>
+        <h3 class="lower-heading">{{ priorities_heading }}</h3>
+        <ol class="numbered-list">
+          {% for item in priority_items %}
+          <li>
+            <span class="list-number">{{ loop.index }}</span>
+            <span>{{ item.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div>
+        <h3 class="lower-heading">{{ outlook_heading }}</h3>
+        <p class="body-text" style="font-size: 11.5px;">{{ outlook_paragraph }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative motif: bottom gradient band -->
+  <div class="gradient-band-bottom"></div>
+
+  <!-- === PAGE NUMBER FOOTER === -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_organization }} &mdash; {{ footer_document_title }}</span>
+    <span class="footer-center">{{ footer_classification }}</span>
+    <span class="footer-page-number">
+      <em>Page</em>
+      <span>{{ page_number }}</span>
+    </span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0021",
+  "variables": {
+    "page_title": "string",
+    "document_type_badge": "string",
+    "hero_subtitle": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "tags": "[{label: string}]",
+    "divider_label_1": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "sidebar_title_1": "string",
+    "sidebar_text_1": "string",
+    "sidebar_title_2": "string",
+    "sidebar_text_2": "string",
+    "donut_color": "string",
+    "donut_dash_value": "string",
+    "donut_dash_remainder": "string",
+    "donut_display_value": "string",
+    "donut_title": "string",
+    "donut_description": "string",
+    "divider_label_2": "string",
+    "priorities_heading": "string",
+    "priority_items": "[{text: string}]",
+    "outlook_heading": "string",
+    "outlook_paragraph": "string",
+    "footer_organization": "string",
+    "footer_document_title": "string",
+    "footer_classification": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

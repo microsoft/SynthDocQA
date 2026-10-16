@@ -1,0 +1,420 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  /* Dotted pattern overlay */
+  .dotted-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(10, 22, 40, 0.04) 1px, transparent 1px);
+    background-size: 18px 18px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top accent band — vibrant gradient */
+  .top-band {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #0a1628 0%, #1a3a6b 45%, #c8a96e 100%);
+    z-index: 10;
+  }
+
+  /* Left vertical accent stripe */
+  .left-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg, #0a1628 0%, #1a3a6b 60%, #c8a96e 100%);
+    z-index: 10;
+  }
+
+  /* Main content area — minimal whitespace philosophy */
+  .content-wrapper {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    padding: 140px 120px 280px 100px;
+  }
+
+  /* Section number — bold large numeral background element */
+  .section-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 160px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #0a1628;
+    opacity: 0.08;
+    position: absolute;
+    top: 100px;
+    right: 80px;
+    z-index: 2;
+    user-select: none;
+  }
+
+  /* Accent dot cluster — decorative motif */
+  .dot-cluster {
+    position: absolute;
+    bottom: 180px;
+    right: 100px;
+    z-index: 3;
+  }
+
+  .dot-cluster .dot-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .dot-cluster .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c8a96e;
+    opacity: 0.35;
+  }
+
+  .dot-cluster .dot.active {
+    opacity: 1;
+    background: #c8a96e;
+  }
+
+  .dot-cluster .dot.navy {
+    background: #1a3a6b;
+    opacity: 0.2;
+  }
+
+  /* Overline label */
+  .overline {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #c8a96e;
+    margin-bottom: 28px;
+  }
+
+  /* Page title — section divider heading */
+  .page-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: #0a1628;
+    margin-bottom: 20px;
+    max-width: 480px;
+  }
+
+  /* Horizontal divider */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: #c8a96e;
+    margin-bottom: 32px;
+    border: none;
+  }
+
+  /* Section heading / subtitle */
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #1a3a6b;
+    margin-bottom: 36px;
+    max-width: 440px;
+  }
+
+  /* Body text */
+  .body-text {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #666666;
+    max-width: 400px;
+    margin-bottom: 0;
+  }
+
+  /* Pull quote block */
+  .pull-quote-block {
+    position: absolute;
+    bottom: 260px;
+    left: 100px;
+    max-width: 420px;
+    z-index: 5;
+  }
+
+  .pull-quote-line {
+    width: 40px;
+    height: 2px;
+    background: #c8a96e;
+    margin-bottom: 16px;
+  }
+
+  .pull-quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.7;
+    color: #1a3a6b;
+    margin-bottom: 12px;
+  }
+
+  .pull-quote-attribution {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666666;
+    font-weight: 600;
+  }
+
+  /* Bottom surface band */
+  .bottom-band {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: #f7f5f0;
+    z-index: 2;
+  }
+
+  .bottom-band-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 100px 0 100px;
+  }
+
+  .bottom-label {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #666666;
+    font-weight: 600;
+  }
+
+  .bottom-page-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: #0a1628;
+    opacity: 0.15;
+  }
+
+  /* Decorative corner dots — top right */
+  .corner-dots {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 8px);
+    gap: 6px;
+    z-index: 10;
+  }
+
+  .corner-dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c8a96e;
+    opacity: 0.5;
+  }
+
+  .corner-dots span:nth-child(5) {
+    opacity: 1;
+  }
+
+  /* Gradient accent circle — subtle decorative element */
+  .accent-circle {
+    position: absolute;
+    top: 320px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, rgba(200, 169, 110, 0.08), rgba(26, 58, 107, 0.04) 70%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Dotted vertical line decoration */
+  .dotted-vline {
+    position: absolute;
+    left: 60px;
+    top: 200px;
+    bottom: 200px;
+    width: 1px;
+    background-image: linear-gradient(to bottom, #c8a96e 3px, transparent 3px);
+    background-size: 1px 12px;
+    background-repeat: repeat-y;
+    opacity: 0.3;
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Dotted pattern overlay -->
+  <div class="dotted-overlay"></div>
+
+  <!-- Top accent band -->
+  <div class="top-band"></div>
+
+  <!-- Left vertical stripe -->
+  <div class="left-stripe"></div>
+
+  <!-- Dotted vertical line decoration -->
+  <div class="dotted-vline"></div>
+
+  <!-- Large background section number -->
+  <div class="section-number">{{ section_number }}</div>
+
+  <!-- Decorative corner dots -->
+  <div class="corner-dots">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- Accent circle -->
+  <div class="accent-circle"></div>
+
+  <!-- Dot cluster decoration -->
+  <div class="dot-cluster">
+    <div class="dot-row">
+      <div class="dot navy"></div>
+      <div class="dot active"></div>
+      <div class="dot navy"></div>
+      <div class="dot"></div>
+      <div class="dot navy"></div>
+    </div>
+    <div class="dot-row">
+      <div class="dot"></div>
+      <div class="dot navy"></div>
+      <div class="dot active"></div>
+      <div class="dot navy"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="dot-row">
+      <div class="dot navy"></div>
+      <div class="dot"></div>
+      <div class="dot navy"></div>
+      <div class="dot active"></div>
+      <div class="dot navy"></div>
+    </div>
+    <div class="dot-row">
+      <div class="dot active"></div>
+      <div class="dot navy"></div>
+      <div class="dot"></div>
+      <div class="dot navy"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- Main content — minimal, centered vertically -->
+  <div class="content-wrapper">
+    <div class="overline">{{ overline_label }}</div>
+    <h1 class="page-title">{{ page_title }}</h1>
+    <hr class="divider">
+    <h2 class="section-heading">{{ section_heading }}</h2>
+    <p class="body-text">{{ body_paragraph_1 }}</p>
+  </div>
+
+  <!-- Pull quote block -->
+  <div class="pull-quote-block">
+    <div class="pull-quote-line"></div>
+    <p class="pull-quote-text">&ldquo;{{ pull_quote_text }}&rdquo;</p>
+    <p class="pull-quote-attribution">{{ pull_quote_attribution }}</p>
+  </div>
+
+  <!-- Bottom surface band -->
+  <div class="bottom-band">
+    <div class="bottom-band-inner">
+      <span class="bottom-label">{{ report_label }}</span>
+      <span class="bottom-page-number">{{ page_number }}</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0087",
+  "variables": {
+    "page_title": "string — Main section divider title, e.g. 'Operational Excellence'",
+    "section_heading": "string — Subtitle or section theme, e.g. 'Driving Growth Through Innovation'",
+    "section_number": "string — Large background section number, e.g. '03'",
+    "overline_label": "string — Category label above the title, e.g. 'Section Three'",
+    "body_paragraph_1": "string — Brief introductory text for the section, 1-2 sentences",
+    "pull_quote_text": "string — An impactful quote or key insight for the section",
+    "pull_quote_attribution": "string — Attribution for the pull quote, e.g. 'Sarah Chen, Chief Retail Officer'",
+    "report_label": "string — Footer label, e.g. '2024 Annual Report — Retail Division'",
+    "page_number": "string — Page number displayed in footer, e.g. '12'"
+  }
+}
+END_TEMPLATE_VARIABLES -->

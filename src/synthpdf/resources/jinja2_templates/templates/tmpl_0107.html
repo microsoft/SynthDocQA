@@ -1,0 +1,648 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #2c3e50;
+    background: #ecf0f1;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    background: #ecf0f1;
+    overflow: hidden;
+  }
+
+  /* === HERO SECTION — Top third === */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 374px;
+    background: #2c3e50;
+    overflow: hidden;
+  }
+
+  .hero-image-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.35;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 40%, #2c3e50 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7f8c8d;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-wave-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 3;
+  }
+
+  .hero-wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 2;
+    opacity: 0.15;
+  }
+
+  .hero-content {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 52px 70px 52px;
+  }
+
+  .hero-classification {
+    display: inline-block;
+    background: #e74c3c;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    margin-bottom: 14px;
+    border-radius: 2px;
+    align-self: flex-start;
+  }
+
+  .hero h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 10px;
+    max-width: 600px;
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.5;
+    max-width: 520px;
+    margin-bottom: 18px;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: rgba(255,255,255,0.88);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  .hero-doc-id {
+    position: absolute;
+    top: 18px;
+    right: 52px;
+    z-index: 5;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* === CONTENT AREA — Bottom two-thirds === */
+  .content-area {
+    width: 100%;
+    height: 749px;
+    padding: 28px 52px 0 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 14px 16px 12px 16px;
+    border-left: 3px solid #e74c3c;
+    box-shadow: 0 1px 3px rgba(44,62,80,0.07);
+  }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.1;
+    color: #2c3e50;
+    margin-bottom: 3px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    line-height: 1.3;
+  }
+
+  .columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    flex: 1;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .column h2 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #2c3e50;
+    line-height: 1.3;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e74c3c;
+    margin: 0;
+  }
+
+  .column p {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #2c3e50;
+    margin: 0;
+  }
+
+  .column p.muted {
+    color: #7f8c8d;
+  }
+
+  .two-col-text {
+    column-count: 2;
+    column-gap: 14px;
+    font-size: 10px;
+    line-height: 1.55;
+    color: #2c3e50;
+  }
+
+  .chart-placeholder {
+    background: #ffffff;
+    border: 1px solid #dde1e4;
+    border-radius: 3px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder-label {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    z-index: 1;
+  }
+
+  .chart-placeholder-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+    margin-bottom: 8px;
+    z-index: 1;
+  }
+
+  .chart-bar {
+    width: 18px;
+    border-radius: 2px 2px 0 0;
+    background: #34495e;
+    opacity: 0.5;
+  }
+
+  .chart-bar:nth-child(odd) {
+    background: #e74c3c;
+    opacity: 0.6;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #2c3e50;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 2px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 2px 0 0;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #dde1e4;
+    font-size: 10px;
+    color: #2c3e50;
+    vertical-align: top;
+  }
+
+  .data-table tbody tr:nth-child(even) td {
+    background: #f7f9fa;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 2px solid #2c3e50;
+  }
+
+  .footnotes-strip {
+    width: 100%;
+    background: #2c3e50;
+    color: rgba(255,255,255,0.6);
+    font-size: 8px;
+    line-height: 1.5;
+    padding: 10px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .footnotes-strip .footnotes-text {
+    flex: 1;
+  }
+
+  .footnotes-strip .page-number {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .wave-divider {
+    width: 100%;
+    height: 16px;
+    margin: 4px 0;
+    opacity: 0.18;
+  }
+
+  .organic-bg-wave {
+    position: absolute;
+    bottom: 44px;
+    right: 0;
+    width: 300px;
+    height: 200px;
+    opacity: 0.04;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content-area-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    margin-bottom: 4px;
+  }
+
+  .list-item-marker {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #e74c3c;
+    margin-right: 6px;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .list-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+
+  .list-row span {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ======================== HERO SECTION ======================== -->
+  <div class="hero">
+    <div class="hero-image-container">
+      {% if hero_image_url %}
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      {% else %}
+      <div class="hero-image-placeholder">
+        <span>{{ hero_image_alt | default('Case Study — Hero Image') }}</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <svg class="hero-wave-top" viewBox="0 0 794 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 50 C150 10, 300 45, 450 25 S650 5, 794 35 L794 0 L0 0 Z" fill="#ffffff"/>
+    </svg>
+
+    <svg class="hero-wave-overlay" viewBox="0 0 794 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 40 C100 70, 200 20, 350 45 S550 75, 700 30 S770 50, 794 38 L794 80 L0 80 Z" fill="#ecf0f1"/>
+      <path d="M0 55 C120 35, 260 65, 400 42 S580 28, 700 52 S780 60, 794 50 L794 80 L0 80 Z" fill="#ecf0f1" opacity="0.5"/>
+    </svg>
+
+    <div class="hero-doc-id">{{ document_id }}</div>
+
+    <div class="hero-content">
+      <div class="hero-classification">{{ classification_label }}</div>
+      <h1>{{ page_title }}</h1>
+      <div class="hero-subtitle">{{ hero_subtitle }}</div>
+      <div class="tag-row">
+        {% for tag in tags %}
+        <span class="tag-badge">{{ tag.label }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== CONTENT AREA ======================== -->
+  <div class="content-area">
+
+    <svg class="organic-bg-wave" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 100 C50 60, 100 140, 150 100 S250 60, 300 100" stroke="#2c3e50" stroke-width="3" fill="none"/>
+      <path d="M0 130 C60 90, 120 170, 180 130 S260 90, 300 130" stroke="#2c3e50" stroke-width="2" fill="none"/>
+      <path d="M0 160 C70 130, 130 190, 200 155 S270 120, 300 160" stroke="#2c3e50" stroke-width="1.5" fill="none"/>
+    </svg>
+
+    <div class="content-area-inner">
+
+      <div class="kpi-strip">
+        <div class="kpi-card" style="border-left-color: {{ kpi_1_color }};">
+          <div class="kpi-value">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+        </div>
+        <div class="kpi-card" style="border-left-color: {{ kpi_2_color }};">
+          <div class="kpi-value">{{ kpi_2_value }}</div>
+          <div class="kpi-label">{{ kpi_2_label }}</div>
+        </div>
+        <div class="kpi-card" style="border-left-color: {{ kpi_3_color }};">
+          <div class="kpi-value">{{ kpi_3_value }}</div>
+          <div class="kpi-label">{{ kpi_3_label }}</div>
+        </div>
+        <div class="kpi-card" style="border-left-color: {{ kpi_4_color }};">
+          <div class="kpi-value">{{ kpi_4_value }}</div>
+          <div class="kpi-label">{{ kpi_4_label }}</div>
+        </div>
+      </div>
+
+      <div class="columns-grid">
+
+        <!-- Column 1: Challenge & Approach -->
+        <div class="column">
+          <h2>{{ col1_heading }}</h2>
+          <p>{{ col1_paragraph_1 }}</p>
+          <p>{{ col1_paragraph_2 }}</p>
+
+          {% for item in col1_list_items %}
+          <div class="list-row">
+            <span class="list-item-marker"></span>
+            <span>{{ item.text }}</span>
+          </div>
+          {% endfor %}
+
+          <svg class="wave-divider" viewBox="0 0 220 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 8 C30 2, 60 14, 90 8 S150 2, 180 8 S210 14, 220 8" stroke="#2c3e50" stroke-width="1.5" fill="none"/>
+          </svg>
+
+          <div class="section-label">{{ col1_subsection_label }}</div>
+          <p class="muted">{{ col1_subsection_text }}</p>
+        </div>
+
+        <!-- Column 2: Results & Chart -->
+        <div class="column">
+          <h2>{{ col2_heading }}</h2>
+          <p>{{ col2_paragraph_1 }}</p>
+
+          <div class="chart-placeholder">
+            <div class="chart-placeholder-bars">
+              <div class="chart-bar" style="height: 25px;"></div>
+              <div class="chart-bar" style="height: 40px;"></div>
+              <div class="chart-bar" style="height: 32px;"></div>
+              <div class="chart-bar" style="height: 55px;"></div>
+              <div class="chart-bar" style="height: 45px;"></div>
+              <div class="chart-bar" style="height: 60px;"></div>
+              <div class="chart-bar" style="height: 38px;"></div>
+            </div>
+            <div class="chart-placeholder-label">{{ chart_title }}</div>
+          </div>
+
+          <p class="muted" style="font-size:9px; margin-top:2px;">{{ chart_caption }}</p>
+
+          <div class="two-col-text">
+            {{ col2_detail_text }}
+          </div>
+        </div>
+
+        <!-- Column 3: Data Table & Outcomes -->
+        <div class="column">
+          <h2>{{ col3_heading }}</h2>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                {% for header in table_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in table_rows %}
+              <tr>
+                {% for cell in row.cells %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <svg class="wave-divider" viewBox="0 0 220 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 8 C30 14, 60 2, 90 8 S150 14, 180 8 S210 2, 220 8" stroke="#e74c3c" stroke-width="1" fill="none" opacity="0.4"/>
+          </svg>
+
+          <div class="section-label">{{ col3_subsection_label }}</div>
+          <p>{{ col3_paragraph_1 }}</p>
+          <p class="muted" style="font-size:10px;">{{ col3_paragraph_2 }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== FOOTNOTES STRIP ======================== -->
+  <div class="footnotes-strip">
+    <div class="footnotes-text">
+      {{ footnote_1 }} <span style="margin: 0 8px;">|</span> {{ footnote_2 }} <span style="margin: 0 8px;">|</span> {{ footnote_3 }}
+    </div>
+    <div class="page-number">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0107",
+  "variables": {
+    "page_title": "string",
+    "hero_subtitle": "string",
+    "document_id": "string",
+    "classification_label": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "tags": "[{label: string}]",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex)",
+    "col1_heading": "string",
+    "col1_paragraph_1": "string",
+    "col1_paragraph_2": "string",
+    "col1_list_items": "[{text: string}]",
+    "col1_subsection_label": "string",
+    "col1_subsection_text": "string",
+    "col2_heading": "string",
+    "col2_paragraph_1": "string",
+    "chart_title": "string",
+    "chart_caption": "string",
+    "col2_detail_text": "string",
+    "col3_heading": "string",
+    "table_headers": "[string]",
+    "table_rows": "[{cells: [string]}]",
+    "col3_subsection_label": "string",
+    "col3_paragraph_1": "string",
+    "col3_paragraph_2": "string",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "footnote_3": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

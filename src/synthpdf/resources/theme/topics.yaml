@@ -1,0 +1,298 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License; see LICENSE.txt.
+# Enterprise document theme topics for synthpdf dataset generation.
+# Each topic drives LLM-generated content for one PDF document:
+# title, subtitle, section headings, prose, tables, and QA pairs.
+#
+# Fields:
+#   id          - unique snake_case identifier
+#   description - 1-2 sentences describing the document type and content focus.
+#                 The LLM uses this to generate all content for the document.
+
+# ── Financial & Accounting ──────────────────────────────────────────────────
+
+- id: annual_report_financial_performance
+  description: >
+    A corporate annual report covering full-year revenue, operating margins,
+    earnings per share, segment performance, and forward guidance for investors
+    and analysts.
+
+- id: quarterly_earnings_review
+  description: >
+    A quarterly earnings report analysing revenue versus analyst consensus,
+    gross margin trends, operating expense breakdown, and management commentary
+    on business drivers and risks.
+
+- id: budget_variance_analysis
+  description: >
+    An internal finance document comparing actual spend against approved budget
+    across cost centres, explaining material variances, and proposing reforecast
+    adjustments for the remaining fiscal year.
+
+- id: capital_expenditure_proposal
+  description: >
+    A capital investment request evaluating the business case, expected ROI,
+    payback period, risk-adjusted NPV, and funding requirements for a proposed
+    asset purchase or infrastructure upgrade.
+
+- id: treasury_liquidity_report
+  description: >
+    A treasury report covering cash position, short-term funding sources, credit
+    facility utilisation, FX exposure, and liquidity stress scenarios for the
+    coming quarter.
+
+- id: accounts_receivable_collections
+  description: >
+    An accounts receivable ageing report detailing outstanding invoices by bucket,
+    customer credit risk ratings, disputed amounts, and the collections action
+    plan for overdue balances.
+
+- id: cost_reduction_initiative
+  description: >
+    A cost transformation programme report documenting identified savings
+    opportunities, realised efficiencies to date, accountable owners, and a
+    milestone roadmap for closing remaining gaps.
+
+- id: transfer_pricing_documentation
+  description: >
+    A transfer pricing study documenting intercompany transactions, benchmarking
+    analysis, selected transfer pricing methodology, and compliance with OECD
+    arm's length principles.
+
+# ── Strategy & Corporate Development ────────────────────────────────────────
+
+- id: strategic_plan_three_year
+  description: >
+    A three-year corporate strategic plan outlining growth ambitions, market
+    positioning, capability investment priorities, and performance milestones
+    across business units.
+
+- id: mergers_acquisitions_due_diligence
+  description: >
+    An M&A due diligence report assessing a target company's financial health,
+    legal exposures, operational risks, synergy potential, and recommended
+    valuation range.
+
+- id: market_entry_feasibility
+  description: >
+    A market entry assessment sizing the total addressable market, analysing
+    competitive intensity, regulatory requirements, and evaluating go-to-market
+    options for a new geography or product category.
+
+- id: competitive_intelligence_briefing
+  description: >
+    A competitive landscape briefing tracking market share movements, competitor
+    product launches, pricing actions, and strategic responses recommended for
+    the executive team.
+
+- id: board_strategy_presentation
+  description: >
+    A board-level strategy presentation covering macro environment analysis,
+    portfolio performance, strategic choices under consideration, and requested
+    board decisions or endorsements.
+
+- id: post_merger_integration_plan
+  description: >
+    A post-merger integration plan detailing Day 1 readiness, workstream
+    ownership, synergy capture timeline, cultural integration risks, and a
+    100-day milestones tracker.
+
+# ── Risk & Compliance ────────────────────────────────────────────────────────
+
+- id: enterprise_risk_register
+  description: >
+    An enterprise risk register documenting top risks by likelihood and impact,
+    control effectiveness ratings, residual risk levels, and risk owner
+    accountabilities across the organisation.
+
+- id: regulatory_compliance_assessment
+  description: >
+    A compliance status report mapping regulatory obligations to internal
+    controls, identifying open findings from examinations, and tracking
+    remediation progress with target closure dates.
+
+- id: internal_audit_report
+  description: >
+    An internal audit report on a specific business process or control domain,
+    presenting scope, methodology, key findings, root causes, management
+    responses, and recommended corrective actions.
+
+- id: data_privacy_impact_assessment
+  description: >
+    A data privacy impact assessment documenting personal data processing
+    activities, consent mechanisms, cross-border transfer safeguards, and
+    compliance gaps against GDPR and applicable data protection regulations.
+
+- id: anti_money_laundering_review
+  description: >
+    An AML compliance review covering transaction monitoring effectiveness,
+    customer due diligence quality, suspicious activity reporting statistics,
+    and recommended programme enhancements.
+
+- id: business_continuity_plan
+  description: >
+    A business continuity plan defining recovery time objectives, critical
+    process dependencies, crisis management roles, communication protocols,
+    and results from the most recent tabletop exercise.
+
+- id: vendor_risk_assessment
+  description: >
+    A third-party vendor risk assessment evaluating cybersecurity posture,
+    financial stability, geographic concentration, contractual protections,
+    and overall risk rating for key suppliers.
+
+# ── Operations & Supply Chain ────────────────────────────────────────────────
+
+- id: supply_chain_resilience_report
+  description: >
+    A supply chain resilience report identifying single-source dependencies,
+    lead time vulnerabilities, inventory buffer adequacy, and a supplier
+    diversification roadmap.
+
+- id: operational_efficiency_review
+  description: >
+    An operational excellence review benchmarking process cycle times, first-pass
+    yield rates, capacity utilisation, and identifying lean improvement
+    opportunities with projected financial impact.
+
+- id: procurement_sourcing_strategy
+  description: >
+    A procurement sourcing strategy document covering category spend analysis,
+    make-versus-buy decisions, preferred supplier selection criteria, and
+    contracting approach for a major spend category.
+
+- id: logistics_network_design
+  description: >
+    A logistics network optimisation study comparing distribution centre
+    configurations, carrier lane performance, last-mile cost drivers, and
+    recommended network changes to reduce cost-to-serve.
+
+- id: quality_management_report
+  description: >
+    A manufacturing quality report presenting defect rates by product line,
+    root-cause analysis of top failure modes, corrective and preventive action
+    status, and customer return trends.
+
+# ── Technology & Information Security ────────────────────────────────────────
+
+- id: it_strategy_roadmap
+  description: >
+    An IT strategy and architecture roadmap describing the target state
+    architecture, legacy system decommissioning plan, investment priorities,
+    and alignment with business capability needs.
+
+- id: cybersecurity_posture_assessment
+  description: >
+    A cybersecurity posture assessment reporting on threat landscape, penetration
+    testing outcomes, vulnerability remediation backlog, security control
+    maturity scores, and a risk-prioritised remediation roadmap.
+
+- id: cloud_migration_programme
+  description: >
+    A cloud migration programme status report tracking workload migration
+    progress, cost optimisation versus on-premises baseline, operational
+    readiness, and next-phase planning.
+
+- id: data_governance_framework
+  description: >
+    A data governance framework document defining data ownership, classification
+    policies, data quality standards, lineage requirements, and the governance
+    operating model including stewardship roles.
+
+- id: software_delivery_performance
+  description: >
+    An engineering metrics report presenting DORA metrics (deployment frequency,
+    lead time, change failure rate, MTTR), technical debt inventory, and a
+    continuous improvement roadmap for the software delivery pipeline.
+
+# ── Human Resources & Organisational ────────────────────────────────────────
+
+- id: workforce_planning_report
+  description: >
+    A workforce planning report forecasting headcount needs by function,
+    identifying critical skill gaps, evaluating internal mobility versus
+    external hiring, and recommending a talent acquisition strategy.
+
+- id: employee_engagement_survey
+  description: >
+    An employee engagement survey results report presenting overall engagement
+    score, key driver analysis, demographic breakdowns, year-on-year trends,
+    and a prioritised people action plan.
+
+- id: compensation_benchmarking_study
+  description: >
+    A compensation benchmarking study comparing the organisation's pay bands
+    against market survey data, identifying roles at risk of attrition, and
+    recommending salary band adjustments and equity corrections.
+
+- id: leadership_succession_plan
+  description: >
+    A leadership succession planning document assessing bench strength for
+    critical roles, identifying high-potential candidates, outlining
+    development plans, and flagging emergency succession gaps.
+
+# ── Sales, Marketing & Customer ──────────────────────────────────────────────
+
+- id: sales_performance_review
+  description: >
+    A sales performance review covering revenue attainment by region and product,
+    pipeline health, win/loss analysis, sales cycle metrics, and account
+    manager productivity benchmarks.
+
+- id: customer_experience_report
+  description: >
+    A customer experience report presenting NPS, CSAT, and effort scores by
+    channel, verbatim sentiment themes, journey pain points, and a customer
+    improvement action plan.
+
+- id: marketing_campaign_effectiveness
+  description: >
+    A marketing campaign effectiveness analysis covering channel attribution,
+    cost per acquisition, conversion funnel performance, brand awareness lift,
+    and budget reallocation recommendations for the next period.
+
+- id: product_launch_readiness
+  description: >
+    A product launch readiness assessment verifying that go-to-market
+    workstreams — pricing, positioning, sales enablement, support readiness,
+    and legal clearance — are complete and launch risks are mitigated.
+
+# ── Sustainability & ESG ─────────────────────────────────────────────────────
+
+- id: esg_performance_report
+  description: >
+    An ESG (Environmental, Social, Governance) performance report disclosing
+    Scope 1, 2, and 3 emissions, social impact metrics, diversity data, board
+    governance practices, and progress against public sustainability commitments.
+
+- id: carbon_reduction_roadmap
+  description: >
+    A carbon reduction roadmap establishing a science-based emissions baseline,
+    setting interim and net-zero targets, and detailing initiative-level
+    abatement plans with timelines and investment requirements.
+
+- id: sustainable_procurement_report
+  description: >
+    A sustainable procurement report evaluating supplier environmental and social
+    practices, high-risk category findings, remediation agreements, and the
+    responsible sourcing programme roadmap.
+
+# ── Programme & Project Management ───────────────────────────────────────────
+
+- id: programme_status_report
+  description: >
+    A programme status report for a large transformation initiative covering
+    milestone health, budget-at-completion forecast, dependency risks,
+    escalations requiring steering committee decisions, and next-period commitments.
+
+- id: project_portfolio_review
+  description: >
+    A project portfolio review scoring active investments by strategic alignment,
+    return potential, and execution confidence, and recommending approve,
+    accelerate, pause, or cancel decisions for each initiative.
+
+- id: change_management_plan
+  description: >
+    A change management plan for a major organisational or system transformation,
+    covering stakeholder impact analysis, readiness assessment, communication
+    strategy, training approach, and adoption measurement.

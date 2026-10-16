@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0069",
+  "industry": "aerospace_defense",
+  "page_role": "letter_from_ceo",
+  "layout": {
+    "name": "two_pane_split",
+    "description": "Page is divided vertically into two distinct panels, each with different background color or texture. Each pane tells its own story."
+  },
+  "color_palette": {
+    "name": "real_estate_warm",
+    "primary": "#5c4033",
+    "secondary": "#795548",
+    "accent": "#8bc34a",
+    "bg": "#fff8f0",
+    "surface": "#ffffff",
+    "text": "#3e2723",
+    "muted": "#8d6e63"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "chart_placeholder_box",
+    "kpi_metric_cards",
+    "progress_bars",
+    "divider_with_label",
+    "colored_section_band",
+    "callout_box"
+  ],
+  "density": "dense",
+  "motif": "dotted_pattern_overlay",
+  "design_direction": "Inspired by Apple's product launch materials \u2014 extreme whitespace, single focal element",
+  "seed": 213446
+}

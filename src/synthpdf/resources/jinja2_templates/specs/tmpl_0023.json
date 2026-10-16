@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0023",
+  "industry": "government_public_sector",
+  "page_role": "risk_matrix",
+  "layout": {
+    "name": "sidebar_navigation",
+    "description": "Persistent left or right sidebar (20% width) with section labels, page numbers, or sub-navigation. Main content in remaining 80%."
+  },
+  "color_palette": {
+    "name": "retail_vibrant",
+    "primary": "#e91e63",
+    "secondary": "#9c27b0",
+    "accent": "#ff9800",
+    "bg": "#ffffff",
+    "surface": "#fce4ec",
+    "text": "#212121",
+    "muted": "#757575"
+  },
+  "typography": {
+    "name": "expressive_brand",
+    "heading_font": "'Arial Black', Gadget, sans-serif",
+    "body_font": "Verdana, Geneva, sans-serif",
+    "heading_weight": "800",
+    "h1_size": "42px",
+    "h2_size": "28px",
+    "h3_size": "16px",
+    "body_size": "11px",
+    "line_height": "1.4",
+    "letter_spacing": "0.03em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "timeline_nodes",
+    "footnotes_strip",
+    "pull_quote_block",
+    "page_number_footer"
+  ],
+  "density": "dense",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by Harvard Business Review articles \u2014 editorial, serif typography, thoughtful",
+  "seed": 331535
+}

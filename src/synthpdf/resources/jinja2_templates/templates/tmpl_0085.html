@@ -1,0 +1,626 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #111111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f8f8f8;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 280px;
+    left: -60px;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 220px;
+    font-weight: 600;
+    color: rgba(232, 93, 4, 0.04);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    transform: rotate(-12deg);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    background: #e85d04;
+    z-index: 5;
+  }
+
+  /* Top brand strip */
+  .brand-strip {
+    width: 100%;
+    height: 52px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-strip .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: #e85d04;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip .logo-mark span {
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-strip .company-name {
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip .doc-label {
+    color: #777777;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Hero section — editorial magazine top half */
+  .hero-section {
+    width: 100%;
+    height: 380px;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    padding: 44px 48px 36px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    background: #ffffff;
+  }
+
+  .hero-content .fiscal-tag {
+    display: inline-block;
+    background: #e85d04;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    margin-bottom: 18px;
+    align-self: flex-start;
+  }
+
+  .hero-content h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1c1c1c;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-content .subtitle {
+    font-size: 13px;
+    color: #3d3d3d;
+    line-height: 1.55;
+    max-width: 360px;
+  }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    background: #3d3d3d;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-image .image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to top, rgba(28,28,28,0.7), transparent);
+  }
+
+  .hero-image .ceo-name-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: #ffffff;
+    z-index: 2;
+  }
+
+  .hero-image .ceo-name-overlay .name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    display: block;
+  }
+
+  .hero-image .ceo-name-overlay .role {
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Colored section band */
+  .section-band {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #e85d04 0%, #e85d04 30%, #1c1c1c 30%, #1c1c1c 100%);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Main body content */
+  .body-content {
+    position: relative;
+    z-index: 1;
+    padding: 32px 48px 20px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .body-content .opening-paragraph {
+    grid-column: 1 / -1;
+    font-size: 12.5px;
+    color: #1c1c1c;
+    line-height: 1.65;
+    font-style: italic;
+    border-left: 3px solid #e85d04;
+    padding-left: 20px;
+    margin-bottom: 4px;
+  }
+
+  .body-content .col-left,
+  .body-content .col-right {
+    font-size: 11px;
+    color: #111111;
+    line-height: 1.55;
+  }
+
+  .body-content h2 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .body-content h3 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #3d3d3d;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .body-content p {
+    margin-bottom: 10px;
+  }
+
+  /* KPI highlight strip */
+  .kpi-strip {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 2px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid rgba(28,28,28,0.08);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #e85d04; }
+  .kpi-card:nth-child(2)::before { background: #1c1c1c; }
+  .kpi-card:nth-child(3)::before { background: #3d3d3d; }
+
+  .kpi-card .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1c1c1c;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 10px;
+    color: #777777;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* Priorities list */
+  .priorities-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 10px 0;
+  }
+
+  .priorities-list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 7px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #111111;
+  }
+
+  .priorities-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    background: #e85d04;
+    border-radius: 1px;
+  }
+
+  /* Signature block */
+  .signature-block {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid rgba(28,28,28,0.12);
+    padding-top: 16px;
+    margin-top: 4px;
+  }
+
+  .signature-block .sig-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signature-block .sig-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1c1c1c;
+  }
+
+  .signature-block .sig-title {
+    font-size: 10px;
+    color: #777777;
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+  }
+
+  .signature-block .sig-date {
+    font-size: 10px;
+    color: #777777;
+    letter-spacing: 0.02em;
+    margin-top: 3px;
+  }
+
+  .signature-block .sig-right {
+    text-align: right;
+  }
+
+  .signature-block .sig-closing {
+    font-size: 11px;
+    font-style: italic;
+    color: #3d3d3d;
+    margin-bottom: 4px;
+  }
+
+  .signature-block .sig-image {
+    height: 36px;
+    opacity: 0.85;
+  }
+
+  /* Page number footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 3;
+  }
+
+  .page-footer .footer-left {
+    color: #777777;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .page-footer .footer-center {
+    color: #777777;
+    font-size: 9px;
+  }
+
+  .page-footer .footer-right {
+    color: #ffffff;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .page-footer .footer-right .page-num {
+    display: inline-block;
+    background: #e85d04;
+    color: #ffffff;
+    padding: 2px 8px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+
+  /* Subtle second watermark layer */
+  .watermark-secondary {
+    position: absolute;
+    bottom: 80px;
+    right: -40px;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 160px;
+    font-weight: 600;
+    color: rgba(28,28,28,0.025);
+    letter-spacing: -0.04em;
+    transform: rotate(-90deg);
+    transform-origin: bottom right;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Secondary watermark -->
+  <div class="watermark-secondary">{{ watermark_secondary_text }}</div>
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="logo-area">
+      <div class="logo-mark"><span>{{ logo_letter }}</span></div>
+      <span class="company-name">{{ company_name }}</span>
+    </div>
+    <span class="doc-label">{{ document_label }}</span>
+  </div>
+
+  <!-- Hero section: editorial magazine asymmetric layout -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <span class="fiscal-tag">{{ fiscal_tag }}</span>
+      <h1>{{ page_title }}</h1>
+      <p class="subtitle">{{ subtitle }}</p>
+    </div>
+    <div class="hero-image">
+      <img src="{{ ceo_image_url }}" alt="{{ ceo_image_alt }}">
+      <div class="image-overlay"></div>
+      <div class="ceo-name-overlay">
+        <span class="name">{{ ceo_name }}</span>
+        <span class="role">{{ ceo_title }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section band -->
+  <div class="section-band"></div>
+
+  <!-- Body content: two-column editorial -->
+  <div class="body-content">
+
+    <!-- Opening pull-quote paragraph -->
+    <div class="opening-paragraph">
+      {{ opening_quote }}
+    </div>
+
+    <!-- KPI strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+    </div>
+
+    <!-- Left column -->
+    <div class="col-left">
+      <h2>{{ section_heading }}</h2>
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+
+      <h3>{{ subsection_heading_1 }}</h3>
+      <p>{{ body_paragraph_3 }}</p>
+    </div>
+
+    <!-- Right column -->
+    <div class="col-right">
+      <h3>{{ subsection_heading_2 }}</h3>
+      <p>{{ body_paragraph_4 }}</p>
+
+      <h3>{{ priorities_heading }}</h3>
+      <ul class="priorities-list">
+        {% for item in priority_items %}
+        <li>{{ item.text }}</li>
+        {% endfor %}
+      </ul>
+
+      <p>{{ body_paragraph_5 }}</p>
+    </div>
+
+    <!-- Signature block -->
+    <div class="signature-block">
+      <div class="sig-left">
+        <span class="sig-name">{{ ceo_name }}</span>
+        <span class="sig-title">{{ ceo_title_full }}</span>
+        <span class="sig-date">{{ letter_date }}</span>
+      </div>
+      <div class="sig-right">
+        <div class="sig-closing">{{ closing_phrase }}</div>
+        <img class="sig-image" src="{{ signature_image_url }}" alt="{{ ceo_name }} signature">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Page footer -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_document_title }}</span>
+    <span class="footer-center">{{ footer_confidentiality }}</span>
+    <span class="footer-right">{{ footer_section_label }}<span class="page-num">{{ page_number }}</span></span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0085",
+  "variables": {
+    "page_title": "string",
+    "subtitle": "string",
+    "watermark_text": "string",
+    "watermark_secondary_text": "string",
+    "logo_letter": "string",
+    "company_name": "string",
+    "document_label": "string",
+    "fiscal_tag": "string",
+    "ceo_image_url": "string (URL)",
+    "ceo_image_alt": "string",
+    "ceo_name": "string",
+    "ceo_title": "string",
+    "ceo_title_full": "string",
+    "opening_quote": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "subsection_heading_1": "string",
+    "body_paragraph_3": "string",
+    "subsection_heading_2": "string",
+    "body_paragraph_4": "string",
+    "priorities_heading": "string",
+    "priority_items": "list of objects with 'text' field",
+    "body_paragraph_5": "string",
+    "closing_phrase": "string",
+    "signature_image_url": "string (URL)",
+    "letter_date": "string",
+    "footer_document_title": "string",
+    "footer_confidentiality": "string",
+    "footer_section_label": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

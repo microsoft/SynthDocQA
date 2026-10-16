@@ -1,0 +1,665 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #0d0d0d;
+    background: #f9f7f4;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle, #b8960c 0.5px, transparent 0.5px);
+    background-size: 18px 18px;
+    opacity: 0.04;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4af37 50%, #b8960c 100%);
+    z-index: 10;
+  }
+
+  .header {
+    position: relative;
+    z-index: 2;
+    padding: 28px 48px 0 48px;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .header-category {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #b8960c;
+  }
+
+  .header-page-num {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: #888888;
+  }
+
+  .page-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.15;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .page-subtitle {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: #888888;
+    line-height: 1.5;
+    max-width: 540px;
+    margin-bottom: 16px;
+  }
+
+  .divider-with-label {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    margin: 0 48px 16px 48px;
+    gap: 12px;
+  }
+
+  .divider-label {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #b8960c;
+    white-space: nowrap;
+    background: #f9f7f4;
+    padding-right: 8px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #b8960c 0%, rgba(184,150,12,0.15) 100%);
+  }
+
+  .kpi-strip {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 0 48px 18px 48px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid rgba(184,150,12,0.15);
+    border-top: 3px solid var(--kpi-color, #b8960c);
+    padding: 12px 14px 10px 14px;
+    position: relative;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
+    background-image: radial-gradient(circle, #b8960c 0.7px, transparent 0.7px);
+    background-size: 4px 4px;
+    opacity: 0.2;
+  }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a1a1a;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888888;
+    line-height: 1.3;
+  }
+
+  .kpi-change {
+    font-size: 10px;
+    color: #b8960c;
+    margin-top: 3px;
+  }
+
+  .two-col-body {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 0 48px 16px 48px;
+  }
+
+  .body-col p {
+    font-size: 11px;
+    line-height: 1.65;
+    color: #2d2d2d;
+    margin-bottom: 8px;
+  }
+
+  .callout-box {
+    background: #1a1a1a;
+    color: #f9f7f4;
+    padding: 14px 18px;
+    position: relative;
+    margin-top: 8px;
+    border-left: 3px solid #b8960c;
+  }
+
+  .callout-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background-image: radial-gradient(circle, rgba(184,150,12,0.3) 0.7px, transparent 0.7px);
+    background-size: 5px 5px;
+  }
+
+  .callout-box .callout-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #b8960c;
+    margin-bottom: 5px;
+  }
+
+  .callout-box .callout-text {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #e0ddd8;
+  }
+
+  .timeline-section {
+    position: relative;
+    z-index: 2;
+    margin: 0 48px 0 48px;
+  }
+
+  .timeline-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline-grid::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, #b8960c, #d4af37, #b8960c);
+    z-index: 0;
+  }
+
+  .timeline-node {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  .timeline-dot-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .timeline-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: 3px solid #b8960c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timeline-dot-inner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #b8960c;
+  }
+
+  .timeline-year {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #b8960c;
+    margin-bottom: 4px;
+  }
+
+  .timeline-event-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .timeline-event-desc {
+    font-size: 10px;
+    color: #888888;
+    line-height: 1.45;
+  }
+
+  .timeline-event-metric {
+    display: inline-block;
+    margin-top: 5px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #1a1a1a;
+  }
+
+  .timeline-event-metric-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888888;
+    display: block;
+    margin-top: 1px;
+  }
+
+  .timeline-grid-row2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline-grid-row2::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(184,150,12,0.3), #b8960c, rgba(184,150,12,0.3));
+    z-index: 0;
+  }
+
+  .timeline-row-divider {
+    margin: 14px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timeline-row-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(45,45,45,0.12);
+  }
+
+  .timeline-row-divider-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #888888;
+    white-space: nowrap;
+  }
+
+  .mini-table-section {
+    position: relative;
+    z-index: 2;
+    margin: 14px 48px 0 48px;
+  }
+
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .mini-table thead th {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #888888;
+    text-align: left;
+    padding: 5px 8px;
+    border-bottom: 2px solid #1a1a1a;
+  }
+
+  .mini-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(45,45,45,0.08);
+    color: #2d2d2d;
+    font-size: 10px;
+    vertical-align: top;
+  }
+
+  .mini-table tbody tr:nth-child(even) {
+    background: rgba(184,150,12,0.03);
+  }
+
+  .mini-table .metric-val {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    color: #1a1a1a;
+  }
+
+  .mini-table .highlight-cell {
+    color: #b8960c;
+    font-weight: 600;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 48px;
+    background: #1a1a1a;
+  }
+
+  .footer-left {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #888888;
+  }
+
+  .footer-center {
+    font-size: 8px;
+    color: #b8960c;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    font-size: 8px;
+    color: #888888;
+    letter-spacing: 0.1em;
+  }
+
+  .left-accent {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 4px;
+    height: 200px;
+    background: linear-gradient(180deg, #b8960c, transparent);
+    z-index: 3;
+  }
+
+  .corner-dots {
+    position: absolute;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    background-image: radial-gradient(circle, #b8960c 0.8px, transparent 0.8px);
+    background-size: 6px 6px;
+    opacity: 0.08;
+  }
+
+  .corner-dots.top-right { top: 12px; right: 12px; }
+  .corner-dots.bottom-left { bottom: 44px; left: 12px; }
+
+  .gold-side-strip {
+    position: absolute;
+    right: 0;
+    top: 300px;
+    width: 6px;
+    height: 120px;
+    background: linear-gradient(180deg, transparent, #b8960c, transparent);
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-bar"></div>
+  <div class="left-accent"></div>
+  <div class="corner-dots top-right"></div>
+  <div class="corner-dots bottom-left"></div>
+  <div class="gold-side-strip"></div>
+
+  <div class="header">
+    <div class="header-top">
+      <div class="header-category">{{ section_label }}</div>
+      <div class="header-page-num">{{ page_number }}</div>
+    </div>
+    <h1 class="page-title">{{ page_title }}</h1>
+    <p class="page-subtitle">{{ page_subtitle }}</p>
+  </div>
+
+  <div class="divider-with-label">
+    <span class="divider-label">{{ divider_label_1 }}</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="kpi-strip">
+    {% for kpi in kpis %}
+    <div class="kpi-card" style="--kpi-color: {{ kpi.color }};">
+      <div class="kpi-value">{{ kpi.value }}</div>
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="kpi-change">{{ kpi.change }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="two-col-body">
+    <div class="body-col">
+      <p>{{ body_paragraph_1 }}</p>
+      <div class="callout-box">
+        <div class="callout-title">{{ callout_title }}</div>
+        <div class="callout-text">{{ callout_text }}</div>
+      </div>
+    </div>
+    <div class="body-col">
+      <p>{{ body_paragraph_2 }}</p>
+      <p>{{ body_paragraph_3 }}</p>
+    </div>
+  </div>
+
+  <div class="divider-with-label">
+    <span class="divider-label">{{ divider_label_2 }}</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="timeline-section">
+    <h3 class="timeline-heading">{{ timeline_heading }}</h3>
+
+    <div class="timeline-grid">
+      {% for event in timeline_events_row1 %}
+      <div class="timeline-node">
+        <div class="timeline-dot-wrapper">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        </div>
+        <div class="timeline-year">{{ event.year }}</div>
+        <div class="timeline-event-title">{{ event.title }}</div>
+        <div class="timeline-event-desc">{{ event.description }}</div>
+        <div class="timeline-event-metric">{{ event.metric_value }}</div>
+        <span class="timeline-event-metric-label">{{ event.metric_label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="timeline-row-divider">
+      <div class="timeline-row-divider-line"></div>
+      <span class="timeline-row-divider-label">{{ timeline_row_divider_label }}</span>
+      <div class="timeline-row-divider-line"></div>
+    </div>
+
+    <div class="timeline-grid timeline-grid-row2">
+      {% for event in timeline_events_row2 %}
+      <div class="timeline-node">
+        <div class="timeline-dot-wrapper">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        </div>
+        <div class="timeline-year">{{ event.year }}</div>
+        <div class="timeline-event-title">{{ event.title }}</div>
+        <div class="timeline-event-desc">{{ event.description }}</div>
+        <div class="timeline-event-metric">{{ event.metric_value }}</div>
+        <span class="timeline-event-metric-label">{{ event.metric_label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mini-table-section">
+    <div class="divider-with-label" style="margin: 10px 0 8px 0;">
+      <span class="divider-label">{{ divider_label_3 }}</span>
+      <div class="divider-line"></div>
+    </div>
+    <table class="mini-table">
+      <thead>
+        <tr>
+          {% for header in table_headers %}
+          <th>{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.milestone }}</td>
+          <td class="metric-val">{{ row.target }}</td>
+          <td class="metric-val">{{ row.actual }}</td>
+          <td class="highlight-cell">{{ row.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">{{ footer_report_name }}</div>
+    <div class="footer-center">{{ footer_confidentiality }}</div>
+    <div class="footer-right">{{ footer_page_info }}</div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0071",
+  "variables": {
+    "page_title": "string — Main headline for the timeline page",
+    "page_subtitle": "string — Brief description below the title",
+    "section_label": "string — Uppercase category label above the title",
+    "page_number": "string — Page number display",
+    "divider_label_1": "string — Label for KPI section divider",
+    "divider_label_2": "string — Label for timeline section divider",
+    "divider_label_3": "string — Label for table section divider",
+    "kpis": "array — List of 4 KPI objects with fields: value (string), label (string), change (string), color (hex string)",
+    "body_paragraph_1": "string — Left column body text",
+    "body_paragraph_2": "string — Right column body text, first paragraph",
+    "body_paragraph_3": "string — Right column body text, second paragraph",
+    "callout_title": "string — Title inside the dark callout box",
+    "callout_text": "string — Body text inside the dark callout box",
+    "timeline_heading": "string — Section heading above the timeline",
+    "timeline_events_row1": "array — First row of 4 timeline event objects with fields: year (string), title (string), description (string), metric_value (string), metric_label (string)",
+    "timeline_events_row2": "array — Second row of 4 timeline event objects with same fields as row1",
+    "timeline_row_divider_label": "string — Label between timeline rows",
+    "table_headers": "array — List of 4 column header strings",
+    "table_rows": "array — List of table row objects with fields: milestone (string), target (string), actual (string), status (string)",
+    "footer_report_name": "string — Report title in footer",
+    "footer_confidentiality": "string — Confidentiality notice",
+    "footer_page_info": "string — Page info in footer"
+  }
+}
+END_TEMPLATE_VARIABLES -->

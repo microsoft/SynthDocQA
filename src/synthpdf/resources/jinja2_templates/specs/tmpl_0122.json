@@ -1,0 +1,40 @@
+{
+  "id": "tmpl_0122",
+  "industry": "academic_research",
+  "page_role": "process_flow",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "real_estate_warm",
+    "primary": "#5c4033",
+    "secondary": "#795548",
+    "accent": "#8bc34a",
+    "bg": "#fff8f0",
+    "surface": "#ffffff",
+    "text": "#3e2723",
+    "muted": "#8d6e63"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "logo_or_brand_strip",
+    "colored_section_band"
+  ],
+  "density": "sparse",
+  "motif": "circular_decorative_element",
+  "design_direction": "Inspired by Apple's product launch materials \u2014 extreme whitespace, single focal element",
+  "seed": 415712
+}

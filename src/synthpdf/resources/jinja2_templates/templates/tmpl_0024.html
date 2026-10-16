@@ -1,0 +1,769 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #0d0d0d;
+    background: #f9f7f4;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  .gradient-band-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4b44a 40%, #b8960c 70%, #1a1a1a 100%);
+    z-index: 10;
+  }
+
+  .hero-area {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    position: relative;
+    background: #1a1a1a;
+    padding: 56px 44px 40px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(45,45,45,0.6));
+    z-index: 0;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(180deg, transparent, rgba(184,150,12,0.08));
+    z-index: 0;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -40px;
+    width: 80px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(184,150,12,0.7) 0%, rgba(184,150,12,0.15) 100%);
+    transform: skewX(-4deg);
+    z-index: 2;
+  }
+
+  .section-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #b8960c;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    background: #b8960c;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .page-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-subtitle {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #888888;
+    max-width: 340px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .report-year {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 56px;
+    color: rgba(184,150,12,0.12);
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    z-index: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .divider-with-label {
+    display: flex;
+    align-items: center;
+    padding: 0 52px;
+    margin: 0;
+    height: 44px;
+    background: linear-gradient(90deg, #ffffff 0%, #f9f7f4 100%);
+    border-top: 1px solid rgba(184,150,12,0.18);
+    border-bottom: 1px solid rgba(184,150,12,0.10);
+  }
+
+  .divider-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #b8960c;
+    white-space: nowrap;
+    margin-right: 16px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #b8960c, transparent);
+  }
+
+  .divider-page-ref {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #888888;
+    margin-left: 16px;
+    white-space: nowrap;
+  }
+
+  .toc-content {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0;
+    padding: 20px 52px 0 52px;
+    height: 615px;
+  }
+
+  .toc-main {
+    padding-right: 36px;
+    border-right: 1px solid rgba(184,150,12,0.12);
+  }
+
+  .toc-sidebar {
+    padding-left: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .toc-section-group {
+    margin-bottom: 18px;
+  }
+
+  .toc-section-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #b8960c;
+    display: inline-block;
+  }
+
+  .toc-entry {
+    display: flex;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px dotted rgba(136,136,136,0.25);
+  }
+
+  .toc-entry:last-child {
+    border-bottom: none;
+  }
+
+  .toc-number {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #b8960c;
+    min-width: 32px;
+    flex-shrink: 0;
+  }
+
+  .toc-entry-title {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    color: #0d0d0d;
+    flex: 1;
+    line-height: 1.45;
+  }
+
+  .toc-dots {
+    flex: 1;
+    min-width: 20px;
+    border-bottom: 1px dotted #888888;
+    margin: 0 6px;
+    height: 0;
+    align-self: center;
+  }
+
+  .toc-page {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #2d2d2d;
+    min-width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .pull-quote-block {
+    background: #1a1a1a;
+    padding: 20px 22px;
+    position: relative;
+    border-left: 3px solid #b8960c;
+  }
+
+  .pull-quote-block::before {
+    content: '\201C';
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 48px;
+    color: #b8960c;
+    position: absolute;
+    top: 6px;
+    left: 16px;
+    line-height: 1;
+    opacity: 0.5;
+  }
+
+  .pull-quote-text {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #ffffff;
+    font-style: italic;
+    padding-top: 16px;
+  }
+
+  .pull-quote-author {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #b8960c;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .donut-widget {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #ffffff;
+    padding: 14px 16px;
+    border: 1px solid rgba(184,150,12,0.15);
+  }
+
+  .donut-svg {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #e8e4dd;
+    stroke-width: 5;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
+  .donut-center-text {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    fill: #1a1a1a;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .donut-info .donut-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+  }
+
+  .donut-info .donut-desc {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #888888;
+    line-height: 1.4;
+  }
+
+  .progress-widget {
+    background: #ffffff;
+    padding: 14px 16px;
+    border: 1px solid rgba(184,150,12,0.15);
+  }
+
+  .progress-widget-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .progress-item {
+    margin-bottom: 8px;
+  }
+
+  .progress-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+
+  .progress-name {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #0d0d0d;
+  }
+
+  .progress-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #b8960c;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 5px;
+    background: #e8e4dd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #b8960c, #d4b44a);
+  }
+
+  .timeline-widget {
+    background: #ffffff;
+    padding: 14px 16px;
+    border: 1px solid rgba(184,150,12,0.15);
+  }
+
+  .timeline-widget-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .timeline-node {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .timeline-node:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 14px;
+    flex-shrink: 0;
+  }
+
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    background: #b8960c;
+    border-radius: 50%;
+    border: 2px solid #f9f7f4;
+    box-shadow: 0 0 0 1px #b8960c;
+    flex-shrink: 0;
+  }
+
+  .timeline-line {
+    width: 1px;
+    flex: 1;
+    min-height: 14px;
+    background: rgba(184,150,12,0.3);
+  }
+
+  .timeline-text {
+    padding-top: 0;
+  }
+
+  .timeline-year {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #b8960c;
+  }
+
+  .timeline-desc {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #0d0d0d;
+    line-height: 1.4;
+  }
+
+  .data-table-widget {
+    background: #ffffff;
+    padding: 14px 16px;
+    border: 1px solid rgba(184,150,12,0.15);
+  }
+
+  .data-table-widget-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table th {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888888;
+    text-align: left;
+    padding: 4px 6px;
+    border-bottom: 1px solid #b8960c;
+  }
+
+  .data-table th:last-child {
+    text-align: right;
+  }
+
+  .data-table td {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 10px;
+    color: #0d0d0d;
+    padding: 4px 6px;
+    border-bottom: 1px solid rgba(136,136,136,0.1);
+  }
+
+  .data-table td:last-child {
+    text-align: right;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 52px;
+    background: linear-gradient(90deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+
+  .footer-left {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-center {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .footer-right {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #ffffff;
+  }
+
+  .gradient-band-bottom {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4b44a 50%, transparent 100%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="gradient-band-top"></div>
+
+  <div class="hero-area">
+    <div class="hero-left">
+      <div class="section-label">{{ section_label }}</div>
+      <h1 class="page-title">{{ page_title }}</h1>
+      <p class="page-subtitle">{{ page_subtitle }}</p>
+      <span class="report-year">{{ report_year }}</span>
+    </div>
+    <div class="hero-right">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    </div>
+  </div>
+
+  <div class="divider-with-label">
+    <span class="divider-label">{{ divider_label }}</span>
+    <span class="divider-line"></span>
+    <span class="divider-page-ref">{{ divider_page_ref }}</span>
+  </div>
+
+  <div class="toc-content">
+    <div class="toc-main">
+      {% for section in toc_sections %}
+      <div class="toc-section-group">
+        <div class="toc-section-heading">{{ section.heading }}</div>
+        {% for entry in section.entries %}
+        <div class="toc-entry">
+          <span class="toc-number">{{ entry.number }}</span>
+          <span class="toc-entry-title">{{ entry.title }}</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page">{{ entry.page }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="toc-sidebar">
+      <div class="pull-quote-block">
+        <p class="pull-quote-text">{{ pull_quote_text }}</p>
+        <p class="pull-quote-author">{{ pull_quote_author }}</p>
+      </div>
+
+      <div class="donut-widget">
+        <svg class="donut-svg" viewBox="0 0 42 42">
+          <circle class="donut-track" cx="21" cy="21" r="16"/>
+          <circle class="donut-fill" cx="21" cy="21" r="16"
+            stroke="{{ donut_color }}"
+            stroke-dasharray="{{ donut_value }}, {{ donut_remainder }}"
+          />
+          <text class="donut-center-text" x="21" y="21">{{ donut_display }}</text>
+        </svg>
+        <div class="donut-info">
+          <div class="donut-label">{{ donut_label }}</div>
+          <div class="donut-desc">{{ donut_description }}</div>
+        </div>
+      </div>
+
+      <div class="progress-widget">
+        <div class="progress-widget-title">{{ progress_title }}</div>
+        {% for bar in progress_bars %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-name">{{ bar.name }}</span>
+            <span class="progress-value">{{ bar.value }}%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: {{ bar.value }}%;"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="timeline-widget">
+        <div class="timeline-widget-title">{{ timeline_title }}</div>
+        {% for node in timeline_nodes %}
+        <div class="timeline-node">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot"></div>
+            {% if not loop.last %}<div class="timeline-line"></div>{% endif %}
+          </div>
+          <div class="timeline-text">
+            <div class="timeline-year">{{ node.year }}</div>
+            <div class="timeline-desc">{{ node.description }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="data-table-widget">
+        <div class="data-table-widget-title">{{ table_title }}</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              {% for cell in row.cells %}
+              <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="gradient-band-bottom"></div>
+
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_left }}</span>
+    <span class="footer-center">{{ footer_center }}</span>
+    <span class="footer-right">{{ footer_page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0024",
+  "variables": {
+    "page_title": "string",
+    "section_label": "string",
+    "page_subtitle": "string",
+    "report_year": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "divider_label": "string",
+    "divider_page_ref": "string",
+    "toc_sections": "list — each has heading (string) and entries (list of {number, title, page})",
+    "pull_quote_text": "string",
+    "pull_quote_author": "string",
+    "donut_color": "string",
+    "donut_value": "number",
+    "donut_remainder": "number",
+    "donut_display": "string",
+    "donut_label": "string",
+    "donut_description": "string",
+    "progress_title": "string",
+    "progress_bars": "list — each has name (string) and value (number 0-100)",
+    "timeline_title": "string",
+    "timeline_nodes": "list — each has year (string) and description (string)",
+    "table_title": "string",
+    "table_headers": "list of strings",
+    "table_rows": "list — each has cells (list of strings)",
+    "footer_left": "string",
+    "footer_center": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,843 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #1a1a1a;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* === DIAGONAL COLOR SLASH MOTIF === */
+  .diagonal-slash-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, #003087 0%, #003087 55%, #0053a0 55%, #0053a0 70%, #00a651 70%, #00a651 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+    z-index: 1;
+  }
+
+  .diagonal-slash-accent {
+    position: absolute;
+    top: 105px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #00a651;
+    clip-path: polygon(0 60%, 100% 0%, 100% 40%, 0 100%);
+    z-index: 2;
+    opacity: 0.35;
+  }
+
+  /* === HEADER === */
+  .header {
+    position: relative;
+    z-index: 10;
+    padding: 28px 48px 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .header-left h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    color: #ffffff;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+  }
+
+  .header-left .subtitle {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.04em;
+  }
+
+  .header-right {
+    text-align: right;
+    padding-top: 6px;
+  }
+
+  .header-right .report-date {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .header-right .page-number {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #ffffff;
+  }
+
+  /* === MAIN GRID === */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    grid-template-rows: 1fr;
+    height: calc(1123px - 145px - 44px);
+    margin-top: 8px;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    background: #f0f4fb;
+    padding: 20px 16px;
+    border-right: 3px solid #003087;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sidebar-section-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #0053a0;
+    border-bottom: 2px solid #0053a0;
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-annotation {
+    background: #ffffff;
+    border-left: 3px solid #00a651;
+    padding: 10px 10px;
+    font-size: 10px;
+    line-height: 1.45;
+    color: #1a1a1a;
+    border-radius: 2px;
+  }
+
+  .sidebar-annotation .annotation-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #003087;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-annotation .annotation-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #00a651;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-annotation .annotation-text {
+    font-size: 9.5px;
+    color: #5c6876;
+  }
+
+  /* Timeline nodes */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 12px;
+  }
+
+  .timeline-node {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    padding-bottom: 14px;
+  }
+
+  .timeline-node:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 14px;
+    width: 2px;
+    height: calc(100% - 6px);
+    background: #0053a0;
+    opacity: 0.35;
+  }
+
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #003087;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border: 2px solid #0053a0;
+  }
+
+  .timeline-dot.active {
+    background: #00a651;
+    border-color: #00a651;
+  }
+
+  .timeline-content {
+    font-size: 9.5px;
+    color: #1a1a1a;
+    line-height: 1.35;
+  }
+
+  .timeline-content .tl-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    color: #003087;
+  }
+
+  .timeline-content .tl-date {
+    font-size: 8.5px;
+    color: #5c6876;
+  }
+
+  /* === CONTENT AREA === */
+  .content-area {
+    padding: 18px 32px 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section-heading {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #003087;
+    line-height: 1.15;
+    position: relative;
+    padding-bottom: 8px;
+  }
+
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #00a651, #0053a0);
+  }
+
+  .body-text {
+    font-size: 11px;
+    color: #5c6876;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  /* === KPI CARDS ROW === */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .kpi-card {
+    background: #f0f4fb;
+    border-radius: 4px;
+    padding: 16px 14px 14px 14px;
+    position: relative;
+    overflow: hidden;
+    border-top: 4px solid #003087;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 50px;
+    height: 50px;
+    background: currentColor;
+    opacity: 0.06;
+    transform: rotate(45deg);
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #5c6876;
+    margin-bottom: 6px;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-change {
+    font-size: 10px;
+    font-family: Verdana, Geneva, sans-serif;
+  }
+
+  .kpi-change.positive { color: #00a651; }
+  .kpi-change.negative { color: #c0392b; }
+
+  .kpi-card .kpi-bar {
+    margin-top: 8px;
+    height: 4px;
+    background: #dde3ed;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .kpi-card .kpi-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  /* === COMPARISON COLUMNS === */
+  .comparison-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .comparison-col {
+    background: #ffffff;
+    border: 1px solid #dde3ed;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .comparison-col-header {
+    padding: 10px 14px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #ffffff;
+    background: #003087;
+    position: relative;
+  }
+
+  .comparison-col:nth-child(2) .comparison-col-header {
+    background: #0053a0;
+  }
+
+  .comparison-col-header::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .comparison-col-body {
+    padding: 12px 14px;
+  }
+
+  .comparison-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f4fb;
+    font-size: 10.5px;
+  }
+
+  .comparison-metric:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-metric .metric-name {
+    color: #1a1a1a;
+  }
+
+  .comparison-metric .metric-val {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #003087;
+  }
+
+  /* === CHART PLACEHOLDER === */
+  .chart-placeholder {
+    background: #f0f4fb;
+    border: 1px dashed #bcc5d3;
+    border-radius: 4px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder .chart-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #003087;
+    margin-bottom: 6px;
+    z-index: 2;
+  }
+
+  .chart-placeholder .chart-label {
+    font-size: 9px;
+    color: #5c6876;
+    z-index: 2;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 70px;
+    margin-top: 8px;
+    z-index: 2;
+  }
+
+  .chart-bar {
+    width: 28px;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+  }
+
+  .chart-bar .bar-label {
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7.5px;
+    color: #5c6876;
+    white-space: nowrap;
+  }
+
+  /* === CALLOUT BOX === */
+  .callout-box {
+    background: linear-gradient(135deg, #003087 0%, #0053a0 100%);
+    border-radius: 4px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .callout-box::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 100px;
+    height: 100px;
+    background: #00a651;
+    opacity: 0.15;
+    transform: rotate(45deg);
+  }
+
+  .callout-icon {
+    width: 38px;
+    height: 38px;
+    background: #00a651;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .callout-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+  }
+
+  .callout-content {
+    z-index: 2;
+  }
+
+  .callout-content .callout-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+
+  .callout-content .callout-text {
+    font-size: 10px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+  }
+
+  /* === NUMBERED LIST === */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 10.5px;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+
+  .num-badge {
+    width: 20px;
+    height: 20px;
+    background: #003087;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    background: #003087;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 10;
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -8px;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #00a651 0%, #00a651 30%, #0053a0 30%, #0053a0 100%);
+  }
+
+  .footer-left {
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-center {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .content-area .slash-divider {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(135deg, #003087 0%, #003087 40%, #00a651 40%, #00a651 60%, #0053a0 60%, #0053a0 100%);
+    border-radius: 1px;
+  }
+
+  .subsection-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #0053a0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Diagonal Color Slash Motif - Top -->
+  <div class="diagonal-slash-top"></div>
+  <div class="diagonal-slash-accent"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>{{ page_title }}</h1>
+      <div class="subtitle">{{ header_subtitle }}</div>
+    </div>
+    <div class="header-right">
+      <div class="page-number">{{ page_number }}</div>
+      <div class="report-date">{{ report_date }}</div>
+    </div>
+  </div>
+
+  <!-- Main Grid: Sidebar + Content -->
+  <div class="main-grid">
+
+    <!-- Sidebar with Annotations & Timeline -->
+    <div class="sidebar">
+      <div>
+        <div class="sidebar-section-label">{{ sidebar_label_1 }}</div>
+        <div class="sidebar-annotation">
+          <div class="annotation-title">{{ annotation_1_title }}</div>
+          <div class="annotation-value">{{ annotation_1_value }}</div>
+          <div class="annotation-text">{{ annotation_1_text }}</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sidebar-section-label">{{ sidebar_label_2 }}</div>
+        <div class="sidebar-annotation">
+          <div class="annotation-title">{{ annotation_2_title }}</div>
+          <div class="annotation-value">{{ annotation_2_value }}</div>
+          <div class="annotation-text">{{ annotation_2_text }}</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sidebar-section-label">Key Milestones</div>
+        <div class="timeline">
+          {% for node in timeline_nodes %}
+          <div class="timeline-node">
+            <div class="timeline-dot {{ 'active' if node.active else '' }}"></div>
+            <div class="timeline-content">
+              <div class="tl-label">{{ node.label }}</div>
+              <div class="tl-date">{{ node.date }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+
+      <!-- Section Heading -->
+      <div>
+        <h2 class="section-heading">{{ section_heading }}</h2>
+        <p class="body-text" style="margin-top: 8px;">{{ body_paragraph_1 }}</p>
+      </div>
+
+      <!-- KPI Cards Row -->
+      <div class="kpi-row">
+        {% for kpi in kpi_cards %}
+        <div class="kpi-card" style="border-top-color: {{ kpi.color }};">
+          <div class="kpi-label">{{ kpi.label }}</div>
+          <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+          <div class="kpi-change {{ 'positive' if kpi.change_positive else 'negative' }}">{{ kpi.change }}</div>
+          <div class="kpi-bar">
+            <div class="kpi-bar-fill" style="width: {{ kpi.bar_pct }}%; background: {{ kpi.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Slash Divider -->
+      <div class="slash-divider"></div>
+
+      <!-- Chart Placeholder -->
+      <div class="chart-placeholder">
+        <div class="chart-title">{{ chart_title }}</div>
+        <div class="chart-label">{{ chart_subtitle }}</div>
+        <div class="chart-bars">
+          {% for bar in chart_bars %}
+          <div class="chart-bar" style="height: {{ bar.height }}px; background: {{ bar.color }};">
+            <span class="bar-label">{{ bar.label }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Comparison Columns -->
+      <div class="comparison-section">
+        <div class="comparison-col">
+          <div class="comparison-col-header">{{ comparison_col_1_title }}</div>
+          <div class="comparison-col-body">
+            {% for metric in comparison_col_1_metrics %}
+            <div class="comparison-metric">
+              <span class="metric-name">{{ metric.name }}</span>
+              <span class="metric-val">{{ metric.value }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="comparison-col">
+          <div class="comparison-col-header">{{ comparison_col_2_title }}</div>
+          <div class="comparison-col-body">
+            {% for metric in comparison_col_2_metrics %}
+            <div class="comparison-metric">
+              <span class="metric-name">{{ metric.name }}</span>
+              <span class="metric-val">{{ metric.value }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Callout Box -->
+      <div class="callout-box">
+        <div class="callout-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4l7.5 14h-15L12 6zm-1 5v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+        </div>
+        <div class="callout-content">
+          <div class="callout-title">{{ callout_title }}</div>
+          <div class="callout-text">{{ callout_text }}</div>
+        </div>
+      </div>
+
+      <!-- Numbered Strategic Priorities -->
+      <div>
+        <div class="subsection-label" style="margin-bottom: 6px;">{{ priorities_heading }}</div>
+        <ol class="numbered-list">
+          {% for item in priority_items %}
+          <li>
+            <span class="num-badge">{{ loop.index }}</span>
+            <span>{{ item.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">{{ footer_left }}</div>
+    <div class="footer-center">{{ footer_classification }}</div>
+    <div class="footer-right">{{ footer_right }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0067",
+  "variables": {
+    "page_title": "string",
+    "header_subtitle": "string",
+    "page_number": "string",
+    "report_date": "string",
+    "sidebar_label_1": "string",
+    "annotation_1_title": "string",
+    "annotation_1_value": "string",
+    "annotation_1_text": "string",
+    "sidebar_label_2": "string",
+    "annotation_2_title": "string",
+    "annotation_2_value": "string",
+    "annotation_2_text": "string",
+    "timeline_nodes": [
+      {
+        "label": "string",
+        "date": "string",
+        "active": "boolean"
+      }
+    ],
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "kpi_cards": [
+      {
+        "label": "string",
+        "value": "string",
+        "change": "string",
+        "change_positive": "boolean",
+        "color": "string (hex)",
+        "bar_pct": "number (0-100)"
+      }
+    ],
+    "chart_title": "string",
+    "chart_subtitle": "string",
+    "chart_bars": [
+      {
+        "height": "number (px)",
+        "color": "string (hex)",
+        "label": "string"
+      }
+    ],
+    "comparison_col_1_title": "string",
+    "comparison_col_1_metrics": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ],
+    "comparison_col_2_title": "string",
+    "comparison_col_2_metrics": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ],
+    "callout_title": "string",
+    "callout_text": "string",
+    "priorities_heading": "string",
+    "priority_items": [
+      {
+        "text": "string"
+      }
+    ],
+    "footer_left": "string",
+    "footer_classification": "string",
+    "footer_right": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

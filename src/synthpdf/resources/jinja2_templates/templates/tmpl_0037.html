@@ -1,0 +1,770 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fdfcff;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #1c1c1c;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fdfcff;
+  }
+
+  /* ===== HERO SECTION — Top third ===== */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 374px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 60%, #17a589 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 794 374'%3E%3Cpath d='M0,180 C120,120 250,220 400,160 C550,100 680,200 794,140 L794,374 L0,374 Z' fill='rgba(255,255,255,0.04)'/%3E%3Cpath d='M0,220 C150,170 300,280 450,200 C600,120 700,240 794,190 L794,374 L0,374 Z' fill='rgba(255,255,255,0.05)'/%3E%3Cpath d='M0,280 C100,240 200,310 350,260 C500,210 650,300 794,250 L794,374 L0,374 Z' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E") no-repeat center / cover;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 794 60'%3E%3Cpath d='M0,30 C100,5 200,55 300,25 C400,-5 500,50 600,20 C700,-10 750,40 794,15 L794,60 L0,60 Z' fill='%23fdfcff'/%3E%3C/svg%3E") no-repeat bottom / cover;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .brand-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 44px;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 5;
+  }
+
+  .brand-strip .logo-text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .brand-strip .report-label {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 0 40px 40px 40px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: #17a589;
+    color: #fff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    color: #ffffff;
+    margin-bottom: 10px;
+    max-width: 600px;
+  }
+
+  .hero-subtitle {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  .hero-kpi-row {
+    display: flex;
+    gap: 0;
+    margin-top: 18px;
+  }
+
+  .hero-kpi {
+    flex: 1;
+    padding: 10px 16px;
+    border-left: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .hero-kpi:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .hero-kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  .hero-kpi-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* ===== MAIN CONTENT — Bottom two-thirds ===== */
+  .main-content {
+    width: 100%;
+    height: 700px;
+    padding: 24px 32px 50px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .divider-label .label-text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6c3483;
+    white-space: nowrap;
+  }
+
+  .divider-label .label-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #6c3483, transparent);
+  }
+
+  .column h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #1a5276;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .column h3 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #6c3483;
+    margin-bottom: 4px;
+    margin-top: 10px;
+    line-height: 1.3;
+  }
+
+  .column p {
+    font-size: 10px;
+    line-height: 1.45;
+    color: #1c1c1c;
+    margin-bottom: 6px;
+  }
+
+  .column .muted {
+    color: #7d7d7d;
+    font-size: 9px;
+  }
+
+  .callout-box {
+    background: #f4ecf7;
+    border-left: 3px solid #6c3483;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-box .callout-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #6c3483;
+    line-height: 1.1;
+  }
+
+  .callout-box .callout-label {
+    font-size: 9px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .callout-box .callout-note {
+    font-size: 9px;
+    color: #1c1c1c;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .progress-group {
+    margin: 6px 0;
+  }
+
+  .progress-item {
+    margin-bottom: 7px;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .progress-label {
+    font-size: 9px;
+    color: #1c1c1c;
+    font-weight: bold;
+  }
+
+  .progress-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #6c3483;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 7px;
+    background: #e8e0ed;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0;
+    font-size: 9px;
+  }
+
+  .data-table th {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7d7d7d;
+    text-align: left;
+    padding: 4px 6px;
+    border-bottom: 2px solid #1a5276;
+  }
+
+  .data-table td {
+    padding: 3px 6px;
+    border-bottom: 1px solid #e8e0ed;
+    color: #1c1c1c;
+    font-size: 9px;
+  }
+
+  .data-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table .num {
+    text-align: right;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+  }
+
+  .data-table .highlight-row td {
+    background: #f4ecf7;
+  }
+
+  .stat-inline {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 4px 0;
+  }
+
+  .stat-inline .stat-num {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #17a589;
+    line-height: 1;
+  }
+
+  .stat-inline .stat-unit {
+    font-size: 9px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .mini-chart-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 50px;
+    margin: 8px 0 4px 0;
+  }
+
+  .mini-chart-bar .bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    min-width: 8px;
+  }
+
+  .mini-chart-labels {
+    display: flex;
+    gap: 3px;
+    font-size: 7px;
+    color: #7d7d7d;
+    text-align: center;
+  }
+
+  .mini-chart-labels span {
+    flex: 1;
+    text-align: center;
+  }
+
+  .wave-separator {
+    width: 100%;
+    height: 16px;
+    margin: 6px 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16'%3E%3Cpath d='M0,8 C25,2 50,14 75,8 C100,2 125,14 150,8 C175,2 200,14 200,8' stroke='%2317a589' stroke-width='1.5' fill='none' opacity='0.4'/%3E%3C/svg%3E") repeat-x center;
+  }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0;
+  }
+
+  .info-list li {
+    font-size: 9.5px;
+    line-height: 1.4;
+    padding: 3px 0 3px 12px;
+    position: relative;
+    color: #1c1c1c;
+    border-bottom: 1px solid rgba(108,52,131,0.08);
+  }
+
+  .info-list li:last-child {
+    border-bottom: none;
+  }
+
+  .info-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #17a589;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 38px;
+    background: linear-gradient(90deg, #6c3483, #1a5276);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 10;
+  }
+
+  .page-footer::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 794 12'%3E%3Cpath d='M0,12 C100,0 200,10 300,4 C400,-2 500,10 600,4 C700,-2 750,8 794,2 L794,12 L0,12 Z' fill='%236c3483'/%3E%3C/svg%3E") no-repeat bottom / cover;
+    opacity: 0.15;
+  }
+
+  .footer-left {
+    font-size: 8px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-right {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #ffffff;
+  }
+
+  .footer-center {
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero">
+    <div class="brand-strip">
+      <span class="logo-text">{{ company_name }}</span>
+      <span class="report-label">{{ report_type }} &mdash; {{ report_period }}</span>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">{{ hero_tag }}</div>
+      <h1>{{ page_title }}</h1>
+      <div class="hero-subtitle">{{ hero_subtitle }}</div>
+
+      <div class="hero-kpi-row">
+        <div class="hero-kpi">
+          <div class="hero-kpi-value">{{ hero_kpi_1_value }}</div>
+          <div class="hero-kpi-label">{{ hero_kpi_1_label }}</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-value">{{ hero_kpi_2_value }}</div>
+          <div class="hero-kpi-label">{{ hero_kpi_2_label }}</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-value">{{ hero_kpi_3_value }}</div>
+          <div class="hero-kpi-label">{{ hero_kpi_3_label }}</div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-value">{{ hero_kpi_4_value }}</div>
+          <div class="hero-kpi-label">{{ hero_kpi_4_label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT — 4 Columns ===== -->
+  <div class="main-content">
+
+    <!-- COLUMN 1: Production Overview -->
+    <div class="column">
+      <div class="divider-label">
+        <span class="label-text">{{ col1_section_label }}</span>
+        <span class="label-line"></span>
+      </div>
+      <h2>{{ col1_heading }}</h2>
+      <p>{{ col1_paragraph_1 }}</p>
+
+      <div class="callout-box">
+        <div class="callout-value">{{ col1_callout_value }}</div>
+        <div class="callout-label">{{ col1_callout_label }}</div>
+        <div class="callout-note">{{ col1_callout_note }}</div>
+      </div>
+
+      <h3>{{ col1_sub_heading }}</h3>
+      <div class="progress-group">
+        {% for bar in col1_progress_bars %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">{{ bar.label }}</span>
+            <span class="progress-value">{{ bar.value }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="wave-separator"></div>
+      <p class="muted">{{ col1_footnote }}</p>
+    </div>
+
+    <!-- COLUMN 2: Operational Metrics -->
+    <div class="column">
+      <div class="divider-label">
+        <span class="label-text">{{ col2_section_label }}</span>
+        <span class="label-line"></span>
+      </div>
+      <h2>{{ col2_heading }}</h2>
+      <p>{{ col2_paragraph_1 }}</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ col2_table_header_1 }}</th>
+            <th>{{ col2_table_header_2 }}</th>
+            <th>{{ col2_table_header_3 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in col2_table_rows %}
+          <tr class="{{ row.row_class }}">
+            <td>{{ row.col1 }}</td>
+            <td class="num">{{ row.col2 }}</td>
+            <td class="num">{{ row.col3 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="wave-separator"></div>
+
+      <h3>{{ col2_sub_heading }}</h3>
+      <div class="stat-inline">
+        <span class="stat-num">{{ col2_stat_value }}</span>
+        <span class="stat-unit">{{ col2_stat_unit }}</span>
+      </div>
+      <p class="muted">{{ col2_stat_note }}</p>
+
+      <div class="callout-box" style="border-left-color: #17a589;">
+        <div class="callout-value" style="color: #17a589;">{{ col2_callout_value }}</div>
+        <div class="callout-label">{{ col2_callout_label }}</div>
+      </div>
+    </div>
+
+    <!-- COLUMN 3: Regional Breakdown -->
+    <div class="column">
+      <div class="divider-label">
+        <span class="label-text">{{ col3_section_label }}</span>
+        <span class="label-line"></span>
+      </div>
+      <h2>{{ col3_heading }}</h2>
+      <p>{{ col3_paragraph_1 }}</p>
+
+      <div class="mini-chart-bar">
+        {% for bar in col3_chart_bars %}
+        <div class="bar" style="height: {{ bar.height }}%; background: {{ bar.color }};"></div>
+        {% endfor %}
+      </div>
+      <div class="mini-chart-labels">
+        {% for bar in col3_chart_bars %}
+        <span>{{ bar.label }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="wave-separator"></div>
+
+      <h3>{{ col3_sub_heading }}</h3>
+      <ul class="info-list">
+        {% for item in col3_list_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>{{ col3_sub_heading_2 }}</h3>
+      <p>{{ col3_paragraph_2 }}</p>
+      <div class="stat-inline">
+        <span class="stat-num">{{ col3_stat_value }}</span>
+        <span class="stat-unit">{{ col3_stat_unit }}</span>
+      </div>
+    </div>
+
+    <!-- COLUMN 4: Sustainability & Outlook -->
+    <div class="column">
+      <div class="divider-label">
+        <span class="label-text">{{ col4_section_label }}</span>
+        <span class="label-line"></span>
+      </div>
+      <h2>{{ col4_heading }}</h2>
+      <p>{{ col4_paragraph_1 }}</p>
+
+      <div class="callout-box" style="border-left-color: #1a5276; background: rgba(26,82,118,0.06);">
+        <div class="callout-value" style="color: #1a5276;">{{ col4_callout_value }}</div>
+        <div class="callout-label">{{ col4_callout_label }}</div>
+        <div class="callout-note">{{ col4_callout_note }}</div>
+      </div>
+
+      <h3>{{ col4_sub_heading }}</h3>
+      <div class="progress-group">
+        {% for bar in col4_progress_bars %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">{{ bar.label }}</span>
+            <span class="progress-value">{{ bar.value }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="wave-separator"></div>
+
+      <h3>{{ col4_sub_heading_2 }}</h3>
+      <ul class="info-list">
+        {% for item in col4_outlook_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <p class="muted" style="margin-top: auto;">{{ col4_disclaimer }}</p>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_left_text }}</span>
+    <span class="footer-center">{{ footer_center_text }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0037",
+  "variables": {
+    "page_title": "string",
+    "company_name": "string",
+    "report_type": "string",
+    "report_period": "string",
+    "hero_tag": "string",
+    "hero_subtitle": "string",
+    "hero_kpi_1_value": "string",
+    "hero_kpi_1_label": "string",
+    "hero_kpi_2_value": "string",
+    "hero_kpi_2_label": "string",
+    "hero_kpi_3_value": "string",
+    "hero_kpi_3_label": "string",
+    "hero_kpi_4_value": "string",
+    "hero_kpi_4_label": "string",
+    "col1_section_label": "string",
+    "col1_heading": "string",
+    "col1_paragraph_1": "string",
+    "col1_callout_value": "string",
+    "col1_callout_label": "string",
+    "col1_callout_note": "string",
+    "col1_sub_heading": "string",
+    "col1_progress_bars": "[{label: string, value: string, percent: number, color: string}]",
+    "col1_footnote": "string",
+    "col2_section_label": "string",
+    "col2_heading": "string",
+    "col2_paragraph_1": "string",
+    "col2_table_header_1": "string",
+    "col2_table_header_2": "string",
+    "col2_table_header_3": "string",
+    "col2_table_rows": "[{col1: string, col2: string, col3: string, row_class: string}]",
+    "col2_sub_heading": "string",
+    "col2_stat_value": "string",
+    "col2_stat_unit": "string",
+    "col2_stat_note": "string",
+    "col2_callout_value": "string",
+    "col2_callout_label": "string",
+    "col3_section_label": "string",
+    "col3_heading": "string",
+    "col3_paragraph_1": "string",
+    "col3_chart_bars": "[{height: number, color: string, label: string}]",
+    "col3_sub_heading": "string",
+    "col3_list_items": "[string]",
+    "col3_sub_heading_2": "string",
+    "col3_paragraph_2": "string",
+    "col3_stat_value": "string",
+    "col3_stat_unit": "string",
+    "col4_section_label": "string",
+    "col4_heading": "string",
+    "col4_paragraph_1": "string",
+    "col4_callout_value": "string",
+    "col4_callout_label": "string",
+    "col4_callout_note": "string",
+    "col4_sub_heading": "string",
+    "col4_progress_bars": "[{label: string, value: string, percent: number, color: string}]",
+    "col4_sub_heading_2": "string",
+    "col4_outlook_items": "[string]",
+    "col4_disclaimer": "string",
+    "footer_left_text": "string",
+    "footer_center_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,804 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Dotted pattern overlay */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle, #1a3a6b 0.5px, transparent 0.5px);
+    background-size: 18px 18px;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- HEADER BAND ---- */
+  .header-band {
+    background: #0a1628;
+    padding: 28px 48px 22px 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .header-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c8a96e 0%, #c8a96e 40%, #1a3a6b 40%, #1a3a6b 100%);
+  }
+
+  .header-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+  }
+
+  .header-subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #c8a96e;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .header-year {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  /* ---- SECTION BAND / INTRO ---- */
+  .intro-section {
+    background: #f7f5f0;
+    padding: 18px 48px 16px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    border-bottom: 1px solid #e0dcd4;
+    position: relative;
+  }
+
+  .intro-section::before {
+    content: '';
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    top: 0;
+    height: 0;
+    border-top: 1px dotted #c8a96e;
+  }
+
+  .intro-col p {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+
+  .section-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #0a1628;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
+  /* ---- KPI ROW ---- */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 0 48px;
+    background: #ffffff;
+  }
+
+  .kpi-card {
+    padding: 14px 16px 12px 16px;
+    border-right: 1px solid #e0dcd4;
+    position: relative;
+  }
+
+  .kpi-card:last-child {
+    border-right: none;
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #666666;
+    line-height: 1.3;
+  }
+
+  .kpi-delta {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* ---- DIVIDER WITH LABEL ---- */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    padding: 10px 48px;
+    gap: 12px;
+  }
+
+  .divider-label .line {
+    flex: 1;
+    height: 0;
+    border-top: 1px dotted #c8a96e;
+  }
+
+  .divider-label .label-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #1a3a6b;
+    white-space: nowrap;
+  }
+
+  /* ---- TIMELINE ---- */
+  .timeline-container {
+    padding: 6px 48px 6px 48px;
+    position: relative;
+  }
+
+  .timeline-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0a1628;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .timeline-wrapper {
+    position: relative;
+    height: 200px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0a1628 0%, #1a3a6b 50%, #c8a96e 100%);
+    transform: translateY(-50%);
+  }
+
+  .timeline-spine::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-image: radial-gradient(circle, #c8a96e 1px, transparent 1px);
+    background-size: 12px 5px;
+    background-position: 0 0;
+    opacity: 0.4;
+  }
+
+  .timeline-events {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .timeline-event {
+    position: absolute;
+    width: 120px;
+  }
+
+  .timeline-event-above {
+    bottom: 50%;
+    padding-bottom: 18px;
+  }
+
+  .timeline-event-below {
+    top: 50%;
+    padding-top: 18px;
+  }
+
+  .timeline-event .dot {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #c8a96e;
+    border: 2px solid #0a1628;
+    left: 12px;
+  }
+
+  .timeline-event-above .dot {
+    bottom: 12px;
+  }
+
+  .timeline-event-below .dot {
+    top: 12px;
+  }
+
+  .timeline-event .connector {
+    position: absolute;
+    width: 1px;
+    left: 17px;
+  }
+
+  .timeline-event-above .connector {
+    bottom: 0;
+    height: 18px;
+    border-left: 1px dashed #1a3a6b;
+  }
+
+  .timeline-event-below .connector {
+    top: 0;
+    height: 18px;
+    border-left: 1px dashed #1a3a6b;
+  }
+
+  .timeline-event .event-year {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #c8a96e;
+    line-height: 1.2;
+  }
+
+  .timeline-event .event-text {
+    font-size: 9px;
+    line-height: 1.35;
+    color: #1a1a1a;
+    margin-top: 2px;
+  }
+
+  .timeline-event:nth-child(1) { left: 0%; }
+  .timeline-event:nth-child(2) { left: 18%; }
+  .timeline-event:nth-child(3) { left: 36%; }
+  .timeline-event:nth-child(4) { left: 54%; }
+  .timeline-event:nth-child(5) { left: 72%; }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote-block {
+    background: #0a1628;
+    margin: 0 48px;
+    padding: 16px 24px;
+    position: relative;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pull-quote-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #c8a96e;
+  }
+
+  .pull-quote-mark {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 40px;
+    font-weight: 700;
+    color: #c8a96e;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: -4px;
+  }
+
+  .pull-quote-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.55;
+    letter-spacing: 0.02em;
+  }
+
+  .pull-quote-attr {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #c8a96e;
+    margin-top: 6px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ---- LOWER CONTENT AREA ---- */
+  .lower-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0 48px;
+    margin-top: 10px;
+  }
+
+  .lower-left {
+    padding-right: 20px;
+    border-right: 1px solid #e0dcd4;
+  }
+
+  .lower-right {
+    padding-left: 20px;
+  }
+
+  .sub-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0a1628;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ---- PROGRESS BARS ---- */
+  .progress-item {
+    margin-bottom: 9px;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .progress-label {
+    font-size: 9px;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .progress-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #0a1628;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 7px;
+    background: #f7f5f0;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-track::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle, rgba(26,58,107,0.08) 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 0;
+  }
+
+  /* ---- DATA TABLE ---- */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+    margin-top: 4px;
+  }
+
+  .data-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #ffffff;
+    background: #1a3a6b;
+    padding: 5px 8px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:last-child {
+    text-align: right;
+  }
+
+  .data-table tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid #e0dcd4;
+    color: #1a1a1a;
+    font-size: 9px;
+  }
+
+  .data-table tbody td:last-child {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #0a1628;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f7f5f0;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 2px solid #c8a96e;
+  }
+
+  /* ---- COMPARISON COLUMNS ---- */
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 0 48px;
+  }
+
+  .comparison-col {
+    background: #f7f5f0;
+    padding: 12px 14px;
+    position: relative;
+    border-top: 3px solid;
+  }
+
+  .comparison-col .comp-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .comparison-col .comp-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .comparison-col .comp-desc {
+    font-size: 9px;
+    color: #666666;
+    line-height: 1.4;
+  }
+
+  .comparison-col::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background-image: radial-gradient(circle, #1a3a6b 0.7px, transparent 0.7px);
+    background-size: 6px 6px;
+    opacity: 0.08;
+  }
+
+  /* ---- FOOTER ---- */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: #0a1628;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .footer-text {
+    font-size: 7px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .footer-page {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #c8a96e;
+  }
+
+  .accent-band {
+    height: 3px;
+    background: linear-gradient(90deg, #c8a96e 0%, #1a3a6b 60%, #0a1628 100%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER BAND -->
+  <div class="header-band">
+    <div>
+      <div class="header-title">{{ page_title }}</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="header-subtitle">{{ header_subtitle }}</div>
+      <div class="header-year">{{ header_year }}</div>
+    </div>
+  </div>
+
+  <!-- INTRO SECTION — TWO COLUMN BODY TEXT -->
+  <div class="intro-section">
+    <div class="intro-col">
+      <div class="section-heading">{{ section_heading }}</div>
+      <p>{{ body_paragraph_1 }}</p>
+    </div>
+    <div class="intro-col">
+      <p style="margin-top: 28px;">{{ body_paragraph_2 }}</p>
+    </div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card" style="border-top: 3px solid {{ kpi_1_color }};">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-delta" style="color: {{ kpi_1_color }};">{{ kpi_1_delta }}</div>
+    </div>
+    <div class="kpi-card" style="border-top: 3px solid {{ kpi_2_color }};">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-delta" style="color: {{ kpi_2_color }};">{{ kpi_2_delta }}</div>
+    </div>
+    <div class="kpi-card" style="border-top: 3px solid {{ kpi_3_color }};">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-delta" style="color: {{ kpi_3_color }};">{{ kpi_3_delta }}</div>
+    </div>
+    <div class="kpi-card" style="border-top: 3px solid {{ kpi_4_color }};">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-delta" style="color: {{ kpi_4_color }};">{{ kpi_4_delta }}</div>
+    </div>
+  </div>
+
+  <!-- DIVIDER WITH LABEL -->
+  <div class="divider-label">
+    <span class="line"></span>
+    <span class="label-text">{{ divider_label_1 }}</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-container">
+    <div class="timeline-heading">{{ timeline_heading }}</div>
+    <div class="timeline-wrapper">
+      <div class="timeline-spine"></div>
+      <div class="timeline-events">
+        {% for event in timeline_events %}
+        <div class="timeline-event {% if loop.index is odd %}timeline-event-above{% else %}timeline-event-below{% endif %}">
+          <div class="dot"></div>
+          <div class="connector"></div>
+          <div class="event-year">{{ event.year }}</div>
+          <div class="event-text">{{ event.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCENT BAND -->
+  <div class="accent-band"></div>
+
+  <!-- PULL QUOTE -->
+  <div style="padding: 10px 0 8px 0;">
+    <div class="pull-quote-block">
+      <div class="pull-quote-mark">&ldquo;</div>
+      <div>
+        <div class="pull-quote-text">{{ pull_quote_text }}</div>
+        <div class="pull-quote-attr">&mdash; {{ pull_quote_attribution }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIVIDER WITH LABEL -->
+  <div class="divider-label">
+    <span class="line"></span>
+    <span class="label-text">{{ divider_label_2 }}</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- LOWER TWO-COLUMN: PROGRESS BARS + DATA TABLE -->
+  <div class="lower-content">
+    <div class="lower-left">
+      <div class="sub-heading">{{ progress_section_title }}</div>
+      {% for bar in progress_bars %}
+      <div class="progress-item">
+        <div class="progress-header">
+          <span class="progress-label">{{ bar.label }}</span>
+          <span class="progress-value">{{ bar.value }}</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="lower-right">
+      <div class="sub-heading">{{ table_title }}</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            {% for cell in row %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- COMPARISON COLUMNS -->
+  <div class="comparison-row">
+    <div class="comparison-col" style="border-top-color: {{ comparison_1_color }};">
+      <div class="comp-title" style="color: {{ comparison_1_color }};">{{ comparison_1_title }}</div>
+      <div class="comp-value" style="color: #0a1628;">{{ comparison_1_value }}</div>
+      <div class="comp-desc">{{ comparison_1_desc }}</div>
+    </div>
+    <div class="comparison-col" style="border-top-color: {{ comparison_2_color }};">
+      <div class="comp-title" style="color: {{ comparison_2_color }};">{{ comparison_2_title }}</div>
+      <div class="comp-value" style="color: #0a1628;">{{ comparison_2_value }}</div>
+      <div class="comp-desc">{{ comparison_2_desc }}</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_text }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0099",
+  "variables": {
+    "page_title": "string",
+    "header_subtitle": "string",
+    "header_year": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_delta": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_2_delta": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_3_delta": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "kpi_4_delta": "string",
+    "divider_label_1": "string",
+    "timeline_heading": "string",
+    "timeline_events": "array of {year: string, description: string}",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "divider_label_2": "string",
+    "progress_section_title": "string",
+    "progress_bars": "array of {label: string, value: string, percent: number, color: string (hex)}",
+    "table_title": "string",
+    "table_headers": "array of string",
+    "table_rows": "array of array of string",
+    "comparison_1_title": "string",
+    "comparison_1_value": "string",
+    "comparison_1_desc": "string",
+    "comparison_1_color": "string (hex color)",
+    "comparison_2_title": "string",
+    "comparison_2_value": "string",
+    "comparison_2_desc": "string",
+    "comparison_2_color": "string (hex color)",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

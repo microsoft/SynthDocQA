@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0095",
+  "industry": "financial_services_wealth",
+  "page_role": "letter_from_ceo",
+  "layout": {
+    "name": "infographic_flow",
+    "description": "Visual storytelling with icons, arrows, numbered steps, and callout boxes. Content arranged as a flow or journey, not a grid."
+  },
+  "color_palette": {
+    "name": "retail_vibrant",
+    "primary": "#e91e63",
+    "secondary": "#9c27b0",
+    "accent": "#ff9800",
+    "bg": "#ffffff",
+    "surface": "#fce4ec",
+    "text": "#212121",
+    "muted": "#757575"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "numbered_list_items",
+    "tag_or_badge_row",
+    "top_navigation_tabs",
+    "pull_quote_block",
+    "quote_attribution"
+  ],
+  "density": "sparse",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 663829
+}

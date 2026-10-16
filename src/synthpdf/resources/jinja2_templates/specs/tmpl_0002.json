@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0002",
+  "industry": "academic_research",
+  "page_role": "product_showcase",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "aerospace_dark",
+    "primary": "#0d1b2a",
+    "secondary": "#1b263b",
+    "accent": "#415a77",
+    "bg": "#e0e1dd",
+    "surface": "#ffffff",
+    "text": "#0d1b2a",
+    "muted": "#778da9"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "chart_placeholder_box",
+    "top_navigation_tabs",
+    "timeline_nodes",
+    "pull_quote_block"
+  ],
+  "density": "sparse",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by National Geographic spreads \u2014 bold imagery, adventurous typography",
+  "seed": 97251
+}

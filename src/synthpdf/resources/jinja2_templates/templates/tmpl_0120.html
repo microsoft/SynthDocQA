@@ -1,0 +1,592 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0d1b2a;
+    background: #e0e1dd;
+    position: relative;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #e0e1dd;
+  }
+
+  /* Large background watermark motif */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 220px;
+    color: rgba(65, 90, 119, 0.06);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    text-transform: uppercase;
+  }
+
+  /* Full-bleed visual area — covers ~65% of page */
+  .hero-visual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 730px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(13, 27, 42, 0.82) 0%,
+      rgba(27, 38, 59, 0.70) 40%,
+      rgba(13, 27, 42, 0.92) 100%
+    );
+    z-index: 2;
+  }
+
+  /* Top brand strip */
+  .brand-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 52px;
+    background: #0d1b2a;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-strip .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: #415a77;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip .logo-mark span {
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+  }
+
+  .brand-strip .brand-name {
+    color: #e0e1dd;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip .doc-type {
+    color: #778da9;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* Colored section band */
+  .section-band {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #415a77 0%, #778da9 60%, #e0e1dd 100%);
+    z-index: 10;
+  }
+
+  /* Title area overlaid on hero */
+  .title-area {
+    position: absolute;
+    top: 85px;
+    left: 40px;
+    right: 40px;
+    z-index: 10;
+  }
+
+  .title-area .overline {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #778da9;
+    margin-bottom: 10px;
+  }
+
+  .title-area h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .title-area .subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #e0e1dd;
+    max-width: 480px;
+  }
+
+  /* Semi-transparent panel for intro text */
+  .intro-panel {
+    position: absolute;
+    top: 260px;
+    left: 40px;
+    width: 340px;
+    background: rgba(13, 27, 42, 0.88);
+    border-left: 3px solid #415a77;
+    padding: 20px 22px;
+    z-index: 10;
+  }
+
+  .intro-panel p {
+    color: #e0e1dd;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  /* Comparison columns / KPI cards overlaid on hero */
+  .kpi-row {
+    position: absolute;
+    top: 420px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .kpi-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 2px;
+    padding: 18px 16px;
+    border-top: 3px solid var(--kpi-color, #415a77);
+    position: relative;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.0;
+    color: #0d1b2a;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #778da9;
+    line-height: 1.3;
+  }
+
+  /* Timeline section — lower portion */
+  .timeline-section {
+    position: absolute;
+    top: 540px;
+    left: 0;
+    right: 0;
+    bottom: 52px;
+    z-index: 10;
+    padding: 0 40px;
+  }
+
+  .timeline-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .timeline-header h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .timeline-header .header-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(119, 141, 169, 0.4);
+  }
+
+  /* Timeline track */
+  .timeline-track {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #415a77, rgba(65, 90, 119, 0.3));
+  }
+
+  .timeline-entry {
+    position: relative;
+    margin-bottom: 18px;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #415a77;
+    border: 2px solid #e0e1dd;
+    z-index: 2;
+  }
+
+  .timeline-entry:first-child::before {
+    background: #ffffff;
+    border-color: #415a77;
+    box-shadow: 0 0 0 3px rgba(65, 90, 119, 0.3);
+  }
+
+  .timeline-date {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #778da9;
+    letter-spacing: 0.02em;
+    padding-top: 2px;
+  }
+
+  .timeline-content {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 2px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--entry-color, #415a77);
+  }
+
+  .timeline-content h3 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0d1b2a;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .timeline-content p {
+    font-family: Arial, sans-serif;
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: #1b263b;
+  }
+
+  .timeline-content .status-tag {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 1px;
+    background: rgba(65, 90, 119, 0.15);
+    color: #415a77;
+  }
+
+  .timeline-content .status-tag.complete {
+    background: rgba(46, 125, 50, 0.12);
+    color: #2e7d32;
+  }
+
+  .timeline-content .status-tag.pending {
+    background: rgba(230, 81, 0, 0.12);
+    color: #e65100;
+  }
+
+  .timeline-content .status-tag.active {
+    background: rgba(65, 90, 119, 0.18);
+    color: #0d1b2a;
+  }
+
+  /* Page number footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    background: #0d1b2a;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .page-footer .footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #778da9;
+  }
+
+  .page-footer .footer-center {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    color: #778da9;
+    letter-spacing: 0.05em;
+  }
+
+  .page-footer .page-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #415a77;
+  }
+
+  /* Lower section background panel */
+  .lower-bg {
+    position: absolute;
+    top: 520px;
+    left: 0;
+    width: 100%;
+    bottom: 48px;
+    background: linear-gradient(180deg, rgba(13, 27, 42, 0.95) 0%, #0d1b2a 100%);
+    z-index: 5;
+  }
+
+  /* Divider accent */
+  .lower-divider {
+    position: absolute;
+    top: 520px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #415a77;
+    z-index: 6;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- Large background watermark -->
+  <div class="watermark">{{ watermark_text }}</div>
+
+  <!-- Full-bleed hero visual -->
+  <div class="hero-visual">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    <div class="hero-overlay"></div>
+  </div>
+
+  <!-- Lower section dark background -->
+  <div class="lower-bg"></div>
+  <div class="lower-divider"></div>
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="logo-area">
+      <div class="logo-mark"><span>{{ logo_initials }}</span></div>
+      <span class="brand-name">{{ company_name }}</span>
+    </div>
+    <span class="doc-type">{{ document_type }}</span>
+  </div>
+
+  <!-- Section band -->
+  <div class="section-band"></div>
+
+  <!-- Title area -->
+  <div class="title-area">
+    <div class="overline">{{ section_overline }}</div>
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- Intro panel -->
+  <div class="intro-panel">
+    <p>{{ body_paragraph_1 }}</p>
+  </div>
+
+  <!-- KPI comparison columns -->
+  <div class="kpi-row">
+    <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- Timeline section -->
+  <div class="timeline-section">
+    <div class="timeline-header">
+      <h2>{{ timeline_heading }}</h2>
+      <div class="header-line"></div>
+    </div>
+
+    <div class="timeline-track">
+      {% for entry in timeline_entries %}
+      <div class="timeline-entry">
+        <div class="timeline-date">{{ entry.date }}</div>
+        <div class="timeline-content" style="--entry-color: {{ entry.color }};">
+          <h3>{{ entry.title }}</h3>
+          <p>{{ entry.description }}</p>
+          <span class="status-tag {{ entry.status_class }}">{{ entry.status }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Page footer -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_label }}</span>
+    <span class="footer-center">{{ footer_classification }}</span>
+    <span class="page-number">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0120",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "section_overline": "string",
+    "watermark_text": "string",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "logo_initials": "string",
+    "company_name": "string",
+    "document_type": "string",
+    "body_paragraph_1": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "timeline_heading": "string",
+    "timeline_entries": [
+      {
+        "date": "string",
+        "title": "string",
+        "description": "string",
+        "color": "string (hex color)",
+        "status": "string",
+        "status_class": "string (complete|pending|active)"
+      }
+    ],
+    "footer_label": "string",
+    "footer_classification": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

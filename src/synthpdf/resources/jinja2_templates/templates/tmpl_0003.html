@@ -1,0 +1,814 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fff8f0;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #3e2723;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fff8f0;
+    display: grid;
+    grid-template-rows: 6px 54px 1fr 42px;
+    grid-template-columns: 1fr;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 160px;
+    font-weight: 700;
+    color: rgba(92, 64, 51, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 0.08em;
+  }
+
+  /* Secondary watermark ring */
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    height: 520px;
+    border: 3px solid rgba(92, 64, 51, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Top accent band */
+  .top-band {
+    background: linear-gradient(90deg, #5c4033 0%, #795548 60%, #8bc34a 100%);
+    width: 100%;
+    height: 6px;
+  }
+
+  /* Header band */
+  .header-band {
+    background: #5c4033;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-brand-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+
+  .header-brand-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffffff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .header-doc-ref {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.08em;
+  }
+
+  /* Main content area */
+  .main-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    padding: 0;
+  }
+
+  /* Section divider hero area */
+  .section-hero {
+    padding: 48px 36px 28px 36px;
+    position: relative;
+  }
+
+  .section-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 72px;
+    color: #8bc34a;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    opacity: 0.85;
+  }
+
+  .section-number::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #8bc34a;
+    margin-top: 10px;
+    border-radius: 2px;
+  }
+
+  .section-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #5c4033;
+    line-height: 1.2;
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+    max-width: 520px;
+  }
+
+  .section-subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #795548;
+    margin-top: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .section-description {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #3e2723;
+    line-height: 1.5;
+    margin-top: 14px;
+    max-width: 480px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Horizontal divider line */
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, #5c4033 0%, #795548 40%, rgba(141, 110, 99, 0.2) 100%);
+    margin: 0 36px;
+  }
+
+  /* Content body - 2 column layout */
+  .content-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 22px 36px 18px 36px;
+  }
+
+  .content-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* KPI Metric Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid rgba(92, 64, 51, 0.12);
+    border-radius: 3px;
+    padding: 12px 10px 10px 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+
+  .kpi-card:nth-child(1)::before { background: {{ kpi_1_color }}; }
+  .kpi-card:nth-child(2)::before { background: {{ kpi_2_color }}; }
+  .kpi-card:nth-child(3)::before { background: {{ kpi_3_color }}; }
+  .kpi-card:nth-child(4)::before { background: {{ kpi_4_color }}; }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.1;
+    color: #5c4033;
+  }
+
+  .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .kpi-delta {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  .kpi-delta.positive { color: #8bc34a; }
+  .kpi-delta.negative { color: #c0392b; }
+
+  /* Percentage Donut */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(92, 64, 51, 0.12);
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .donut-svg {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .donut-ring {
+    fill: none;
+    stroke: rgba(92, 64, 51, 0.1);
+    stroke-width: 6;
+  }
+
+  .donut-segment {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.3s;
+  }
+
+  .donut-center-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    fill: #5c4033;
+  }
+
+  .donut-info {
+    flex: 1;
+  }
+
+  .donut-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #5c4033;
+    letter-spacing: 0.05em;
+  }
+
+  .donut-desc {
+    font-size: 10px;
+    color: #8d6e63;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* Timeline Nodes */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(180deg, #8bc34a, #795548);
+    border-radius: 1px;
+  }
+
+  .timeline-node {
+    position: relative;
+    padding-left: 16px;
+    padding-bottom: 12px;
+  }
+
+  .timeline-node:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-node::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #8bc34a;
+  }
+
+  .timeline-node.active::before {
+    background: #8bc34a;
+    border-color: #8bc34a;
+  }
+
+  .timeline-date {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #795548;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .timeline-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #3e2723;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  /* Data Table */
+  .data-table-wrapper {
+    background: #ffffff;
+    border: 1px solid rgba(92, 64, 51, 0.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .data-table-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #5c4033;
+    padding: 8px 10px 6px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(92, 64, 51, 0.1);
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+  }
+
+  .data-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8d6e63;
+    background: rgba(92, 64, 51, 0.04);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(92, 64, 51, 0.1);
+  }
+
+  .data-table tbody td {
+    padding: 5px 10px;
+    border-bottom: 1px solid rgba(92, 64, 51, 0.06);
+    font-size: 9px;
+    color: #3e2723;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(255, 248, 240, 0.5);
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(92, 64, 51, 0.06);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .numbered-list li:last-child {
+    border-bottom: none;
+  }
+
+  .list-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #5c4033;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .list-text {
+    flex: 1;
+    color: #3e2723;
+  }
+
+  /* Section label */
+  .content-section-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #795548;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #8bc34a;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  /* Logo/brand strip */
+  .brand-strip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    background: rgba(92, 64, 51, 0.03);
+    border-radius: 3px;
+    border: 1px solid rgba(92, 64, 51, 0.08);
+  }
+
+  .brand-strip-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 3px;
+  }
+
+  .brand-strip-info {
+    flex: 1;
+  }
+
+  .brand-strip-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #5c4033;
+    letter-spacing: 0.05em;
+  }
+
+  .brand-strip-tagline {
+    font-size: 9px;
+    color: #8d6e63;
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Footer */
+  .footer {
+    background: #5c4033;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #8bc34a;
+  }
+
+  .footnotes-strip {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .footnote-item {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-page {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #ffffff;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-branding {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Print overrides */
+  @media print {
+    html, body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page {
+      page-break-after: always;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top accent band -->
+  <div class="top-band"></div>
+
+  <!-- Header band -->
+  <div class="header-band">
+    <div class="header-brand">
+      <img class="header-brand-logo" src="{{ logo_url }}" alt="{{ company_name }} logo">
+      <span class="header-brand-name">{{ company_name }}</span>
+    </div>
+    <span class="header-doc-ref">{{ document_ref }} &mdash; {{ document_date }}</span>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+
+    <!-- Section divider hero -->
+    <div class="section-hero">
+      <div class="section-number">{{ section_number }}</div>
+      <h1 class="section-title">{{ page_title }}</h1>
+      <h3 class="section-subtitle">{{ section_heading }}</h3>
+      <p class="section-description">{{ body_paragraph_1 }}</p>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <!-- Two-column content body -->
+    <div class="content-body">
+
+      <!-- LEFT COLUMN -->
+      <div class="content-left">
+
+        <!-- KPI Metric Cards -->
+        <div>
+          <div class="content-section-label">{{ kpi_section_title }}</div>
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-value">{{ kpi_1_value }}</div>
+              <div class="kpi-label">{{ kpi_1_label }}</div>
+              <div class="kpi-delta positive">{{ kpi_1_delta }}</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">{{ kpi_2_value }}</div>
+              <div class="kpi-label">{{ kpi_2_label }}</div>
+              <div class="kpi-delta positive">{{ kpi_2_delta }}</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">{{ kpi_3_value }}</div>
+              <div class="kpi-label">{{ kpi_3_label }}</div>
+              <div class="kpi-delta negative">{{ kpi_3_delta }}</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value">{{ kpi_4_value }}</div>
+              <div class="kpi-label">{{ kpi_4_label }}</div>
+              <div class="kpi-delta positive">{{ kpi_4_delta }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Percentage Donut -->
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 72 72">
+            <circle class="donut-ring" cx="36" cy="36" r="28"></circle>
+            <circle class="donut-segment" cx="36" cy="36" r="28"
+              stroke="{{ donut_color }}"
+              stroke-dasharray="{{ donut_dash_value }} {{ donut_dash_remainder }}"
+            ></circle>
+            <text class="donut-center-text" x="36" y="40" text-anchor="middle">{{ donut_percentage }}</text>
+          </svg>
+          <div class="donut-info">
+            <div class="donut-title">{{ donut_title }}</div>
+            <div class="donut-desc">{{ donut_description }}</div>
+          </div>
+        </div>
+
+        <!-- Brand Strip -->
+        <div class="brand-strip">
+          <img class="brand-strip-logo" src="{{ brand_logo_url }}" alt="{{ brand_name }}">
+          <div class="brand-strip-info">
+            <div class="brand-strip-name">{{ brand_name }}</div>
+            <div class="brand-strip-tagline">{{ brand_tagline }}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="content-right">
+
+        <!-- Timeline -->
+        <div>
+          <div class="content-section-label">{{ timeline_title }}</div>
+          <div class="timeline">
+            {% for node in timeline_nodes %}
+            <div class="timeline-node {{ node.status }}">
+              <div class="timeline-date">{{ node.date }}</div>
+              <div class="timeline-label">{{ node.label }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="data-table-wrapper">
+          <div class="data-table-title">{{ table_title }}</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                {% for header in table_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in table_rows %}
+              <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Numbered List -->
+        <div>
+          <div class="content-section-label">{{ list_title }}</div>
+          <ol class="numbered-list">
+            {% for item in numbered_items %}
+            <li>
+              <span class="list-num">{{ loop.index }}</span>
+              <span class="list-text">{{ item }}</span>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer with footnotes strip -->
+  <div class="footer">
+    <div class="footnotes-strip">
+      {% for fn in footnotes %}
+      <span class="footnote-item">{{ fn }}</span>
+      {% endfor %}
+    </div>
+    <span class="footer-branding">{{ footer_branding }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0003",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "section_number": "string",
+    "body_paragraph_1": "string",
+    "watermark_text": "string",
+    "company_name": "string",
+    "logo_url": "string (URL)",
+    "document_ref": "string",
+    "document_date": "string",
+    "kpi_section_title": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_delta": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_2_delta": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_3_delta": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "kpi_4_delta": "string",
+    "donut_color": "string (hex color)",
+    "donut_dash_value": "number",
+    "donut_dash_remainder": "number",
+    "donut_percentage": "string",
+    "donut_title": "string",
+    "donut_description": "string",
+    "brand_logo_url": "string (URL)",
+    "brand_name": "string",
+    "brand_tagline": "string",
+    "timeline_title": "string",
+    "timeline_nodes": "array of {date: string, label: string, status: string}",
+    "table_title": "string",
+    "table_headers": "array of string",
+    "table_rows": "array of array of string",
+    "list_title": "string",
+    "numbered_items": "array of string",
+    "footnotes": "array of string",
+    "footer_branding": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

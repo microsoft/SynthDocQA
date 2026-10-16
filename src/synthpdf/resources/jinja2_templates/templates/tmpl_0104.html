@@ -1,0 +1,701 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0d0d0d;
+    background: #f9f7f4;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  .page-container::before {
+    content: "{{ watermark_text }}";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 220px;
+    color: rgba(184, 150, 12, 0.04);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+
+  .hero {
+    width: 100%;
+    height: 374px;
+    background: #1a1a1a;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 48px 56px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #b8960c 0%, #b8960c 30%, #2d2d2d 30%, #2d2d2d 100%);
+  }
+
+  .hero-deco-1 {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 260px;
+    height: 260px;
+    border: 3px solid rgba(184, 150, 12, 0.15);
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .hero-deco-2 {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 160px;
+    height: 160px;
+    border: 2px solid rgba(184, 150, 12, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .hero-deco-grid {
+    position: absolute;
+    top: 20px;
+    right: 240px;
+    display: grid;
+    grid-template-columns: repeat(5, 8px);
+    grid-template-rows: repeat(5, 8px);
+    gap: 6px;
+    z-index: 0;
+  }
+
+  .hero-deco-grid span {
+    width: 8px;
+    height: 8px;
+    background: rgba(184, 150, 12, 0.12);
+    border-radius: 50%;
+  }
+
+  .page-number {
+    position: absolute;
+    top: 20px;
+    left: 56px;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #b8960c;
+    z-index: 2;
+  }
+
+  .hero-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    color: #ffffff;
+    text-transform: uppercase;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 .accent {
+    color: #b8960c;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #888888;
+    max-width: 520px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .section-band {
+    width: 100%;
+    height: 42px;
+    background: #2d2d2d;
+    display: flex;
+    align-items: center;
+    padding: 0 56px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .section-band::before {
+    content: "";
+    width: 4px;
+    height: 18px;
+    background: #b8960c;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  .section-band-label {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .section-band-right {
+    margin-left: auto;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #888888;
+    letter-spacing: 0.05em;
+  }
+
+  .content-area {
+    width: 100%;
+    padding: 32px 56px 24px 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  .team-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .team-card-header {
+    width: 100%;
+    height: 6px;
+    background: #1a1a1a;
+  }
+
+  .team-card-header.accent-bar {
+    background: #b8960c;
+  }
+
+  .team-card-body {
+    padding: 18px 14px 14px 14px;
+    text-align: center;
+  }
+
+  .team-card-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #f9f7f4;
+    border: 2px solid #b8960c;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .team-card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .team-card-avatar .initials {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #b8960c;
+  }
+
+  .team-card-name {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    letter-spacing: 0;
+  }
+
+  .team-card-role {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #b8960c;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .team-card-desc {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #888888;
+    line-height: 1.4;
+  }
+
+  .divider-label {
+    display: flex;
+    align-items: center;
+    margin: 4px 0 20px 0;
+  }
+
+  .divider-label::before {
+    content: "";
+    flex: 0 0 24px;
+    height: 2px;
+    background: #b8960c;
+    margin-right: 10px;
+  }
+
+  .divider-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin-left: 10px;
+  }
+
+  .divider-label span {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .lower-columns {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 28px;
+  }
+
+  .lower-col h3 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .progress-item {
+    margin-bottom: 10px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #0d0d0d;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .progress-label .value {
+    color: #b8960c;
+    font-weight: 700;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #f0ece4;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #b8960c;
+    border-radius: 0;
+  }
+
+  .progress-bar-fill.dark {
+    background: #1a1a1a;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #1a1a1a;
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 9px;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    color: #0d0d0d;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(184, 150, 12, 0.04);
+  }
+
+  .data-table .highlight {
+    color: #b8960c;
+    font-weight: 700;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #ffffff;
+    border: 1px dashed rgba(184, 150, 12, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  .chart-placeholder-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 6px;
+  }
+
+  .chart-placeholder-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 36px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    z-index: 2;
+  }
+
+  .page-footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.03em;
+  }
+
+  .page-footer-right {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 10px;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .connector-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    position: relative;
+    height: 28px;
+  }
+
+  .connector-vertical {
+    width: 2px;
+    height: 14px;
+    background: #b8960c;
+  }
+
+  .connector-horizontal {
+    height: 2px;
+    background: rgba(184, 150, 12, 0.3);
+    flex: 1;
+    margin-top: 13px;
+    max-width: 520px;
+  }
+
+  .leader-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .leader-card {
+    background: #ffffff;
+    border: 2px solid #b8960c;
+    padding: 0;
+    width: 200px;
+    overflow: hidden;
+  }
+
+  .leader-card .team-card-header {
+    background: #b8960c;
+    height: 4px;
+  }
+
+  .leader-card .team-card-body {
+    padding: 14px 16px 12px 16px;
+  }
+
+  .leader-card .team-card-avatar {
+    width: 58px;
+    height: 58px;
+    border-width: 3px;
+  }
+
+  .leader-card .team-card-name {
+    font-size: 14px;
+  }
+
+  .leader-card .team-card-role {
+    font-size: 11px;
+    color: #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <div class="hero">
+    <div class="hero-deco-1"></div>
+    <div class="hero-deco-2"></div>
+    <div class="hero-deco-grid">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span class="page-number">{{ page_number }}</span>
+    <div class="hero-label">{{ section_label }}</div>
+    <h1>{{ page_title_line1 }}<br><span class="accent">{{ page_title_line2 }}</span></h1>
+    <div class="hero-subtitle">{{ hero_description }}</div>
+  </div>
+
+  <div class="section-band">
+    <span class="section-band-label">{{ band_label }}</span>
+    <span class="section-band-right">{{ band_year }}</span>
+  </div>
+
+  <div class="content-area">
+
+    <div class="leader-row">
+      <div class="leader-card">
+        <div class="team-card-header"></div>
+        <div class="team-card-body">
+          <div class="team-card-avatar">
+            <span class="initials">{{ leader_initials }}</span>
+          </div>
+          <div class="team-card-name">{{ leader_name }}</div>
+          <div class="team-card-role">{{ leader_role }}</div>
+          <div class="team-card-desc">{{ leader_description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector-row">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div class="connector-vertical"></div>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:center; margin-bottom:12px;">
+      <div class="connector-horizontal"></div>
+    </div>
+
+    <div class="team-grid">
+      {% for member in team_members %}
+      <div class="team-card">
+        <div class="team-card-header {% if loop.index == 1 %}accent-bar{% endif %}"></div>
+        <div class="team-card-body">
+          <div class="team-card-avatar">
+            <span class="initials">{{ member.initials }}</span>
+          </div>
+          <div class="team-card-name">{{ member.name }}</div>
+          <div class="team-card-role">{{ member.role }}</div>
+          <div class="team-card-desc">{{ member.description }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="divider-label">
+      <span>{{ divider_label }}</span>
+    </div>
+
+    <div class="lower-columns">
+
+      <div class="lower-col">
+        <h3>{{ col1_heading }}</h3>
+        {% for bar in progress_bars %}
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>{{ bar.label }}</span>
+            <span class="value">{{ bar.value }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-bar-fill {% if loop.index is odd %}dark{% endif %}" style="width: {{ bar.value }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="lower-col">
+        <h3>{{ col2_heading }}</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.department }}</td>
+              <td class="highlight">{{ row.headcount }}</td>
+              <td>{{ row.growth }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lower-col">
+        <h3>{{ col3_heading }}</h3>
+        <div class="chart-placeholder">
+          <svg class="chart-placeholder-icon" viewBox="0 0 28 28" fill="none">
+            <rect x="2" y="14" width="5" height="12" fill="#b8960c" opacity="0.6"/>
+            <rect x="9" y="8" width="5" height="18" fill="#1a1a1a" opacity="0.5"/>
+            <rect x="16" y="11" width="5" height="15" fill="#b8960c" opacity="0.8"/>
+            <rect x="23" y="4" width="5" height="22" fill="#1a1a1a" opacity="0.7"/>
+          </svg>
+          <span class="chart-placeholder-label">{{ chart_label }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="page-footer-left">{{ footer_text }}</span>
+    <span class="page-footer-right">{{ footer_brand }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0104",
+  "variables": {
+    "page_title_line1": "string — First line of the hero title (e.g., 'Leadership')",
+    "page_title_line2": "string — Second line of the hero title, rendered in accent gold (e.g., 'Team Structure')",
+    "page_title": "string — Document title for the HTML head element",
+    "page_number": "string — Page number displayed in hero corner (e.g., '12')",
+    "section_label": "string — Small uppercase label above the title (e.g., 'Our People')",
+    "hero_description": "string — Subtitle paragraph in the hero section",
+    "watermark_text": "string — Large faded background watermark text (e.g., 'TEAM')",
+    "band_label": "string — Label in the colored section band (e.g., 'Organization Overview')",
+    "band_year": "string — Year or date on the right of the band (e.g., 'FY 2024')",
+    "leader_initials": "string — Initials for the leader avatar (e.g., 'JD')",
+    "leader_name": "string — Full name of the team leader",
+    "leader_role": "string — Role/title of the team leader",
+    "leader_description": "string — Short bio or responsibility description",
+    "team_members": "array of objects — Each with: initials (string), name (string), role (string), description (string)",
+    "divider_label": "string — Label in the divider between org chart and metrics (e.g., 'Team Performance Metrics')",
+    "col1_heading": "string — Heading for the progress bars column",
+    "progress_bars": "array of objects — Each with: label (string), value (number 0-100)",
+    "col2_heading": "string — Heading for the data table column",
+    "table_headers": "array of strings — Column headers for the data table (3 columns)",
+    "table_rows": "array of objects — Each with: department (string), headcount (string), growth (string)",
+    "col3_heading": "string — Heading for the chart placeholder column",
+    "chart_label": "string — Label inside the chart placeholder box",
+    "footer_text": "string — Left-aligned footer text (e.g., 'Confidential — Internal Use Only')",
+    "footer_brand": "string — Right-aligned brand/company name in footer"
+  }
+}
+END_TEMPLATE_VARIABLES -->

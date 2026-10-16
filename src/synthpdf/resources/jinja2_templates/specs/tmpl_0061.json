@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0061",
+  "industry": "big_tech",
+  "page_role": "map_or_geographic",
+  "layout": {
+    "name": "infographic_flow",
+    "description": "Visual storytelling with icons, arrows, numbered steps, and callout boxes. Content arranged as a flow or journey, not a grid."
+  },
+  "color_palette": {
+    "name": "fintech_gradient",
+    "primary": "#6c3483",
+    "secondary": "#1a5276",
+    "accent": "#17a589",
+    "bg": "#fdfcff",
+    "surface": "#f4ecf7",
+    "text": "#1c1c1c",
+    "muted": "#7d7d7d"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "divider_with_label",
+    "footnotes_strip",
+    "logo_or_brand_strip",
+    "comparison_columns",
+    "two_column_body_text",
+    "chart_placeholder_box"
+  ],
+  "density": "balanced",
+  "motif": "none",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 63156
+}

@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0014",
+  "industry": "management_consulting",
+  "page_role": "letter_from_ceo",
+  "layout": {
+    "name": "card_mosaic",
+    "description": "Page composed entirely of rectangular cards of varying sizes, arranged in a masonry or Pinterest-style layout."
+  },
+  "color_palette": {
+    "name": "retail_vibrant",
+    "primary": "#e91e63",
+    "secondary": "#9c27b0",
+    "accent": "#ff9800",
+    "bg": "#ffffff",
+    "surface": "#fce4ec",
+    "text": "#212121",
+    "muted": "#757575"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "divider_with_label",
+    "logo_or_brand_strip",
+    "data_table",
+    "icon_with_text_grid",
+    "comparison_columns",
+    "numbered_list_items"
+  ],
+  "density": "balanced",
+  "motif": "geometric_angular_shapes",
+  "design_direction": "Inspired by IKEA product catalogs \u2014 functional, grid-based, friendly, Scandinavian",
+  "seed": 580828
+}

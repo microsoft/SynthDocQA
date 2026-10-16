@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0051",
+  "industry": "real_estate_infrastructure",
+  "page_role": "timeline_page",
+  "layout": {
+    "name": "data_dense_grid",
+    "description": "Tight 3-4 column grid packed with metrics, mini-tables, and charts. Small typography, lots of information per cm2. Bloomberg/Reuters style."
+  },
+  "color_palette": {
+    "name": "academic_classic",
+    "primary": "#7b1e1e",
+    "secondary": "#a52a2a",
+    "accent": "#4682b4",
+    "bg": "#fffff8",
+    "surface": "#f5f5dc",
+    "text": "#1a0a0a",
+    "muted": "#6b6b6b"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "data_table",
+    "comparison_columns",
+    "kpi_metric_cards",
+    "colored_section_band",
+    "percentage_donut",
+    "chart_placeholder_box",
+    "tag_or_badge_row"
+  ],
+  "density": "sparse",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by ExxonMobil annual reports \u2014 traditional corporate, structured columns",
+  "seed": 13266
+}

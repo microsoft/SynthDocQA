@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0007",
+  "industry": "management_consulting",
+  "page_role": "table_of_contents",
+  "layout": {
+    "name": "sidebar_navigation",
+    "description": "Persistent left or right sidebar (20% width) with section labels, page numbers, or sub-navigation. Main content in remaining 80%."
+  },
+  "color_palette": {
+    "name": "ngo_hopeful",
+    "primary": "#1565c0",
+    "secondary": "#0277bd",
+    "accent": "#f9a825",
+    "bg": "#e3f2fd",
+    "surface": "#ffffff",
+    "text": "#0d2137",
+    "muted": "#546e7a"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "progress_bars",
+    "tag_or_badge_row",
+    "callout_box",
+    "footnotes_strip",
+    "logo_or_brand_strip"
+  ],
+  "density": "sparse",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by Goldman Sachs investment memoranda \u2014 conservative, trust-signaling, formal",
+  "seed": 258607
+}

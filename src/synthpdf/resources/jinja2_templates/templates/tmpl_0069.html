@@ -1,0 +1,657 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #3e2723;
+    background: #fff8f0;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    grid-template-rows: 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Dotted pattern overlay */
+  .page-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #8d6e63 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    opacity: 0.04;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* LEFT PANE */
+  .left-pane {
+    background: #5c4033;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .left-pane::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+
+  /* Brand strip */
+  .brand-strip {
+    background: #3e2723;
+    padding: 28px 30px 22px 30px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .brand-logo {
+    width: 44px;
+    height: 44px;
+    background: #8bc34a;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-logo svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .brand-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .brand-tagline {
+    font-size: 9px;
+    color: #8d6e63;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* CEO portrait area */
+  .portrait-section {
+    padding: 30px 30px 20px 30px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .portrait-frame {
+    width: 100%;
+    height: 260px;
+    background: linear-gradient(135deg, #795548 0%, #5c4033 100%);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .portrait-placeholder-text {
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .ceo-name-left {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: #ffffff;
+    margin-top: 18px;
+    line-height: 1.3;
+  }
+
+  .ceo-title-role {
+    font-size: 11px;
+    color: #8bc34a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 30px 10px 30px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .divider-label::before,
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .divider-label span {
+    font-size: 8px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  /* KPI cards in left pane */
+  .kpi-section {
+    padding: 10px 30px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .kpi-card {
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 14px 16px;
+    border-left: 3px solid;
+  }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 26px;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* Progress bars */
+  .progress-section {
+    padding: 0 30px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .progress-item-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 5px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  /* Callout in left pane */
+  .left-callout {
+    margin: auto 30px 30px 30px;
+    background: rgba(139,195,74,0.12);
+    border: 1px solid rgba(139,195,74,0.25);
+    border-radius: 6px;
+    padding: 16px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .left-callout-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .left-callout-attribution {
+    font-size: 9px;
+    color: #8bc34a;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* RIGHT PANE */
+  .right-pane {
+    background: #fff8f0;
+    padding: 44px 42px 36px 42px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  /* Colored section band at top of right pane */
+  .section-band {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #8bc34a 0%, #5c4033 100%);
+  }
+
+  .page-label {
+    font-size: 8px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+
+  .letter-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #3e2723;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .letter-subtitle {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #795548;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .right-divider {
+    width: 50px;
+    height: 2px;
+    background: #8bc34a;
+    margin-bottom: 20px;
+  }
+
+  .greeting {
+    font-size: 12px;
+    color: #5c4033;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .letter-body p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #3e2723;
+    margin-bottom: 12px;
+    text-align: justify;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    background: #ffffff;
+    border: 1px solid rgba(141,110,99,0.15);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+    position: relative;
+  }
+
+  .chart-placeholder-header {
+    font-size: 9px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .chart-area {
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(180deg, rgba(139,195,74,0.06) 0%, rgba(139,195,74,0.02) 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 10px 16px;
+    gap: 6px;
+  }
+
+  .chart-bar {
+    flex: 1;
+    border-radius: 3px 3px 0 0;
+    max-width: 32px;
+  }
+
+  .chart-caption {
+    font-size: 9px;
+    color: #8d6e63;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* Callout box in right pane */
+  .callout-box {
+    background: #ffffff;
+    border-left: 3px solid #8bc34a;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+
+  .callout-box p {
+    font-size: 11px;
+    color: #5c4033;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* Closing */
+  .letter-closing {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+
+  .signature-line {
+    font-size: 12px;
+    color: #3e2723;
+    margin-bottom: 2px;
+  }
+
+  .signature-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #5c4033;
+    margin-top: 12px;
+  }
+
+  .signature-title {
+    font-size: 10px;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  /* Footer band */
+  .footer-band {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: #3e2723;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 42px;
+    z-index: 5;
+  }
+
+  .footer-band span {
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-page {
+    font-size: 8px;
+    color: #8bc34a;
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- LEFT PANE -->
+  <div class="left-pane">
+
+    <!-- Brand strip -->
+    <div class="brand-strip">
+      <div class="brand-logo">
+        <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2 L22 8 L22 18 L13 24 L4 18 L4 8 Z" fill="#3e2723" stroke="#3e2723" stroke-width="0.5"/>
+          <path d="M13 6 L18 9.5 L18 16.5 L13 20 L8 16.5 L8 9.5 Z" fill="none" stroke="#fff8f0" stroke-width="1"/>
+          <path d="M13 10 L15.5 11.5 L15.5 15 L13 16.5 L10.5 15 L10.5 11.5 Z" fill="#fff8f0"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">{{ company_name }}</div>
+        <div class="brand-tagline">{{ company_tagline }}</div>
+      </div>
+    </div>
+
+    <!-- CEO Portrait -->
+    <div class="portrait-section">
+      <div class="portrait-frame">
+        <img src="{{ ceo_portrait_url }}" alt="{{ ceo_portrait_alt }}" onerror="this.style.display='none';this.parentElement.querySelector('.portrait-placeholder-text').style.display='block';">
+        <span class="portrait-placeholder-text" style="display:none;position:absolute;">CEO Portrait</span>
+      </div>
+      <div class="ceo-name-left">{{ ceo_name }}</div>
+      <div class="ceo-title-role">{{ ceo_role }}</div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider-label">
+      <span>{{ kpi_section_label }}</span>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-section">
+      {% for kpi in kpi_cards %}
+      <div class="kpi-card" style="border-left-color: {{ kpi.color }};">
+        <div class="kpi-value">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Progress Bars -->
+    <div class="progress-section">
+      {% for bar in progress_bars %}
+      <div>
+        <div class="progress-item-label">
+          <span>{{ bar.label }}</span>
+          <span>{{ bar.percent }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Callout -->
+    <div class="left-callout">
+      <div class="left-callout-text">"{{ callout_quote }}"</div>
+      <div class="left-callout-attribution">— {{ callout_attribution }}</div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANE -->
+  <div class="right-pane">
+    <div class="section-band"></div>
+
+    <div class="page-label">{{ page_label }}</div>
+    <h1 class="letter-title">{{ page_title }}</h1>
+    <div class="letter-subtitle">{{ section_heading }}</div>
+    <div class="right-divider"></div>
+
+    <div class="greeting">{{ greeting }}</div>
+
+    <div class="letter-body">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+
+      <!-- Chart placeholder -->
+      <div class="chart-placeholder">
+        <div class="chart-placeholder-header">{{ chart_title }}</div>
+        <div class="chart-area">
+          {% for bar in chart_bars %}
+          <div class="chart-bar" style="height: {{ bar.height }}%; background: {{ bar.color }};"></div>
+          {% endfor %}
+        </div>
+        <div class="chart-caption">{{ chart_caption }}</div>
+      </div>
+
+      <p>{{ body_paragraph_3 }}</p>
+
+      <!-- Callout box -->
+      <div class="callout-box">
+        <p>{{ callout_box_text }}</p>
+      </div>
+
+      <p>{{ body_paragraph_4 }}</p>
+    </div>
+
+    <!-- Closing -->
+    <div class="letter-closing">
+      <div class="signature-line">{{ closing_salutation }}</div>
+      <div class="signature-name">{{ ceo_name }}</div>
+      <div class="signature-title">{{ ceo_role }}</div>
+    </div>
+
+    <!-- Footer band -->
+    <div class="footer-band">
+      <span>{{ footer_document_title }}</span>
+      <span class="footer-page">{{ footer_page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0069",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "page_label": "string",
+    "company_name": "string",
+    "company_tagline": "string",
+    "ceo_name": "string",
+    "ceo_role": "string",
+    "ceo_portrait_url": "string",
+    "ceo_portrait_alt": "string",
+    "greeting": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "body_paragraph_3": "string",
+    "body_paragraph_4": "string",
+    "kpi_section_label": "string",
+    "kpi_cards": [
+      {
+        "value": "string",
+        "label": "string",
+        "color": "string (hex)"
+      }
+    ],
+    "progress_bars": [
+      {
+        "label": "string",
+        "percent": "number",
+        "color": "string (hex)"
+      }
+    ],
+    "callout_quote": "string",
+    "callout_attribution": "string",
+    "chart_title": "string",
+    "chart_bars": [
+      {
+        "height": "number (percentage 0-100)",
+        "color": "string (hex)"
+      }
+    ],
+    "chart_caption": "string",
+    "callout_box_text": "string",
+    "closing_salutation": "string",
+    "footer_document_title": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

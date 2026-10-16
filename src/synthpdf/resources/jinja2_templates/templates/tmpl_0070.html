@@ -1,0 +1,723 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #e3f2fd;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #0d2137;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #e3f2fd;
+  }
+
+  /* Geometric angular decorative shapes */
+  .geo-triangle-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 180px 180px 0;
+    border-color: transparent #1565c0 transparent transparent;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .geo-diamond-left {
+    position: absolute;
+    top: 280px;
+    left: -18px;
+    width: 36px;
+    height: 36px;
+    background: #f9a825;
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .geo-bar-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #1565c0 0%, #0277bd 50%, #f9a825 100%);
+    z-index: 10;
+  }
+
+  .geo-angle-accent {
+    position: absolute;
+    top: 92px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #f9a825;
+    z-index: 2;
+  }
+
+  .geo-chevron-right {
+    position: absolute;
+    top: 440px;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 30px 0 30px 24px;
+    border-color: transparent transparent transparent #0277bd;
+    opacity: 0.18;
+    z-index: 0;
+  }
+
+  .geo-parallelogram {
+    position: absolute;
+    bottom: 120px;
+    left: 30px;
+    width: 50px;
+    height: 20px;
+    background: #1565c0;
+    transform: skewX(-20deg);
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+  /* Header band */
+  .header-band {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px 14px 48px;
+    background: #1565c0;
+    color: #ffffff;
+    border-bottom: 3px solid #f9a825;
+  }
+
+  .header-band .doc-type {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .header-band .doc-ref {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Title section */
+  .title-section {
+    position: relative;
+    z-index: 2;
+    padding: 28px 48px 16px 48px;
+  }
+
+  .title-section h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    color: #0d2137;
+    margin-bottom: 6px;
+  }
+
+  .title-section .subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0277bd;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .title-divider {
+    width: 80px;
+    height: 3px;
+    background: #f9a825;
+    margin-top: 8px;
+  }
+
+  /* Main grid layout */
+  .main-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 0;
+    padding: 12px 0 0 0;
+    height: calc(1123px - 92px - 90px - 6px - 38px);
+  }
+
+  /* Left content area */
+  .content-area {
+    padding: 0 20px 0 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Map / Hero image placeholder */
+  .map-container {
+    background: #ffffff;
+    border: 1px solid #b0bec5;
+    border-radius: 2px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-container .map-header {
+    background: #0277bd;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 6px 12px;
+    text-transform: uppercase;
+  }
+
+  .map-container .map-image-wrapper {
+    width: 100%;
+    height: 280px;
+    background: #cfd8dc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .map-container .map-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .map-container .map-image-wrapper .map-placeholder-text {
+    position: absolute;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    color: #546e7a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .map-caption {
+    padding: 6px 12px;
+    font-size: 10px;
+    color: #546e7a;
+    border-top: 1px solid #e0e0e0;
+    background: #ffffff;
+  }
+
+  /* Callout box */
+  .callout-box {
+    background: #ffffff;
+    border-left: 4px solid #f9a825;
+    padding: 12px 14px;
+    border-radius: 0 2px 2px 0;
+    position: relative;
+  }
+
+  .callout-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 20px 20px 0;
+    border-color: transparent #e3f2fd transparent transparent;
+  }
+
+  .callout-box .callout-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #f9a825;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .callout-box .callout-text {
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.5;
+  }
+
+  /* Two-column body text */
+  .two-col-section h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #0d2137;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .two-col-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .two-col-body p {
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.5;
+  }
+
+  /* Data table */
+  .data-table-section {
+    background: #ffffff;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid #b0bec5;
+  }
+
+  .data-table-section .table-title {
+    background: #1565c0;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 6px 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .data-table-section table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table-section thead th {
+    background: #0277bd;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    padding: 5px 10px;
+    text-align: left;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid #1565c0;
+  }
+
+  .data-table-section tbody td {
+    padding: 4px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #0d2137;
+    font-size: 10px;
+  }
+
+  .data-table-section tbody tr:nth-child(even) {
+    background: #f5f9ff;
+  }
+
+  /* Icon with text grid */
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #ffffff;
+    padding: 8px 10px;
+    border-radius: 2px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .icon-text-item .icon-circle {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #ffffff;
+    position: relative;
+  }
+
+  .icon-text-item .icon-circle::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 6px 6px 0;
+    border-color: transparent #e3f2fd transparent transparent;
+  }
+
+  .icon-text-item .icon-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #0d2137;
+    letter-spacing: 0.04em;
+  }
+
+  .icon-text-item .icon-value {
+    font-size: 10px;
+    color: #546e7a;
+    line-height: 1.4;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: #ffffff;
+    border-left: 3px solid #0277bd;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-right: 24px;
+    height: fit-content;
+    position: relative;
+  }
+
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 3px;
+    height: 30px;
+    background: #f9a825;
+  }
+
+  .sidebar-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1565c0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .sidebar-annotation {
+    font-size: 10px;
+    color: #546e7a;
+    line-height: 1.5;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #cfd8dc;
+  }
+
+  .sidebar-annotation:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .sidebar-annotation .ann-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #0d2137;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-kpi {
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  .sidebar-kpi .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.1;
+  }
+
+  .sidebar-kpi .kpi-label {
+    font-size: 9px;
+    color: #546e7a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .sidebar-kpi-divider {
+    width: 100%;
+    height: 1px;
+    background: #e0e0e0;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 48px;
+    font-size: 9px;
+    color: #546e7a;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.06em;
+  }
+
+  .footer .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer .confidential-tag {
+    background: #1565c0;
+    color: #ffffff;
+    padding: 2px 8px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Geometric decorative elements -->
+  <div class="geo-triangle-top"></div>
+  <div class="geo-diamond-left"></div>
+  <div class="geo-chevron-right"></div>
+  <div class="geo-bar-bottom"></div>
+  <div class="geo-angle-accent"></div>
+  <div class="geo-parallelogram"></div>
+
+  <!-- Header band -->
+  <div class="header-band">
+    <span class="doc-type">{{ document_type }}</span>
+    <span class="doc-ref">{{ document_reference }}</span>
+  </div>
+
+  <!-- Title section -->
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ section_heading }}</div>
+    <div class="title-divider"></div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="main-grid">
+    <!-- Left content area -->
+    <div class="content-area">
+
+      <!-- Map / Hero image -->
+      <div class="map-container">
+        <div class="map-header">{{ map_title }}</div>
+        <div class="map-image-wrapper">
+          <img src="{{ map_image_url }}" alt="{{ map_image_alt }}">
+          <span class="map-placeholder-text">{{ map_placeholder_label }}</span>
+        </div>
+        <div class="map-caption">{{ map_caption }}</div>
+      </div>
+
+      <!-- Callout box -->
+      <div class="callout-box">
+        <div class="callout-label">{{ callout_label }}</div>
+        <div class="callout-text">{{ callout_text }}</div>
+      </div>
+
+      <!-- Two-column body text -->
+      <div class="two-col-section">
+        <h2>{{ analysis_heading }}</h2>
+        <div class="two-col-body">
+          <p>{{ body_paragraph_1 }}</p>
+          <p>{{ body_paragraph_2 }}</p>
+        </div>
+      </div>
+
+      <!-- Icon with text grid -->
+      <div class="icon-text-grid">
+        {% for metric in region_metrics %}
+        <div class="icon-text-item">
+          <div class="icon-circle" style="background: {{ metric.color }};">{{ metric.icon }}</div>
+          <div>
+            <div class="icon-label">{{ metric.label }}</div>
+            <div class="icon-value">{{ metric.value }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Data table -->
+      <div class="data-table-section">
+        <div class="table-title">{{ table_title }}</div>
+        <table>
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.region }}</td>
+              <td>{{ row.offices }}</td>
+              <td>{{ row.consultants }}</td>
+              <td>{{ row.revenue }}</td>
+              <td>{{ row.growth }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-title">{{ sidebar_title }}</div>
+
+      <div class="sidebar-kpi">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <div class="sidebar-kpi-divider"></div>
+      <div class="sidebar-kpi">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <div class="sidebar-kpi-divider"></div>
+      <div class="sidebar-kpi">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+
+      <div class="sidebar-kpi-divider"></div>
+
+      {% for annotation in sidebar_annotations %}
+      <div class="sidebar-annotation">
+        <div class="ann-label">{{ annotation.label }}</div>
+        {{ annotation.text }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <span class="confidential-tag">{{ confidentiality_label }}</span>
+      <span>{{ footer_left_text }}</span>
+    </div>
+    <span>{{ footer_page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0070",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "document_type": "string",
+    "document_reference": "string",
+    "map_title": "string",
+    "map_image_url": "string",
+    "map_image_alt": "string",
+    "map_placeholder_label": "string",
+    "map_caption": "string",
+    "callout_label": "string",
+    "callout_text": "string",
+    "analysis_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "region_metrics": [
+      {
+        "icon": "string",
+        "label": "string",
+        "value": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "table_title": "string",
+    "table_headers": ["string"],
+    "table_rows": [
+      {
+        "region": "string",
+        "offices": "string",
+        "consultants": "string",
+        "revenue": "string",
+        "growth": "string"
+      }
+    ],
+    "sidebar_title": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "sidebar_annotations": [
+      {
+        "label": "string",
+        "text": "string"
+      }
+    ],
+    "confidentiality_label": "string",
+    "footer_left_text": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

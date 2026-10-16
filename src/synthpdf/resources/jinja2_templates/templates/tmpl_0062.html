@@ -1,0 +1,540 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #212121;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    grid-template-rows: 1fr auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    background: linear-gradient(180deg, #3c3c3c 0%, #2a2a2a 100%);
+    padding: 48px 18px 40px 18px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, #e91e63 0%, #9c27b0 50%, #ff9800 100%);
+  }
+
+  .sidebar-logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 60px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    flex: 1;
+  }
+
+  .sidebar-nav-item {
+    padding: 10px 0;
+    font-family: Georgia, serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .sidebar-nav-item.active {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .sidebar-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: #e91e63;
+  }
+
+  .sidebar-nav-page {
+    display: block;
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+  }
+
+  .sidebar-nav-item.active .sidebar-nav-page {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .sidebar-annotation {
+    margin-top: auto;
+    padding: 14px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .sidebar-annotation-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 6px;
+  }
+
+  .sidebar-annotation-text {
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+
+  /* ── Main content ── */
+  .main-content {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 56px 60px 52px;
+  }
+
+  /* ── Section number ── */
+  .section-number-block {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .section-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 96px;
+    line-height: 1;
+    color: #e91e63;
+    opacity: 0.15;
+  }
+
+  .section-label {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #757575;
+  }
+
+  /* ── Divider title ── */
+  .section-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.15;
+    color: #212121;
+    margin-bottom: 18px;
+    max-width: 480px;
+  }
+
+  .section-subtitle {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #9c27b0;
+    margin-bottom: 28px;
+  }
+
+  .title-accent-bar {
+    width: 64px;
+    height: 4px;
+    background: linear-gradient(90deg, #e91e63, #ff9800);
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+
+  .section-description {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #757575;
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+
+  /* ── Icon with text grid ── */
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+    margin-bottom: 48px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .icon-circle {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .icon-text-content h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #212121;
+    margin-bottom: 4px;
+  }
+
+  .icon-text-content p {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    color: #757575;
+    line-height: 1.6;
+  }
+
+  /* ── Percentage donut ── */
+  .donut-row {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .donut-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .donut-svg {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #fce4ec;
+    stroke-width: 6;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+
+  .donut-center-text {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #212121;
+    text-align: center;
+  }
+
+  .donut-label {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    color: #757575;
+    text-align: center;
+    max-width: 80px;
+  }
+
+  /* ── Numbered list ── */
+  .numbered-list {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+
+  .numbered-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .numbered-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .list-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #e91e63;
+    min-width: 22px;
+  }
+
+  .list-text {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: #212121;
+    line-height: 1.7;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 56px 24px 52px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-line {
+    position: absolute;
+    top: 0;
+    left: 52px;
+    right: 56px;
+    height: 1px;
+    background: linear-gradient(90deg, #e91e63 0%, rgba(233,30,99,0.1) 100%);
+  }
+
+  .footer-report-name {
+    font-family: Georgia, serif;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #757575;
+  }
+
+  .footer-page-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #e91e63;
+  }
+
+  /* ── Wave SVG background ── */
+  .main-wave-bg {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 634px;
+    height: 320px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.06;
+  }
+
+  .top-accent-wave {
+    position: absolute;
+    top: 0;
+    left: 160px;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #e91e63 0%, #9c27b0 40%, #ff9800 100%);
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-container">
+
+  <!-- Top accent wave bar -->
+  <div class="top-accent-wave"></div>
+
+  <!-- Background organic wave curves -->
+  <svg class="main-wave-bg" viewBox="0 0 634 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,280 C120,220 200,300 320,240 C440,180 520,260 634,200 L634,320 L0,320 Z" fill="#e91e63"/>
+    <path d="M0,300 C100,250 220,310 340,260 C460,210 540,280 634,230 L634,320 L0,320 Z" fill="#9c27b0"/>
+    <path d="M0,310 C80,270 180,320 300,280 C420,240 560,300 634,260 L634,320 L0,320 Z" fill="#ff9800"/>
+  </svg>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">{{ company_short_name }}</div>
+    <ul class="sidebar-nav">
+      {% for nav_item in sidebar_nav_items %}
+      <li class="sidebar-nav-item {% if nav_item.active %}active{% endif %}">
+        {{ nav_item.label }}
+        <span class="sidebar-nav-page">{{ nav_item.page_range }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="sidebar-annotation">
+      <div class="sidebar-annotation-label">{{ sidebar_annotation_label }}</div>
+      <div class="sidebar-annotation-text">{{ sidebar_annotation_text }}</div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <div class="section-number-block">
+      <span class="section-number">{{ section_number }}</span>
+      <span class="section-label">{{ section_label }}</span>
+    </div>
+
+    <h1 class="section-title">{{ page_title }}</h1>
+    <h3 class="section-subtitle">{{ section_heading }}</h3>
+    <div class="title-accent-bar"></div>
+
+    <p class="section-description">{{ body_paragraph_1 }}</p>
+
+    <!-- Icon with text grid -->
+    <div class="icon-text-grid">
+      {% for grid_item in icon_grid_items %}
+      <div class="icon-text-item">
+        <div class="icon-circle" style="background-color: {{ grid_item.color }};">{{ grid_item.icon_letter }}</div>
+        <div class="icon-text-content">
+          <h4>{{ grid_item.title }}</h4>
+          <p>{{ grid_item.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Percentage donuts -->
+    <div class="donut-row">
+      {% for donut in donut_items %}
+      <div class="donut-item">
+        <svg class="donut-svg" viewBox="0 0 36 36">
+          <circle class="donut-track" cx="18" cy="18" r="15"/>
+          <circle class="donut-fill" cx="18" cy="18" r="15"
+            stroke="{{ donut.color }}"
+            stroke-dasharray="{{ donut.dash_value }}, 100"/>
+        </svg>
+        <div class="donut-center-text">{{ donut.value }}</div>
+        <div class="donut-label">{{ donut.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Numbered list -->
+    <ul class="numbered-list">
+      {% for item in numbered_items %}
+      <li class="numbered-list-item">
+        <span class="list-number">{{ item.number }}</span>
+        <span class="list-text">{{ item.text }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="footer-line"></div>
+    <span class="footer-report-name">{{ report_name }}</span>
+    <span class="footer-page-number">{{ page_number }}</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0062",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "company_short_name": "string",
+    "section_number": "string",
+    "section_label": "string",
+    "report_name": "string",
+    "page_number": "string",
+    "sidebar_annotation_label": "string",
+    "sidebar_annotation_text": "string",
+    "sidebar_nav_items": [
+      {
+        "label": "string",
+        "page_range": "string",
+        "active": "boolean"
+      }
+    ],
+    "icon_grid_items": [
+      {
+        "icon_letter": "string",
+        "color": "string (hex)",
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "donut_items": [
+      {
+        "value": "string",
+        "label": "string",
+        "color": "string (hex)",
+        "dash_value": "number (0-100)"
+      }
+    ],
+    "numbered_items": [
+      {
+        "number": "string",
+        "text": "string"
+      }
+    ]
+  }
+}
+END_TEMPLATE_VARIABLES -->

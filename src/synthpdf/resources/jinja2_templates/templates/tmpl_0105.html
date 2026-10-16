@@ -1,0 +1,702 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    color: #1a1a2e;
+    background: #ffffff;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* ── Diagonal Color Slash Motif ── */
+  .diagonal-slash-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .diagonal-slash-top::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: -80px;
+    width: 130%;
+    height: 480px;
+    background: linear-gradient(155deg, #006d77 0%, #006d77 55%, #83c5be 55%, #83c5be 60%, transparent 60%);
+    transform: skewY(-4deg);
+    z-index: 1;
+  }
+
+  .diagonal-slash-top::after {
+    content: '';
+    position: absolute;
+    top: 320px;
+    right: -40px;
+    width: 300px;
+    height: 8px;
+    background: #e29578;
+    transform: rotate(-4deg);
+    z-index: 3;
+  }
+
+  /* ── Hero Section ── */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 390px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    align-items: end;
+    padding: 0 48px;
+  }
+
+  .hero-title-block {
+    padding-bottom: 40px;
+    z-index: 5;
+  }
+
+  .hero-section-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #e29578;
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .hero-subtitle {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1.25;
+    color: #edf6f9;
+    max-width: 360px;
+  }
+
+  .hero-image-container {
+    position: relative;
+    width: 320px;
+    height: 280px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    z-index: 5;
+  }
+
+  .hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #83c5be 0%, #006d77 60%, #1a1a2e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #edf6f9;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Slash Divider ── */
+  .slash-divider {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #e29578 0%, #e29578 35%, #006d77 35%, #006d77 65%, #83c5be 65%, #83c5be 100%);
+    position: relative;
+    z-index: 4;
+  }
+
+  /* ── KPI Metric Cards ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 18px 48px 14px 48px;
+    position: relative;
+    z-index: 4;
+  }
+
+  .kpi-card {
+    background: #edf6f9;
+    border-radius: 4px;
+    padding: 14px 14px 12px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #006d77; }
+  .kpi-card:nth-child(2)::before { background: #83c5be; }
+  .kpi-card:nth-child(3)::before { background: #e29578; }
+  .kpi-card:nth-child(4)::before { background: #006d77; }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #4a7c82;
+    line-height: 1.3;
+  }
+
+  /* ── Section Heading ── */
+  .section-heading-row {
+    padding: 10px 48px 6px 48px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #006d77;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .section-heading-line {
+    flex: 1;
+    height: 3px;
+    background: linear-gradient(90deg, #006d77, #83c5be, transparent);
+    border-radius: 2px;
+  }
+
+  /* ── Comparison Table ── */
+  .table-container {
+    padding: 8px 48px 0 48px;
+  }
+
+  table.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  table.comparison-table thead th {
+    background: #006d77;
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 12px;
+    text-align: left;
+    border: none;
+  }
+
+  table.comparison-table thead th:first-child {
+    border-radius: 4px 0 0 0;
+  }
+
+  table.comparison-table thead th:last-child {
+    border-radius: 0 4px 0 0;
+  }
+
+  table.comparison-table thead th.col-highlight {
+    background: #e29578;
+    color: #1a1a2e;
+  }
+
+  table.comparison-table tbody tr {
+    border-bottom: 1px solid #d4e8ea;
+  }
+
+  table.comparison-table tbody tr:nth-child(even) {
+    background: #edf6f9;
+  }
+
+  table.comparison-table tbody tr:nth-child(odd) {
+    background: #ffffff;
+  }
+
+  table.comparison-table tbody td {
+    padding: 8px 12px;
+    vertical-align: middle;
+    color: #1a1a2e;
+  }
+
+  table.comparison-table tbody td:first-child {
+    font-weight: 700;
+    color: #006d77;
+    width: 180px;
+  }
+
+  table.comparison-table tbody td.highlight-cell {
+    background: rgba(226, 149, 120, 0.08);
+    border-left: 2px solid #e29578;
+    border-right: 2px solid #e29578;
+  }
+
+  table.comparison-table tbody tr:last-child td.highlight-cell {
+    border-bottom: 2px solid #e29578;
+  }
+
+  /* ── Progress Bars ── */
+  .progress-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 7px;
+    background: #d4e8ea;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .progress-bar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4a7c82;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* ── Two Column Body + Pull Quote ── */
+  .body-section {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 24px;
+    padding: 14px 48px 0 48px;
+  }
+
+  .two-col-text {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    text-align: justify;
+  }
+
+  .two-col-text p {
+    margin-bottom: 8px;
+  }
+
+  .pull-quote-block {
+    position: relative;
+    background: #edf6f9;
+    border-radius: 4px;
+    padding: 20px 18px 16px 18px;
+    align-self: start;
+  }
+
+  .pull-quote-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #006d77, #e29578);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .pull-quote-mark {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 48px;
+    line-height: 0.7;
+    color: #83c5be;
+    margin-bottom: 4px;
+  }
+
+  .pull-quote-text {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #006d77;
+    margin-bottom: 10px;
+  }
+
+  .quote-attribution {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4a7c82;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+
+  .quote-attribution span {
+    display: block;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #4a7c82;
+    opacity: 0.8;
+  }
+
+  /* ── Timeline Nodes ── */
+  .timeline-section {
+    padding: 10px 48px 0 48px;
+  }
+
+  .timeline-track {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 10px;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #006d77, #83c5be, #e29578);
+    border-radius: 2px;
+  }
+
+  .timeline-node {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin: 4px auto 8px auto;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 2px #006d77;
+  }
+
+  .timeline-node:nth-child(1) .timeline-dot { background: #006d77; }
+  .timeline-node:nth-child(2) .timeline-dot { background: #83c5be; }
+  .timeline-node:nth-child(3) .timeline-dot { background: #e29578; }
+  .timeline-node:nth-child(4) .timeline-dot { background: #006d77; }
+  .timeline-node:nth-child(5) .timeline-dot { background: #83c5be; }
+
+  .timeline-date {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #006d77;
+    margin-bottom: 2px;
+  }
+
+  .timeline-label {
+    font-size: 9px;
+    color: #4a7c82;
+    line-height: 1.3;
+    max-width: 120px;
+    margin: 0 auto;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: #006d77;
+    z-index: 10;
+  }
+
+  .footer-text {
+    font-size: 9px;
+    color: #edf6f9;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-page {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #e29578;
+  }
+
+  /* ── Corner Slash Decoration ── */
+  .corner-slash {
+    position: absolute;
+    bottom: 36px;
+    right: 0;
+    width: 140px;
+    height: 80px;
+    overflow: hidden;
+    z-index: 3;
+  }
+
+  .corner-slash::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: -30px;
+    width: 200px;
+    height: 80px;
+    background: #83c5be;
+    opacity: 0.15;
+    transform: skew(-20deg);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Diagonal Color Slash Background -->
+  <div class="diagonal-slash-top"></div>
+
+  <!-- Hero Section: Asymmetric Layout -->
+  <div class="hero-section">
+    <div class="hero-title-block">
+      <div class="hero-section-label">{{ section_label }}</div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <div class="hero-subtitle">{{ hero_subtitle }}</div>
+    </div>
+    <div class="hero-image-container">
+      {% if hero_image_url %}
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      {% else %}
+      <div class="hero-image-placeholder">{{ hero_image_alt }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Slash Divider -->
+  <div class="slash-divider"></div>
+
+  <!-- KPI Metric Cards -->
+  <div class="kpi-row">
+    {% for kpi in kpi_cards %}
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+      <div class="kpi-label">{{ kpi.label }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Section Heading -->
+  <div class="section-heading-row">
+    <h2 class="section-heading">{{ section_heading }}</h2>
+    <div class="section-heading-line"></div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="table-container">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>{{ table_col_header_1 }}</th>
+          <th>{{ table_col_header_2 }}</th>
+          <th class="col-highlight">{{ table_col_header_3 }}</th>
+          <th>{{ table_col_header_4 }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.category }}</td>
+          <td>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ row.col2_pct }}%; background: #83c5be;"></div></div>
+              <span class="progress-bar-label">{{ row.col2_value }}</span>
+            </div>
+          </td>
+          <td class="highlight-cell">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ row.col3_pct }}%; background: #e29578;"></div></div>
+              <span class="progress-bar-label">{{ row.col3_value }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ row.col4_pct }}%; background: #006d77;"></div></div>
+              <span class="progress-bar-label">{{ row.col4_value }}</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Two Column Body + Pull Quote -->
+  <div class="body-section">
+    <div class="two-col-text">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+    </div>
+    <div class="pull-quote-block">
+      <div class="pull-quote-mark">&ldquo;</div>
+      <div class="pull-quote-text">{{ pull_quote_text }}</div>
+      <div class="quote-attribution">
+        {{ quote_author }}
+        <span>{{ quote_author_title }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Nodes -->
+  <div class="timeline-section">
+    <div class="timeline-track">
+      {% for node in timeline_nodes %}
+      <div class="timeline-node">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">{{ node.date }}</div>
+        <div class="timeline-label">{{ node.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Decorative Corner Slash -->
+  <div class="corner-slash"></div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_text }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0105",
+  "variables": {
+    "page_title": "string",
+    "section_label": "string",
+    "hero_subtitle": "string",
+    "hero_image_url": "string|optional",
+    "hero_image_alt": "string",
+    "kpi_cards": [
+      {
+        "value": "string",
+        "label": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "section_heading": "string",
+    "table_col_header_1": "string",
+    "table_col_header_2": "string",
+    "table_col_header_3": "string",
+    "table_col_header_4": "string",
+    "table_rows": [
+      {
+        "category": "string",
+        "col2_value": "string",
+        "col2_pct": "number (0-100)",
+        "col3_value": "string",
+        "col3_pct": "number (0-100)",
+        "col4_value": "string",
+        "col4_pct": "number (0-100)"
+      }
+    ],
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "pull_quote_text": "string",
+    "quote_author": "string",
+    "quote_author_title": "string",
+    "timeline_nodes": [
+      {
+        "date": "string",
+        "label": "string"
+      }
+    ],
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,621 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f3f2f1;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #201f1e;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f2f1;
+    display: grid;
+    grid-template-rows: auto auto auto auto auto auto auto auto;
+    grid-template-columns: 1fr;
+  }
+
+  /* === TOP BAR === */
+  .top-bar {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #0078d4 0%, #0078d4 60%, #00b294 60%, #00b294 100%);
+  }
+
+  /* === HEADER REGION === */
+  .header-region {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    padding: 32px 48px 0 48px;
+    gap: 0;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-right: 28px;
+  }
+
+  .report-label {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #0078d4;
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.1;
+    color: #201f1e;
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #605e5c;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .fiscal-badge {
+    display: inline-block;
+    background: #005a9e;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    margin-top: 4px;
+    align-self: flex-start;
+  }
+
+  /* === HERO IMAGE === */
+  .hero-image-area {
+    position: relative;
+    overflow: hidden;
+    min-height: 240px;
+  }
+
+  .hero-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 55%, #00b294 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hero-placeholder::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: rgba(0, 178, 148, 0.25);
+  }
+
+  .hero-placeholder-text {
+    color: rgba(255,255,255,0.4);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+
+  /* === DIVIDER WITH LABEL === */
+  .divider-labeled {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 48px 12px 48px;
+  }
+
+  .divider-labeled .line {
+    flex: 1;
+    height: 1px;
+    background: #0078d4;
+    opacity: 0.3;
+  }
+
+  .divider-labeled .label {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #0078d4;
+    white-space: nowrap;
+  }
+
+  /* === MAIN CONTENT AREA === */
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 0 48px;
+  }
+
+  .section-heading {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #201f1e;
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+
+  .body-text {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #201f1e;
+    margin-bottom: 12px;
+  }
+
+  .body-text-muted {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #605e5c;
+  }
+
+  /* === QUOTE BLOCK === */
+  .quote-block {
+    background: #ffffff;
+    border-left: 4px solid #00b294;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+
+  .quote-text {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    color: #201f1e;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+
+  .quote-attribution {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #005a9e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .quote-role {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    color: #605e5c;
+    font-style: normal;
+  }
+
+  /* === KPI DONUTS ROW === */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 16px 48px 0 48px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    padding: 20px 16px;
+    text-align: center;
+    position: relative;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #0078d4; }
+  .kpi-card:nth-child(2)::before { background: #00b294; }
+  .kpi-card:nth-child(3)::before { background: #005a9e; }
+
+  .donut-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px auto;
+    position: relative;
+  }
+
+  .donut-container svg {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-container .donut-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #201f1e;
+  }
+
+  .kpi-label {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #605e5c;
+    margin-top: 4px;
+  }
+
+  /* === HIGHLIGHTS LIST === */
+  .highlights-section {
+    padding: 20px 48px 0 48px;
+  }
+
+  .highlights-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 0 12px 0;
+  }
+
+  .highlights-divider .line {
+    flex: 1;
+    height: 1px;
+    background: #0078d4;
+    opacity: 0.3;
+  }
+
+  .highlights-divider .label {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #0078d4;
+    white-space: nowrap;
+  }
+
+  .highlights-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 32px;
+  }
+
+  .highlights-list li {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #201f1e;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .highlights-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background: #00b294;
+  }
+
+  /* === SOLID COLOR BLOCK ACCENT === */
+  .accent-block {
+    background: #0078d4;
+    padding: 18px 48px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .accent-block-text {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.4;
+  }
+
+  .accent-block-stat {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #ffffff;
+    white-space: nowrap;
+    margin-left: 32px;
+  }
+
+  .accent-block-stat span {
+    font-size: 12px;
+    font-weight: 400;
+    display: block;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 48px;
+    border-top: 1px solid rgba(0, 120, 212, 0.15);
+    margin-top: auto;
+  }
+
+  .footer-left {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    color: #605e5c;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-page {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #0078d4;
+  }
+
+  .footer-company {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #605e5c;
+  }
+
+  /* === SOLID COLOR BLOCKS MOTIF === */
+  .side-block {
+    position: absolute;
+    left: 0;
+    top: 520px;
+    width: 8px;
+    height: 80px;
+    background: #00b294;
+  }
+
+  .corner-block {
+    position: absolute;
+    right: 0;
+    bottom: 48px;
+    width: 40px;
+    height: 40px;
+    background: #005a9e;
+    opacity: 0.12;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Decorative motif elements -->
+  <div class="side-block"></div>
+  <div class="corner-block"></div>
+
+  <!-- Top color bar -->
+  <div class="top-bar"></div>
+
+  <!-- Header + Hero Image (editorial magazine layout) -->
+  <div class="header-region">
+    <div class="header-left">
+      <div class="report-label">{{ report_label }}</div>
+      <h1 class="page-title">{{ page_title }}</h1>
+      <p class="page-subtitle">{{ page_subtitle }}</p>
+      <div class="fiscal-badge">{{ fiscal_period }}</div>
+    </div>
+    <div class="hero-image-area">
+      {% if hero_image_url %}
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      {% else %}
+      <div class="hero-placeholder">
+        <span class="hero-placeholder-text">{{ hero_image_alt }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Labeled divider -->
+  <div class="divider-labeled">
+    <div class="line"></div>
+    <div class="label">{{ divider_label }}</div>
+    <div class="line"></div>
+  </div>
+
+  <!-- Two-column editorial content -->
+  <div class="main-content">
+    <div>
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <p class="body-text">{{ body_paragraph_1 }}</p>
+      <p class="body-text-muted">{{ body_paragraph_2 }}</p>
+    </div>
+    <div>
+      <!-- Quote attribution block -->
+      <div class="quote-block">
+        <p class="quote-text">&ldquo;{{ quote_text }}&rdquo;</p>
+        <div class="quote-attribution">{{ quote_author }}</div>
+        <div class="quote-role">{{ quote_role }}</div>
+      </div>
+      <p class="body-text" style="margin-top: 14px;">{{ body_paragraph_3 }}</p>
+    </div>
+  </div>
+
+  <!-- KPI Donut Charts -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="donut-container">
+        <svg viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#f3f2f1" stroke-width="3"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="{{ kpi_1_color }}" stroke-width="3"
+                  stroke-dasharray="{{ kpi_1_percentage }}, 100" stroke-linecap="round"/>
+        </svg>
+        <div class="donut-value">{{ kpi_1_value }}</div>
+      </div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="donut-container">
+        <svg viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#f3f2f1" stroke-width="3"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="{{ kpi_2_color }}" stroke-width="3"
+                  stroke-dasharray="{{ kpi_2_percentage }}, 100" stroke-linecap="round"/>
+        </svg>
+        <div class="donut-value">{{ kpi_2_value }}</div>
+      </div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="donut-container">
+        <svg viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#f3f2f1" stroke-width="3"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="{{ kpi_3_color }}" stroke-width="3"
+                  stroke-dasharray="{{ kpi_3_percentage }}, 100" stroke-linecap="round"/>
+        </svg>
+        <div class="donut-value">{{ kpi_3_value }}</div>
+      </div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+  </div>
+
+  <!-- Highlights list section -->
+  <div class="highlights-section">
+    <div class="highlights-divider">
+      <div class="line"></div>
+      <div class="label">{{ highlights_label }}</div>
+      <div class="line"></div>
+    </div>
+    <ul class="highlights-list">
+      {% for item in highlights %}
+      <li>{{ item.text }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Solid color accent block -->
+  <div class="accent-block">
+    <div class="accent-block-text">{{ accent_statement }}</div>
+    <div class="accent-block-stat">
+      {{ accent_stat_value }}
+      <span>{{ accent_stat_label }}</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">{{ footer_disclaimer }}</div>
+    <div class="footer-right">
+      <div class="footer-company">{{ company_name }}</div>
+      <div class="footer-page">{{ page_number }}</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0001",
+  "variables": {
+    "report_label": "string — e.g. 'Executive Summary'",
+    "page_title": "string — main page heading, e.g. 'Annual Performance Review'",
+    "page_subtitle": "string — brief descriptor below the title",
+    "fiscal_period": "string — e.g. 'Fiscal Year 2024'",
+    "hero_image_url": "string (optional) — URL or path to hero image",
+    "hero_image_alt": "string — alt text or placeholder label for hero image",
+    "divider_label": "string — label displayed in the section divider, e.g. 'Year in Review'",
+    "section_heading": "string — heading for the main editorial text block",
+    "body_paragraph_1": "string — first body paragraph (left column)",
+    "body_paragraph_2": "string — second body paragraph, muted style (left column)",
+    "body_paragraph_3": "string — third body paragraph (right column, below quote)",
+    "quote_text": "string — executive quote text (without quotation marks)",
+    "quote_author": "string — name of the person quoted",
+    "quote_role": "string — title/role of the person quoted",
+    "kpi_1_value": "string — display value for first KPI, e.g. '87%'",
+    "kpi_1_label": "string — label for first KPI, e.g. 'Customer Satisfaction'",
+    "kpi_1_percentage": "number — 0-100 (mapped to SVG stroke-dasharray for donut fill)",
+    "kpi_1_color": "string — hex color for donut arc, e.g. '#0078d4'",
+    "kpi_2_value": "string — display value for second KPI",
+    "kpi_2_label": "string — label for second KPI",
+    "kpi_2_percentage": "number — 0-100",
+    "kpi_2_color": "string — hex color for donut arc, e.g. '#00b294'",
+    "kpi_3_value": "string — display value for third KPI",
+    "kpi_3_label": "string — label for third KPI",
+    "kpi_3_percentage": "number — 0-100",
+    "kpi_3_color": "string — hex color for donut arc, e.g. '#005a9e'",
+    "highlights_label": "string — divider label for highlights section, e.g. 'Key Highlights'",
+    "highlights": "array of objects — each with { text: string }",
+    "accent_statement": "string — bold callout statement in the accent color block",
+    "accent_stat_value": "string — large statistic in the accent block, e.g. '$4.2B'",
+    "accent_stat_label": "string — label under the accent stat, e.g. 'Total Revenue'",
+    "footer_disclaimer": "string — small legal/disclaimer text in footer",
+    "company_name": "string — company name displayed in footer",
+    "page_number": "string — page number, e.g. '03'"
+  }
+}
+END_TEMPLATE_VARIABLES -->

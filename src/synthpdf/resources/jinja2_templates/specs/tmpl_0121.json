@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0121",
+  "industry": "legal_compliance",
+  "page_role": "infographic_story",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "real_estate_warm",
+    "primary": "#5c4033",
+    "secondary": "#795548",
+    "accent": "#8bc34a",
+    "bg": "#fff8f0",
+    "surface": "#ffffff",
+    "text": "#3e2723",
+    "muted": "#8d6e63"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "pull_quote_block",
+    "timeline_nodes",
+    "kpi_metric_cards",
+    "callout_box",
+    "colored_section_band",
+    "data_table",
+    "divider_with_label"
+  ],
+  "density": "balanced",
+  "motif": "soft_gradient_bands",
+  "design_direction": "Inspired by Patagonia sustainability reports \u2014 organic, earthy, mission-driven",
+  "seed": 286042
+}

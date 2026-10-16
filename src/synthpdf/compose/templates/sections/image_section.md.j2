@@ -1,0 +1,8 @@
+{# Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. #}{% for variant in variants %}
+### {{ variant.render_payload.caption }}
+
+![{{ variant.render_payload.alt_text }}]({{ variant.render_payload.image_path }})
+
+_{{ variant.render_payload.caption }}_
+
+{% endfor %}

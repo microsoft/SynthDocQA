@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0040",
+  "industry": "aerospace_defense",
+  "page_role": "process_flow",
+  "layout": {
+    "name": "dashboard_metrics",
+    "description": "KPI cards, gauges, and metric tiles dominate. Feels like a business intelligence dashboard printed to PDF."
+  },
+  "color_palette": {
+    "name": "investment_navy",
+    "primary": "#0a1628",
+    "secondary": "#1a3a6b",
+    "accent": "#c8a96e",
+    "bg": "#ffffff",
+    "surface": "#f7f5f0",
+    "text": "#1a1a1a",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "data_table",
+    "logo_or_brand_strip",
+    "pull_quote_block",
+    "page_number_footer"
+  ],
+  "density": "dense",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 332711
+}

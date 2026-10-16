@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0054",
+  "industry": "retail_consumer_goods",
+  "page_role": "case_study",
+  "layout": {
+    "name": "editorial_magazine",
+    "description": "Asymmetric, bold hero image dominates top half, text wraps below. Strong typographic hierarchy. Feels like a premium magazine spread."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "callout_box",
+    "progress_bars",
+    "colored_section_band",
+    "timeline_nodes"
+  ],
+  "density": "balanced",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 735244
+}

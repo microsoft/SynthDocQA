@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0107",
+  "industry": "big_tech",
+  "page_role": "case_study",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "government_slate",
+    "primary": "#2c3e50",
+    "secondary": "#34495e",
+    "accent": "#e74c3c",
+    "bg": "#ecf0f1",
+    "surface": "#ffffff",
+    "text": "#2c3e50",
+    "muted": "#7f8c8d"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "tag_or_badge_row",
+    "chart_placeholder_box",
+    "two_column_body_text",
+    "data_table",
+    "footnotes_strip",
+    "hero_image_placeholder"
+  ],
+  "density": "balanced",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by NASA technical reports \u2014 precise, data-rich, systematic, government-formal",
+  "seed": 482446
+}

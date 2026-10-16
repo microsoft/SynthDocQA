@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0064",
+  "industry": "aerospace_defense",
+  "page_role": "methodology_page",
+  "layout": {
+    "name": "infographic_flow",
+    "description": "Visual storytelling with icons, arrows, numbered steps, and callout boxes. Content arranged as a flow or journey, not a grid."
+  },
+  "color_palette": {
+    "name": "tech_azure",
+    "primary": "#0078d4",
+    "secondary": "#005a9e",
+    "accent": "#00b294",
+    "bg": "#f3f2f1",
+    "surface": "#ffffff",
+    "text": "#201f1e",
+    "muted": "#605e5c"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "tag_or_badge_row",
+    "pull_quote_block",
+    "timeline_nodes",
+    "numbered_list_items"
+  ],
+  "density": "sparse",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by BCG Matrix consulting frameworks \u2014 structured quadrant thinking, analytical",
+  "seed": 623948
+}

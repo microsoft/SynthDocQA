@@ -1,0 +1,699 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #1a1a1a;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto auto auto auto 1fr auto auto auto auto;
+    grid-template-columns: 1fr;
+  }
+
+  /* === TOP HEADER BAND === */
+  .header-band {
+    background: #0a1628;
+    padding: 18px 40px 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-band .logo-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-band .logo-mark {
+    width: 38px;
+    height: 38px;
+    background: #c8a96e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #0a1628;
+    letter-spacing: 0.04em;
+  }
+
+  .header-band .org-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .header-band .doc-ref {
+    font-size: 9px;
+    color: #c8a96e;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* === TITLE SECTION === */
+  .title-section {
+    padding: 20px 40px 16px 40px;
+    border-bottom: 3px solid #c8a96e;
+    background: #ffffff;
+  }
+
+  .title-section h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #0a1628;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .title-section .subtitle {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a3a6b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* === HERO & KPI ROW === */
+  .hero-kpi-row {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    padding: 14px 40px 0 40px;
+  }
+
+  .hero-image-placeholder {
+    width: 320px;
+    height: 180px;
+    background: #f7f5f0;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-placeholder .placeholder-label {
+    position: absolute;
+    font-size: 10px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .kpi-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    padding-left: 16px;
+  }
+
+  .kpi-card {
+    background: #f7f5f0;
+    padding: 10px 12px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 3px solid #c8a96e;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0a1628;
+    line-height: 1.1;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .kpi-card .kpi-unit {
+    font-size: 8px;
+    color: #1a3a6b;
+    margin-top: 1px;
+  }
+
+  /* === CALLOUT BOX === */
+  .callout-box {
+    margin: 12px 40px 0 40px;
+    background: #0a1628;
+    color: #ffffff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .callout-box .callout-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    background: #c8a96e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #0a1628;
+  }
+
+  .callout-box .callout-text {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #f7f5f0;
+  }
+
+  .callout-box .callout-text strong {
+    color: #c8a96e;
+  }
+
+  /* === TIMELINE SECTION === */
+  .timeline-section {
+    padding: 16px 40px 10px 40px;
+  }
+
+  .timeline-section-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #0a1628;
+    margin-bottom: 14px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #1a3a6b;
+  }
+
+  .timeline-container {
+    position: relative;
+    width: 100%;
+    height: 230px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1a3a6b;
+    transform: translateY(-50%);
+  }
+
+  .timeline-spine::before,
+  .timeline-spine::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #c8a96e;
+    border-radius: 50%;
+  }
+
+  .timeline-spine::before { left: -4px; }
+  .timeline-spine::after { right: -4px; }
+
+  .timeline-events {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .timeline-event {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 110px;
+    z-index: 2;
+  }
+
+  .timeline-event .dot {
+    width: 12px;
+    height: 12px;
+    background: #c8a96e;
+    border: 2px solid #0a1628;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  .timeline-event.above .event-content {
+    position: absolute;
+    bottom: calc(50% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 108px;
+    text-align: center;
+  }
+
+  .timeline-event.above .event-connector {
+    position: absolute;
+    bottom: calc(50% + 6px);
+    left: 50%;
+    width: 1px;
+    height: 8px;
+    background: #1a3a6b;
+    transform: translateX(-50%);
+  }
+
+  .timeline-event.below .event-content {
+    position: absolute;
+    top: calc(50% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 108px;
+    text-align: center;
+  }
+
+  .timeline-event.below .event-connector {
+    position: absolute;
+    top: calc(50% + 6px);
+    left: 50%;
+    width: 1px;
+    height: 8px;
+    background: #1a3a6b;
+    transform: translateX(-50%);
+  }
+
+  .event-content .event-year {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #c8a96e;
+    background: #0a1628;
+    display: inline-block;
+    padding: 1px 8px;
+    margin-bottom: 3px;
+  }
+
+  .event-content .event-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #0a1628;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .event-content .event-desc {
+    font-size: 8.5px;
+    color: #666666;
+    line-height: 1.35;
+  }
+
+  /* === TWO-COLUMN BODY TEXT === */
+  .two-col-section {
+    padding: 0 40px 10px 40px;
+  }
+
+  .two-col-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #0a1628;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #1a3a6b;
+  }
+
+  .two-col-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .two-col-body p {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #1a1a1a;
+    text-align: justify;
+  }
+
+  /* === CHART PLACEHOLDER === */
+  .chart-row {
+    padding: 0 40px 10px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .chart-placeholder-box {
+    background: #f7f5f0;
+    border: 1px solid #ddd;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .chart-placeholder-box .chart-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #0a1628;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+  }
+
+  .chart-placeholder-box .chart-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .chart-placeholder-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* === COLORED SECTION BAND === */
+  .section-band {
+    background: #1a3a6b;
+    margin: 0 40px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-band .band-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* === FOOTNOTES STRIP === */
+  .footnotes-strip {
+    background: #f7f5f0;
+    padding: 8px 40px;
+    border-top: 1px solid #ddd;
+  }
+
+  .footnotes-strip p {
+    font-size: 8px;
+    color: #666666;
+    line-height: 1.5;
+  }
+
+  .footnotes-strip .fn-ref {
+    font-size: 7px;
+    vertical-align: super;
+    color: #1a3a6b;
+    margin-right: 2px;
+  }
+
+  /* === FOOTER === */
+  .footer-band {
+    background: #0a1628;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-band .footer-left {
+    font-size: 8px;
+    color: #666666;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-band .footer-center {
+    font-size: 8px;
+    color: #c8a96e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-band .footer-right {
+    font-size: 8px;
+    color: #666666;
+  }
+
+  /* === SOLID COLOR BLOCKS MOTIF === */
+  .solid-block-accent {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .solid-block-1 {
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 1123px;
+    background: #c8a96e;
+    opacity: 0.15;
+  }
+
+  .solid-block-2 {
+    bottom: 100px;
+    left: 0;
+    width: 6px;
+    height: 180px;
+    background: #1a3a6b;
+    opacity: 0.2;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Decorative solid color block motifs -->
+  <div class="solid-block-accent solid-block-1"></div>
+  <div class="solid-block-accent solid-block-2"></div>
+
+  <!-- HEADER BAND -->
+  <div class="header-band">
+    <div class="logo-block">
+      <div class="logo-mark">{{ company_logo_text }}</div>
+      <div class="org-name">{{ company_name }}</div>
+    </div>
+    <div class="doc-ref">
+      {{ document_reference }}<br>
+      {{ document_classification }}
+    </div>
+  </div>
+
+  <!-- TITLE SECTION -->
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- HERO IMAGE + KPI CARDS -->
+  <div class="hero-kpi-row">
+    <div class="hero-image-placeholder">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-label').style.display='block';">
+      <span class="placeholder-label" style="display:none;">[ Product Image ]</span>
+    </div>
+    <div class="kpi-panel">
+      {% for kpi in kpis %}
+      <div class="kpi-card" style="border-left-color: {{ kpi.color }};">
+        <div class="kpi-value">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <div class="kpi-unit">{{ kpi.unit }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CALLOUT BOX -->
+  <div class="callout-box">
+    <div class="callout-icon">!</div>
+    <div class="callout-text">
+      <strong>{{ callout_heading }}</strong> — {{ callout_text }}
+    </div>
+  </div>
+
+  <!-- TIMELINE SECTION -->
+  <div class="timeline-section">
+    <div class="timeline-section-heading">{{ timeline_heading }}</div>
+    <div class="timeline-container">
+      <div class="timeline-spine"></div>
+      <div class="timeline-events">
+        {% for event in timeline_events %}
+        <div class="timeline-event {{ 'above' if loop.index is odd else 'below' }}">
+          <div class="dot"></div>
+          <div class="event-connector"></div>
+          <div class="event-content">
+            <div class="event-year">{{ event.year }}</div>
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-desc">{{ event.description }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN BODY TEXT -->
+  <div class="two-col-section">
+    <div class="two-col-heading">{{ section_heading }}</div>
+    <div class="two-col-body">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+    </div>
+  </div>
+
+  <!-- COLORED SECTION BAND -->
+  <div class="section-band">
+    <span class="band-label">{{ band_label_1 }}: <span style="color:#c8a96e;">{{ band_value_1 }}</span></span>
+    <span class="band-label">{{ band_label_2 }}: <span style="color:#c8a96e;">{{ band_value_2 }}</span></span>
+    <span class="band-label">{{ band_label_3 }}: <span style="color:#c8a96e;">{{ band_value_3 }}</span></span>
+  </div>
+
+  <!-- CHART PLACEHOLDERS -->
+  <div class="chart-row" style="margin-top: 10px;">
+    <div class="chart-placeholder-box">
+      <div class="chart-title">{{ chart_1_title }}</div>
+      <img src="{{ chart_1_image_url }}" alt="{{ chart_1_alt }}" onerror="this.style.display='none'; this.parentElement.querySelector('.chart-label').style.display='block';">
+      <span class="chart-label" style="display:none;">[ Chart Placeholder ]</span>
+    </div>
+    <div class="chart-placeholder-box">
+      <div class="chart-title">{{ chart_2_title }}</div>
+      <img src="{{ chart_2_image_url }}" alt="{{ chart_2_alt }}" onerror="this.style.display='none'; this.parentElement.querySelector('.chart-label').style.display='block';">
+      <span class="chart-label" style="display:none;">[ Chart Placeholder ]</span>
+    </div>
+  </div>
+
+  <!-- FOOTNOTES STRIP -->
+  <div class="footnotes-strip">
+    <p>
+      <span class="fn-ref">1</span>{{ footnote_1 }}
+      <span class="fn-ref" style="margin-left:8px;">2</span>{{ footnote_2 }}
+      <span class="fn-ref" style="margin-left:8px;">3</span>{{ footnote_3 }}
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-band">
+    <span class="footer-left">{{ footer_copyright }}</span>
+    <span class="footer-center">{{ footer_classification }}</span>
+    <span class="footer-right">{{ footer_page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0044",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "company_name": "string",
+    "company_logo_text": "string",
+    "document_reference": "string",
+    "document_classification": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "kpis": [
+      {
+        "value": "string",
+        "label": "string",
+        "unit": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "callout_heading": "string",
+    "callout_text": "string",
+    "timeline_heading": "string",
+    "timeline_events": [
+      {
+        "year": "string",
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "band_label_1": "string",
+    "band_value_1": "string",
+    "band_label_2": "string",
+    "band_value_2": "string",
+    "band_label_3": "string",
+    "band_value_3": "string",
+    "chart_1_title": "string",
+    "chart_1_image_url": "string",
+    "chart_1_alt": "string",
+    "chart_2_title": "string",
+    "chart_2_image_url": "string",
+    "chart_2_alt": "string",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "footnote_3": "string",
+    "footer_copyright": "string",
+    "footer_classification": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

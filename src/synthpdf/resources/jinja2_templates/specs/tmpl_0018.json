@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0018",
+  "industry": "legal_compliance",
+  "page_role": "appendix_data",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "government_slate",
+    "primary": "#2c3e50",
+    "secondary": "#34495e",
+    "accent": "#e74c3c",
+    "bg": "#ecf0f1",
+    "surface": "#ffffff",
+    "text": "#2c3e50",
+    "muted": "#7f8c8d"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "icon_with_text_grid",
+    "numbered_list_items",
+    "percentage_donut",
+    "data_table"
+  ],
+  "density": "sparse",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by McKinsey & Company consulting reports \u2014 very formal, data-driven, charcoal tones",
+  "seed": 97793
+}

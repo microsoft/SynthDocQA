@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0097",
+  "industry": "academic_research",
+  "page_role": "timeline_page",
+  "layout": {
+    "name": "infographic_flow",
+    "description": "Visual storytelling with icons, arrows, numbered steps, and callout boxes. Content arranged as a flow or journey, not a grid."
+  },
+  "color_palette": {
+    "name": "energy_red",
+    "primary": "#cc0000",
+    "secondary": "#990000",
+    "accent": "#f5a623",
+    "bg": "#ffffff",
+    "surface": "#fdf8f8",
+    "text": "#1a0000",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "chart_placeholder_box",
+    "data_table",
+    "top_navigation_tabs",
+    "page_number_footer",
+    "quote_attribution",
+    "timeline_nodes"
+  ],
+  "density": "balanced",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by World Economic Forum reports \u2014 international, multi-stakeholder, formal blue",
+  "seed": 70394
+}

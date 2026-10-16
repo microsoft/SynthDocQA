@@ -1,0 +1,743 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fefefe;
+    color: #1b2d22;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fefefe;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .nav-tabs {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    background: #1b2d22;
+    position: relative;
+  }
+
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #52796f;
+    border-right: 1px solid #2d6a4f;
+    position: relative;
+    cursor: default;
+  }
+
+  .nav-tab:last-child {
+    border-right: none;
+  }
+
+  .nav-tab.active {
+    color: #fefefe;
+    background: #2d6a4f;
+  }
+
+  .nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #f4a261;
+  }
+
+  /* === HERO SECTION === */
+  .hero {
+    width: 100%;
+    height: 338px;
+    background: linear-gradient(135deg, #2d6a4f 0%, #40916c 60%, #2d6a4f 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 56px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -20px;
+    width: 320px;
+    height: 320px;
+    border: 2px solid rgba(244, 162, 97, 0.25);
+    transform: rotate(45deg);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: 80px;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+  }
+
+  .hero-geometric-1 {
+    position: absolute;
+    top: 20px;
+    right: 160px;
+    width: 80px;
+    height: 80px;
+    background: rgba(244, 162, 97, 0.12);
+    transform: rotate(45deg);
+  }
+
+  .hero-geometric-2 {
+    position: absolute;
+    bottom: 30px;
+    left: 420px;
+    width: 50px;
+    height: 50px;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    transform: rotate(22deg);
+  }
+
+  .hero-geometric-3 {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    width: 120px;
+    height: 120px;
+    border: 1px solid rgba(244, 162, 97, 0.18);
+    transform: rotate(60deg);
+  }
+
+  .hero-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #f4a261;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    color: #fefefe;
+    margin-bottom: 14px;
+    max-width: 520px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-accent-bar {
+    width: 100%;
+    height: 4px;
+    background: #f4a261;
+  }
+
+  /* === PROCESS FLOW STRIP === */
+  .process-flow-strip {
+    width: 100%;
+    background: #f0f4f0;
+    padding: 18px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .process-flow-strip::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 56px;
+    right: 56px;
+    height: 1px;
+    background: #d0ddd4;
+  }
+
+  .process-step {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .process-step-number {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    background: #2d6a4f;
+    color: #fefefe;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .process-step.active .process-step-number {
+    background: #f4a261;
+    color: #1b2d22;
+  }
+
+  .process-step-text {
+    margin-left: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1b2d22;
+    line-height: 1.3;
+  }
+
+  .process-step-arrow {
+    margin: 0 8px;
+    color: #52796f;
+    font-size: 14px;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  /* === COLUMNS SECTION === */
+  .columns-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    padding: 24px 56px 0 56px;
+    flex: 1;
+  }
+
+  .column {
+    padding: 0 14px;
+    border-right: 1px solid #e2ebe5;
+    position: relative;
+  }
+
+  .column:first-child {
+    padding-left: 0;
+  }
+
+  .column:last-child {
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .column-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #2d6a4f;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #2d6a4f;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+  }
+
+  .column-body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1b2d22;
+    margin-bottom: 12px;
+  }
+
+  .column-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+  }
+
+  .column-list li {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #1b2d22;
+    padding: 4px 0 4px 14px;
+    position: relative;
+    border-bottom: 1px solid #e8efe9;
+  }
+
+  .column-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: #f4a261;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  .column-list li:last-child {
+    border-bottom: none;
+  }
+
+  .kpi-card {
+    background: #f0f4f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    border-left: 3px solid;
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
+    color: #2d6a4f;
+  }
+
+  .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #52796f;
+    margin-top: 2px;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 110px;
+    background: #f0f4f0;
+    border: 1px dashed #b7c7ba;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #b7c7ba;
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+
+  .chart-placeholder-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #52796f;
+  }
+
+  .chart-placeholder-sub {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #52796f;
+    margin-top: 3px;
+  }
+
+  .two-col-text {
+    column-count: 2;
+    column-gap: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #1b2d22;
+    margin-bottom: 12px;
+  }
+
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+  }
+
+  .mini-table th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fefefe;
+    background: #2d6a4f;
+    padding: 5px 6px;
+    text-align: left;
+  }
+
+  .mini-table td {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    padding: 4px 6px;
+    border-bottom: 1px solid #e2ebe5;
+    color: #1b2d22;
+  }
+
+  .mini-table tr:nth-child(even) td {
+    background: #f0f4f0;
+  }
+
+  .section-subhead {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #40916c;
+    margin: 10px 0 6px 0;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: #2d6a4f;
+    color: #fefefe;
+    margin-bottom: 6px;
+  }
+
+  .status-badge.warning {
+    background: #f4a261;
+    color: #1b2d22;
+  }
+
+  .status-badge.muted {
+    background: #52796f;
+    color: #fefefe;
+  }
+
+  /* === FOOTNOTES STRIP === */
+  .footnotes-strip {
+    width: 100%;
+    background: #f0f4f0;
+    padding: 10px 56px;
+    border-top: 1px solid #d0ddd4;
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+  }
+
+  .footnotes-strip p {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    line-height: 1.5;
+    color: #52796f;
+    margin-bottom: 2px;
+  }
+
+  .footnotes-strip p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* === PAGE FOOTER === */
+  .page-footer {
+    width: 100%;
+    height: 36px;
+    background: #1b2d22;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+  }
+
+  .footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    color: #52796f;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #fefefe;
+    letter-spacing: 0.06em;
+  }
+
+  .geo-corner {
+    position: absolute;
+    bottom: 80px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid rgba(45, 106, 79, 0.15);
+    transform: rotate(45deg);
+  }
+
+  .geo-corner-inner {
+    position: absolute;
+    bottom: 90px;
+    right: 40px;
+    width: 20px;
+    height: 20px;
+    background: rgba(244, 162, 97, 0.08);
+    transform: rotate(45deg);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAVIGATION TABS -->
+  <nav class="nav-tabs">
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="hero-geometric-1"></div>
+    <div class="hero-geometric-2"></div>
+    <div class="hero-geometric-3"></div>
+    <div class="hero-label">{{ hero_label }}</div>
+    <h1 class="hero-title">{{ page_title }}</h1>
+    <p class="hero-subtitle">{{ hero_description }}</p>
+  </div>
+  <div class="hero-accent-bar"></div>
+
+  <!-- PROCESS FLOW STRIP -->
+  <div class="process-flow-strip">
+    {% for step in process_steps %}
+    <div class="process-step {% if step.active %}active{% endif %}">
+      <div class="process-step-number">{{ step.number }}</div>
+      <div class="process-step-text">{{ step.label }}</div>
+    </div>
+    {% if not loop.last %}
+    <div class="process-step-arrow">&#9654;</div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- FOUR COLUMNS CONTENT -->
+  <div class="columns-section">
+
+    <!-- Column 1 -->
+    <div class="column">
+      <h3 class="column-heading">{{ col1_heading }}</h3>
+      <div class="status-badge" style="background: {{ kpi_1_color }};">{{ col1_status }}</div>
+      <div class="kpi-card" style="border-left-color: {{ kpi_1_color }};">
+        <div class="kpi-value">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <p class="column-body">{{ col1_body }}</p>
+      <ul class="column-list">
+        {% for item in col1_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <div class="section-subhead">{{ col1_subheading }}</div>
+      <p class="column-body" style="font-size:10px;">{{ col1_detail }}</p>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="column">
+      <h3 class="column-heading">{{ col2_heading }}</h3>
+      <div class="status-badge warning">{{ col2_status }}</div>
+      <div class="kpi-card" style="border-left-color: {{ kpi_2_color }};">
+        <div class="kpi-value">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <p class="column-body">{{ col2_body }}</p>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th>{{ table_col_header_1 }}</th>
+            <th>{{ table_col_header_2 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.col1 }}</td>
+            <td>{{ row.col2 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="section-subhead">{{ col2_subheading }}</div>
+      <p class="column-body" style="font-size:10px;">{{ col2_detail }}</p>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="column">
+      <h3 class="column-heading">{{ col3_heading }}</h3>
+      <div class="status-badge muted">{{ col3_status }}</div>
+      <div class="chart-placeholder">
+        <span class="chart-placeholder-label">{{ chart_label }}</span>
+        <span class="chart-placeholder-sub">{{ chart_sublabel }}</span>
+      </div>
+      <div class="two-col-text">{{ col3_body_two_col }}</div>
+      <ul class="column-list">
+        {% for item in col3_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Column 4 -->
+    <div class="column">
+      <h3 class="column-heading">{{ col4_heading }}</h3>
+      <div class="kpi-card" style="border-left-color: {{ kpi_3_color }};">
+        <div class="kpi-value">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+      <div class="kpi-card" style="border-left-color: {{ kpi_4_color }};">
+        <div class="kpi-value">{{ kpi_4_value }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+      </div>
+      <p class="column-body">{{ col4_body }}</p>
+      <ul class="column-list">
+        {% for item in col4_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <div class="section-subhead">{{ col4_subheading }}</div>
+      <p class="column-body" style="font-size:10px;">{{ col4_detail }}</p>
+    </div>
+
+  </div>
+
+  <!-- GEOMETRIC DECORATIONS -->
+  <div class="geo-corner"></div>
+  <div class="geo-corner-inner"></div>
+
+  <!-- FOOTNOTES STRIP -->
+  <div class="footnotes-strip">
+    {% for note in footnotes %}
+    <p>{{ note.marker }} {{ note.text }}</p>
+    {% endfor %}
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_text }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0114",
+  "variables": {
+    "page_title": "string",
+    "hero_label": "string",
+    "hero_description": "string",
+    "nav_tabs": "array of objects with 'label' (string) and 'active' (boolean)",
+    "process_steps": "array of objects with 'number' (string), 'label' (string), 'active' (boolean)",
+    "col1_heading": "string",
+    "col1_status": "string",
+    "col1_body": "string",
+    "col1_items": "array of strings",
+    "col1_subheading": "string",
+    "col1_detail": "string",
+    "col2_heading": "string",
+    "col2_status": "string",
+    "col2_body": "string",
+    "col2_subheading": "string",
+    "col2_detail": "string",
+    "col3_heading": "string",
+    "col3_status": "string",
+    "col3_body_two_col": "string",
+    "col3_items": "array of strings",
+    "col4_heading": "string",
+    "col4_body": "string",
+    "col4_items": "array of strings",
+    "col4_subheading": "string",
+    "col4_detail": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "table_col_header_1": "string",
+    "table_col_header_2": "string",
+    "table_rows": "array of objects with 'col1' (string) and 'col2' (string)",
+    "chart_label": "string",
+    "chart_sublabel": "string",
+    "footnotes": "array of objects with 'marker' (string) and 'text' (string)",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

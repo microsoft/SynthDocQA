@@ -1,0 +1,788 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title | default('Insurance Risk Analytics — Annual Dashboard Report 2024') }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #0d2137;
+    background: #e3f2fd;
+  }
+
+  .page-container {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    background: #e3f2fd;
+    overflow: hidden;
+  }
+
+  /* Large background watermark */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 220px;
+    font-weight: 700;
+    color: rgba(21, 101, 192, 0.04);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  .watermark-secondary {
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 100px;
+    font-weight: 700;
+    color: rgba(2, 119, 189, 0.03);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  /* Brand strip at top */
+  .brand-strip {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 56px;
+    background: linear-gradient(135deg, #1565c0 0%, #0277bd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-strip .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip .logo-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .brand-strip .brand-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip .report-date {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.05em;
+  }
+
+  /* Accent band below brand */
+  .accent-band {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 4px;
+    background: #f9a825;
+  }
+
+  /* Sidebar annotation column */
+  .main-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    height: calc(1123px - 60px);
+  }
+
+  .sidebar-annotation {
+    background: #1565c0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    gap: 18px;
+  }
+
+  .sidebar-annotation .sidebar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .sidebar-annotation .sidebar-dot.active {
+    background: #f9a825;
+    box-shadow: 0 0 6px rgba(249, 168, 37, 0.5);
+  }
+
+  .sidebar-annotation .sidebar-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  /* Content area */
+  .content-area {
+    padding: 36px 40px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  /* Title section */
+  .title-section {
+    margin-bottom: 10px;
+  }
+
+  .title-section .doc-classification {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #0277bd;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .title-section h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0d2137;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .title-section .subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #546e7a;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    max-width: 560px;
+  }
+
+  /* Colored section band */
+  .section-band {
+    width: calc(100% + 72px);
+    margin-left: -32px;
+    margin-right: -40px;
+    height: 40px;
+    background: linear-gradient(90deg, #0277bd 0%, #1565c0 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    margin-bottom: 18px;
+    margin-top: 6px;
+  }
+
+  .section-band h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffffff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .section-band .band-accent {
+    width: 24px;
+    height: 3px;
+    background: #f9a825;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  /* KPI Dashboard Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 14px 14px 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(13, 33, 55, 0.08);
+    border: 1px solid rgba(21, 101, 192, 0.08);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--kpi-color, #1565c0);
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 24px;
+    color: #0d2137;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #546e7a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-trend {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .kpi-trend.up { color: #2e7d32; }
+  .kpi-trend.down { color: #c62828; }
+  .kpi-trend.neutral { color: #546e7a; }
+
+  /* Two-column body text */
+  .two-col-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .two-col-body .col-text {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    background: #ffffff;
+    border: 1px solid rgba(21, 101, 192, 0.12);
+    border-radius: 6px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(13, 33, 55, 0.06);
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(180deg, transparent 0%, rgba(21, 101, 192, 0.03) 100%);
+  }
+
+  .chart-placeholder .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 90px;
+    padding: 0 24px;
+    z-index: 1;
+  }
+
+  .chart-placeholder .chart-bar {
+    width: 28px;
+    border-radius: 3px 3px 0 0;
+    background: #1565c0;
+    opacity: 0.7;
+  }
+
+  .chart-placeholder .chart-bar:nth-child(even) {
+    background: #0277bd;
+    opacity: 0.55;
+  }
+
+  .chart-placeholder .chart-bar:nth-child(3n) {
+    background: #f9a825;
+    opacity: 0.75;
+  }
+
+  .chart-placeholder .chart-label {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #546e7a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Timeline nodes */
+  .timeline-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 14px;
+  }
+
+  .timeline-track {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background: linear-gradient(90deg, #1565c0, #0277bd, #f9a825);
+    z-index: 0;
+  }
+
+  .timeline-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .timeline-node .node-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid #1565c0;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .timeline-node .node-dot.accent {
+    border-color: #f9a825;
+    background: #f9a825;
+  }
+
+  .timeline-node .node-dot.completed {
+    background: #1565c0;
+  }
+
+  .timeline-node .node-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .timeline-node .node-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    font-weight: 700;
+    color: #0d2137;
+    text-align: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    max-width: 90px;
+  }
+
+  .timeline-node .node-date {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    color: #546e7a;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+  }
+
+  .numbered-list li .num {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1565c0;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* Bottom footer bar */
+  .footer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
+    background: #0d2137;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 0 92px;
+    z-index: 3;
+  }
+
+  .footer-bar .footer-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-bar .footer-page {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #f9a825;
+    letter-spacing: 0.08em;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(21, 101, 192, 0.12);
+    margin: 6px 0;
+  }
+
+  .section-heading-inline {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1565c0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- Large background watermark -->
+  <div class="watermark">{{ watermark_text | default('RISK') }}</div>
+  <div class="watermark-secondary">{{ watermark_secondary_text | default('ANALYTICS') }}</div>
+
+  <!-- Brand / Logo strip -->
+  <div class="brand-strip">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="7" height="7" rx="1" fill="#1565c0"/>
+          <rect x="11" y="2" width="7" height="7" rx="1" fill="#0277bd"/>
+          <rect x="2" y="11" width="7" height="7" rx="1" fill="#0277bd"/>
+          <rect x="11" y="11" width="7" height="7" rx="1" fill="#f9a825"/>
+        </svg>
+      </div>
+      <span class="brand-name">{{ company_name | default('Meridian Re Insurance Group') }}</span>
+    </div>
+    <span class="report-date">{{ report_date | default('Fiscal Year 2024 — Q4 Consolidated') }}</span>
+  </div>
+
+  <!-- Accent band -->
+  <div class="accent-band"></div>
+
+  <!-- Main layout: sidebar + content -->
+  <div class="main-layout">
+
+    <!-- Sidebar annotation -->
+    <div class="sidebar-annotation">
+      <div class="sidebar-dot active"></div>
+      <div class="sidebar-dot"></div>
+      <div class="sidebar-dot"></div>
+      <div class="sidebar-dot"></div>
+      <div class="sidebar-dot"></div>
+      <div class="sidebar-label">{{ sidebar_label | default('Cover') }}</div>
+    </div>
+
+    <!-- Content area -->
+    <div class="content-area">
+
+      <!-- Title section -->
+      <div class="title-section">
+        <div class="doc-classification">{{ document_classification | default('Confidential — Board-Level Risk Summary') }}</div>
+        <h1>{{ page_title | default('Insurance Risk Analytics Dashboard') }}</h1>
+        <div class="subtitle">{{ subtitle | default('Comprehensive risk exposure analysis, claims performance metrics, and underwriting portfolio assessment for the consolidated group entity.') }}</div>
+      </div>
+
+      <!-- Section band -->
+      <div class="section-band">
+        <div class="band-accent"></div>
+        <h2>{{ section_heading | default('Key Performance Indicators — Risk Overview') }}</h2>
+      </div>
+
+      <!-- KPI Dashboard Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color: {{ kpi_1_color | default('#1565c0') }};">
+          <div class="kpi-value">{{ kpi_1_value | default('94.2%') }}</div>
+          <div class="kpi-label">{{ kpi_1_label | default('Combined Ratio') }}</div>
+          <div class="kpi-trend {{ kpi_1_trend_dir | default('up') }}">{{ kpi_1_trend | default('▲ 1.8% YoY') }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_2_color | default('#0277bd') }};">
+          <div class="kpi-value">{{ kpi_2_value | default('$3.4B') }}</div>
+          <div class="kpi-label">{{ kpi_2_label | default('Gross Written Premium') }}</div>
+          <div class="kpi-trend {{ kpi_2_trend_dir | default('up') }}">{{ kpi_2_trend | default('▲ 12.3% YoY') }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_3_color | default('#f9a825') }};">
+          <div class="kpi-value">{{ kpi_3_value | default('67.1%') }}</div>
+          <div class="kpi-label">{{ kpi_3_label | default('Loss Ratio') }}</div>
+          <div class="kpi-trend {{ kpi_3_trend_dir | default('down') }}">{{ kpi_3_trend | default('▼ 3.2% YoY') }}</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color: {{ kpi_4_color | default('#1565c0') }};">
+          <div class="kpi-value">{{ kpi_4_value | default('A+ (AM)') }}</div>
+          <div class="kpi-label">{{ kpi_4_label | default('Financial Strength Rating') }}</div>
+          <div class="kpi-trend {{ kpi_4_trend_dir | default('neutral') }}">{{ kpi_4_trend | default('— Stable Outlook') }}</div>
+        </div>
+      </div>
+
+      <!-- Two-column body text -->
+      <div class="two-col-body">
+        <div class="col-text">{{ body_paragraph_1 | default('This report presents the consolidated risk analytics for Meridian Re Insurance Group across all operating segments. Portfolio diversification strategies implemented in Q2 have yielded measurable improvements in loss-adjusted returns and reserve adequacy. Catastrophe modeling outputs reflect updated exposure data as of September 30, 2024.') }}</div>
+        <div class="col-text">{{ body_paragraph_2 | default('Underwriting discipline remained strong with rate adequacy exceeding target thresholds in 87% of renewed accounts. Claims severity trends in the commercial property and casualty lines showed moderating frequency, offset by elevated large-loss events in the natural catastrophe segment during Q3 storm season.') }}</div>
+      </div>
+
+      <!-- Chart placeholder -->
+      <div class="chart-placeholder">
+        <span class="chart-label">{{ chart_title | default('Monthly Claims Severity Index — Trailing 12 Months') }}</span>
+        <div class="chart-bars">
+          <div class="chart-bar" style="height: 40px;"></div>
+          <div class="chart-bar" style="height: 55px;"></div>
+          <div class="chart-bar" style="height: 48px;"></div>
+          <div class="chart-bar" style="height: 72px;"></div>
+          <div class="chart-bar" style="height: 60px;"></div>
+          <div class="chart-bar" style="height: 45px;"></div>
+          <div class="chart-bar" style="height: 80px;"></div>
+          <div class="chart-bar" style="height: 65px;"></div>
+          <div class="chart-bar" style="height: 52px;"></div>
+          <div class="chart-bar" style="height: 70px;"></div>
+          <div class="chart-bar" style="height: 58px;"></div>
+          <div class="chart-bar" style="height: 44px;"></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Bottom two-section row: numbered list + timeline -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 4px;">
+
+        <!-- Numbered list: key risk areas -->
+        <div>
+          <div class="section-heading-inline">{{ list_heading | default('Priority Risk Areas') }}</div>
+          <ol class="numbered-list">
+            {% for item in risk_items %}
+            <li>
+              <span class="num">{{ loop.index }}</span>
+              <span>{{ item }}</span>
+            </li>
+            {% endfor %}
+            {% if not risk_items %}
+            <li><span class="num">1</span><span>Catastrophe Accumulation — Hurricane & Windstorm</span></li>
+            <li><span class="num">2</span><span>Cyber Liability Reserve Uncertainty</span></li>
+            <li><span class="num">3</span><span>Casualty Long-Tail Loss Development</span></li>
+            <li><span class="num">4</span><span>Reinsurance Credit Counterparty Exposure</span></li>
+            <li><span class="num">5</span><span>Regulatory Capital Adequacy (Solvency II)</span></li>
+            {% endif %}
+          </ol>
+        </div>
+
+        <!-- Timeline nodes -->
+        <div>
+          <div class="section-heading-inline">{{ timeline_heading | default('Report Timeline') }}</div>
+          <div class="timeline-section">
+            <div class="timeline-track">
+              {% for node in timeline_nodes %}
+              <div class="timeline-node">
+                <div class="node-dot {{ node.status }}"><span class="node-number">{{ loop.index }}</span></div>
+                <div class="node-label">{{ node.label }}</div>
+                <div class="node-date">{{ node.date }}</div>
+              </div>
+              {% endfor %}
+              {% if not timeline_nodes %}
+              <div class="timeline-node">
+                <div class="node-dot completed"><span class="node-number">1</span></div>
+                <div class="node-label">Data Collection</div>
+                <div class="node-date">Oct 1</div>
+              </div>
+              <div class="timeline-node">
+                <div class="node-dot completed"><span class="node-number">2</span></div>
+                <div class="node-label">Actuarial Review</div>
+                <div class="node-date">Oct 15</div>
+              </div>
+              <div class="timeline-node">
+                <div class="node-dot accent"><span class="node-number">3</span></div>
+                <div class="node-label">Board Review</div>
+                <div class="node-date">Nov 4</div>
+              </div>
+              <div class="timeline-node">
+                <div class="node-dot"><span class="node-number">4</span></div>
+                <div class="node-label">Final Publish</div>
+                <div class="node-date">Nov 20</div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-layout -->
+
+  <!-- Footer bar -->
+  <div class="footer-bar">
+    <span class="footer-text">{{ footer_text | default('Meridian Re Insurance Group — Privileged & Confidential — Not for Distribution') }}</span>
+    <span class="footer-page">{{ page_number | default('01') }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0080",
+  "variables": {
+    "page_title": "string",
+    "subtitle": "string",
+    "company_name": "string",
+    "report_date": "string",
+    "document_classification": "string",
+    "sidebar_label": "string",
+    "section_heading": "string",
+    "watermark_text": "string",
+    "watermark_secondary_text": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_1_trend": "string",
+    "kpi_1_trend_dir": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_2_trend": "string",
+    "kpi_2_trend_dir": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_3_trend": "string",
+    "kpi_3_trend_dir": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "kpi_4_trend": "string",
+    "kpi_4_trend_dir": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "chart_title": "string",
+    "list_heading": "string",
+    "risk_items": "list[string]",
+    "timeline_heading": "string",
+    "timeline_nodes": "list[object{label:string, date:string, status:string}]",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

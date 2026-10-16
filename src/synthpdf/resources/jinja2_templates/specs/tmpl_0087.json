@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0087",
+  "industry": "retail_consumer_goods",
+  "page_role": "section_divider",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "investment_navy",
+    "primary": "#0a1628",
+    "secondary": "#1a3a6b",
+    "accent": "#c8a96e",
+    "bg": "#ffffff",
+    "surface": "#f7f5f0",
+    "text": "#1a1a1a",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "callout_box",
+    "data_table",
+    "icon_with_text_grid",
+    "percentage_donut",
+    "pull_quote_block"
+  ],
+  "density": "balanced",
+  "motif": "dotted_pattern_overlay",
+  "design_direction": "Inspired by Spotify Wrapped infographics \u2014 vibrant gradients, bold numbers, consumer-friendly",
+  "seed": 703055
+}

@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0103",
+  "industry": "government_public_sector",
+  "page_role": "product_showcase",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "tech_azure",
+    "primary": "#0078d4",
+    "secondary": "#005a9e",
+    "accent": "#00b294",
+    "bg": "#f3f2f1",
+    "surface": "#ffffff",
+    "text": "#201f1e",
+    "muted": "#605e5c"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "sidebar_annotation",
+    "quote_attribution",
+    "kpi_metric_cards",
+    "page_number_footer"
+  ],
+  "density": "sparse",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by Harvard Business Review articles \u2014 editorial, serif typography, thoughtful",
+  "seed": 694093
+}

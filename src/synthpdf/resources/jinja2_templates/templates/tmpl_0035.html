@@ -1,0 +1,665 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #e3f2fd;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #0d2137;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #e3f2fd;
+  }
+
+  /* Large background watermark */
+  .page::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 140px;
+    font-weight: 700;
+    color: rgba(21, 101, 192, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 0.08em;
+  }
+
+  /* Top navigation tabs */
+  .top-nav {
+    width: 100%;
+    height: 48px;
+    background: #1565c0;
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    z-index: 10;
+  }
+
+  .nav-tab {
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: default;
+  }
+
+  .nav-tab.active {
+    background: #0277bd;
+    color: #ffffff;
+  }
+
+  .nav-tab-accent {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #f9a825 0%, #f9a825 20%, #1565c0 20%, #1565c0 100%);
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Header area */
+  .header-band {
+    padding: 28px 48px 18px 48px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .header-band h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #1565c0;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .header-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #546e7a;
+    letter-spacing: 0.05em;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    margin: 0 48px 20px 48px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .divider-label::before {
+    content: '';
+    flex: 0 0 4px;
+    height: 16px;
+    background: #f9a825;
+    margin-right: 12px;
+    border-radius: 1px;
+  }
+
+  .divider-label-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #0277bd;
+    letter-spacing: 0.12em;
+    margin-right: 14px;
+    white-space: nowrap;
+  }
+
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #0277bd 0%, transparent 100%);
+  }
+
+  /* Card mosaic container */
+  .mosaic-container {
+    padding: 0 40px;
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 14px;
+  }
+
+  /* Card base */
+  .card {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(13, 33, 55, 0.06);
+    border: 1px solid rgba(21, 101, 192, 0.08);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  /* Card variants */
+  .card-primary::before { background: #1565c0; }
+  .card-secondary::before { background: #0277bd; }
+  .card-accent::before { background: #f9a825; }
+  .card-muted::before { background: #546e7a; }
+
+  /* Spanning cards */
+  .card-span-2 { grid-column: span 2; }
+  .card-span-3 { grid-column: span 3; }
+  .card-span-row-2 { grid-row: span 2; }
+
+  /* Card headings */
+  .card h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1565c0;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .card h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0d2137;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  /* TOC list within cards */
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dotted rgba(84, 110, 122, 0.25);
+  }
+
+  .toc-item:last-child {
+    border-bottom: none;
+  }
+
+  .toc-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #0277bd;
+    min-width: 28px;
+    flex-shrink: 0;
+  }
+
+  .toc-title {
+    flex: 1;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #0d2137;
+    letter-spacing: 0.05em;
+  }
+
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #546e7a;
+    margin: 0 6px;
+    min-width: 20px;
+    align-self: flex-end;
+    margin-bottom: 3px;
+  }
+
+  .toc-page {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1565c0;
+    flex-shrink: 0;
+    min-width: 22px;
+    text-align: right;
+  }
+
+  /* Two column body text */
+  .two-col-text {
+    column-count: 2;
+    column-gap: 18px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #0d2137;
+  }
+
+  /* Data table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #1565c0;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 7px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(21, 101, 192, 0.08);
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #0d2137;
+  }
+
+  .data-table tbody tr:nth-child(even) td {
+    background: #e3f2fd;
+  }
+
+  /* Quote block */
+  .quote-block {
+    border-left: 3px solid #f9a825;
+    padding: 10px 14px;
+    background: rgba(249, 168, 37, 0.06);
+    margin-top: 8px;
+  }
+
+  .quote-text {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    color: #0d2137;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+
+  .quote-attribution {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(135deg, #e3f2fd 0%, rgba(21, 101, 192, 0.08) 100%);
+    border: 1px dashed rgba(21, 101, 192, 0.25);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .chart-placeholder-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* KPI display */
+  .kpi-item {
+    text-align: center;
+    padding: 8px 6px;
+    background: #e3f2fd;
+    border-radius: 3px;
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* Section badge */
+  .section-badge {
+    display: inline-block;
+    background: #0277bd;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  /* Page number footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: #ffffff;
+    border-top: 1px solid rgba(21, 101, 192, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 10;
+  }
+
+  .footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #546e7a;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #1565c0;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-bar {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #1565c0 0%, #0277bd 60%, #f9a825 100%);
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top Navigation Tabs -->
+  <nav class="top-nav">
+    <div class="nav-tab">{{ nav_tab_1 }}</div>
+    <div class="nav-tab active">{{ nav_tab_2 }}</div>
+    <div class="nav-tab">{{ nav_tab_3 }}</div>
+    <div class="nav-tab">{{ nav_tab_4 }}</div>
+    <div class="nav-tab">{{ nav_tab_5 }}</div>
+  </nav>
+  <div class="nav-tab-accent"></div>
+
+  <!-- Header -->
+  <div class="header-band">
+    <h1>{{ page_title }}</h1>
+    <div class="header-subtitle">{{ header_subtitle }}</div>
+  </div>
+
+  <!-- Divider with label -->
+  <div class="divider-label">
+    <span class="divider-label-text">{{ divider_label_1 }}</span>
+  </div>
+
+  <!-- Card Mosaic Grid -->
+  <div class="mosaic-container">
+
+    <!-- Card 1: Primary TOC sections (spans 2 cols, 2 rows) -->
+    <div class="card card-primary card-span-2 card-span-row-2">
+      <span class="section-badge">{{ card_1_badge }}</span>
+      <h2>{{ card_1_heading }}</h2>
+      <ul class="toc-list">
+        {% for item in toc_main_sections %}
+        <li class="toc-item">
+          <span class="toc-number">{{ item.number }}</span>
+          <span class="toc-title">{{ item.title }}</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page">{{ item.page }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Card 2: KPI summary card -->
+    <div class="card card-accent">
+      <h2>{{ card_2_heading }}</h2>
+      <div class="kpi-item" style="margin-bottom: 10px;">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <div class="kpi-item" style="margin-bottom: 10px;">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Chart placeholder -->
+    <div class="card card-secondary">
+      <h2>{{ card_3_heading }}</h2>
+      <div class="chart-placeholder">
+        <span class="chart-placeholder-label">{{ chart_placeholder_label }}</span>
+      </div>
+    </div>
+
+    <!-- Card 4: Financial sections list -->
+    <div class="card card-secondary">
+      <span class="section-badge" style="background: #1565c0;">{{ card_4_badge }}</span>
+      <h2>{{ card_4_heading }}</h2>
+      <ul class="toc-list">
+        {% for item in toc_financial_sections %}
+        <li class="toc-item">
+          <span class="toc-number">{{ item.number }}</span>
+          <span class="toc-title">{{ item.title }}</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page">{{ item.page }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Card 5: Data table card (spans 2 cols) -->
+    <div class="card card-primary card-span-2">
+      <h2>{{ card_5_heading }}</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ table_col_1 }}</th>
+            <th>{{ table_col_2 }}</th>
+            <th>{{ table_col_3 }}</th>
+            <th>{{ table_col_4 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.section }}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.pages }}</td>
+            <td>{{ row.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Card 6: Quote / editorial -->
+    <div class="card card-muted">
+      <h2>{{ card_6_heading }}</h2>
+      <div class="quote-block">
+        <div class="quote-text">"{{ quote_text }}"</div>
+        <div class="quote-attribution">— {{ quote_attribution }}</div>
+      </div>
+    </div>
+
+    <!-- Card 7: Appendix sections (spans 2 cols) -->
+    <div class="card card-accent card-span-2">
+      <span class="section-badge" style="background: #f9a825; color: #0d2137;">{{ card_7_badge }}</span>
+      <h2 style="color: #0d2137;">{{ card_7_heading }}</h2>
+      <div class="two-col-text">
+        <ul class="toc-list">
+          {% for item in toc_appendix_sections %}
+          <li class="toc-item">
+            <span class="toc-number">{{ item.number }}</span>
+            <span class="toc-title">{{ item.title }}</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">{{ item.page }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Card 8: Document info -->
+    <div class="card card-muted">
+      <h2>{{ card_8_heading }}</h2>
+      <div style="font-size: 10px; line-height: 1.7; color: #546e7a;">
+        <div><strong style="color: #0d2137;">{{ doc_info_label_1 }}:</strong> {{ doc_info_value_1 }}</div>
+        <div><strong style="color: #0d2137;">{{ doc_info_label_2 }}:</strong> {{ doc_info_value_2 }}</div>
+        <div><strong style="color: #0d2137;">{{ doc_info_label_3 }}:</strong> {{ doc_info_value_3 }}</div>
+        <div><strong style="color: #0d2137;">{{ doc_info_label_4 }}:</strong> {{ doc_info_value_4 }}</div>
+        <div><strong style="color: #0d2137;">{{ doc_info_label_5 }}:</strong> {{ doc_info_value_5 }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer bar -->
+  <div class="footer-bar"></div>
+
+  <!-- Page number footer -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_text }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0035",
+  "variables": {
+    "page_title": "string",
+    "header_subtitle": "string",
+    "watermark_text": "string",
+    "nav_tab_1": "string",
+    "nav_tab_2": "string",
+    "nav_tab_3": "string",
+    "nav_tab_4": "string",
+    "nav_tab_5": "string",
+    "divider_label_1": "string",
+    "card_1_badge": "string",
+    "card_1_heading": "string",
+    "toc_main_sections": "[{number: string, title: string, page: string}]",
+    "card_2_heading": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "card_3_heading": "string",
+    "chart_placeholder_label": "string",
+    "card_4_badge": "string",
+    "card_4_heading": "string",
+    "toc_financial_sections": "[{number: string, title: string, page: string}]",
+    "card_5_heading": "string",
+    "table_col_1": "string",
+    "table_col_2": "string",
+    "table_col_3": "string",
+    "table_col_4": "string",
+    "table_rows": "[{section: string, description: string, pages: string, status: string}]",
+    "card_6_heading": "string",
+    "quote_text": "string",
+    "quote_attribution": "string",
+    "card_7_badge": "string",
+    "card_7_heading": "string",
+    "toc_appendix_sections": "[{number: string, title: string, page: string}]",
+    "card_8_heading": "string",
+    "doc_info_label_1": "string",
+    "doc_info_value_1": "string",
+    "doc_info_label_2": "string",
+    "doc_info_value_2": "string",
+    "doc_info_label_3": "string",
+    "doc_info_value_3": "string",
+    "doc_info_label_4": "string",
+    "doc_info_value_4": "string",
+    "doc_info_label_5": "string",
+    "doc_info_value_5": "string",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,641 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #0d0d0d;
+    background: #f9f7f4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  /* === FULL BLEED VISUAL — image covers ~65% === */
+  .hero-visual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 730px;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.35) contrast(1.1);
+  }
+
+  /* Organic wave curve overlay at bottom of hero */
+  .wave-overlay {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 2;
+  }
+
+  .wave-overlay svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Decorative gold wave accent at top */
+  .top-wave-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #b8960c 0%, #d4af37 40%, #b8960c 70%, #8a6e08 100%);
+    z-index: 20;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .nav-tabs {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 100%;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    height: 48px;
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #b8960c;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 40px;
+    white-space: nowrap;
+  }
+
+  .nav-items {
+    display: flex;
+    gap: 0;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888888;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .nav-item.active {
+    color: #ffffff;
+    border-bottom: 2px solid #b8960c;
+  }
+
+  /* === TITLE OVERLAY ON HERO === */
+  .hero-content {
+    position: absolute;
+    top: 80px;
+    left: 40px;
+    right: 40px;
+    z-index: 10;
+  }
+
+  .hero-subtitle {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #b8960c;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 16px;
+    max-width: 500px;
+  }
+
+  .hero-description {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 420px;
+  }
+
+  /* === SEMI-TRANSPARENT TIMELINE PANEL === */
+  .timeline-panel {
+    position: absolute;
+    top: 250px;
+    left: 40px;
+    right: 40px;
+    z-index: 10;
+    background: rgba(26, 26, 26, 0.78);
+    backdrop-filter: blur(8px);
+    border-radius: 6px;
+    padding: 32px 36px 28px 36px;
+    border: 1px solid rgba(184, 150, 12, 0.2);
+  }
+
+  .timeline-panel-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #b8960c;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+  }
+
+  /* === TIMELINE NODES === */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(180deg, #b8960c 0%, rgba(184, 150, 12, 0.3) 100%);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 22px;
+    padding-left: 20px;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-node {
+    position: absolute;
+    left: -24px;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: 2px solid #b8960c;
+    z-index: 2;
+  }
+
+  .timeline-node-inner {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b8960c;
+  }
+
+  .timeline-year {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #b8960c;
+    margin-bottom: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-event-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+
+  .timeline-event-description {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+  }
+
+  /* === BOTTOM SECTION — WHITE MARGIN AREA === */
+  .bottom-section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 393px;
+    background: #f9f7f4;
+    z-index: 5;
+    padding: 30px 40px 24px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 0 40px;
+  }
+
+  .bottom-heading {
+    grid-column: 1 / -1;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(184, 150, 12, 0.3);
+  }
+
+  /* === ICON WITH TEXT GRID === */
+  .icon-text-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .icon-circle {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-circle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .icon-text-content h4 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+  }
+
+  .icon-text-content p {
+    font-size: 11px;
+    color: #888888;
+    line-height: 1.5;
+  }
+
+  /* === RIGHT COLUMN — DONUT + NUMBERED LIST === */
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid rgba(45, 45, 45, 0.08);
+  }
+
+  .donut-chart {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .donut-chart svg {
+    transform: rotate(-90deg);
+    width: 72px;
+    height: 72px;
+  }
+
+  .donut-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #1a1a1a;
+  }
+
+  .donut-label {
+    font-size: 12px;
+    color: #0d0d0d;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .donut-sublabel {
+    font-size: 11px;
+    color: #888888;
+    line-height: 1.5;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .numbered-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .numbered-list-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: #b8960c;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .numbered-list-text {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #2d2d2d;
+  }
+
+  .numbered-list-text strong {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(184, 150, 12, 0.25);
+    margin-top: auto;
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-right {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-page-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #b8960c;
+    font-size: 9px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+
+  /* === DECORATIVE ORGANIC WAVE WATERMARK === */
+  .organic-wave-decoration {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    width: 200px;
+    height: 180px;
+    z-index: 4;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  @media print {
+    html, body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Gold accent bar -->
+  <div class="top-wave-accent"></div>
+
+  <!-- Full bleed hero image (~65% of page) -->
+  <div class="hero-visual">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    <!-- Organic wave curve transition -->
+    <div class="wave-overlay">
+      <svg viewBox="0 0 794 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C120,10 200,80 350,50 C500,20 600,70 794,30 L794,120 L0,120 Z" fill="#f9f7f4"/>
+        <path d="M0,55 C150,25 250,85 400,55 C550,25 680,75 794,45 L794,120 L0,120 Z" fill="#f9f7f4" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Top navigation tabs -->
+  <nav class="nav-tabs">
+    <div class="nav-logo">{{ company_name }}</div>
+    <div class="nav-items">
+      {% for tab in nav_tabs %}
+      <div class="nav-item {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+      {% endfor %}
+    </div>
+  </nav>
+
+  <!-- Hero content overlay -->
+  <div class="hero-content">
+    <div class="hero-subtitle">{{ section_label }}</div>
+    <h1 class="hero-title">{{ page_title }}</h1>
+    <p class="hero-description">{{ hero_description }}</p>
+  </div>
+
+  <!-- Timeline panel overlaying hero -->
+  <div class="timeline-panel">
+    <h3 class="timeline-panel-heading">{{ timeline_heading }}</h3>
+    <div class="timeline">
+      {% for event in timeline_events %}
+      <div class="timeline-item">
+        <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+        <div class="timeline-year">{{ event.year }}</div>
+        <div class="timeline-event-title">{{ event.title }}</div>
+        <div class="timeline-event-description">{{ event.description }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Bottom white section -->
+  <div class="bottom-section">
+    <h2 class="bottom-heading">{{ section_heading }}</h2>
+
+    <!-- Left: Icon with text grid -->
+    <div class="icon-text-grid">
+      {% for feature in icon_features %}
+      <div class="icon-text-item">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="{{ feature.icon_path }}" stroke="#b8960c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="icon-text-content">
+          <h4>{{ feature.title }}</h4>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Right: Donut + Numbered list -->
+    <div class="right-column">
+      <!-- Percentage donut -->
+      <div class="donut-container">
+        <div class="donut-chart">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" fill="none" stroke="#e8e4de" stroke-width="6"/>
+            <circle cx="36" cy="36" r="28" fill="none" stroke="{{ donut_color }}" stroke-width="6"
+                    stroke-dasharray="{{ donut_dash_value }} {{ donut_dash_remainder }}"
+                    stroke-linecap="round"/>
+          </svg>
+          <span class="donut-center-text">{{ donut_percentage }}</span>
+        </div>
+        <div>
+          <div class="donut-label">{{ donut_label }}</div>
+          <div class="donut-sublabel">{{ donut_sublabel }}</div>
+        </div>
+      </div>
+
+      <!-- Numbered list -->
+      <ol class="numbered-list">
+        {% for item in numbered_items %}
+        <li class="numbered-list-item">
+          <span class="numbered-list-num">{{ loop.index }}</span>
+          <span class="numbered-list-text"><strong>{{ item.title }}</strong> — {{ item.description }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      <span class="footer-left">{{ footer_text }}</span>
+      <span class="footer-right">{{ footer_document_title }}<span class="footer-page-num">{{ page_number }}</span></span>
+    </div>
+  </div>
+
+  <!-- Decorative organic wave watermark -->
+  <div class="organic-wave-decoration">
+    <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 C30,40 60,140 100,90 C140,40 170,130 200,80" fill="none" stroke="#1a1a1a" stroke-width="40"/>
+      <path d="M0,120 C40,70 80,160 120,100 C160,50 180,140 200,110" fill="none" stroke="#b8960c" stroke-width="30"/>
+      <path d="M0,150 C50,100 90,170 140,120 C170,90 190,150 200,140" fill="none" stroke="#1a1a1a" stroke-width="20"/>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0042",
+  "variables": {
+    "page_title": "string",
+    "company_name": "string",
+    "section_label": "string",
+    "hero_description": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "nav_tabs": "[{label: string, active: boolean}]",
+    "timeline_heading": "string",
+    "timeline_events": "[{year: string, title: string, description: string}]",
+    "section_heading": "string",
+    "icon_features": "[{icon_path: string, title: string, description: string}]",
+    "donut_percentage": "string",
+    "donut_color": "string",
+    "donut_dash_value": "number",
+    "donut_dash_remainder": "number",
+    "donut_label": "string",
+    "donut_sublabel": "string",
+    "numbered_items": "[{title: string, description: string}]",
+    "footer_text": "string",
+    "footer_document_title": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

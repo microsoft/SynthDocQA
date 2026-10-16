@@ -1,0 +1,696 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1a0000;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .wave-decoration-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 374px;
+    background: linear-gradient(135deg, #cc0000 0%, #990000 60%, #7a0000 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    z-index: 1;
+  }
+
+  .hero-overlay-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .hero-brand-strip {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px 8px 40px;
+    z-index: 3;
+  }
+
+  .hero-brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-brand-strip .logo-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-brand-strip .logo-mark span {
+    color: #cc0000;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .hero-brand-strip .brand-name {
+    color: #ffffff;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-brand-strip .document-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero-content {
+    grid-column: 1;
+    padding: 12px 40px 0 40px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-content h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .hero-content .hero-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+    max-width: 340px;
+  }
+
+  .hero-image-area {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 40px 30px 10px;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .hero-image-placeholder .placeholder-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-image-placeholder .placeholder-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-kpi-strip {
+    grid-column: 1;
+    display: flex;
+    gap: 16px;
+    padding: 0 40px 24px 40px;
+    z-index: 3;
+    align-items: flex-end;
+  }
+
+  .hero-kpi {
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px;
+    padding: 8px 14px;
+    min-width: 90px;
+  }
+
+  .hero-kpi .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  .hero-kpi .kpi-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  /* ===== CONTENT AREA ===== */
+  .content-area {
+    position: relative;
+    width: 100%;
+    height: 749px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 40px 50px 40px;
+  }
+
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .divider-label .label-text {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #cc0000;
+    white-space: nowrap;
+  }
+
+  .divider-label .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #cc0000, rgba(204,0,0,0.1));
+  }
+
+  .pull-quote-block {
+    background: #fdf8f8;
+    border-left: 3px solid #f5a623;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .pull-quote-block .quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #1a0000;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .pull-quote-block .quote-attribution {
+    font-size: 10px;
+    color: #666666;
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== 4-COLUMN PROCESS FLOW ===== */
+  .columns-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    flex: 1;
+  }
+
+  .process-column {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .process-column .step-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #cc0000;
+    color: #ffffff;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #990000;
+    line-height: 1.3;
+  }
+
+  .process-column .step-body {
+    font-size: 11px;
+    color: #1a0000;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .process-column .step-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+  }
+
+  .process-column .step-detail-list li {
+    font-size: 10px;
+    color: #1a0000;
+    line-height: 1.5;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(204,0,0,0.06);
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .process-column .step-detail-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: #f5a623;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .process-column:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #cc0000;
+    border-right: 2px solid #cc0000;
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+
+  .chart-placeholder {
+    background: #fdf8f8;
+    border: 1px dashed rgba(204,0,0,0.2);
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    margin-top: auto;
+  }
+
+  .chart-placeholder .chart-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .chart-placeholder .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+  }
+
+  .chart-placeholder .chart-bar {
+    width: 12px;
+    border-radius: 2px 2px 0 0;
+  }
+
+  /* ===== DATA TABLE ===== */
+  .data-table-section {
+    margin-top: 14px;
+  }
+
+  .data-table-section h3 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #990000;
+    margin-bottom: 8px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #990000;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 8px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 3px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 3px 0 0;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(204,0,0,0.08);
+    color: #1a0000;
+    font-size: 10px;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #fdf8f8;
+  }
+
+  .data-table .metric-highlight {
+    color: #cc0000;
+    font-weight: 600;
+  }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #fdf8f8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 5;
+    border-top: 1px solid rgba(204,0,0,0.1);
+  }
+
+  .page-footer .footer-text {
+    font-size: 8px;
+    color: #666666;
+    letter-spacing: 0.04em;
+  }
+
+  .page-footer .footer-page {
+    font-size: 8px;
+    color: #990000;
+    font-weight: 600;
+  }
+
+  .accent-bar-bottom {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #cc0000, #f5a623, #cc0000);
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Organic wave curves — bottom decorative -->
+  <svg class="wave-decoration-bottom" viewBox="0 0 794 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,80 L0,50 Q100,20 200,45 T400,35 T600,50 T794,30 L794,80 Z" fill="rgba(204,0,0,0.03)" />
+    <path d="M0,80 L0,60 Q150,40 300,55 T600,45 T794,55 L794,80 Z" fill="rgba(245,166,35,0.03)" />
+  </svg>
+
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero">
+    <!-- Organic wave transition hero to content -->
+    <svg class="hero-overlay-wave" viewBox="0 0 794 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 Q100,0 200,15 T400,8 T600,18 T794,5 L794,40 L0,40 Z" fill="#ffffff" />
+      <path d="M0,25 Q80,10 180,22 T380,12 T580,20 T794,10 L794,40 L0,40 Z" fill="#ffffff" opacity="0.5" />
+    </svg>
+
+    <div class="hero-brand-strip">
+      <div class="logo-area">
+        <div class="logo-mark"><span>{{ logo_initials }}</span></div>
+        <span class="brand-name">{{ company_name }}</span>
+      </div>
+      <span class="document-label">{{ document_label }}</span>
+    </div>
+
+    <div class="hero-content">
+      <h1>{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_subtitle }}</p>
+    </div>
+
+    <div class="hero-image-area">
+      <div class="hero-image-placeholder">
+        {% if hero_image_url %}
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+        {% else %}
+        <div class="placeholder-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3,15 L7,9 L10,13 L13,8 L17,15 Z" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="14" cy="6" r="2" fill="rgba(255,255,255,0.3)"/>
+          </svg>
+        </div>
+        <span class="placeholder-label">{{ hero_image_alt }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hero-kpi-strip">
+      <div class="hero-kpi">
+        <div class="kpi-value">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <div class="hero-kpi">
+        <div class="kpi-value">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <div class="hero-kpi">
+        <div class="kpi-value">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONTENT AREA ===== -->
+  <div class="content-area">
+
+    <div class="divider-label">
+      <span class="label-text">{{ section_heading }}</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="pull-quote-block">
+      <div class="quote-text">"{{ pull_quote_text }}"</div>
+      <div class="quote-attribution">— {{ pull_quote_attribution }}</div>
+    </div>
+
+    <!-- 4-column process flow -->
+    <div class="columns-grid">
+      {% for step in process_steps %}
+      <div class="process-column">
+        <div class="step-header">
+          <div class="step-number">{{ step.number }}</div>
+          <div class="step-title">{{ step.title }}</div>
+        </div>
+        <div class="step-body">{{ step.description }}</div>
+        <ul class="step-detail-list">
+          {% for detail in step.details %}
+          <li>{{ detail }}</li>
+          {% endfor %}
+        </ul>
+        {% if step.chart_label %}
+        <div class="chart-placeholder">
+          <span class="chart-label">{{ step.chart_label }}</span>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height: {{ step.chart_bar_1 }}px; background: #cc0000;"></div>
+            <div class="chart-bar" style="height: {{ step.chart_bar_2 }}px; background: #990000;"></div>
+            <div class="chart-bar" style="height: {{ step.chart_bar_3 }}px; background: #f5a623;"></div>
+            <div class="chart-bar" style="height: {{ step.chart_bar_4 }}px; background: #cc0000;"></div>
+            <div class="chart-bar" style="height: {{ step.chart_bar_5 }}px; background: #990000;"></div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Data table -->
+    <div class="data-table-section">
+      <h3>{{ table_title }}</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.phase }}</td>
+            <td>{{ row.duration }}</td>
+            <td>{{ row.resources }}</td>
+            <td class="metric-highlight">{{ row.compliance_rate }}</td>
+            <td>{{ row.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="accent-bar-bottom"></div>
+
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_text }}</span>
+    <span class="footer-text">{{ footer_confidentiality }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0075",
+  "variables": {
+    "page_title": "string",
+    "hero_subtitle": "string",
+    "company_name": "string",
+    "logo_initials": "string",
+    "document_label": "string",
+    "hero_image_url": "string (optional)",
+    "hero_image_alt": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "section_heading": "string",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "process_steps": [
+      {
+        "number": "string",
+        "title": "string",
+        "description": "string",
+        "details": ["string"],
+        "chart_label": "string (optional)",
+        "chart_bar_1": "number (optional)",
+        "chart_bar_2": "number (optional)",
+        "chart_bar_3": "number (optional)",
+        "chart_bar_4": "number (optional)",
+        "chart_bar_5": "number (optional)"
+      }
+    ],
+    "table_title": "string",
+    "table_headers": ["string"],
+    "table_rows": [
+      {
+        "phase": "string",
+        "duration": "string",
+        "resources": "string",
+        "compliance_rate": "string",
+        "status": "string"
+      }
+    ],
+    "footer_text": "string",
+    "footer_confidentiality": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->
