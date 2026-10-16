@@ -1,0 +1,789 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #111111;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f8f8f8;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .top-nav {
+    width: 100%;
+    height: 38px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .top-nav__tab {
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #999999;
+    border-right: 1px solid #333333;
+    cursor: default;
+    position: relative;
+  }
+
+  .top-nav__tab--active {
+    color: #ffffff;
+    background: #3d3d3d;
+  }
+
+  .top-nav__tab--active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #e85d04;
+  }
+
+  /* === LOGO / BRAND STRIP === */
+  .brand-strip {
+    width: 100%;
+    height: 52px;
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .brand-strip__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-strip__logo-mark {
+    width: 32px;
+    height: 32px;
+    background: #e85d04;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip__logo-mark svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+  }
+
+  .brand-strip__company {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: #1c1c1c;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip__doc-id {
+    font-size: 10px;
+    color: #777777;
+    font-weight: 400;
+  }
+
+  /* === MAIN LAYOUT === */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    background: #1c1c1c;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .sidebar__section-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #777777;
+    padding: 16px 18px 6px 18px;
+  }
+
+  .sidebar__item {
+    padding: 9px 18px;
+    font-size: 11px;
+    font-weight: 400;
+    color: #bbbbbb;
+    cursor: default;
+    border-left: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar__item--active {
+    color: #ffffff;
+    background: #3d3d3d;
+    border-left-color: #e85d04;
+    font-weight: 700;
+  }
+
+  .sidebar__item-number {
+    font-size: 9px;
+    color: #777777;
+    min-width: 16px;
+  }
+
+  .sidebar__annotation {
+    margin-top: auto;
+    padding: 16px 18px;
+    border-top: 1px solid #333333;
+  }
+
+  .sidebar__annotation-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #e85d04;
+    margin-bottom: 6px;
+  }
+
+  .sidebar__annotation-text {
+    font-size: 10px;
+    color: #999999;
+    line-height: 1.4;
+  }
+
+  /* === CONTENT AREA === */
+  .content {
+    padding: 28px 32px 20px 32px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* === HEADER SECTION === */
+  .content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .content-header__text {
+    flex: 1;
+  }
+
+  .content-header h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 1.05;
+    color: #1c1c1c;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .content-header__subtitle {
+    font-size: 13px;
+    color: #777777;
+    font-weight: 400;
+  }
+
+  /* === TAG / BADGE ROW === */
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tag--primary {
+    background: #e85d04;
+    color: #ffffff;
+  }
+
+  .tag--secondary {
+    background: #3d3d3d;
+    color: #ffffff;
+  }
+
+  .tag--outline {
+    background: transparent;
+    color: #3d3d3d;
+    border: 1px solid #cccccc;
+  }
+
+  /* === HERO IMAGE PLACEHOLDER === */
+  .hero-image {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, #3d3d3d 0%, #1c1c1c 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(232, 93, 4, 0.15));
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image__overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    color: #ffffff;
+  }
+
+  .hero-image__overlay-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-image__overlay-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  /* === ORG CHART === */
+  .org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+  }
+
+  /* Top leader card */
+  .org-leader {
+    background: #ffffff;
+    border: 2px solid #e85d04;
+    border-radius: 4px;
+    padding: 12px 24px;
+    text-align: center;
+    min-width: 200px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: relative;
+  }
+
+  .org-leader__name {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: #1c1c1c;
+    margin-bottom: 2px;
+  }
+
+  .org-leader__title {
+    font-size: 10px;
+    color: #e85d04;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .org-leader__dept {
+    font-size: 10px;
+    color: #777777;
+    margin-top: 2px;
+  }
+
+  /* Connector lines */
+  .org-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .org-connector__vertical {
+    width: 2px;
+    height: 16px;
+    background: #cccccc;
+  }
+
+  .org-connector__horizontal {
+    height: 2px;
+    background: #cccccc;
+    align-self: stretch;
+    margin: 0 60px;
+  }
+
+  .org-connector__branches {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .org-connector__branch-line {
+    width: 2px;
+    height: 16px;
+    background: #cccccc;
+  }
+
+  /* Team row */
+  .org-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .org-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    padding: 10px 14px;
+    text-align: center;
+    flex: 1;
+    max-width: 155px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border-top: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .org-card--accent-1 { border-top-color: #e85d04; }
+  .org-card--accent-2 { border-top-color: #3d3d3d; }
+  .org-card--accent-3 { border-top-color: #1c1c1c; }
+
+  .org-card__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #3d3d3d;
+    margin-bottom: 2px;
+  }
+
+  .org-card__name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1c1c1c;
+  }
+
+  .org-card__role {
+    font-size: 9px;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .org-card__team {
+    font-size: 9px;
+    color: #e85d04;
+    font-weight: 600;
+  }
+
+  /* Second tier row */
+  .org-tier {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  .org-tier__label {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #3d3d3d;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+    align-self: flex-start;
+  }
+
+  /* Sub-teams grid */
+  .org-subteams {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .org-subteam {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    padding: 10px;
+    border-left: 3px solid #e85d04;
+  }
+
+  .org-subteam__title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+  }
+
+  .org-subteam__count {
+    font-size: 9px;
+    color: #777777;
+  }
+
+  .org-subteam__members {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .org-subteam__member {
+    font-size: 9px;
+    color: #3d3d3d;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .org-subteam__member-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #e85d04;
+    flex-shrink: 0;
+  }
+
+  /* === FOOTNOTES STRIP === */
+  .footnotes-strip {
+    background: #1c1c1c;
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footnotes-strip__text {
+    font-size: 8px;
+    color: #999999;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .footnotes-strip__text sup {
+    color: #e85d04;
+    font-weight: 700;
+    margin-right: 2px;
+  }
+
+  .footnotes-strip__page {
+    font-size: 9px;
+    color: #777777;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .footnotes-strip__page span {
+    color: #e85d04;
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #e0e0e0;
+  }
+
+  .divider--accent {
+    height: 2px;
+    background: linear-gradient(90deg, #e85d04, #e85d04 30%, #e0e0e0 30%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAVIGATION TABS -->
+  <nav class="top-nav">
+    <div class="top-nav__tab">{{ nav_tab_1 | default('Overview') }}</div>
+    <div class="top-nav__tab">{{ nav_tab_2 | default('Operations') }}</div>
+    <div class="top-nav__tab top-nav__tab--active">{{ nav_tab_3 | default('Organization') }}</div>
+    <div class="top-nav__tab">{{ nav_tab_4 | default('Governance') }}</div>
+    <div class="top-nav__tab">{{ nav_tab_5 | default('Appendix') }}</div>
+  </nav>
+
+  <!-- LOGO / BRAND STRIP -->
+  <div class="brand-strip">
+    <div class="brand-strip__logo">
+      <div class="brand-strip__logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg>
+      </div>
+      <span class="brand-strip__company">{{ company_name | default('Meridian Energy Corp.') }}</span>
+    </div>
+    <span class="brand-strip__doc-id">{{ document_id | default('DOC-2024-ORG-0045') }} &nbsp;|&nbsp; {{ document_classification | default('Internal — Confidential') }}</span>
+  </div>
+
+  <!-- MAIN LAYOUT: SIDEBAR + CONTENT -->
+  <div class="main-layout">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="sidebar__section-label">{{ sidebar_section_1_label | default('Structure') }}</div>
+      {% for item in sidebar_items_1 | default([{'number': '3.1', 'label': 'Executive Team'}, {'number': '3.2', 'label': 'Org Chart', 'active': true}, {'number': '3.3', 'label': 'Dept. Leads'}, {'number': '3.4', 'label': 'Advisory Board'}]) %}
+      <div class="sidebar__item{% if item.active %} sidebar__item--active{% endif %}">
+        <span class="sidebar__item-number">{{ item.number }}</span>
+        {{ item.label }}
+      </div>
+      {% endfor %}
+
+      <div class="sidebar__section-label">{{ sidebar_section_2_label | default('Reference') }}</div>
+      {% for item in sidebar_items_2 | default([{'number': 'A', 'label': 'Reporting Lines'}, {'number': 'B', 'label': 'Headcount'}]) %}
+      <div class="sidebar__item{% if item.active %} sidebar__item--active{% endif %}">
+        <span class="sidebar__item-number">{{ item.number }}</span>
+        {{ item.label }}
+      </div>
+      {% endfor %}
+
+      <!-- SIDEBAR ANNOTATION -->
+      <div class="sidebar__annotation">
+        <div class="sidebar__annotation-label">{{ sidebar_annotation_label | default('Last Updated') }}</div>
+        <div class="sidebar__annotation-text">{{ sidebar_annotation_text | default('Q4 2024 restructure effective 01-Nov-2024. Approved by Board Resolution BR-2024-087.') }}</div>
+      </div>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <div class="content-header">
+        <div class="content-header__text">
+          <h1>{{ page_title | default('LEADERSHIP &amp; ORGANIZATION') }}</h1>
+          <div class="content-header__subtitle">{{ section_heading | default('Upstream Operations Division — Reporting Structure') }}</div>
+        </div>
+      </div>
+
+      <!-- TAG / BADGE ROW -->
+      <div class="tag-row">
+        {% for tag in tags | default([{'label': 'Effective Q4 2024', 'style': 'primary'}, {'label': 'Upstream Ops', 'style': 'secondary'}, {'label': 'Rev. 3', 'style': 'outline'}, {'label': '142 Headcount', 'style': 'outline'}]) %}
+        <span class="tag tag--{{ tag.style }}">{{ tag.label }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="divider divider--accent"></div>
+
+      <!-- HERO IMAGE PLACEHOLDER -->
+      <div class="hero-image">
+        <img src="{{ hero_image_url | default('') }}" alt="{{ hero_image_alt | default('Team group photo') }}" style="display:{{ 'block' if hero_image_url else 'none' }};">
+        <div class="hero-image__overlay">
+          <div class="hero-image__overlay-title">{{ hero_image_title | default('Upstream Operations Division') }}</div>
+          <div class="hero-image__overlay-sub">{{ hero_image_subtitle | default('Houston, TX — Central Command Center') }}</div>
+        </div>
+      </div>
+
+      <!-- ORG CHART — TOP LEADER -->
+      <div class="org-chart">
+        <div class="org-leader">
+          <div class="org-leader__name">{{ leader_name | default('R. Katherine Sinclair') }}</div>
+          <div class="org-leader__title">{{ leader_title | default('SVP, Upstream Operations') }}</div>
+          <div class="org-leader__dept">{{ leader_department | default('Reports to CEO — Executive Committee Member') }}</div>
+        </div>
+
+        <!-- Connector -->
+        <div class="org-connector">
+          <div class="org-connector__vertical"></div>
+        </div>
+
+        <!-- Direct Reports Row -->
+        <div class="org-row">
+          {% for member in direct_reports | default([
+            {'initials': 'JM', 'name': 'James Moreno', 'role': 'VP Exploration', 'team': 'Exploration', 'accent': '1'},
+            {'initials': 'TP', 'name': 'Tara Patel', 'role': 'VP Production', 'team': 'Production', 'accent': '2'},
+            {'initials': 'DW', 'name': 'David Walsh', 'role': 'VP Drilling', 'team': 'Drilling Ops', 'accent': '1'},
+            {'initials': 'SL', 'name': 'Sandra Liu', 'role': 'VP HSE', 'team': 'Health Safety Env', 'accent': '3'}
+          ]) %}
+          <div class="org-card org-card--accent-{{ member.accent }}">
+            <div class="org-card__avatar">{{ member.initials }}</div>
+            <div class="org-card__name">{{ member.name }}</div>
+            <div class="org-card__role">{{ member.role }}</div>
+            <div class="org-card__team">{{ member.team }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="org-connector">
+          <div class="org-connector__vertical"></div>
+        </div>
+
+        <!-- Sub-Teams Section -->
+        <div class="org-tier" style="width:100%;">
+          <div class="org-tier__label">{{ subteams_section_title | default('Functional Teams') }}</div>
+          <div class="org-subteams">
+            {% for team in sub_teams | default([
+              {'title': 'Reservoir Engineering', 'count': '18 staff', 'members': ['A. Chen — Lead', 'B. Okafor — Sr. Eng.', 'M. Torres — Analyst']},
+              {'title': 'Field Operations', 'count': '34 staff', 'members': ['K. Brandt — Lead', 'R. Gupta — Supervisor', 'J. Olsen — Coordinator']},
+              {'title': 'Drilling Engineering', 'count': '22 staff', 'members': ['P. Novak — Lead', 'L. Sato — Sr. Eng.', 'C. Morales — Planner']},
+              {'title': 'HSE Compliance', 'count': '12 staff', 'members': ['N. Fischer — Lead', 'H. Amari — Auditor', 'T. Reeves — Specialist']}
+            ]) %}
+            <div class="org-subteam">
+              <div class="org-subteam__title">{{ team.title }}</div>
+              <div class="org-subteam__count">{{ team.count }}</div>
+              <div class="org-subteam__members">
+                {% for member in team.members %}
+                <div class="org-subteam__member">
+                  <span class="org-subteam__member-dot"></span>
+                  {{ member }}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- BODY NOTE -->
+      <div style="font-size:10px; color:#777777; line-height:1.4;">
+        {{ body_paragraph_1 | default('This organizational chart reflects the approved restructure under Board Resolution BR-2024-087. All reporting lines are effective as of 01 November 2024. Dotted-line relationships to corporate functions (Finance, Legal, IT) are not depicted. Refer to Appendix A for complete reporting matrix.') }}
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FOOTNOTES STRIP -->
+  <div class="footnotes-strip">
+    <div class="footnotes-strip__text">
+      <sup>1</sup>{{ footnote_1 | default('Headcount figures as of 31-Oct-2024 payroll cycle. Excludes contractors and secondees.') }}
+      &nbsp;&nbsp;
+      <sup>2</sup>{{ footnote_2 | default('HSE Compliance reports jointly to SVP Upstream Ops and Chief Compliance Officer (dotted line).') }}
+    </div>
+    <div class="footnotes-strip__page">{{ page_label | default('Section') }} <span>{{ page_number | default('3.2') }}</span> &nbsp;|&nbsp; {{ total_pages | default('Page 14 of 42') }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0045",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "company_name": "string",
+    "document_id": "string",
+    "document_classification": "string",
+    "nav_tab_1": "string",
+    "nav_tab_2": "string",
+    "nav_tab_3": "string",
+    "nav_tab_4": "string",
+    "nav_tab_5": "string",
+    "sidebar_section_1_label": "string",
+    "sidebar_items_1": "list[{number: string, label: string, active: boolean}]",
+    "sidebar_section_2_label": "string",
+    "sidebar_items_2": "list[{number: string, label: string, active: boolean}]",
+    "sidebar_annotation_label": "string",
+    "sidebar_annotation_text": "string",
+    "tags": "list[{label: string, style: string}]",
+    "hero_image_url": "string (url)",
+    "hero_image_alt": "string",
+    "hero_image_title": "string",
+    "hero_image_subtitle": "string",
+    "leader_name": "string",
+    "leader_title": "string",
+    "leader_department": "string",
+    "direct_reports": "list[{initials: string, name: string, role: string, team: string, accent: string}]",
+    "subteams_section_title": "string",
+    "sub_teams": "list[{title: string, count: string, members: list[string]}]",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "page_label": "string",
+    "page_number": "string",
+    "total_pages": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,51 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; background: white; }
+.page { width: 100%; height: 100%; display: flex; flex-direction: column; }
+.top-rule { background: {{ primary_color|default('#1a237e') }}; height: 8px; }
+.header { padding: 16px 48px; border-bottom: 2px solid #111; display: flex; justify-content: space-between; align-items: baseline; }
+.hdr-company { font-size: 22px; font-weight: 900; color: #111; }
+.hdr-meta { font-size: 11px; color: #666; letter-spacing: 1px; }
+.kicker { padding: 20px 48px 0; font-size: 11px; font-weight: 700; letter-spacing: 3px; color: {{ primary_color|default('#1a237e') }}; text-transform: uppercase; }
+.headline { padding: 16px 48px 20px; font-size: 64px; font-weight: 900; color: #111; line-height: 1.05; letter-spacing: -1px; max-width: 1000px; border-bottom: 3px double #111; }
+.body-area { flex: 1; display: flex; padding: 24px 48px; }
+.col1 { flex: 2; padding-right: 32px; border-right: 1px solid #ccc; }
+.col2 { flex: 1; padding-left: 32px; }
+.standfirst { font-size: 18px; color: #333; line-height: 1.6; font-weight: 300; margin-bottom: 20px; }
+.meta-lbl { font-size: 11px; color: #999; letter-spacing: 1.5px; text-transform: uppercase; }
+.meta-val { font-size: 13px; color: #333; margin-bottom: 12px; }
+.hr { height: 1px; background: #ccc; margin: 12px 0; }
+.quote-box { border: 2px solid {{ primary_color|default('#1a237e') }}; padding: 16px 20px; margin-top: 12px; }
+.quote-txt { font-size: 14px; font-style: italic; color: {{ primary_color|default('#1a237e') }}; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-rule"></div>
+  <div class="header">
+    <span class="hdr-company">{{ company_name|default('Sample Organization') }}</span>
+    <span class="hdr-meta">{{ report_type|default('Annual Report') }} &bull; {{ year|default('2025') }}</span>
+  </div>
+  <div class="kicker">{{ report_type|default('Annual Report') }}</div>
+  <div class="headline">{{ document_title|default('Strategic Performance Review') }}</div>
+  <div class="body-area">
+    <div class="col1">
+      <div class="standfirst">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+      <div class="hr"></div>
+      <div class="meta-lbl">Published by</div>
+      <div class="meta-val">{{ company_name|default('Sample Organization') }}</div>
+      <div class="meta-lbl">Period</div>
+      <div class="meta-val">Fiscal Year {{ year|default('2025') }}</div>
+    </div>
+    <div class="col2">
+      <div class="quote-box"><div class="quote-txt">&ldquo;{{ tagline|default('Data-Driven Decisions') }}&rdquo;</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

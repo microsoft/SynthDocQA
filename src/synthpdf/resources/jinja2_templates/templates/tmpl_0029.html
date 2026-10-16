@@ -1,0 +1,625 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #111111;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f8f8f8;
+    display: grid;
+    grid-template-rows: 420px auto 1fr auto;
+    grid-template-columns: 1fr;
+  }
+
+  /* === HERO SECTION === */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-image-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(28,28,28,0.25) 0%, rgba(232,93,4,0.18) 100%);
+  }
+
+  .hero-text-block {
+    background: linear-gradient(160deg, #1c1c1c 0%, #3d3d3d 70%, #e85d04 140%);
+    padding: 48px 44px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-text-block::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -80px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,93,4,0.2) 0%, transparent 70%);
+  }
+
+  .hero-text-block::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #e85d04;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* === COLORED SECTION BAND === */
+  .section-band {
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #e85d04 0%, #1c1c1c 50%, #3d3d3d 100%);
+  }
+
+  /* === MAIN CONTENT === */
+  .content-area {
+    padding: 36px 52px 24px 52px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+
+  .content-left {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* === NARRATIVE TEXT === */
+  .narrative-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.3;
+    color: #1c1c1c;
+    margin-bottom: 10px;
+    padding-left: 14px;
+    border-left: 3px solid #e85d04;
+  }
+
+  .narrative-body {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #111111;
+  }
+
+  .narrative-body p {
+    margin-bottom: 12px;
+  }
+
+  .narrative-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* === BIG NUMBER CALLOUT (Spotify-Wrapped style) === */
+  .callout-card {
+    background: linear-gradient(145deg, #1c1c1c 0%, #3d3d3d 100%);
+    border-radius: 12px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .callout-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,93,4,0.3) 0%, transparent 70%);
+  }
+
+  .callout-big-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1;
+    color: #e85d04;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .callout-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.7);
+    position: relative;
+    z-index: 1;
+  }
+
+  .callout-sublabel {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* === PROGRESS BARS === */
+  .progress-section {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 22px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .progress-section-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1c1c1c;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .progress-row {
+    margin-bottom: 14px;
+  }
+
+  .progress-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: #3d3d3d;
+    font-weight: 600;
+  }
+
+  .progress-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1c1c1c;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  /* === KPI ROW === */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #777777;
+    font-weight: 600;
+  }
+
+  .kpi-delta {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* === COMPARISON TABLE === */
+  .comparison-block {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 22px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .comparison-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1c1c1c;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .comparison-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #777777;
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 2px solid #1c1c1c;
+  }
+
+  .comparison-table thead th:last-child {
+    text-align: right;
+  }
+
+  .comparison-table tbody td {
+    font-size: 11px;
+    padding: 8px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #111111;
+  }
+
+  .comparison-table tbody td:last-child {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #e85d04;
+  }
+
+  .comparison-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* === SOFT GRADIENT BAND (decorative motif) === */
+  .gradient-band-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #e85d04, #1c1c1c, #3d3d3d, #e85d04);
+    z-index: 10;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    padding: 12px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e0e0e0;
+    background: #ffffff;
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: #777777;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1c1c1c;
+  }
+
+  .footer-accent-bar {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #e85d04 0%, #3d3d3d 60%, #1c1c1c 100%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="gradient-band-top"></div>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="hero-image-block">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-image-overlay"></div>
+    </div>
+    <div class="hero-text-block">
+      <div class="hero-eyebrow">{{ hero_eyebrow }}</div>
+      <div class="hero-title">{{ page_title }}</div>
+      <div class="hero-subtitle">{{ hero_subtitle }}</div>
+    </div>
+  </div>
+
+  <!-- SECTION BAND -->
+  <div class="section-band"></div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="content-area">
+
+    <!-- LEFT COLUMN -->
+    <div class="content-left">
+
+      <!-- Big Number Callout -->
+      <div class="callout-card">
+        <div class="callout-big-number">{{ callout_value }}</div>
+        <div class="callout-label">{{ callout_label }}</div>
+        <div class="callout-sublabel">{{ callout_sublabel }}</div>
+      </div>
+
+      <!-- Progress Bars -->
+      <div class="progress-section">
+        <div class="progress-section-title">{{ progress_section_title }}</div>
+        {% for bar in progress_bars %}
+        <div class="progress-row">
+          <div class="progress-header">
+            <span class="progress-label">{{ bar.label }}</span>
+            <span class="progress-value">{{ bar.value }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: {{ bar.percent }}%; background: linear-gradient(90deg, {{ bar.color_start }}, {{ bar.color_end }});"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Narrative Paragraph -->
+      <div class="narrative-body">
+        <p>{{ body_paragraph_1 }}</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="content-right">
+
+      <!-- Section Heading + Body -->
+      <div>
+        <div class="narrative-heading">{{ section_heading }}</div>
+        <div class="narrative-body">
+          <p>{{ body_paragraph_2 }}</p>
+          <p>{{ body_paragraph_3 }}</p>
+        </div>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+          <div class="kpi-delta" style="color: {{ kpi_1_color }};">{{ kpi_1_delta }}</div>
+          <span style="position:absolute;bottom:0;left:0;right:0;height:3px;background:{{ kpi_1_color }};"></span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+          <div class="kpi-label">{{ kpi_2_label }}</div>
+          <div class="kpi-delta" style="color: {{ kpi_2_color }};">{{ kpi_2_delta }}</div>
+          <span style="position:absolute;bottom:0;left:0;right:0;height:3px;background:{{ kpi_2_color }};"></span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+          <div class="kpi-label">{{ kpi_3_label }}</div>
+          <div class="kpi-delta" style="color: {{ kpi_3_color }};">{{ kpi_3_delta }}</div>
+          <span style="position:absolute;bottom:0;left:0;right:0;height:3px;background:{{ kpi_3_color }};"></span>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="comparison-block">
+        <div class="comparison-title">{{ comparison_title }}</div>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>{{ table_col_1_header }}</th>
+              <th>{{ table_col_2_header }}</th>
+              <th>{{ table_col_3_header }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.category }}</td>
+              <td>{{ row.metric }}</td>
+              <td>{{ row.value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="margin-top: auto;">
+    <div class="footer-accent-bar"></div>
+    <div class="page-footer">
+      <div class="footer-left">{{ footer_text }} &mdash; {{ footer_date }}</div>
+      <div class="footer-right">{{ page_number }}</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0029",
+  "variables": {
+    "page_title": "string",
+    "hero_eyebrow": "string",
+    "hero_subtitle": "string",
+    "hero_image_url": "string (URL or path to hero image)",
+    "hero_image_alt": "string",
+    "callout_value": "string (large featured number, e.g. '$4.2B')",
+    "callout_label": "string (label for the big number)",
+    "callout_sublabel": "string (secondary context line)",
+    "progress_section_title": "string",
+    "progress_bars": [
+      {
+        "label": "string",
+        "value": "string (e.g. '78%')",
+        "percent": "number (0-100)",
+        "color_start": "string (hex color)",
+        "color_end": "string (hex color)"
+      }
+    ],
+    "body_paragraph_1": "string",
+    "section_heading": "string",
+    "body_paragraph_2": "string",
+    "body_paragraph_3": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_delta": "string (e.g. '+12% YoY')",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_delta": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_delta": "string",
+    "kpi_3_color": "string (hex color)",
+    "comparison_title": "string",
+    "table_col_1_header": "string",
+    "table_col_2_header": "string",
+    "table_col_3_header": "string",
+    "table_rows": [
+      {
+        "category": "string",
+        "metric": "string",
+        "value": "string"
+      }
+    ],
+    "footer_text": "string",
+    "footer_date": "string",
+    "page_number": "string (e.g. '1' or 'Page 1 of 12')"
+  }
+}
+END_TEMPLATE_VARIABLES -->

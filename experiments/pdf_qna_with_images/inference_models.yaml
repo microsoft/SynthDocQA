@@ -1,0 +1,32 @@
+# User-supplied deployments and endpoints are expanded from environment variables.
+# Export credentials in your shell; this route does not automatically load dotenv.
+qa_models:
+  - name: qa
+    deployment: "${QA_DEPLOYMENT}"
+    endpoint: "${QA_ENDPOINT}"
+    api_version: "2024-12-01-preview"
+    client_type: azure_openai
+    input_mode: images
+    max_tokens: 4096
+    temperature: 0.0
+    api_key_env: AZURE_OPENAI_API_KEY
+    verify_ssl: true
+    top_k_pages: 8
+    page_selection_window_before: 1
+    page_selection_window_after: 2
+
+judge_model:
+  name: judge
+  deployment: "${JUDGE_DEPLOYMENT}"
+  endpoint: "${JUDGE_ENDPOINT}"
+  api_version: "2024-12-01-preview"
+  client_type: azure_openai
+  input_mode: text
+  max_tokens: 4096
+  temperature: 0.0
+  api_key_env: AZURE_OPENAI_API_KEY
+  verify_ssl: true
+
+inference:
+  max_workers: 4
+  max_qa_per_doc: 0

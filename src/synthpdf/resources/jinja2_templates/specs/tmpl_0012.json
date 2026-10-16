@@ -1,0 +1,40 @@
+{
+  "id": "tmpl_0012",
+  "industry": "investment_banking",
+  "page_role": "regulatory_disclosure",
+  "layout": {
+    "name": "structured_formal_report",
+    "description": "Classic consulting report style: narrow header band, body in 1-2 columns with clear section breaks, footer with firm branding."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "colored_section_band",
+    "two_column_body_text",
+    "icon_with_text_grid"
+  ],
+  "density": "sparse",
+  "motif": "fine_grid_lines",
+  "design_direction": "Inspired by IKEA product catalogs \u2014 functional, grid-based, friendly, Scandinavian",
+  "seed": 992948
+}

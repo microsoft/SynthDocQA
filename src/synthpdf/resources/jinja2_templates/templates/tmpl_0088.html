@@ -1,0 +1,789 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fdfcff;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #1c1c1c;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fdfcff;
+  }
+
+  /* === TOP HEADER BAR === */
+  .header-bar {
+    width: 100%;
+    height: 54px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: relative;
+  }
+
+  .header-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #17a589 0%, #6c3483 50%, #1a5276 100%);
+  }
+
+  .header-org {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+
+  .header-nav span {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: default;
+  }
+
+  .header-nav span.active {
+    color: #ffffff;
+    font-weight: 700;
+    border-bottom: 2px solid #17a589;
+    padding-bottom: 2px;
+  }
+
+  .header-page-num {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* === CIRCULAR DECORATIVE ELEMENTS === */
+  .circle-deco-1 {
+    position: absolute;
+    top: 60px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid rgba(108, 52, 131, 0.1);
+    z-index: 0;
+  }
+
+  .circle-deco-2 {
+    position: absolute;
+    top: 90px;
+    right: -10px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(23, 165, 137, 0.06);
+    z-index: 0;
+  }
+
+  .circle-deco-3 {
+    position: absolute;
+    bottom: 80px;
+    left: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid rgba(26, 82, 118, 0.08);
+    z-index: 0;
+  }
+
+  .circle-deco-4 {
+    position: absolute;
+    bottom: 200px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(108, 52, 131, 0.05);
+    z-index: 0;
+  }
+
+  /* === TITLE SECTION === */
+  .title-section {
+    padding: 28px 40px 16px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-section h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: #6c3483;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+
+  .title-underline {
+    width: 70px;
+    height: 4px;
+    background: linear-gradient(90deg, #17a589, #1a5276);
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .subtitle-text {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    color: #7d7d7d;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  /* === TAG/BADGE ROW === */
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 40px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-badge .tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* === INFOGRAPHIC FLOW SECTION === */
+  .flow-section {
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-section h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #1a5276;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+
+  /* Flow container — vertical journey layout */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 30px;
+  }
+
+  /* Vertical connecting line */
+  .flow-container::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 18px;
+    bottom: 18px;
+    width: 3px;
+    background: linear-gradient(180deg, #6c3483 0%, #17a589 50%, #1a5276 100%);
+    border-radius: 2px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 10px 0;
+    position: relative;
+  }
+
+  .flow-step-circle {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #ffffff;
+    position: relative;
+    left: -30px;
+    margin-right: -14px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .flow-step-content {
+    background: #f4ecf7;
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+
+  .flow-step-content h3 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+  }
+
+  .flow-step-content p {
+    font-size: 10px;
+    color: #7d7d7d;
+    line-height: 1.45;
+  }
+
+  .flow-step:nth-child(1) .flow-step-circle { background: #6c3483; }
+  .flow-step:nth-child(1) .flow-step-content { border-left-color: #6c3483; }
+  .flow-step:nth-child(2) .flow-step-circle { background: #1a5276; }
+  .flow-step:nth-child(2) .flow-step-content { border-left-color: #1a5276; }
+  .flow-step:nth-child(3) .flow-step-circle { background: #17a589; }
+  .flow-step:nth-child(3) .flow-step-content { border-left-color: #17a589; }
+  .flow-step:nth-child(4) .flow-step-circle { background: #6c3483; }
+  .flow-step:nth-child(4) .flow-step-content { border-left-color: #6c3483; }
+
+  /* Flow arrow indicators */
+  .flow-step-content::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 12px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 7px solid #f4ecf7;
+  }
+
+  /* === MAP / GEOGRAPHIC CHART PLACEHOLDER === */
+  .map-section {
+    padding: 14px 40px 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .map-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .map-section-header h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #1a5276;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 195px;
+    background: linear-gradient(145deg, #1a5276 0%, #6c3483 60%, #17a589 100%);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 40%, rgba(255,255,255,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 50% 70%, rgba(255,255,255,0.04) 0%, transparent 45%);
+  }
+
+  /* Stylized map dots */
+  .map-dots {
+    position: absolute;
+    inset: 0;
+  }
+
+  .map-dot {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(23, 165, 137, 0.7);
+    box-shadow: 0 0 8px rgba(23, 165, 137, 0.5);
+  }
+
+  .map-dot.large { width: 12px; height: 12px; }
+  .map-dot.medium { width: 8px; height: 8px; }
+  .map-dot.small { width: 5px; height: 5px; background: rgba(255,255,255,0.5); box-shadow: 0 0 4px rgba(255,255,255,0.3); }
+
+  .map-dot.pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.4); opacity: 1; }
+  }
+
+  .chart-placeholder-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 2;
+  }
+
+  .chart-placeholder-sub {
+    font-size: 9px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    z-index: 2;
+  }
+
+  /* === DATA TABLE === */
+  .table-section {
+    padding: 14px 40px 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .table-section h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #6c3483;
+    margin-bottom: 8px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead {
+    background: linear-gradient(135deg, #6c3483, #1a5276);
+  }
+
+  .data-table thead th {
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 7px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:not(:first-child) {
+    text-align: center;
+  }
+
+  .data-table tbody tr {
+    border-bottom: 1px solid rgba(108, 52, 131, 0.1);
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f4ecf7;
+  }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    color: #1c1c1c;
+    font-size: 10px;
+  }
+
+  .data-table tbody td:not(:first-child) {
+    text-align: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+  }
+
+  .data-table tbody td.highlight {
+    color: #17a589;
+  }
+
+  /* === CALLOUT BOX === */
+  .callout-box {
+    margin: 14px 40px 0 40px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(108,52,131,0.06) 0%, rgba(23,165,137,0.06) 100%);
+    border-left: 4px solid #17a589;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .callout-box-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: #6c3483;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .callout-box-title .callout-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #17a589;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .callout-box p {
+    font-size: 10px;
+    color: #7d7d7d;
+    line-height: 1.5;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 36px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .footer-left {
+    font-size: 8px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .footer-center {
+    font-size: 8px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-right {
+    font-size: 8px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .footer-accent-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #17a589 0%, #6c3483 50%, #1a5276 100%);
+  }
+
+  /* KPI row */
+  .kpi-row {
+    display: flex;
+    gap: 10px;
+    padding: 0 40px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .kpi-card {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+    border-top: 3px solid;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    position: relative;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+
+  .kpi-card:nth-child(1) { border-top-color: #6c3483; }
+  .kpi-card:nth-child(1)::after { background: #6c3483; }
+  .kpi-card:nth-child(2) { border-top-color: #1a5276; }
+  .kpi-card:nth-child(2)::after { background: #1a5276; }
+  .kpi-card:nth-child(3) { border-top-color: #17a589; }
+  .kpi-card:nth-child(3)::after { background: #17a589; }
+  .kpi-card:nth-child(4) { border-top-color: #6c3483; }
+  .kpi-card:nth-child(4)::after { background: #6c3483; }
+
+  .kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1.1;
+  }
+
+  .kpi-label {
+    font-size: 8px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Decorative circles -->
+  <div class="circle-deco-1"></div>
+  <div class="circle-deco-2"></div>
+  <div class="circle-deco-3"></div>
+  <div class="circle-deco-4"></div>
+
+  <!-- Header Bar -->
+  <div class="header-bar">
+    <span class="header-org">{{ organization_name }}</span>
+    <div class="header-nav">
+      {% for nav_item in nav_items %}
+      <span class="{% if nav_item.active %}active{% endif %}">{{ nav_item.label }}</span>
+      {% endfor %}
+    </div>
+    <span class="header-page-num">{{ page_number }}</span>
+  </div>
+
+  <!-- Title Section -->
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="title-underline"></div>
+    <div class="subtitle-text">{{ body_paragraph_1 }}</div>
+  </div>
+
+  <!-- Tag/Badge Row -->
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag-badge" style="background: {{ tag.bg_color }}; color: {{ tag.text_color }};">
+      <span class="tag-dot" style="background: {{ tag.dot_color }};"></span>
+      {{ tag.label }}
+    </span>
+    {% endfor %}
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- Infographic Flow Section -->
+  <div class="flow-section">
+    <h2>{{ section_heading }}</h2>
+    <div class="flow-container">
+      {% for step in flow_steps %}
+      <div class="flow-step">
+        <div class="flow-step-circle">{{ step.number }}</div>
+        <div class="flow-step-content">
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Map/Geographic Chart Placeholder -->
+  <div class="map-section">
+    <div class="map-section-header">
+      <h2>{{ map_title }}</h2>
+    </div>
+    <div class="chart-placeholder">
+      <div class="map-dots">
+        <div class="map-dot large pulse" style="top: 28%; left: 18%;"></div>
+        <div class="map-dot medium" style="top: 22%; left: 48%;"></div>
+        <div class="map-dot large pulse" style="top: 35%; left: 55%;"></div>
+        <div class="map-dot small" style="top: 45%; left: 30%;"></div>
+        <div class="map-dot medium" style="top: 55%; left: 72%;"></div>
+        <div class="map-dot small" style="top: 30%; left: 78%;"></div>
+        <div class="map-dot large" style="top: 60%; left: 42%;"></div>
+        <div class="map-dot small" style="top: 40%; left: 85%;"></div>
+        <div class="map-dot medium pulse" style="top: 68%; left: 60%;"></div>
+        <div class="map-dot small" style="top: 50%; left: 15%;"></div>
+      </div>
+      <div class="chart-placeholder-label">{{ map_placeholder_label }}</div>
+      <div class="chart-placeholder-sub">{{ map_placeholder_sub }}</div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-section">
+    <h2>{{ table_title }}</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          {% for header in table_headers %}
+          <th>{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.region }}</td>
+          <td>{{ row.col_1 }}</td>
+          <td>{{ row.col_2 }}</td>
+          <td class="highlight">{{ row.col_3 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Callout Box -->
+  <div class="callout-box">
+    <div class="callout-box-title">
+      <span class="callout-icon">i</span>
+      {{ callout_title }}
+    </div>
+    <p>{{ callout_body }}</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-accent-line"></div>
+    <span class="footer-left">{{ footer_left }}</span>
+    <span class="footer-center">{{ footer_center }}</span>
+    <span class="footer-right">{{ footer_right }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0088",
+  "variables": {
+    "page_title": "string",
+    "organization_name": "string",
+    "page_number": "string",
+    "body_paragraph_1": "string",
+    "section_heading": "string",
+    "map_title": "string",
+    "map_placeholder_label": "string",
+    "map_placeholder_sub": "string",
+    "table_title": "string",
+    "callout_title": "string",
+    "callout_body": "string",
+    "footer_left": "string",
+    "footer_center": "string",
+    "footer_right": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "nav_items": [{"label": "string", "active": "boolean"}],
+    "tags": [{"label": "string", "bg_color": "string", "text_color": "string", "dot_color": "string"}],
+    "flow_steps": [{"number": "string", "title": "string", "description": "string"}],
+    "table_headers": ["string"],
+    "table_rows": [{"region": "string", "col_1": "string", "col_2": "string", "col_3": "string"}]
+  }
+}
+END_TEMPLATE_VARIABLES -->

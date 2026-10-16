@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0105",
+  "industry": "legal_compliance",
+  "page_role": "comparison_table",
+  "layout": {
+    "name": "editorial_magazine",
+    "description": "Asymmetric, bold hero image dominates top half, text wraps below. Strong typographic hierarchy. Feels like a premium magazine spread."
+  },
+  "color_palette": {
+    "name": "healthcare_teal",
+    "primary": "#006d77",
+    "secondary": "#83c5be",
+    "accent": "#e29578",
+    "bg": "#ffffff",
+    "surface": "#edf6f9",
+    "text": "#1a1a2e",
+    "muted": "#4a7c82"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "kpi_metric_cards",
+    "hero_image_placeholder",
+    "progress_bars",
+    "two_column_body_text",
+    "quote_attribution",
+    "pull_quote_block",
+    "timeline_nodes"
+  ],
+  "density": "balanced",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by National Geographic spreads \u2014 bold imagery, adventurous typography",
+  "seed": 8105
+}

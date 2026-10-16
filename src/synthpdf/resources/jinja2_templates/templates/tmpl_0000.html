@@ -1,0 +1,569 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fffff8;
+    color: #1a0a0a;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fffff8;
+    display: grid;
+    grid-template-rows: auto 4px 1fr auto;
+  }
+
+  /* === TOP HERO ZONE === */
+  .hero-zone {
+    width: 100%;
+    height: 520px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    overflow: hidden;
+  }
+
+  .hero-image-block {
+    position: relative;
+    background: #1a0a0a;
+    overflow: hidden;
+  }
+
+  .hero-image-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(123,30,30,0.15) 0%, rgba(26,10,10,0.6) 100%);
+    z-index: 1;
+  }
+
+  .hero-sidebar {
+    background: #7b1e1e;
+    padding: 48px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  .hero-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #4682b4;
+  }
+
+  .section-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 72px;
+    color: rgba(255,255,255,0.12);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    position: absolute;
+    top: 36px;
+    right: 32px;
+  }
+
+  .section-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #4682b4;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fffff8;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,248,0.7);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  .accent-bar-top {
+    width: 100%;
+    height: 4px;
+    background: #a52a2a;
+  }
+
+  /* === CONTENT ZONE === */
+  .content-zone {
+    padding: 28px 48px 16px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0;
+    align-content: start;
+  }
+
+  /* Pull quote block */
+  .pull-quote-block {
+    grid-column: 1 / -1;
+    background: #f5f5dc;
+    border-left: 5px solid #7b1e1e;
+    padding: 20px 24px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+
+  .pull-quote-block::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 4px;
+    background: #4682b4;
+  }
+
+  .pull-quote-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #7b1e1e;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    font-style: italic;
+  }
+
+  .pull-quote-attribution {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #6b6b6b;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Icon + text grid */
+  .icon-text-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .icon-text-card {
+    background: #f5f5dc;
+    padding: 16px 14px;
+    border-top: 3px solid #a52a2a;
+    position: relative;
+  }
+
+  .icon-text-card:nth-child(1) { border-top-color: #7b1e1e; }
+  .icon-text-card:nth-child(2) { border-top-color: #a52a2a; }
+  .icon-text-card:nth-child(3) { border-top-color: #4682b4; }
+  .icon-text-card:nth-child(4) { border-top-color: #7b1e1e; }
+
+  .icon-text-icon {
+    width: 32px;
+    height: 32px;
+    background: #7b1e1e;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .icon-text-card:nth-child(2) .icon-text-icon { background: #a52a2a; }
+  .icon-text-card:nth-child(3) .icon-text-icon { background: #4682b4; }
+
+  .icon-text-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: #fffff8;
+  }
+
+  .icon-text-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #1a0a0a;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .icon-text-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+  }
+
+  /* Data table */
+  .data-table-block {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .data-table-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #7b1e1e;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #1a0a0a;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #1a0a0a;
+    color: #fffff8;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:last-child,
+  .data-table thead th:nth-child(n+3) {
+    text-align: right;
+  }
+
+  .data-table tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #e0ddd0;
+    color: #1a0a0a;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .data-table tbody td:last-child,
+  .data-table tbody td:nth-child(n+3) {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(245,245,220,0.5);
+  }
+
+  .data-table tfoot td {
+    padding: 8px 10px;
+    border-top: 2px solid #1a0a0a;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #7b1e1e;
+    background: #f5f5dc;
+  }
+
+  .data-table tfoot td:last-child,
+  .data-table tfoot td:nth-child(n+3) {
+    text-align: right;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 48px;
+    height: 52px;
+    background: #1a0a0a;
+    position: relative;
+  }
+
+  .page-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #7b1e1e 0%, #a52a2a 40%, #4682b4 100%);
+  }
+
+  .footer-left {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: rgba(255,255,248,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .footer-center {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    color: #fffff8;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fffff8;
+    text-align: right;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-page-label {
+    font-size: 8px;
+    font-weight: 400;
+    color: rgba(255,255,248,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  /* === SOLID COLOR BLOCKS MOTIF === */
+  .color-block-strip {
+    position: absolute;
+    display: flex;
+    gap: 0;
+  }
+
+  .color-block-strip.bottom-left {
+    bottom: 52px;
+    left: 0;
+    flex-direction: column;
+  }
+
+  .cb {
+    display: block;
+  }
+
+  .cb-maroon {
+    width: 8px;
+    height: 40px;
+    background: #7b1e1e;
+  }
+
+  .cb-red {
+    width: 8px;
+    height: 28px;
+    background: #a52a2a;
+  }
+
+  .cb-blue {
+    width: 8px;
+    height: 18px;
+    background: #4682b4;
+  }
+
+  /* Decorative blocks on hero */
+  .deco-blocks {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    z-index: 2;
+  }
+
+  .deco-blocks .db {
+    height: 6px;
+  }
+
+  .db-1 { width: 120px; background: #7b1e1e; }
+  .db-2 { width: 80px; background: #a52a2a; }
+  .db-3 { width: 200px; background: #4682b4; }
+  .db-4 { width: 54px; background: #1a0a0a; }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO ZONE -->
+  <div class="hero-zone">
+    <div class="hero-image-block">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-image-overlay"></div>
+      <div class="deco-blocks">
+        <span class="db db-1"></span>
+        <span class="db db-2"></span>
+        <span class="db db-3"></span>
+        <span class="db db-4"></span>
+      </div>
+    </div>
+    <div class="hero-sidebar">
+      <span class="section-number">{{ section_number }}</span>
+      <div class="section-label">{{ section_label }}</div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ section_description }}</p>
+    </div>
+  </div>
+
+  <div class="accent-bar-top"></div>
+
+  <!-- CONTENT ZONE -->
+  <div class="content-zone">
+
+    <!-- Pull Quote -->
+    <div class="pull-quote-block">
+      <div class="pull-quote-text">"{{ pull_quote_text }}"</div>
+      <div class="pull-quote-attribution">— {{ pull_quote_attribution }}</div>
+    </div>
+
+    <!-- Icon + Text Grid (KPI cards) -->
+    <div class="icon-text-grid">
+      {% for kpi in kpi_items %}
+      <div class="icon-text-card">
+        <div class="icon-text-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="{{ kpi.icon_path }}"/>
+          </svg>
+        </div>
+        <div class="icon-text-value">{{ kpi.value }}</div>
+        <div class="icon-text-label">{{ kpi.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-block">
+      <div class="data-table-heading">{{ table_title }}</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            {% for cell in row.cells %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            {% for cell in table_footer_cells %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Decorative solid color blocks -->
+  <div class="color-block-strip bottom-left">
+    <span class="cb cb-maroon"></span>
+    <span class="cb cb-red"></span>
+    <span class="cb cb-blue"></span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-left">{{ footer_document_title }}</div>
+    <div class="footer-center">{{ footer_classification }}</div>
+    <div class="footer-right">
+      <span class="footer-page-label">Page</span>
+      {{ page_number }}
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_insurance_risk_section_divider_001",
+  "variables": {
+    "page_title": "string — Main section title displayed in the hero sidebar (e.g., 'Catastrophe Risk Modeling & Exposure Analysis')",
+    "section_number": "string — Large background number in hero sidebar (e.g., '03')",
+    "section_label": "string — Small uppercase label above title (e.g., 'Section Three')",
+    "section_description": "string — Brief subtitle text below the main title",
+    "hero_image_url": "string — URL or path to the hero image",
+    "hero_image_alt": "string — Alt text for the hero image",
+    "pull_quote_text": "string — Highlighted quote text",
+    "pull_quote_attribution": "string — Attribution for the quote (e.g., 'Margaret Chen, Chief Risk Officer')",
+    "kpi_items": "array of objects — Each with: icon_path (string, SVG path d attribute), value (string, e.g., '$4.2B'), label (string, e.g., 'Total Insured Exposure')",
+    "table_title": "string — Heading above the data table",
+    "table_headers": "array of strings — Column headers",
+    "table_rows": "array of objects — Each with cells: array of strings",
+    "table_footer_cells": "array of strings — Footer row cells",
+    "footer_document_title": "string — Document name in footer",
+    "footer_classification": "string — Document classification label",
+    "page_number": "string — Page number"
+  }
+}
+END_TEMPLATE_VARIABLES -->

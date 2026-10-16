@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0010",
+  "industry": "investment_banking",
+  "page_role": "section_divider",
+  "layout": {
+    "name": "card_mosaic",
+    "description": "Page composed entirely of rectangular cards of varying sizes, arranged in a masonry or Pinterest-style layout."
+  },
+  "color_palette": {
+    "name": "ngo_hopeful",
+    "primary": "#1565c0",
+    "secondary": "#0277bd",
+    "accent": "#f9a825",
+    "bg": "#e3f2fd",
+    "surface": "#ffffff",
+    "text": "#0d2137",
+    "muted": "#546e7a"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "tag_or_badge_row",
+    "top_navigation_tabs",
+    "data_table",
+    "two_column_body_text",
+    "chart_placeholder_box"
+  ],
+  "density": "sparse",
+  "motif": "dotted_pattern_overlay",
+  "design_direction": "Inspired by McKinsey & Company consulting reports \u2014 very formal, data-driven, charcoal tones",
+  "seed": 757168
+}

@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0031",
+  "industry": "aerospace_defense",
+  "page_role": "section_divider",
+  "layout": {
+    "name": "infographic_flow",
+    "description": "Visual storytelling with icons, arrows, numbered steps, and callout boxes. Content arranged as a flow or journey, not a grid."
+  },
+  "color_palette": {
+    "name": "real_estate_warm",
+    "primary": "#5c4033",
+    "secondary": "#795548",
+    "accent": "#8bc34a",
+    "bg": "#fff8f0",
+    "surface": "#ffffff",
+    "text": "#3e2723",
+    "muted": "#8d6e63"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "progress_bars",
+    "logo_or_brand_strip",
+    "colored_section_band",
+    "two_column_body_text",
+    "page_number_footer"
+  ],
+  "density": "sparse",
+  "motif": "geometric_angular_shapes",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 417821
+}

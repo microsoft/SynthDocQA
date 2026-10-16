@@ -1,0 +1,822 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f3f2f1;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #201f1e;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    grid-template-rows: 1fr;
+    background: #f3f2f1;
+  }
+
+  /* Soft gradient band — top edge */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #0078d4 0%, #005a9e 40%, #00b294 100%);
+    z-index: 10;
+  }
+
+  /* Soft gradient band — bottom edge */
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00b294 0%, #0078d4 60%, #005a9e 100%);
+    z-index: 10;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    background: linear-gradient(180deg, #005a9e 0%, #003d6b 100%);
+    padding: 40px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar-brand {
+    padding: 0 18px 24px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 20px;
+  }
+
+  .sidebar-brand-logo {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-brand-logo svg {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+  }
+
+  .sidebar-brand-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+
+  .sidebar-brand-subtitle {
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+  }
+
+  .sidebar-nav li {
+    position: relative;
+  }
+
+  .sidebar-nav li a {
+    display: block;
+    padding: 10px 18px;
+    font-family: Georgia, serif;
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    line-height: 1.4;
+  }
+
+  .sidebar-nav li.active a {
+    color: #ffffff;
+    background: rgba(255,255,255,0.08);
+    border-left-color: #00b294;
+    font-weight: 700;
+  }
+
+  .sidebar-nav li .nav-page {
+    display: block;
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 1px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .sidebar-section-label {
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 16px 18px 6px 18px;
+    font-family: Georgia, serif;
+  }
+
+  .sidebar-footer {
+    padding: 16px 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: auto;
+  }
+
+  .sidebar-footer-text {
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    padding: 38px 36px 50px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative ambient gradient */
+  .main::before {
+    content: '';
+    position: absolute;
+    top: 80px;
+    right: -40px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(ellipse at center, rgba(0,178,148,0.06) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .main > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-strip {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .document-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+    color: #ffffff;
+    font-size: 7.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .document-date {
+    font-size: 9px;
+    color: #605e5c;
+  }
+
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #201f1e;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #605e5c;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .gradient-divider {
+    height: 2px;
+    background: linear-gradient(90deg, #0078d4 0%, #00b294 50%, transparent 100%);
+    margin-bottom: 22px;
+    border: none;
+  }
+
+  /* ===== PROCESS FLOW ===== */
+  .process-flow-section {
+    margin-bottom: 18px;
+  }
+
+  .process-flow-section h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #005a9e;
+    margin-bottom: 14px;
+  }
+
+  .process-flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+
+  .process-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .process-step-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #ffffff;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .process-step-label {
+    margin-top: 8px;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #201f1e;
+    line-height: 1.3;
+    max-width: 90px;
+  }
+
+  .process-step-desc {
+    margin-top: 3px;
+    text-align: center;
+    font-size: 8.5px;
+    color: #605e5c;
+    line-height: 1.4;
+    max-width: 95px;
+  }
+
+  .process-arrow {
+    display: flex;
+    align-items: center;
+    padding-top: 14px;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  .process-arrow svg {
+    width: 28px;
+    height: 14px;
+  }
+
+  /* ===== CALLOUT BOX ===== */
+  .callout-box {
+    background: #ffffff;
+    border-left: 4px solid #00b294;
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .callout-box h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #005a9e;
+    margin-bottom: 5px;
+  }
+
+  .callout-box p {
+    font-size: 10px;
+    color: #201f1e;
+    line-height: 1.65;
+  }
+
+  /* ===== COMPARISON COLUMNS ===== */
+  .comparison-section {
+    margin-bottom: 16px;
+  }
+
+  .comparison-section h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #005a9e;
+    margin-bottom: 12px;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+
+  .comparison-col {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .comparison-col-header {
+    padding: 10px 14px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #ffffff;
+  }
+
+  .comparison-col-header.col-a {
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+  }
+
+  .comparison-col-header.col-b {
+    background: linear-gradient(135deg, #00b294, #008272);
+  }
+
+  .comparison-col-body {
+    padding: 12px 14px;
+  }
+
+  .comparison-col-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .comparison-col-body ul li {
+    font-size: 9.5px;
+    color: #201f1e;
+    padding: 4px 0;
+    border-bottom: 1px solid #f3f2f1;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.5;
+  }
+
+  .comparison-col-body ul li:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-col-body ul li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .comparison-col.col-primary .comparison-col-body ul li::before {
+    background: #0078d4;
+  }
+
+  .comparison-col.col-secondary .comparison-col-body ul li::before {
+    background: #00b294;
+  }
+
+  /* ===== METRICS: DONUT + ICON GRID ===== */
+  .metrics-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .donut-panel {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .donut-chart {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .donut-chart svg {
+    width: 72px;
+    height: 72px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-chart .donut-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #201f1e;
+  }
+
+  .donut-info h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #201f1e;
+    margin-bottom: 3px;
+  }
+
+  .donut-info p {
+    font-size: 9px;
+    color: #605e5c;
+    line-height: 1.5;
+  }
+
+  .icon-grid-panel {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .icon-grid-panel h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #005a9e;
+    margin-bottom: 10px;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .icon-grid-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .icon-grid-item .icon-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .icon-grid-item .icon-circle svg {
+    width: 13px;
+    height: 13px;
+    fill: #ffffff;
+  }
+
+  .icon-grid-item .icon-text {
+    font-size: 8.5px;
+    color: #201f1e;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .icon-grid-item .icon-subtext {
+    font-size: 7.5px;
+    color: #605e5c;
+    line-height: 1.3;
+  }
+
+  /* ===== BRAND STRIP ===== */
+  .brand-strip {
+    position: absolute;
+    bottom: 34px;
+    left: 32px;
+    right: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #e1dfdd;
+    z-index: 5;
+  }
+
+  .brand-strip-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .brand-strip-logo-icon {
+    width: 18px;
+    height: 18px;
+    background: #0078d4;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip-logo-icon svg {
+    width: 10px;
+    height: 10px;
+    fill: #ffffff;
+  }
+
+  .brand-strip-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 8px;
+    color: #605e5c;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ===== PAGE NUMBER FOOTER ===== */
+  .page-number-footer {
+    position: absolute;
+    bottom: 12px;
+    right: 36px;
+    font-size: 8px;
+    color: #605e5c;
+    z-index: 10;
+  }
+
+  .page-number-footer span {
+    font-weight: 700;
+    color: #0078d4;
+  }
+
+  /* Soft gradient band — inline divider */
+  .soft-gradient-band {
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0,120,212,0.15) 20%, rgba(0,178,148,0.15) 80%, transparent 100%);
+    margin: 4px 0 14px 0;
+    border: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== SIDEBAR NAVIGATION ===== -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+      </div>
+      <div class="sidebar-brand-name">{{ firm_name }}</div>
+      <div class="sidebar-brand-subtitle">{{ firm_division }}</div>
+    </div>
+
+    <div class="sidebar-section-label">{{ sidebar_section_1 }}</div>
+    <ul class="sidebar-nav">
+      {% for nav_item in sidebar_nav_items %}
+      <li class="{{ nav_item.class }}">
+        <a href="#">{{ nav_item.label }}<span class="nav-page">{{ nav_item.page }}</span></a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="sidebar-section-label">{{ sidebar_section_2 }}</div>
+    <ul class="sidebar-nav">
+      {% for ref_item in sidebar_ref_items %}
+      <li>
+        <a href="#">{{ ref_item.label }}<span class="nav-page">{{ ref_item.page }}</span></a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">{{ sidebar_footer_line_1 }}<br>{{ sidebar_footer_line_2 }}</div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="header-strip">
+      <div class="document-badge">{{ document_badge }}</div>
+      <div class="document-date">{{ document_date }}</div>
+    </div>
+
+    <h1>{{ page_title }}</h1>
+    <div class="page-subtitle">{{ page_subtitle }}</div>
+
+    <hr class="gradient-divider">
+
+    <!-- Process Flow Diagram -->
+    <div class="process-flow-section">
+      <h2>{{ process_section_heading }}</h2>
+      <div class="process-flow">
+        {% for step in process_steps %}
+        {% if not loop.first %}
+        <div class="process-arrow">
+          <svg viewBox="0 0 28 14"><path d="M0 7h22l-5-5 1.5-1.5L26 7l-7.5 6.5L17 12l5-5H0z" fill="#0078d4" opacity="0.5"/></svg>
+        </div>
+        {% endif %}
+        <div class="process-step">
+          <div class="process-step-circle" style="background: {{ step.color }};">{{ step.number }}</div>
+          <div class="process-step-label">{{ step.label }}</div>
+          <div class="process-step-desc">{{ step.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Callout Box -->
+    <div class="callout-box">
+      <h3>{{ callout_title }}</h3>
+      <p>{{ callout_body }}</p>
+    </div>
+
+    <hr class="soft-gradient-band">
+
+    <!-- Comparison Columns -->
+    <div class="comparison-section">
+      <h2>{{ comparison_heading }}</h2>
+      <div class="comparison-columns">
+        <div class="comparison-col col-primary">
+          <div class="comparison-col-header col-a">{{ comparison_col_a_title }}</div>
+          <div class="comparison-col-body">
+            <ul>
+              {% for item in comparison_col_a_items %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="comparison-col col-secondary">
+          <div class="comparison-col-header col-b">{{ comparison_col_b_title }}</div>
+          <div class="comparison-col-body">
+            <ul>
+              {% for item in comparison_col_b_items %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="soft-gradient-band">
+
+    <!-- Metrics: Percentage Donut + Icon Grid -->
+    <div class="metrics-section">
+      <div class="donut-panel">
+        <div class="donut-chart">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" fill="none" stroke="#f3f2f1" stroke-width="8"/>
+            <circle cx="36" cy="36" r="28" fill="none" stroke="{{ donut_color }}" stroke-width="8"
+              stroke-dasharray="{{ donut_dash_value }} {{ donut_dash_remainder }}" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-value">{{ donut_percentage }}</div>
+        </div>
+        <div class="donut-info">
+          <h3>{{ donut_label }}</h3>
+          <p>{{ donut_description }}</p>
+        </div>
+      </div>
+
+      <div class="icon-grid-panel">
+        <h3>{{ icon_grid_title }}</h3>
+        <div class="icon-grid">
+          {% for icon_item in icon_grid_items %}
+          <div class="icon-grid-item">
+            <div class="icon-circle" style="background: {{ icon_item.color }};">
+              <svg viewBox="0 0 24 24"><path d="{{ icon_item.icon_path }}"/></svg>
+            </div>
+            <div>
+              <div class="icon-text">{{ icon_item.title }}</div>
+              <div class="icon-subtext">{{ icon_item.subtitle }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Strip -->
+    <div class="brand-strip">
+      <div class="brand-strip-logo">
+        <div class="brand-strip-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+        </div>
+        <div class="brand-strip-name">{{ brand_strip_text }}</div>
+      </div>
+      <div class="document-date" style="font-size:7.5px;">{{ disclaimer_text }}</div>
+    </div>
+
+    <!-- Page Number Footer -->
+    <div class="page-number-footer">Page <span>{{ page_number }}</span> of {{ total_pages }}</div>
+  </main>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0055",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "firm_name": "string",
+    "firm_division": "string",
+    "document_badge": "string",
+    "document_date": "string",
+    "sidebar_section_1": "string",
+    "sidebar_nav_items": "[{class: string, label: string, page: string}]",
+    "sidebar_section_2": "string",
+    "sidebar_ref_items": "[{label: string, page: string}]",
+    "sidebar_footer_line_1": "string",
+    "sidebar_footer_line_2": "string",
+    "process_section_heading": "string",
+    "process_steps": "[{number: string, label: string, description: string, color: string}]",
+    "callout_title": "string",
+    "callout_body": "string",
+    "comparison_heading": "string",
+    "comparison_col_a_title": "string",
+    "comparison_col_a_items": "[string]",
+    "comparison_col_b_title": "string",
+    "comparison_col_b_items": "[string]",
+    "donut_color": "string",
+    "donut_dash_value": "string",
+    "donut_dash_remainder": "string",
+    "donut_percentage": "string",
+    "donut_label": "string",
+    "donut_description": "string",
+    "icon_grid_title": "string",
+    "icon_grid_items": "[{color: string, icon_path: string, title: string, subtitle: string}]",
+    "brand_strip_text": "string",
+    "disclaimer_text": "string",
+    "page_number": "string",
+    "total_pages": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

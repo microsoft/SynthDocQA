@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0019",
+  "industry": "telecommunications",
+  "page_role": "timeline_page",
+  "layout": {
+    "name": "minimal_whitespace",
+    "description": "Very generous margins and breathing room. Only 2-3 key elements per page. Apple/Muji aesthetic. Content floats in white space."
+  },
+  "color_palette": {
+    "name": "government_slate",
+    "primary": "#2c3e50",
+    "secondary": "#34495e",
+    "accent": "#e74c3c",
+    "bg": "#ecf0f1",
+    "surface": "#ffffff",
+    "text": "#2c3e50",
+    "muted": "#7f8c8d"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "progress_bars",
+    "footnotes_strip",
+    "kpi_metric_cards",
+    "sidebar_annotation",
+    "tag_or_badge_row",
+    "hero_image_placeholder"
+  ],
+  "density": "balanced",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by Harvard Business Review articles \u2014 editorial, serif typography, thoughtful",
+  "seed": 299105
+}

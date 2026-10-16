@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0066",
+  "industry": "telecommunications",
+  "page_role": "infographic_story",
+  "layout": {
+    "name": "timeline_horizontal",
+    "description": "Central horizontal timeline spine runs across the middle of the page. Events/milestones hang above and below it alternately."
+  },
+  "color_palette": {
+    "name": "energy_red",
+    "primary": "#cc0000",
+    "secondary": "#990000",
+    "accent": "#f5a623",
+    "bg": "#ffffff",
+    "surface": "#fdf8f8",
+    "text": "#1a0000",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "hero_image_placeholder",
+    "numbered_list_items",
+    "icon_with_text_grid",
+    "page_number_footer",
+    "comparison_columns"
+  ],
+  "density": "dense",
+  "motif": "geometric_angular_shapes",
+  "design_direction": "Inspired by Tesla investor presentations \u2014 modern, dark, technology-forward",
+  "seed": 604238
+}

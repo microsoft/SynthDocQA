@@ -1,0 +1,632 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #111111;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f8f8f8;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: '\00A7';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 580px;
+    font-weight: 100;
+    color: rgba(28, 28, 28, 0.028);
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* Brand strip */
+  .brand-strip {
+    width: 100%;
+    height: 52px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-strip .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: #e85d04;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-strip .logo-mark span {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .brand-strip .org-name {
+    color: #ffffff;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip .doc-type {
+    color: #777777;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Accent bar below brand */
+  .accent-bar {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #e85d04 0%, #e85d04 30%, #3d3d3d 30%, #3d3d3d 100%);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Content wrapper */
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 36px 48px 20px 48px;
+  }
+
+  /* Page title area */
+  .page-header {
+    margin-bottom: 8px;
+  }
+
+  .page-header h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: #1c1c1c;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .page-header .subtitle {
+    font-size: 13px;
+    color: #777777;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  .page-header .reporting-period {
+    display: inline-block;
+    background: #1c1c1c;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 2px;
+    margin-bottom: 0;
+  }
+
+  .divider-thin {
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin: 16px 0;
+  }
+
+  /* KPI Dashboard Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 18px 16px 14px 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--kpi-color, #e85d04);
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: #1c1c1c;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-unit {
+    font-size: 12px;
+    color: #777777;
+    font-weight: 400;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 10px;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-trend {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .kpi-card .kpi-trend.up { color: #2a9d3e; }
+  .kpi-card .kpi-trend.down { color: #d32f2f; }
+  .kpi-card .kpi-trend.neutral { color: #777777; }
+
+  /* Two-column body section */
+  .two-col-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 20px;
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: #1c1c1c;
+    margin-bottom: 10px;
+    grid-column: 1 / -1;
+  }
+
+  .col-block h3 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #3d3d3d;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .col-block p {
+    font-size: 12px;
+    color: #111111;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: reg-counter;
+  }
+
+  .numbered-list li {
+    counter-increment: reg-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #111111;
+  }
+
+  .numbered-list li::before {
+    content: counter(reg-counter, decimal-leading-zero);
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    background: #1c1c1c;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* Metric tiles row */
+  .metric-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .metric-tile {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .metric-tile .gauge {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 4px solid #eee;
+    border-top-color: var(--gauge-color, #e85d04);
+    border-right-color: var(--gauge-color, #e85d04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .metric-tile .gauge .gauge-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1c1c1c;
+  }
+
+  .metric-tile .metric-info .metric-label {
+    font-size: 10px;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .metric-tile .metric-info .metric-detail {
+    font-size: 11px;
+    color: #3d3d3d;
+    line-height: 1.4;
+  }
+
+  /* Compliance status strip */
+  .status-strip {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 16px;
+  }
+
+  .status-strip .status-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #3d3d3d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  .status-badge.compliant {
+    background: rgba(42, 157, 62, 0.1);
+    color: #2a9d3e;
+  }
+
+  .status-badge.compliant::before {
+    content: '\25CF';
+    font-size: 8px;
+  }
+
+  .status-badge.review {
+    background: rgba(232, 93, 4, 0.1);
+    color: #e85d04;
+  }
+
+  .status-badge.review::before {
+    content: '\25CF';
+    font-size: 8px;
+  }
+
+  /* Disclosure note */
+  .disclosure-note {
+    background: rgba(28, 28, 28, 0.03);
+    border-left: 3px solid #e85d04;
+    padding: 12px 16px;
+    font-size: 10px;
+    color: #777777;
+    line-height: 1.6;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 0;
+  }
+
+  /* Page footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #ffffff;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 2;
+  }
+
+  .page-footer .footer-left {
+    font-size: 9px;
+    color: #777777;
+    letter-spacing: 0.03em;
+  }
+
+  .page-footer .footer-center {
+    font-size: 9px;
+    color: #777777;
+  }
+
+  .page-footer .footer-right {
+    font-size: 9px;
+    color: #1c1c1c;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Brand Strip -->
+  <div class="brand-strip">
+    <div class="logo-area">
+      <div class="logo-mark"><span>{{ logo_letter }}</span></div>
+      <span class="org-name">{{ organization_name }}</span>
+    </div>
+    <span class="doc-type">{{ document_type }}</span>
+  </div>
+  <div class="accent-bar"></div>
+
+  <!-- Main Content -->
+  <div class="content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>{{ page_title }}</h1>
+      <div class="subtitle">{{ page_subtitle }}</div>
+      <span class="reporting-period">{{ reporting_period }}</span>
+    </div>
+
+    <div class="divider-thin"></div>
+
+    <!-- KPI Dashboard Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+        <div class="kpi-value">{{ kpi_1_value }}</div>
+        <div class="kpi-unit">{{ kpi_1_unit }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-trend {{ kpi_1_trend_direction }}">{{ kpi_1_trend }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+        <div class="kpi-value">{{ kpi_2_value }}</div>
+        <div class="kpi-unit">{{ kpi_2_unit }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-trend {{ kpi_2_trend_direction }}">{{ kpi_2_trend }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+        <div class="kpi-value">{{ kpi_3_value }}</div>
+        <div class="kpi-unit">{{ kpi_3_unit }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-trend {{ kpi_3_trend_direction }}">{{ kpi_3_trend }}</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+        <div class="kpi-value">{{ kpi_4_value }}</div>
+        <div class="kpi-unit">{{ kpi_4_unit }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-trend {{ kpi_4_trend_direction }}">{{ kpi_4_trend }}</div>
+      </div>
+    </div>
+
+    <!-- Two-Column Body -->
+    <div class="two-col-section">
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <div class="col-block">
+        <h3>{{ col_left_heading }}</h3>
+        <p>{{ body_paragraph_1 }}</p>
+        <p>{{ body_paragraph_2 }}</p>
+      </div>
+      <div class="col-block">
+        <h3>{{ col_right_heading }}</h3>
+        <ol class="numbered-list">
+          {% for item in regulatory_items %}
+          <li>{{ item.text }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+
+    <!-- Metric Gauge Tiles -->
+    <div class="metric-tiles">
+      <div class="metric-tile">
+        <div class="gauge" style="--gauge-color: {{ gauge_1_color }};">
+          <span class="gauge-val">{{ gauge_1_value }}</span>
+        </div>
+        <div class="metric-info">
+          <div class="metric-label">{{ gauge_1_label }}</div>
+          <div class="metric-detail">{{ gauge_1_detail }}</div>
+        </div>
+      </div>
+      <div class="metric-tile">
+        <div class="gauge" style="--gauge-color: {{ gauge_2_color }};">
+          <span class="gauge-val">{{ gauge_2_value }}</span>
+        </div>
+        <div class="metric-info">
+          <div class="metric-label">{{ gauge_2_label }}</div>
+          <div class="metric-detail">{{ gauge_2_detail }}</div>
+        </div>
+      </div>
+      <div class="metric-tile">
+        <div class="gauge" style="--gauge-color: {{ gauge_3_color }};">
+          <span class="gauge-val">{{ gauge_3_value }}</span>
+        </div>
+        <div class="metric-info">
+          <div class="metric-label">{{ gauge_3_label }}</div>
+          <div class="metric-detail">{{ gauge_3_detail }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance Status Strip -->
+    <div class="status-strip">
+      <span class="status-label">{{ compliance_label }}</span>
+      <span class="status-badge {{ compliance_status_class }}">{{ compliance_status_text }}</span>
+    </div>
+
+    <!-- Disclosure Note -->
+    <div class="disclosure-note">
+      {{ disclosure_note_text }}
+    </div>
+
+  </div>
+
+  <!-- Page Footer -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_classification }}</span>
+    <span class="footer-center">{{ footer_document_id }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0063",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "reporting_period": "string",
+    "organization_name": "string",
+    "logo_letter": "string",
+    "document_type": "string",
+    "section_heading": "string",
+    "col_left_heading": "string",
+    "col_right_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "regulatory_items": "[{text: string}]",
+    "kpi_1_value": "string",
+    "kpi_1_unit": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_1_trend": "string",
+    "kpi_1_trend_direction": "string",
+    "kpi_2_value": "string",
+    "kpi_2_unit": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_2_trend": "string",
+    "kpi_2_trend_direction": "string",
+    "kpi_3_value": "string",
+    "kpi_3_unit": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_3_trend": "string",
+    "kpi_3_trend_direction": "string",
+    "kpi_4_value": "string",
+    "kpi_4_unit": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "kpi_4_trend": "string",
+    "kpi_4_trend_direction": "string",
+    "gauge_1_value": "string",
+    "gauge_1_label": "string",
+    "gauge_1_detail": "string",
+    "gauge_1_color": "string",
+    "gauge_2_value": "string",
+    "gauge_2_label": "string",
+    "gauge_2_detail": "string",
+    "gauge_2_color": "string",
+    "gauge_3_value": "string",
+    "gauge_3_label": "string",
+    "gauge_3_detail": "string",
+    "gauge_3_color": "string",
+    "compliance_label": "string",
+    "compliance_status_class": "string",
+    "compliance_status_text": "string",
+    "disclosure_note_text": "string",
+    "footer_classification": "string",
+    "footer_document_id": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

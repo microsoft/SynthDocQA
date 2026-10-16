@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0024",
+  "industry": "telecommunications",
+  "page_role": "table_of_contents",
+  "layout": {
+    "name": "editorial_magazine",
+    "description": "Asymmetric, bold hero image dominates top half, text wraps below. Strong typographic hierarchy. Feels like a premium magazine spread."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "neutral_corporate",
+    "heading_font": "Calibri, 'Trebuchet MS', sans-serif",
+    "body_font": "Calibri, Arial, sans-serif",
+    "heading_weight": "600",
+    "h1_size": "32px",
+    "h2_size": "22px",
+    "h3_size": "15px",
+    "body_size": "11px",
+    "line_height": "1.55",
+    "letter_spacing": "0.01em"
+  },
+  "elements": [
+    "data_table",
+    "numbered_list_items",
+    "percentage_donut",
+    "progress_bars",
+    "divider_with_label",
+    "timeline_nodes",
+    "pull_quote_block"
+  ],
+  "density": "balanced",
+  "motif": "soft_gradient_bands",
+  "design_direction": "Inspired by UN Development Programme reports \u2014 international, accessible, structured",
+  "seed": 387477
+}

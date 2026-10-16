@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0062",
+  "industry": "real_estate_infrastructure",
+  "page_role": "section_divider",
+  "layout": {
+    "name": "sidebar_navigation",
+    "description": "Persistent left or right sidebar (20% width) with section labels, page numbers, or sub-navigation. Main content in remaining 80%."
+  },
+  "color_palette": {
+    "name": "retail_vibrant",
+    "primary": "#e91e63",
+    "secondary": "#9c27b0",
+    "accent": "#ff9800",
+    "bg": "#ffffff",
+    "surface": "#fce4ec",
+    "text": "#212121",
+    "muted": "#757575"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "page_number_footer",
+    "numbered_list_items",
+    "sidebar_annotation",
+    "icon_with_text_grid",
+    "percentage_donut"
+  ],
+  "density": "sparse",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by McKinsey & Company consulting reports \u2014 very formal, data-driven, charcoal tones",
+  "seed": 428361
+}

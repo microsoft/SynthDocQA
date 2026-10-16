@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0096",
+  "industry": "real_estate_infrastructure",
+  "page_role": "map_or_geographic",
+  "layout": {
+    "name": "timeline_horizontal",
+    "description": "Central horizontal timeline spine runs across the middle of the page. Events/milestones hang above and below it alternately."
+  },
+  "color_palette": {
+    "name": "energy_red",
+    "primary": "#cc0000",
+    "secondary": "#990000",
+    "accent": "#f5a623",
+    "bg": "#ffffff",
+    "surface": "#fdf8f8",
+    "text": "#1a0000",
+    "muted": "#666666"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "divider_with_label",
+    "two_column_body_text",
+    "logo_or_brand_strip",
+    "page_number_footer",
+    "chart_placeholder_box",
+    "data_table",
+    "comparison_columns"
+  ],
+  "density": "dense",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 450961
+}

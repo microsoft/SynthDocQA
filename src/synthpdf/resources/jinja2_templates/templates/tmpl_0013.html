@@ -1,0 +1,599 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f9f7f4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #0d0d0d;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  .header-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #b8960c 0%, #b8960c 40%, #1a1a1a 40%, #1a1a1a 100%);
+  }
+
+  .sidebar-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    background: #1a1a1a;
+  }
+
+  .header-area {
+    padding: 40px 60px 0 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .header-left { flex: 1; }
+
+  .header-left h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #1a1a1a;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    margin-bottom: 6px;
+  }
+
+  .header-left h1 span.accent {
+    color: #b8960c;
+    font-weight: 300;
+  }
+
+  .header-subtitle {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: #888888;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .header-divider {
+    width: 80px;
+    height: 3px;
+    background: #b8960c;
+    margin-top: 14px;
+  }
+
+  .sidebar-annotation {
+    width: 180px;
+    background: #1a1a1a;
+    color: #f9f7f4;
+    padding: 16px 18px;
+    font-size: 11px;
+    line-height: 1.55;
+    position: relative;
+    margin-top: 4px;
+  }
+
+  .sidebar-annotation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #b8960c;
+  }
+
+  .sidebar-annotation .annotation-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #b8960c;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .pull-quote-block {
+    margin: 28px 60px 0 60px;
+    padding: 18px 24px;
+    background: #ffffff;
+    border-left: 4px solid #b8960c;
+  }
+
+  .pull-quote-block p {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #2d2d2d;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .pull-quote-block .quote-attribution {
+    font-size: 11px;
+    color: #888888;
+    font-style: normal;
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  .section-heading-row {
+    margin: 28px 60px 0 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-heading-row h2 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a1a1a;
+    letter-spacing: 0.02em;
+  }
+
+  .section-heading-row .heading-line {
+    flex: 1;
+    height: 1px;
+    background: #b8960c;
+    opacity: 0.5;
+  }
+
+  .timeline-container {
+    margin: 24px 60px 0 60px;
+    position: relative;
+    height: 440px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #b8960c, #1a1a1a);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .timeline-nodes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .timeline-node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #b8960c;
+    border: 3px solid #f9f7f4;
+    box-shadow: 0 0 0 2px #b8960c;
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .timeline-node.above .timeline-card {
+    position: absolute;
+    bottom: calc(50% + 22px);
+    width: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-node.below .timeline-card {
+    position: absolute;
+    top: calc(50% + 22px);
+    width: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-node.above .timeline-connector {
+    position: absolute;
+    bottom: calc(50% + 8px);
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: #b8960c;
+    transform: translateX(-50%);
+  }
+
+  .timeline-node.below .timeline-connector {
+    position: absolute;
+    top: calc(50% + 8px);
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: #b8960c;
+    transform: translateX(-50%);
+  }
+
+  .timeline-card {
+    background: #ffffff;
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid rgba(184, 150, 12, 0.2);
+  }
+
+  .timeline-card .toc-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: #b8960c;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .timeline-card .toc-section-title {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-card .toc-page {
+    font-size: 10px;
+    color: #888888;
+    font-weight: 400;
+  }
+
+  .timeline-card.highlight {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  .timeline-card.highlight .toc-number { color: #b8960c; }
+  .timeline-card.highlight .toc-section-title { color: #f9f7f4; }
+  .timeline-card.highlight .toc-page { color: #888888; }
+
+  .bottom-row {
+    margin: 0 60px;
+    display: grid;
+    grid-template-columns: 180px 1fr 200px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .donut-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+  }
+
+  .donut-svg {
+    width: 100px;
+    height: 100px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-bg {
+    fill: none;
+    stroke: #2d2d2d;
+    stroke-width: 8;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke: #b8960c;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 251.2;
+    stroke-dashoffset: 62.8;
+  }
+
+  .donut-label {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #1a1a1a;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .donut-sublabel {
+    font-size: 10px;
+    color: #888888;
+    text-align: center;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .chart-placeholder-box {
+    background: #ffffff;
+    border: 1px dashed rgba(184, 150, 12, 0.35);
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .chart-placeholder-box .chart-label {
+    font-size: 11px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .chart-placeholder-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #b8960c;
+  }
+
+  .callout-box {
+    background: #2d2d2d;
+    color: #f9f7f4;
+    padding: 18px 16px;
+    position: relative;
+  }
+
+  .callout-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 4px;
+    background: #b8960c;
+  }
+
+  .callout-box h3 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #b8960c;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .callout-box p {
+    font-size: 11px;
+    line-height: 1.6;
+    color: #f9f7f4;
+    opacity: 0.85;
+  }
+
+  .deco-block-gold {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #b8960c;
+    opacity: 0.08;
+  }
+
+  .deco-block-dark {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    background: #1a1a1a;
+    opacity: 0.06;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    background: #1a1a1a;
+  }
+
+  .page-footer .footer-left {
+    font-size: 9px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .page-footer .footer-center {
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.06em;
+  }
+
+  .page-footer .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .page-footer .footer-right .page-num {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #b8960c;
+    line-height: 1;
+  }
+
+  .page-footer .footer-right .page-label {
+    font-size: 9px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Decorative solid color blocks -->
+  <div class="deco-block-gold" style="top: 130px; right: 260px;"></div>
+  <div class="deco-block-dark" style="top: 85px; right: 52px;"></div>
+  <div class="deco-block-gold" style="bottom: 100px; left: 30px; width: 60px; height: 24px;"></div>
+  <div class="deco-block-dark" style="bottom: 180px; right: 80px; width: 28px; height: 28px;"></div>
+
+  <!-- Left sidebar block -->
+  <div class="sidebar-block"></div>
+
+  <!-- Top header band -->
+  <div class="header-band"></div>
+
+  <!-- Header area -->
+  <div class="header-area">
+    <div class="header-left">
+      <div class="header-subtitle">{{ document_type }}</div>
+      <h1>{{ page_title }} <span class="accent">{{ page_title_accent }}</span></h1>
+      <div class="header-divider"></div>
+    </div>
+    <div class="sidebar-annotation">
+      <div class="annotation-label">{{ annotation_label }}</div>
+      {{ annotation_text }}
+    </div>
+  </div>
+
+  <!-- Pull quote block -->
+  <div class="pull-quote-block">
+    <p>{{ pull_quote_text }}</p>
+    <div class="quote-attribution">— {{ pull_quote_attribution }}</div>
+  </div>
+
+  <!-- Section heading -->
+  <div class="section-heading-row">
+    <h2>{{ section_heading }}</h2>
+    <div class="heading-line"></div>
+  </div>
+
+  <!-- Horizontal Timeline -->
+  <div class="timeline-container">
+    <div class="timeline-spine"></div>
+    <div class="timeline-nodes">
+      {% for item in toc_items %}
+      <div class="timeline-node {{ 'above' if loop.index is odd else 'below' }}">
+        <div class="timeline-dot"></div>
+        <div class="timeline-connector"></div>
+        <div class="timeline-card {{ 'highlight' if item.highlight else '' }}">
+          <div class="toc-number">{{ item.number }}</div>
+          <div class="toc-section-title">{{ item.title }}</div>
+          <div class="toc-page">Page {{ item.page }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Bottom row: Donut + Chart + Callout -->
+  <div class="bottom-row">
+    <!-- Percentage Donut -->
+    <div class="donut-container">
+      <svg class="donut-svg" viewBox="0 0 100 100">
+        <circle class="donut-bg" cx="50" cy="50" r="40"/>
+        <circle class="donut-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: {{ donut_offset }};"/>
+      </svg>
+      <div class="donut-label">{{ donut_value }}</div>
+      <div class="donut-sublabel">{{ donut_label }}</div>
+    </div>
+
+    <!-- Chart placeholder -->
+    <div class="chart-placeholder-box">
+      <span class="chart-label">{{ chart_placeholder_label }}</span>
+    </div>
+
+    <!-- Callout box -->
+    <div class="callout-box">
+      <h3>{{ callout_heading }}</h3>
+      <p>{{ callout_body }}</p>
+    </div>
+  </div>
+
+  <!-- Page footer -->
+  <div class="page-footer">
+    <div class="footer-left">{{ footer_document_title }}</div>
+    <div class="footer-center">{{ footer_confidentiality }}</div>
+    <div class="footer-right">
+      <span class="page-label">Page</span>
+      <span class="page-num">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0013",
+  "variables": {
+    "page_title": "string — Main page title text (e.g., 'Table of')",
+    "page_title_accent": "string — Accent-colored portion of the title (e.g., 'Contents')",
+    "document_type": "string — Subtitle label above the title (e.g., 'Annual Technology Report 2024')",
+    "annotation_label": "string — Small label in sidebar annotation box (e.g., 'Quick Navigation')",
+    "annotation_text": "string — Body text inside sidebar annotation",
+    "pull_quote_text": "string — Italic pull quote text displayed under the header",
+    "pull_quote_attribution": "string — Attribution name for the pull quote",
+    "section_heading": "string — Section heading above the timeline (e.g., 'Report Roadmap')",
+    "toc_items": "array — List of TOC items. Each: { number: string, title: string, page: string, highlight: boolean }",
+    "donut_value": "string — Display value inside the donut (e.g., '75%')",
+    "donut_label": "string — Label below the donut (e.g., 'Digital Coverage')",
+    "donut_offset": "number — SVG stroke-dashoffset for donut fill (251.2 = 0%, 0 = 100%)",
+    "chart_placeholder_label": "string — Label text inside the chart placeholder box",
+    "callout_heading": "string — Heading inside the callout box",
+    "callout_body": "string — Body paragraph inside the callout box",
+    "footer_document_title": "string — Document title shown in the footer",
+    "footer_confidentiality": "string — Confidentiality notice in footer center",
+    "page_number": "string — Page number displayed in the footer"
+  }
+}
+END_TEMPLATE_VARIABLES -->

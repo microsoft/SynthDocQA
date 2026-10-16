@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0063",
+  "industry": "academic_research",
+  "page_role": "regulatory_disclosure",
+  "layout": {
+    "name": "dashboard_metrics",
+    "description": "KPI cards, gauges, and metric tiles dominate. Feels like a business intelligence dashboard printed to PDF."
+  },
+  "color_palette": {
+    "name": "consulting_charcoal",
+    "primary": "#1c1c1c",
+    "secondary": "#3d3d3d",
+    "accent": "#e85d04",
+    "bg": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#111111",
+    "muted": "#777777"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "two_column_body_text",
+    "logo_or_brand_strip",
+    "numbered_list_items",
+    "page_number_footer"
+  ],
+  "density": "sparse",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by IKEA product catalogs \u2014 functional, grid-based, friendly, Scandinavian",
+  "seed": 693300
+}

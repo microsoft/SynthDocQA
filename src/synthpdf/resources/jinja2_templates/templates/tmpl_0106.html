@@ -1,0 +1,552 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fefefe;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1b2d22;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fefefe;
+  }
+
+  /* Geometric angular decorative shapes */
+  .geo-tri-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 160px 160px 0;
+    border-color: transparent #2d6a4f transparent transparent;
+    opacity: 0.10;
+    z-index: 0;
+  }
+
+  .geo-tri-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 120px 0 0 120px;
+    border-color: transparent transparent transparent #40916c;
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+  .geo-diamond {
+    position: absolute;
+    top: 280px;
+    right: -30px;
+    width: 60px;
+    height: 60px;
+    background: #f4a261;
+    transform: rotate(45deg);
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .geo-line-accent {
+    position: absolute;
+    top: 188px;
+    left: 70px;
+    right: 70px;
+    height: 3px;
+    background: linear-gradient(90deg, #2d6a4f 0%, #40916c 40%, transparent 100%);
+    z-index: 1;
+  }
+
+  /* Header band */
+  .header-band {
+    position: relative;
+    z-index: 2;
+    padding: 52px 70px 0 70px;
+  }
+
+  .header-band .overline {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #52796f;
+    margin-bottom: 12px;
+  }
+
+  .header-band h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #1b2d22;
+    margin-bottom: 10px;
+    max-width: 520px;
+  }
+
+  .header-band .subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #52796f;
+    max-width: 460px;
+    margin-bottom: 0;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 28px 70px 18px 70px;
+  }
+
+  .divider-label .label {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #2d6a4f;
+    white-space: nowrap;
+  }
+
+  .divider-label .line {
+    flex: 1;
+    height: 1.5px;
+    background: #2d6a4f;
+    opacity: 0.25;
+  }
+
+  /* KPI metric cards row */
+  .kpi-row {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    padding: 0 70px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-card {
+    background: #f0f4f0;
+    padding: 22px 20px 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #2d6a4f; }
+  .kpi-card:nth-child(2)::before { background: #40916c; }
+  .kpi-card:nth-child(3)::before { background: #f4a261; }
+
+  .kpi-card .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: #52796f;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+  }
+
+  /* Colored section band */
+  .section-band {
+    position: relative;
+    z-index: 2;
+    margin: 24px 0 0 0;
+    background: #2d6a4f;
+    padding: 20px 70px;
+  }
+
+  .section-band h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #fefefe;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  /* Geometric angular accent on section band */
+  .section-band::after {
+    content: '';
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: #f4a261;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    opacity: 0.7;
+  }
+
+  /* Two-column content area */
+  .content-area {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 28px 70px 0 70px;
+  }
+
+  .content-area .body-text {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #1b2d22;
+  }
+
+  /* Percentage donut section */
+  .donut-section {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 40px;
+    padding: 28px 70px 0 70px;
+  }
+
+  .donut-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .donut-svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .donut-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #52796f;
+    text-align: center;
+    margin-top: 6px;
+    max-width: 100px;
+    line-height: 1.3;
+  }
+
+  .donut-center-text {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 9px;
+    fill: #1b2d22;
+  }
+
+  /* Icon with text grid */
+  .icon-text-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 40px;
+    padding: 24px 70px 0 70px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .icon-text-item .icon-box {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .icon-box svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-text-item .item-content h3 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #1b2d22;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .icon-text-item .item-content p {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #52796f;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    position: relative;
+    z-index: 2;
+    padding: 0 70px 0 70px;
+  }
+
+  .num-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .num-item .num-circle {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    background: #2d6a4f;
+    color: #fefefe;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .num-item .num-text {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1b2d22;
+    padding-top: 4px;
+  }
+
+  .num-item .num-text strong {
+    color: #2d6a4f;
+  }
+
+  /* Footnotes strip */
+  .footnotes-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: #f0f4f0;
+    padding: 12px 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footnotes-strip .footnote-text {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    color: #52796f;
+    line-height: 1.4;
+  }
+
+  .footnotes-strip .page-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: #2d6a4f;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Geometric decorative elements -->
+  <div class="geo-tri-top"></div>
+  <div class="geo-tri-bottom"></div>
+  <div class="geo-diamond"></div>
+  <div class="geo-line-accent"></div>
+
+  <!-- Header -->
+  <div class="header-band">
+    <div class="overline">{{ report_series_label }}</div>
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ subtitle_text }}</div>
+  </div>
+
+  <!-- Divider with label: KEY METRICS -->
+  <div class="divider-label">
+    <span class="label">{{ kpi_section_label }}</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- KPI metric cards -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+  </div>
+
+  <!-- Colored section band -->
+  <div class="section-band">
+    <h2>{{ section_heading }}</h2>
+  </div>
+
+  <!-- Two-column body text -->
+  <div class="content-area">
+    <div class="body-text">{{ body_paragraph_1 }}</div>
+    <div class="body-text">{{ body_paragraph_2 }}</div>
+  </div>
+
+  <!-- Donut charts row -->
+  <div class="donut-section">
+    {% for donut in donut_charts %}
+    <div class="donut-wrapper">
+      <svg class="donut-svg" viewBox="0 0 42 42">
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#f0f4f0" stroke-width="5"/>
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="{{ donut.color }}" stroke-width="5"
+          stroke-dasharray="{{ donut.percent }} {{ 100 - donut.percent }}"
+          stroke-dashoffset="25" stroke-linecap="round"/>
+        <text x="21" y="23.5" text-anchor="middle" class="donut-center-text">{{ donut.percent }}%</text>
+      </svg>
+      <div class="donut-label">{{ donut.label }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Icon with text grid -->
+  <div class="icon-text-grid">
+    {% for item in icon_grid_items %}
+    <div class="icon-text-item">
+      <div class="icon-box">
+        <svg viewBox="0 0 36 36" fill="none">
+          <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" fill="{{ item.icon_color }}" opacity="0.15"/>
+          <polygon points="18,8 28,13 28,23 18,28 8,23 8,13" fill="{{ item.icon_color }}" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="item-content">
+        <h3>{{ item.heading }}</h3>
+        <p>{{ item.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Divider with label: KEY FINDINGS -->
+  <div class="divider-label">
+    <span class="label">{{ findings_section_label }}</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- Numbered list items -->
+  <div class="numbered-list">
+    {% for finding in findings_list %}
+    <div class="num-item">
+      <div class="num-circle">{{ loop.index }}</div>
+      <div class="num-text"><strong>{{ finding.title }}</strong> — {{ finding.description }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Footnotes strip -->
+  <div class="footnotes-strip">
+    <div class="footnote-text">{{ footnote_1 }} &nbsp;|&nbsp; {{ footnote_2 }}</div>
+    <div class="page-number">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0106",
+  "variables": {
+    "page_title": "string",
+    "report_series_label": "string",
+    "subtitle_text": "string",
+    "kpi_section_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "donut_charts": "array of {percent: number, color: string (hex), label: string}",
+    "icon_grid_items": "array of {icon_color: string (hex), heading: string, description: string}",
+    "findings_section_label": "string",
+    "findings_list": "array of {title: string, description: string}",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

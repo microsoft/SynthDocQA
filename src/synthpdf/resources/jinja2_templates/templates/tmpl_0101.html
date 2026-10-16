@@ -1,0 +1,849 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fefefe;
+    color: #1b2d22;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fefefe;
+  }
+
+  /* ── TOP NAVIGATION TABS ── */
+  .top-nav {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    background: #1b2d22;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .top-nav .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    color: #52796f;
+    border-right: 1px solid #2d6a4f;
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  .top-nav .tab.active {
+    background: #2d6a4f;
+    color: #fefefe;
+  }
+
+  .top-nav .tab-fill {
+    flex: 1;
+  }
+
+  .top-nav .tab-indicator {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    color: #f4a261;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── COLORED SECTION BAND ── */
+  .section-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #2d6a4f 0%, #40916c 40%, #f4a261 100%);
+  }
+
+  /* ── HERO IMAGE AREA ── */
+  .hero-area {
+    position: relative;
+    width: 100%;
+    height: 290px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    background: #f0f4f0;
+    overflow: hidden;
+  }
+
+  .hero-image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2d6a4f 0%, #40916c 60%, #52796f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hero-image-placeholder::after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 3px solid rgba(244,162,97,0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-image-placeholder::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed rgba(254,254,254,0.15);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-overlay-title {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fefefe;
+    text-shadow: 0 2px 12px rgba(27,45,34,0.6);
+    line-height: 1.15;
+    max-width: 380px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-overlay-title .accent-underline {
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #f4a261;
+    margin-top: 8px;
+    border-radius: 2px;
+  }
+
+  /* ── HERO SIDEBAR ── */
+  .hero-sidebar {
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #f0f4f0;
+  }
+
+  .hero-sidebar .sidebar-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #52796f;
+    margin-bottom: 6px;
+  }
+
+  .hero-sidebar .sidebar-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 26px;
+    color: #2d6a4f;
+    line-height: 1.1;
+  }
+
+  .hero-sidebar .sidebar-unit {
+    font-size: 10px;
+    color: #52796f;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-sidebar .sidebar-divider {
+    width: 100%;
+    height: 1px;
+    background: #2d6a4f;
+    opacity: 0.2;
+    margin: 8px 0;
+  }
+
+  .kpi-mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .kpi-mini {
+    background: #fefefe;
+    border-radius: 4px;
+    padding: 10px;
+    border-left: 3px solid #2d6a4f;
+  }
+
+  .kpi-mini .kpi-val {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1b2d22;
+  }
+
+  .kpi-mini .kpi-lbl {
+    font-size: 8px;
+    color: #52796f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* ── MAIN CONTENT AREA ── */
+  .main-content {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0;
+    padding: 0;
+    height: calc(1123px - 36px - 6px - 290px - 38px);
+    overflow: hidden;
+  }
+
+  /* ── LEFT SIDEBAR ANNOTATION ── */
+  .sidebar-annotation {
+    background: #f0f4f0;
+    padding: 20px 16px;
+    border-right: 2px solid #2d6a4f;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .sidebar-annotation .annotation-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #2d6a4f;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #2d6a4f;
+  }
+
+  .sidebar-annotation .annotation-text {
+    font-size: 9px;
+    color: #52796f;
+    line-height: 1.55;
+  }
+
+  .annotation-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #f4a261;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px auto;
+  }
+
+  .annotation-circle-inner {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #f4a261;
+  }
+
+  .risk-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .risk-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    color: #1b2d22;
+  }
+
+  .risk-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .risk-dot.critical { background: #d62828; }
+  .risk-dot.high { background: #f4a261; }
+  .risk-dot.medium { background: #e9c46a; }
+  .risk-dot.low { background: #40916c; }
+  .risk-dot.minimal { background: #2d6a4f; }
+
+  /* ── RIGHT CONTENT PANEL ── */
+  .content-panel {
+    padding: 20px 28px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .content-panel h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #2d6a4f;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .content-panel h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1b2d22;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .content-panel p {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1b2d22;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  /* ── PULL QUOTE BLOCK ── */
+  .pull-quote {
+    background: #f0f4f0;
+    border-left: 4px solid #f4a261;
+    padding: 12px 16px;
+    position: relative;
+    margin: 2px 0;
+  }
+
+  .pull-quote::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f4a261;
+    opacity: 0.12;
+  }
+
+  .pull-quote-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #2d6a4f;
+    line-height: 1.55;
+    letter-spacing: 0.04em;
+    font-style: italic;
+  }
+
+  .pull-quote-attr {
+    font-size: 8px;
+    color: #52796f;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* ── RISK MATRIX TABLE ── */
+  .risk-matrix-container {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .risk-matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .risk-matrix-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #fefefe;
+    background: #2d6a4f;
+    padding: 8px 8px;
+    text-align: left;
+    border-bottom: 2px solid #1b2d22;
+  }
+
+  .risk-matrix-table thead th:first-child {
+    border-radius: 3px 0 0 0;
+  }
+
+  .risk-matrix-table thead th:last-child {
+    border-radius: 0 3px 0 0;
+  }
+
+  .risk-matrix-table tbody td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e0e8e2;
+    color: #1b2d22;
+    vertical-align: top;
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .risk-matrix-table tbody tr:nth-child(even) {
+    background: #f0f4f0;
+  }
+
+  .risk-matrix-table .cell-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #52796f;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+
+  .risk-matrix-table .cell-severity {
+    text-align: center;
+  }
+
+  .severity-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fefefe;
+  }
+
+  .severity-badge.critical { background: #d62828; }
+  .severity-badge.high { background: #f4a261; color: #1b2d22; }
+  .severity-badge.medium { background: #e9c46a; color: #1b2d22; }
+  .severity-badge.low { background: #40916c; }
+  .severity-badge.minimal { background: #2d6a4f; }
+
+  .likelihood-bar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .likelihood-block {
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    background: #e0e8e2;
+  }
+
+  .likelihood-block.filled {
+    background: #2d6a4f;
+  }
+
+  /* ── CIRCULAR DECORATIVE ELEMENTS ── */
+  .circle-deco-1 {
+    position: absolute;
+    bottom: 60px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #2d6a4f;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  .circle-deco-2 {
+    position: absolute;
+    bottom: 40px;
+    right: -10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #f4a261;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  .circle-deco-3 {
+    position: absolute;
+    top: 340px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #2d6a4f;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* ── BOTTOM FOOTER BAR ── */
+  .footer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 38px;
+    background: #1b2d22;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+  }
+
+  .footer-bar .footer-left {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7px;
+    color: #52796f;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .footer-bar .footer-center {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7px;
+    color: #52796f;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-bar .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-bar .footer-page {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #f4a261;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-bar .footer-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7px;
+    color: #52796f;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .footer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2d6a4f;
+    display: inline-block;
+  }
+
+  /* ── RISK GRID VISUAL (5x5 mini matrix) ── */
+  .risk-grid-visual {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .risk-grid-cell {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 7px;
+    color: rgba(254,254,254,0.8);
+  }
+
+  .mono { font-family: 'Courier New', Courier, monospace; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CIRCULAR DECORATIVE ELEMENTS -->
+  <div class="circle-deco-1"></div>
+  <div class="circle-deco-2"></div>
+  <div class="circle-deco-3"></div>
+
+  <!-- TOP NAVIGATION TABS -->
+  <nav class="top-nav">
+    {% for tab in nav_tabs %}
+    <div class="tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+    <div class="tab-fill"></div>
+    <div class="tab-indicator">{{ report_date }} &bull; {{ classification_label }}</div>
+  </nav>
+
+  <!-- COLORED SECTION BAND -->
+  <div class="section-band"></div>
+
+  <!-- HERO IMAGE AREA -->
+  <div class="hero-area">
+    <div class="hero-image-wrapper">
+      {% if hero_image_url %}
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      {% else %}
+      <div class="hero-image-placeholder">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.2">
+          <circle cx="40" cy="40" r="36" stroke="#fefefe" stroke-width="2" stroke-dasharray="6 4"/>
+          <circle cx="40" cy="40" r="20" stroke="#f4a261" stroke-width="1.5"/>
+          <line x1="40" y1="10" x2="40" y2="70" stroke="#fefefe" stroke-width="0.5" opacity="0.4"/>
+          <line x1="10" y1="40" x2="70" y2="40" stroke="#fefefe" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+      </div>
+      {% endif %}
+      <div class="hero-overlay-title">
+        {{ page_title }}
+        <span class="accent-underline"></span>
+      </div>
+    </div>
+
+    <!-- HERO SIDEBAR KPI PANEL -->
+    <div class="hero-sidebar">
+      <div>
+        <div class="sidebar-label">{{ overall_risk_label }}</div>
+        <div class="sidebar-value" style="color: {{ overall_risk_color }};">{{ overall_risk_score }}</div>
+        <div class="sidebar-unit">{{ overall_risk_unit }}</div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="kpi-mini-grid">
+        <div class="kpi-mini" style="border-left-color: {{ kpi_1_color }};">
+          <div class="kpi-val">{{ kpi_1_value }}</div>
+          <div class="kpi-lbl">{{ kpi_1_label }}</div>
+        </div>
+        <div class="kpi-mini" style="border-left-color: {{ kpi_2_color }};">
+          <div class="kpi-val">{{ kpi_2_value }}</div>
+          <div class="kpi-lbl">{{ kpi_2_label }}</div>
+        </div>
+        <div class="kpi-mini" style="border-left-color: {{ kpi_3_color }};">
+          <div class="kpi-val">{{ kpi_3_value }}</div>
+          <div class="kpi-lbl">{{ kpi_3_label }}</div>
+        </div>
+        <div class="kpi-mini" style="border-left-color: {{ kpi_4_color }};">
+          <div class="kpi-val">{{ kpi_4_value }}</div>
+          <div class="kpi-lbl">{{ kpi_4_label }}</div>
+        </div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div style="font-size:8px; color:#52796f; letter-spacing:0.1em;">{{ assessment_period }}</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT GRID -->
+  <div class="main-content">
+
+    <!-- LEFT SIDEBAR ANNOTATION -->
+    <aside class="sidebar-annotation">
+      <div class="annotation-title">{{ sidebar_title }}</div>
+      <div class="annotation-text">{{ sidebar_annotation_text }}</div>
+
+      <div class="annotation-circle">
+        <span class="annotation-circle-inner">{{ risk_count_total }}</span>
+      </div>
+      <div style="text-align:center; font-size:7px; color:#52796f; text-transform:uppercase; letter-spacing:0.12em;">{{ risk_count_label }}</div>
+
+      <!-- RISK LEGEND -->
+      <div class="risk-legend">
+        {% for level in risk_levels %}
+        <div class="risk-legend-item">
+          <span class="risk-dot {{ level.class }}"></span>
+          <span>{{ level.label }} ({{ level.count }})</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- MINI RISK GRID VISUAL -->
+      <div class="annotation-title" style="margin-top:6px;">{{ grid_title }}</div>
+      <div class="risk-grid-visual">
+        {% for cell in risk_grid_cells %}
+        <div class="risk-grid-cell" style="background:{{ cell.color }};">{{ cell.label }}</div>
+        {% endfor %}
+      </div>
+      <div style="font-size:7px; color:#52796f; margin-top:4px; letter-spacing:0.06em;">
+        {{ grid_x_label }} &rarr;<br>{{ grid_y_label }} &uarr;
+      </div>
+    </aside>
+
+    <!-- RIGHT CONTENT PANEL -->
+    <div class="content-panel">
+      <h2>{{ section_heading }}</h2>
+      <p>{{ body_paragraph_1 }}</p>
+
+      <!-- PULL QUOTE -->
+      <div class="pull-quote">
+        <div class="pull-quote-text">&ldquo;{{ pull_quote_text }}&rdquo;</div>
+        <div class="pull-quote-attr">&mdash; {{ pull_quote_attribution }}</div>
+      </div>
+
+      <!-- RISK MATRIX TABLE -->
+      <div class="risk-matrix-container">
+        <h3 style="margin-bottom:8px;">{{ table_heading }}</h3>
+        <table class="risk-matrix-table">
+          <thead>
+            <tr>
+              <th style="width:58px;">{{ col_id }}</th>
+              <th>{{ col_risk }}</th>
+              <th>{{ col_category }}</th>
+              <th style="width:70px;">{{ col_severity }}</th>
+              <th style="width:78px;">{{ col_likelihood }}</th>
+              <th>{{ col_mitigation }}</th>
+              <th style="width:52px;">{{ col_owner }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td class="cell-id">{{ row.id }}</td>
+              <td>{{ row.risk }}</td>
+              <td>{{ row.category }}</td>
+              <td class="cell-severity"><span class="severity-badge {{ row.severity_class }}">{{ row.severity }}</span></td>
+              <td>
+                <div class="likelihood-bar">
+                  {% for i in range(5) %}
+                  <div class="likelihood-block {% if i < row.likelihood %}filled{% endif %}"></div>
+                  {% endfor %}
+                </div>
+              </td>
+              <td>{{ row.mitigation }}</td>
+              <td><span class="mono" style="font-size:8px; color:#52796f;">{{ row.owner }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <p style="color:#52796f; font-size:8px; margin-top:auto;">{{ footnote_text }}</p>
+    </div>
+  </div>
+
+  <!-- FOOTER BAR -->
+  <div class="footer-bar">
+    <div class="footer-left">{{ company_name }} &mdash; {{ document_title }}</div>
+    <div class="footer-center">{{ confidentiality_notice }}</div>
+    <div class="footer-right">
+      <span class="footer-dot"></span>
+      <span class="footer-label">{{ page_label }}</span>
+      <span class="footer-page">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0101",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "hero_image_url": "string (optional)",
+    "hero_image_alt": "string",
+    "report_date": "string",
+    "classification_label": "string",
+    "overall_risk_label": "string",
+    "overall_risk_score": "string",
+    "overall_risk_unit": "string",
+    "overall_risk_color": "string (hex color)",
+    "assessment_period": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "sidebar_title": "string",
+    "sidebar_annotation_text": "string",
+    "risk_count_total": "string",
+    "risk_count_label": "string",
+    "risk_levels": "array of {class: string, label: string, count: string|number}",
+    "grid_title": "string",
+    "risk_grid_cells": "array of {color: string (hex), label: string}",
+    "grid_x_label": "string",
+    "grid_y_label": "string",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "table_heading": "string",
+    "col_id": "string",
+    "col_risk": "string",
+    "col_category": "string",
+    "col_severity": "string",
+    "col_likelihood": "string",
+    "col_mitigation": "string",
+    "col_owner": "string",
+    "table_rows": "array of {id: string, risk: string, category: string, severity: string, severity_class: string, likelihood: number, mitigation: string, owner: string}",
+    "footnote_text": "string",
+    "nav_tabs": "array of {label: string, active: boolean}",
+    "company_name": "string",
+    "document_title": "string",
+    "confidentiality_notice": "string",
+    "page_label": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

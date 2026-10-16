@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0020",
+  "industry": "retail_consumer_goods",
+  "page_role": "map_or_geographic",
+  "layout": {
+    "name": "card_mosaic",
+    "description": "Page composed entirely of rectangular cards of varying sizes, arranged in a masonry or Pinterest-style layout."
+  },
+  "color_palette": {
+    "name": "academic_classic",
+    "primary": "#7b1e1e",
+    "secondary": "#a52a2a",
+    "accent": "#4682b4",
+    "bg": "#fffff8",
+    "surface": "#f5f5dc",
+    "text": "#1a0a0a",
+    "muted": "#6b6b6b"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "progress_bars",
+    "two_column_body_text",
+    "kpi_metric_cards",
+    "comparison_columns"
+  ],
+  "density": "dense",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by Apple's product launch materials \u2014 extreme whitespace, single focal element",
+  "seed": 784309
+}

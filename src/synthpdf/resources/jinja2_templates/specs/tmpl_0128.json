@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0128",
+  "industry": "ngo_sustainability",
+  "page_role": "cover_page",
+  "layout": {
+    "name": "structured_formal_report",
+    "description": "Classic consulting report style: narrow header band, body in 1-2 columns with clear section breaks, footer with firm branding."
+  },
+  "color_palette": {
+    "name": "aerospace_dark",
+    "primary": "#0d1b2a",
+    "secondary": "#1b263b",
+    "accent": "#415a77",
+    "bg": "#e0e1dd",
+    "surface": "#ffffff",
+    "text": "#0d1b2a",
+    "muted": "#778da9"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "page_number_footer",
+    "tag_or_badge_row",
+    "data_table",
+    "comparison_columns"
+  ],
+  "density": "dense",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by Goldman Sachs investment memoranda \u2014 conservative, trust-signaling, formal",
+  "seed": 46489
+}

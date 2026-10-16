@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0026",
+  "industry": "telecommunications",
+  "page_role": "data_narrative",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "tech_azure",
+    "primary": "#0078d4",
+    "secondary": "#005a9e",
+    "accent": "#00b294",
+    "bg": "#f3f2f1",
+    "surface": "#ffffff",
+    "text": "#201f1e",
+    "muted": "#605e5c"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "pull_quote_block",
+    "timeline_nodes",
+    "two_column_body_text",
+    "progress_bars",
+    "top_navigation_tabs",
+    "comparison_columns",
+    "tag_or_badge_row"
+  ],
+  "density": "dense",
+  "motif": "dotted_pattern_overlay",
+  "design_direction": "Inspired by Tesla investor presentations \u2014 modern, dark, technology-forward",
+  "seed": 949314
+}

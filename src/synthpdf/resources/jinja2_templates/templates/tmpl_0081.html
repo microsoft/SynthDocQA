@@ -1,0 +1,542 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #006d77 0%, #006d77 60%, #83c5be 60%, #83c5be 80%, #e29578 80%, #e29578 100%);
+    flex-shrink: 0;
+  }
+
+  .header {
+    padding: 48px 64px 0 64px;
+    flex-shrink: 0;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .company-logo {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #006d77;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .report-label {
+    font-size: 10px;
+    color: #4a7c82;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .page-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: #1a1a2e;
+    line-height: 1.0;
+    margin-top: 24px;
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #006d77;
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+  }
+
+  .divider {
+    width: 80px;
+    height: 3px;
+    background: #e29578;
+    margin-bottom: 28px;
+  }
+
+  .hero-image-area {
+    margin: 0 64px;
+    flex-shrink: 0;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, #006d77 0%, #83c5be 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-overlay-text {
+    position: absolute;
+    bottom: 14px;
+    left: 20px;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 28px 64px 0 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .two-col-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .two-col-text p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #1a1a2e;
+  }
+
+  .leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .leader-card {
+    background: #edf6f9;
+    padding: 18px 16px 14px 16px;
+    position: relative;
+    border-top: 3px solid #006d77;
+  }
+
+  .leader-card.accent-card {
+    border-top-color: #e29578;
+  }
+
+  .leader-card.secondary-card {
+    border-top-color: #83c5be;
+  }
+
+  .leader-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #006d77;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    overflow: hidden;
+  }
+
+  .leader-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .leader-name {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+
+  .leader-title {
+    font-size: 10px;
+    color: #006d77;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .leader-detail {
+    font-size: 10px;
+    color: #4a7c82;
+    line-height: 1.4;
+  }
+
+  .leader-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .leader-metric-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #006d77;
+  }
+
+  .leader-metric-label {
+    font-size: 9px;
+    color: #4a7c82;
+    text-transform: uppercase;
+  }
+
+  .comparison-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .comparison-col {
+    text-align: center;
+    padding: 14px 8px;
+    background: #ffffff;
+    border: 1px solid #83c5be;
+    position: relative;
+  }
+
+  .comparison-col.highlighted {
+    background: #006d77;
+    border-color: #006d77;
+  }
+
+  .comparison-col.highlighted .comp-value,
+  .comparison-col.highlighted .comp-label {
+    color: #ffffff;
+  }
+
+  .comp-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: #006d77;
+    line-height: 1.0;
+  }
+
+  .comp-label {
+    font-size: 9px;
+    color: #4a7c82;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+
+  .quote-block {
+    padding: 16px 0;
+    border-left: 3px solid #e29578;
+    padding-left: 20px;
+    margin-top: 4px;
+  }
+
+  .quote-text {
+    font-size: 13px;
+    font-style: italic;
+    color: #1a1a2e;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .quote-attribution {
+    font-size: 10px;
+    color: #006d77;
+    font-weight: 700;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 8px 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #83c5be;
+  }
+
+  .timeline-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #006d77;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 2px #006d77;
+    margin-bottom: 8px;
+  }
+
+  .timeline-dot.active {
+    background: #e29578;
+    box-shadow: 0 0 0 2px #e29578;
+  }
+
+  .timeline-year {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: #006d77;
+    margin-bottom: 2px;
+  }
+
+  .timeline-label {
+    font-size: 9px;
+    color: #4a7c82;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 100px;
+  }
+
+  .footnotes-strip {
+    width: 100%;
+    background: #edf6f9;
+    padding: 10px 64px;
+    flex-shrink: 0;
+    border-top: 1px solid #83c5be;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footnote-text {
+    font-size: 8px;
+    color: #4a7c82;
+    line-height: 1.4;
+  }
+
+  .footnote-text sup {
+    color: #e29578;
+    font-weight: 700;
+  }
+
+  .page-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #006d77;
+  }
+
+  .bottom-band {
+    width: 100%;
+    height: 4px;
+    background: #006d77;
+    flex-shrink: 0;
+  }
+
+  .section-band-inline {
+    background: #edf6f9;
+    margin: 0 -64px;
+    padding: 10px 64px;
+  }
+
+  .section-band-inline h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    color: #006d77;
+    line-height: 1.1;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top colored band -->
+  <div class="top-band"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div class="company-logo">{{ company_name }}</div>
+      <div class="report-label">{{ report_label }}</div>
+    </div>
+    <h1 class="page-title">{{ page_title }}</h1>
+    <div class="page-subtitle">{{ page_subtitle }}</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Hero image area -->
+  <div class="hero-image-area">
+    <div class="hero-image-placeholder">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-overlay-text">{{ hero_overlay_text }}</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+
+    <!-- Two column intro text -->
+    <div class="two-col-text">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+    </div>
+
+    <!-- Comparison columns — org KPIs -->
+    <div class="comparison-cols">
+      {% for kpi in org_kpis %}
+      <div class="comparison-col {{ kpi.style }}">
+        <div class="comp-value">{{ kpi.value }}</div>
+        <div class="comp-label">{{ kpi.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Section band -->
+    <div class="section-band-inline">
+      <h2>{{ section_heading }}</h2>
+    </div>
+
+    <!-- Leadership grid -->
+    <div class="leadership-grid">
+      {% for member in team_members %}
+      <div class="leader-card {{ member.card_style }}">
+        <div class="leader-avatar" style="background: {{ member.avatar_color }};">
+          {{ member.initials }}
+        </div>
+        <div class="leader-name">{{ member.name }}</div>
+        <div class="leader-title">{{ member.title }}</div>
+        <div class="leader-detail">{{ member.description }}</div>
+        <div class="leader-metric">
+          <span class="leader-metric-value">{{ member.metric_value }}</span>
+          <span class="leader-metric-label">{{ member.metric_label }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Quote block -->
+    <div class="quote-block">
+      <div class="quote-text">"{{ quote_text }}"</div>
+      <div class="quote-attribution">— {{ quote_author }}, {{ quote_author_title }}</div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      {% for node in timeline_nodes %}
+      <div class="timeline-node">
+        <div class="timeline-dot {{ node.dot_style }}"></div>
+        <div class="timeline-year">{{ node.year }}</div>
+        <div class="timeline-label">{{ node.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <!-- Footnotes strip -->
+  <div class="footnotes-strip">
+    <div class="footnote-text">
+      {% for fn in footnotes %}
+      <sup>{{ fn.number }}</sup> {{ fn.text }}&nbsp;&nbsp;
+      {% endfor %}
+    </div>
+    <div class="page-number">{{ page_number }}</div>
+  </div>
+
+  <!-- Bottom band -->
+  <div class="bottom-band"></div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0081",
+  "variables": {
+    "company_name": "string — e.g. 'Meridian Wealth Partners'",
+    "report_label": "string — e.g. 'Annual Report 2024 | Organizational Structure'",
+    "page_title": "string — e.g. 'Leadership'",
+    "page_subtitle": "string — e.g. 'Senior Management & Advisory Board'",
+    "hero_image_url": "string — URL or path to hero/team image",
+    "hero_image_alt": "string — alt text for hero image",
+    "hero_overlay_text": "string — e.g. 'Our People. Our Strength.'",
+    "body_paragraph_1": "string — first column intro text",
+    "body_paragraph_2": "string — second column intro text",
+    "org_kpis": "array of objects — [{value: string, label: string, style: string ('highlighted' or '')}] — 4 items",
+    "section_heading": "string — e.g. 'Executive Leadership Team'",
+    "team_members": "array of objects — [{name: string, title: string, description: string, initials: string, avatar_color: string (hex), card_style: string ('accent-card'|'secondary-card'|''), metric_value: string, metric_label: string}] — 6 items recommended",
+    "quote_text": "string — leadership quote",
+    "quote_author": "string — name of person quoted",
+    "quote_author_title": "string — title of person quoted",
+    "timeline_nodes": "array of objects — [{year: string, label: string, dot_style: string ('active' or '')}] — 5-6 items",
+    "footnotes": "array of objects — [{number: string, text: string}]",
+    "page_number": "string — e.g. '12'"
+  }
+}
+END_TEMPLATE_VARIABLES -->

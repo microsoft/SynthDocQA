@@ -1,0 +1,616 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fdfcff;
+    color: #1c1c1c;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fdfcff;
+  }
+
+  /* Dotted pattern overlay across entire page */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(108, 52, 131, 0.055) 1px, transparent 1px);
+    background-size: 18px 18px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ====== HERO SECTION — Top Third ====== */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 374px;
+    background: linear-gradient(135deg, #6c3483 0%, #1a5276 60%, #17a589 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 44px 60px;
+    overflow: hidden;
+  }
+
+  /* Hero dotted overlay */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Organic curved bottom edge — Patagonia-inspired */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    background: #fdfcff;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    z-index: 3;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 4;
+  }
+
+  .hero-tag-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(23, 165, 137, 0.22);
+    border: 1px solid rgba(23, 165, 137, 0.45);
+    color: #ffffff;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  .hero-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-subtitle {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.03em;
+  }
+
+  .hero-year {
+    position: absolute;
+    top: 28px;
+    right: 60px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 82px;
+    color: rgba(255, 255, 255, 0.06);
+    z-index: 2;
+    letter-spacing: -0.02em;
+  }
+
+  /* Company logo / wordmark */
+  .hero-logo {
+    position: absolute;
+    top: 28px;
+    left: 60px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-logo-mark {
+    width: 32px;
+    height: 32px;
+    background: #17a589;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-logo-mark-inner {
+    width: 14px;
+    height: 14px;
+    border: 2.5px solid #ffffff;
+    border-radius: 50%;
+  }
+
+  .hero-logo-text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ====== BODY — Bottom Two-Thirds ====== */
+  .body-section {
+    position: relative;
+    z-index: 2;
+    padding: 8px 60px 36px 60px;
+    height: 749px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Intro / Greeting */
+  .intro-area {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid #f4ecf7;
+  }
+
+  .intro-greeting {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #6c3483;
+    margin-bottom: 10px;
+  }
+
+  .intro-text {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #1c1c1c;
+    max-width: 620px;
+  }
+
+  /* Three-column grid */
+  .columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-subheading {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #6c3483;
+    margin-bottom: 12px;
+    letter-spacing: 0.03em;
+  }
+
+  .column-text {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #1c1c1c;
+    margin-bottom: 12px;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px 0;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 9px;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #1c1c1c;
+  }
+
+  .numbered-list .num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #6c3483, #1a5276);
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-top: 1px;
+  }
+
+  /* Tag / badge row */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .tag-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #f4ecf7;
+    color: #6c3483;
+    border: 1px solid rgba(108, 52, 131, 0.15);
+  }
+
+  .tag-badge--accent {
+    background: rgba(23, 165, 137, 0.1);
+    color: #117a65;
+    border-color: rgba(23, 165, 137, 0.2);
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, #f4ecf7 0%, rgba(23, 165, 137, 0.08) 100%);
+    border: 1.5px dashed rgba(108, 52, 131, 0.25);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(108, 52, 131, 0.045) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+
+  .chart-placeholder-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #7d7d7d;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chart-placeholder-sub {
+    font-size: 9px;
+    color: #7d7d7d;
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* KPI highlight */
+  .kpi-inline {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label-inline {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7d7d7d;
+    margin-bottom: 12px;
+  }
+
+  /* Dot divider motif */
+  .dot-divider {
+    display: flex;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .dot-divider span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #17a589;
+    opacity: 0.5;
+  }
+
+  /* Signature */
+  .signature-area {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 2px solid #f4ecf7;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .signature-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signature-sign {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: #6c3483;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  .signature-name {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #1a5276;
+    margin-bottom: 2px;
+  }
+
+  .signature-title {
+    font-size: 10px;
+    color: #7d7d7d;
+  }
+
+  /* Page number */
+  .page-number {
+    position: absolute;
+    bottom: 18px;
+    right: 60px;
+    font-size: 9px;
+    color: #7d7d7d;
+    z-index: 5;
+    letter-spacing: 0.05em;
+  }
+
+  .page-number span {
+    color: #6c3483;
+    font-weight: 700;
+  }
+
+  /* Decorative left accent bar */
+  .side-accent {
+    position: absolute;
+    left: 0;
+    top: 374px;
+    width: 5px;
+    height: 200px;
+    background: linear-gradient(180deg, #17a589, #6c3483);
+    border-radius: 0 3px 3px 0;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Decorative side accent -->
+  <div class="side-accent"></div>
+
+  <!-- ====== HERO SECTION ====== -->
+  <div class="hero">
+    <div class="hero-year">{{ report_year }}</div>
+
+    <div class="hero-logo">
+      <div class="hero-logo-mark">
+        <div class="hero-logo-mark-inner"></div>
+      </div>
+      <span class="hero-logo-text">{{ company_name }}</span>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag-row">
+        {% for tag in hero_tags %}
+        <span class="hero-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_subtitle }}</p>
+    </div>
+  </div>
+
+  <!-- ====== BODY CONTENT ====== -->
+  <div class="body-section">
+
+    <!-- Intro -->
+    <div class="intro-area">
+      <p class="intro-greeting">{{ greeting_line }}</p>
+      <p class="intro-text">{{ body_paragraph_1 }}</p>
+    </div>
+
+    <!-- Three Columns -->
+    <div class="columns-grid">
+
+      <!-- Column 1: Strategic Priorities -->
+      <div class="column">
+        <div class="kpi-inline" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label-inline">{{ kpi_1_label }}</div>
+
+        <h3 class="column-subheading">{{ column_1_heading }}</h3>
+        <p class="column-text">{{ column_1_text }}</p>
+
+        <ol class="numbered-list">
+          {% for item in priorities_list %}
+          <li>
+            <span class="num">{{ loop.index }}</span>
+            <span>{{ item }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+
+        <div class="dot-divider">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Column 2: Performance -->
+      <div class="column">
+        <div class="kpi-inline" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label-inline">{{ kpi_2_label }}</div>
+
+        <h3 class="column-subheading">{{ column_2_heading }}</h3>
+        <p class="column-text">{{ column_2_text }}</p>
+
+        <div class="chart-placeholder">
+          <span class="chart-placeholder-label">{{ chart_title }}</span>
+          <span class="chart-placeholder-sub">{{ chart_subtitle }}</span>
+        </div>
+
+        <div class="tag-row">
+          {% for badge in badge_labels %}
+          <span class="tag-badge {% if loop.index is odd %}tag-badge--accent{% endif %}">{{ badge }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Column 3: Looking Ahead -->
+      <div class="column">
+        <div class="kpi-inline" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label-inline">{{ kpi_3_label }}</div>
+
+        <h3 class="column-subheading">{{ column_3_heading }}</h3>
+        <p class="column-text">{{ column_3_text }}</p>
+
+        <p class="column-text">{{ column_3_text_2 }}</p>
+
+        <div class="dot-divider">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <p class="column-text" style="font-style: italic; color: #6c3483;">{{ closing_quote }}</p>
+      </div>
+
+    </div>
+
+    <!-- Signature -->
+    <div class="signature-area">
+      <div class="signature-block">
+        <span class="signature-sign">{{ ceo_signature }}</span>
+        <span class="signature-name">{{ ceo_name }}</span>
+        <span class="signature-title">{{ ceo_title }}</span>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 9px; color: #7d7d7d; letter-spacing: 0.05em;">{{ report_date }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Page Number -->
+  <div class="page-number"><span>{{ page_number }}</span> &mdash; {{ document_title }}</div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0046",
+  "variables": {
+    "page_title": "string",
+    "hero_subtitle": "string",
+    "company_name": "string",
+    "report_year": "string",
+    "hero_tags": "list of strings",
+    "greeting_line": "string",
+    "body_paragraph_1": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "column_1_heading": "string",
+    "column_1_text": "string",
+    "priorities_list": "list of strings",
+    "column_2_heading": "string",
+    "column_2_text": "string",
+    "chart_title": "string",
+    "chart_subtitle": "string",
+    "badge_labels": "list of strings",
+    "column_3_heading": "string",
+    "column_3_text": "string",
+    "column_3_text_2": "string",
+    "closing_quote": "string",
+    "ceo_signature": "string",
+    "ceo_name": "string",
+    "ceo_title": "string",
+    "report_date": "string",
+    "page_number": "string",
+    "document_title": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

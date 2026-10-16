@@ -1,0 +1,927 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #212121;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Dotted pattern overlay */
+  .page-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(233,30,99,0.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top Navigation Tabs */
+  .top-nav {
+    display: flex;
+    background: #212121;
+    height: 36px;
+    align-items: stretch;
+    flex-shrink: 0;
+  }
+
+  .top-nav .tab {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    cursor: default;
+  }
+
+  .top-nav .tab.active {
+    background: #e91e63;
+    color: #ffffff;
+  }
+
+  .top-nav .tab:last-child {
+    border-right: none;
+  }
+
+  /* Header band */
+  .header-band {
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+    padding: 20px 32px 16px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .header-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #ff9800;
+  }
+
+  .header-band .page-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .header-band .page-subtitle {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+  }
+
+  .header-band .report-period {
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    text-align: right;
+    background: rgba(0,0,0,0.15);
+    padding: 6px 14px;
+    border-radius: 3px;
+  }
+
+  /* Hero image section */
+  .hero-section {
+    height: 110px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #fce4ec;
+  }
+
+  .hero-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(233,30,99,0.7) 0%, rgba(156,39,176,0.4) 50%, transparent 100%);
+    display: flex;
+    align-items: center;
+    padding-left: 32px;
+  }
+
+  .hero-overlay .hero-text {
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    max-width: 380px;
+    line-height: 1.4;
+  }
+
+  /* KPI strip */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    flex-shrink: 0;
+    border-bottom: 2px solid #e91e63;
+  }
+
+  .kpi-card {
+    padding: 14px 16px;
+    text-align: center;
+    border-right: 1px solid rgba(233,30,99,0.15);
+    background: #ffffff;
+  }
+
+  .kpi-card:last-child {
+    border-right: none;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    color: #757575;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-change {
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 3px;
+  }
+
+  .kpi-change.positive { color: #4caf50; }
+  .kpi-change.negative { color: #e91e63; }
+
+  /* Main content grid — data dense */
+  .main-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 0;
+    padding: 0;
+    min-height: 0;
+  }
+
+  /* Quadrant panels — BCG Matrix style */
+  .quadrant {
+    padding: 10px 12px;
+    border-right: 1px solid rgba(233,30,99,0.12);
+    border-bottom: 1px solid rgba(233,30,99,0.12);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quadrant:nth-child(4n) {
+    border-right: none;
+  }
+
+  .quadrant-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #9c27b0;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px dotted rgba(156,39,176,0.3);
+  }
+
+  /* Donut charts */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+  }
+
+  .donut-svg {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+
+  .donut-legend {
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+
+  .donut-legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Mini tables */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .mini-table th {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #757575;
+    text-align: left;
+    padding: 3px 4px;
+    border-bottom: 1px solid #e91e63;
+  }
+
+  .mini-table th:last-child,
+  .mini-table td:last-child {
+    text-align: right;
+  }
+
+  .mini-table td {
+    padding: 2px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: #212121;
+  }
+
+  .mini-table tr:last-child td {
+    border-bottom: none;
+    font-weight: 700;
+  }
+
+  .mini-table .highlight-row td {
+    background: #fce4ec;
+    font-weight: 700;
+  }
+
+  /* Icon-text grid */
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .icon-text-item {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .icon-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .icon-text-item .item-label {
+    font-size: 8px;
+    color: #757575;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .icon-text-item .item-value {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #212121;
+    line-height: 1.2;
+  }
+
+  /* Numbered list */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .numbered-list li {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .numbered-list .num {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e91e63;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Quote */
+  .quote-block {
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #fce4ec, rgba(252,228,236,0.3));
+    border-left: 3px solid #e91e63;
+    position: relative;
+  }
+
+  .quote-block .quote-mark {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 32px;
+    color: #e91e63;
+    opacity: 0.3;
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    line-height: 1;
+  }
+
+  .quote-block .quote-text {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    font-style: italic;
+    color: #212121;
+    line-height: 1.5;
+    padding-left: 12px;
+  }
+
+  .quote-block .quote-author {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    color: #9c27b0;
+    margin-top: 4px;
+    padding-left: 12px;
+  }
+
+  .quote-block .quote-role {
+    font-size: 8px;
+    color: #757575;
+    padding-left: 12px;
+  }
+
+  /* Horizontal bar chart */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    gap: 4px;
+  }
+
+  .bar-label {
+    width: 55px;
+    font-size: 8px;
+    color: #757575;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 10px;
+    background: #fce4ec;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .bar-value {
+    width: 32px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    color: #212121;
+    flex-shrink: 0;
+  }
+
+  /* Wide span panels */
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+
+  /* Footer */
+  .page-footer {
+    height: 28px;
+    background: #212121;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    flex-shrink: 0;
+  }
+
+  .page-footer .footer-text {
+    font-size: 7px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.3px;
+  }
+
+  .page-footer .footer-page {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    color: #ff9800;
+  }
+
+  /* Metric inline */
+  .metric-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 2px 0;
+    border-bottom: 1px dotted rgba(0,0,0,0.08);
+    font-size: 9px;
+  }
+
+  .metric-inline:last-child {
+    border-bottom: none;
+  }
+
+  .metric-inline .metric-label {
+    color: #757575;
+  }
+
+  .metric-inline .metric-val {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    color: #212121;
+  }
+
+  /* Sparkline rows */
+  .sparkline-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 3px 0;
+  }
+
+  .sparkline-label {
+    font-size: 8px;
+    color: #757575;
+    width: 50px;
+    flex-shrink: 0;
+  }
+
+  .sparkline-bar {
+    flex: 1;
+    height: 4px;
+    background: #fce4ec;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .sparkline-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .sparkline-val {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Dotted divider */
+  .dotted-divider {
+    border: none;
+    border-top: 2px dotted rgba(233,30,99,0.25);
+    margin: 6px 0;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+  <div class="page-content">
+
+    <!-- Top Navigation Tabs -->
+    <nav class="top-nav">
+      {% for tab in nav_tabs %}
+      <div class="tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+      {% endfor %}
+    </nav>
+
+    <!-- Header Band -->
+    <div class="header-band">
+      <div class="page-title">{{ page_title }}</div>
+      <div class="page-subtitle">{{ page_subtitle }}</div>
+      <div class="report-period">{{ report_period }}</div>
+    </div>
+
+    <!-- Hero Image Section -->
+    <div class="hero-section">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-overlay">
+        <div class="hero-text">{{ hero_headline }}</div>
+      </div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-change {{ kpi_1_trend }}">{{ kpi_1_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-change {{ kpi_2_trend }}">{{ kpi_2_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-change {{ kpi_3_trend }}">{{ kpi_3_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-change {{ kpi_4_trend }}">{{ kpi_4_change }}</div>
+      </div>
+    </div>
+
+    <!-- Main Data Dense Grid -->
+    <div class="main-grid">
+
+      <!-- Row 1: Four quadrants — BCG-style analytical layout -->
+
+      <!-- Q1: Revenue Breakdown (donut + legend) -->
+      <div class="quadrant">
+        <div class="quadrant-title">{{ quadrant_1_title }}</div>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fce4ec" stroke-width="3.5"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_1_segment_1_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_1_segment_1_pct }} {{ donut_1_segment_1_remainder }}" stroke-dashoffset="25"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_1_segment_2_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_1_segment_2_pct }} {{ donut_1_segment_2_remainder }}" stroke-dashoffset="{{ donut_1_segment_2_offset }}"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_1_segment_3_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_1_segment_3_pct }} {{ donut_1_segment_3_remainder }}" stroke-dashoffset="{{ donut_1_segment_3_offset }}"/>
+            <text x="18" y="19.5" text-anchor="middle" font-family="Georgia, serif" font-size="7" font-weight="700" fill="#212121">{{ donut_1_center_value }}</text>
+          </svg>
+          <div class="donut-legend">
+            {% for segment in donut_1_segments %}
+            <div class="donut-legend-item">
+              <span class="donut-legend-dot" style="background: {{ segment.color }};"></span>
+              <span>{{ segment.label }} — {{ segment.pct }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2: Performance Metrics Table -->
+      <div class="quadrant">
+        <div class="quadrant-title">{{ quadrant_2_title }}</div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>{{ table_1_col_1 }}</th>
+              <th>{{ table_1_col_2 }}</th>
+              <th>{{ table_1_col_3 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_1_rows %}
+            <tr class="{% if row.highlight %}highlight-row{% endif %}">
+              <td>{{ row.metric }}</td>
+              <td>{{ row.current }}</td>
+              <td>{{ row.prior }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Q3: Asset Allocation (donut 2) -->
+      <div class="quadrant">
+        <div class="quadrant-title">{{ quadrant_3_title }}</div>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fce4ec" stroke-width="3.5"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_2_segment_1_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_2_segment_1_pct }} {{ donut_2_segment_1_remainder }}" stroke-dashoffset="25"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_2_segment_2_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_2_segment_2_pct }} {{ donut_2_segment_2_remainder }}" stroke-dashoffset="{{ donut_2_segment_2_offset }}"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="{{ donut_2_segment_3_color }}" stroke-width="3.5"
+              stroke-dasharray="{{ donut_2_segment_3_pct }} {{ donut_2_segment_3_remainder }}" stroke-dashoffset="{{ donut_2_segment_3_offset }}"/>
+            <text x="18" y="19.5" text-anchor="middle" font-family="Georgia, serif" font-size="7" font-weight="700" fill="#212121">{{ donut_2_center_value }}</text>
+          </svg>
+          <div class="donut-legend">
+            {% for segment in donut_2_segments %}
+            <div class="donut-legend-item">
+              <span class="donut-legend-dot" style="background: {{ segment.color }};"></span>
+              <span>{{ segment.label }} — {{ segment.pct }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4: Key Ratios -->
+      <div class="quadrant">
+        <div class="quadrant-title">{{ quadrant_4_title }}</div>
+        {% for metric in key_ratios %}
+        <div class="metric-inline">
+          <span class="metric-label">{{ metric.label }}</span>
+          <span class="metric-val">{{ metric.value }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Row 2: Icon-text grid spanning 2 cols + Bar chart spanning 2 cols -->
+
+      <!-- Icon Metrics Grid -->
+      <div class="quadrant span-2">
+        <div class="quadrant-title">{{ icon_grid_title }}</div>
+        <div class="icon-text-grid">
+          {% for item in icon_grid_items %}
+          <div class="icon-text-item">
+            <div class="icon-circle" style="background: {{ item.color }};">{{ item.icon }}</div>
+            <div>
+              <div class="item-value">{{ item.value }}</div>
+              <div class="item-label">{{ item.label }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Horizontal Bar Chart -->
+      <div class="quadrant span-2">
+        <div class="quadrant-title">{{ bar_chart_title }}</div>
+        {% for bar in bar_chart_items %}
+        <div class="bar-row">
+          <span class="bar-label">{{ bar.label }}</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ bar.pct }}%; background: {{ bar.color }};"></div>
+          </div>
+          <span class="bar-value">{{ bar.value }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Row 3: Wide content area — Numbered list + Table + Quote -->
+
+      <!-- Strategic Priorities (numbered list) -->
+      <div class="quadrant">
+        <div class="quadrant-title">{{ priorities_title }}</div>
+        <ol class="numbered-list">
+          {% for priority in priorities_list %}
+          <li>
+            <span class="num">{{ loop.index }}</span>
+            <span>{{ priority.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+
+      <!-- Detailed Financial Table -->
+      <div class="quadrant span-2">
+        <div class="quadrant-title">{{ table_2_title }}</div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              {% for col in table_2_columns %}
+              <th>{{ col }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_2_rows %}
+            <tr class="{% if row.highlight %}highlight-row{% endif %}">
+              <td>{{ row.label }}</td>
+              <td>{{ row.q1 }}</td>
+              <td>{{ row.q2 }}</td>
+              <td>{{ row.q3 }}</td>
+              <td>{{ row.q4 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <hr class="dotted-divider">
+        <div style="font-size: 8px; color: #757575; line-height: 1.4;">{{ table_2_footnote }}</div>
+      </div>
+
+      <!-- Quote + Sparklines -->
+      <div class="quadrant" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="quote-block">
+            <span class="quote-mark">&ldquo;</span>
+            <div class="quote-text">{{ quote_text }}</div>
+            <div class="quote-author">{{ quote_author }}</div>
+            <div class="quote-role">{{ quote_role }}</div>
+          </div>
+        </div>
+        <div style="margin-top: 8px;">
+          {% for spark in sparklines %}
+          <div class="sparkline-row">
+            <span class="sparkline-label">{{ spark.label }}</span>
+            <div class="sparkline-bar">
+              <div class="sparkline-bar-fill" style="width: {{ spark.pct }}%; background: {{ spark.color }};"></div>
+            </div>
+            <span class="sparkline-val" style="color: {{ spark.color }};">{{ spark.value }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      <span class="footer-text">{{ footer_disclaimer }}</span>
+      <span class="footer-page">{{ footer_page_number }}</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0086",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "report_period": "string",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "hero_headline": "string",
+    "nav_tabs": "array of {label: string, active: boolean}",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex)",
+    "kpi_1_change": "string",
+    "kpi_1_trend": "string ('positive' or 'negative')",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex)",
+    "kpi_2_change": "string",
+    "kpi_2_trend": "string ('positive' or 'negative')",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex)",
+    "kpi_3_change": "string",
+    "kpi_3_trend": "string ('positive' or 'negative')",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex)",
+    "kpi_4_change": "string",
+    "kpi_4_trend": "string ('positive' or 'negative')",
+    "quadrant_1_title": "string",
+    "donut_1_segment_1_color": "string (hex)",
+    "donut_1_segment_1_pct": "number",
+    "donut_1_segment_1_remainder": "number",
+    "donut_1_segment_2_color": "string (hex)",
+    "donut_1_segment_2_pct": "number",
+    "donut_1_segment_2_remainder": "number",
+    "donut_1_segment_2_offset": "number",
+    "donut_1_segment_3_color": "string (hex)",
+    "donut_1_segment_3_pct": "number",
+    "donut_1_segment_3_remainder": "number",
+    "donut_1_segment_3_offset": "number",
+    "donut_1_center_value": "string",
+    "donut_1_segments": "array of {color: string, label: string, pct: string}",
+    "quadrant_2_title": "string",
+    "table_1_col_1": "string",
+    "table_1_col_2": "string",
+    "table_1_col_3": "string",
+    "table_1_rows": "array of {metric: string, current: string, prior: string, highlight: boolean}",
+    "quadrant_3_title": "string",
+    "donut_2_segment_1_color": "string (hex)",
+    "donut_2_segment_1_pct": "number",
+    "donut_2_segment_1_remainder": "number",
+    "donut_2_segment_2_color": "string (hex)",
+    "donut_2_segment_2_pct": "number",
+    "donut_2_segment_2_remainder": "number",
+    "donut_2_segment_2_offset": "number",
+    "donut_2_segment_3_color": "string (hex)",
+    "donut_2_segment_3_pct": "number",
+    "donut_2_segment_3_remainder": "number",
+    "donut_2_segment_3_offset": "number",
+    "donut_2_center_value": "string",
+    "donut_2_segments": "array of {color: string, label: string, pct: string}",
+    "quadrant_4_title": "string",
+    "key_ratios": "array of {label: string, value: string}",
+    "icon_grid_title": "string",
+    "icon_grid_items": "array of {icon: string, color: string (hex), value: string, label: string}",
+    "bar_chart_title": "string",
+    "bar_chart_items": "array of {label: string, pct: number, color: string (hex), value: string}",
+    "priorities_title": "string",
+    "priorities_list": "array of {text: string}",
+    "table_2_title": "string",
+    "table_2_columns": "array of string",
+    "table_2_rows": "array of {label: string, q1: string, q2: string, q3: string, q4: string, highlight: boolean}",
+    "table_2_footnote": "string",
+    "quote_text": "string",
+    "quote_author": "string",
+    "quote_role": "string",
+    "sparklines": "array of {label: string, pct: number, color: string (hex), value: string}",
+    "footer_disclaimer": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

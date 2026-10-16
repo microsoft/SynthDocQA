@@ -1,0 +1,46 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; }
+.page { width: 100%; height: 100%; background: radial-gradient(ellipse 80% 70% at 50% 50%, #1e1e3a 0%, #0a0a14 60%, #050510 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.spotlight { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(100,100,255,0.07) 0%, transparent 70%); }
+.top-badge { position: absolute; top: 36px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; }
+.badge-mono { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.65); }
+.badge-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 3px; text-transform: uppercase; }
+.center { text-align: center; max-width: 900px; padding: 0 60px; position: relative; z-index: 1; }
+.rtype { font-size: 11px; font-weight: 600; letter-spacing: 4px; color: {{ accent_color|default('#7986cb') }}; text-transform: uppercase; margin-bottom: 28px; }
+.title { font-size: 56px; font-weight: 800; color: white; line-height: 1.15; margin-bottom: 24px; }
+.accent-line { width: 60px; height: 3px; background: {{ primary_color|default('#3949ab') }}; margin: 0 auto 24px; }
+.subtitle-txt { font-size: 18px; color: rgba(255,255,255,0.45); font-weight: 300; line-height: 1.6; }
+.bottom-row { position: absolute; bottom: 36px; left: 0; right: 0; display: flex; justify-content: center; gap: 48px; align-items: center; }
+.btm-item { font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 2px; text-transform: uppercase; }
+.btm-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.08); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="spotlight"></div>
+  <div class="top-badge">
+    <div class="badge-mono">{{ initials|default('SO') }}</div>
+    <span class="badge-name">{{ company_name|default('Sample Organization') }}</span>
+  </div>
+  <div class="center">
+    <div class="rtype">{{ report_type|default('Annual Report') }}</div>
+    <div class="title">{{ document_title|default('Strategic Performance Review') }}</div>
+    <div class="accent-line"></div>
+    <div class="subtitle-txt">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+  </div>
+  <div class="bottom-row">
+    <span class="btm-item">{{ tagline|default('Data-Driven Decisions') }}</span>
+    <div class="btm-sep"></div>
+    <span class="btm-item">{{ year|default('2025') }}</span>
+    <div class="btm-sep"></div>
+    <span class="btm-item">Confidential</span>
+  </div>
+</div>
+</body>
+</html>

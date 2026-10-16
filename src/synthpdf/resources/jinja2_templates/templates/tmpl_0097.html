@@ -1,0 +1,616 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #1a0000;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 48px 200px auto 60px;
+    grid-template-columns: 1fr;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='794' height='1123' viewBox='0 0 794 1123'%3E%3Cpath d='M0 980 Q200 940 400 970 Q600 1000 794 960' fill='none' stroke='%23cc000008' stroke-width='80'/%3E%3Cpath d='M0 1020 Q200 980 400 1010 Q600 1040 794 1000' fill='none' stroke='%23cc000005' stroke-width='60'/%3E%3Cpath d='M0 200 Q150 180 300 210 Q500 250 794 190' fill='none' stroke='%23cc000006' stroke-width='40'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .top-nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: stretch;
+    background: #fdf8f8;
+    border-bottom: 3px solid #cc0000;
+  }
+
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #666666;
+    background: #fdf8f8;
+    border-right: 1px solid #e0d0d0;
+    cursor: default;
+  }
+
+  .nav-tab:last-child { border-right: none; }
+
+  .nav-tab.active {
+    background: #cc0000;
+    color: #ffffff;
+    font-weight: 900;
+  }
+
+  .header-section {
+    position: relative;
+    z-index: 5;
+    padding: 30px 56px 20px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .header-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 56px;
+    right: 56px;
+    height: 4px;
+    background: linear-gradient(90deg, #cc0000 0%, #f5a623 60%, transparent 100%);
+    border-radius: 2px;
+  }
+
+  .header-overline {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #990000;
+    margin-bottom: 8px;
+  }
+
+  .header-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #cc0000;
+    margin-bottom: 10px;
+  }
+
+  .header-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666666;
+    max-width: 600px;
+  }
+
+  .main-content {
+    position: relative;
+    z-index: 5;
+    padding: 28px 56px 20px 56px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 18px;
+  }
+
+  .quote-block {
+    background: #fdf8f8;
+    border-left: 5px solid #cc0000;
+    padding: 16px 22px;
+    border-radius: 0 6px 6px 0;
+    position: relative;
+  }
+
+  .quote-block::before {
+    content: '\201C';
+    font-family: Georgia, serif;
+    font-size: 60px;
+    color: #cc000020;
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    line-height: 1;
+  }
+
+  .quote-text {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.55;
+    color: #1a0000;
+    padding-left: 4px;
+  }
+
+  .quote-attribution {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #990000;
+    margin-top: 8px;
+    padding-left: 4px;
+  }
+
+  .quote-role {
+    font-weight: 400;
+    color: #666666;
+  }
+
+  .timeline-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline-entry {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    min-height: 105px;
+    position: relative;
+  }
+
+  .timeline-node-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .timeline-node-col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    background: #cc000025;
+    z-index: 1;
+  }
+
+  .timeline-entry:first-child .timeline-node-col::before { top: 18px; }
+  .timeline-entry:last-child .timeline-node-col::before { bottom: calc(100% - 22px); }
+
+  .timeline-node {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #cc0000;
+    color: #ffffff;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    margin-top: 4px;
+    box-shadow: 0 2px 8px rgba(204, 0, 0, 0.25);
+    flex-shrink: 0;
+  }
+
+  .timeline-node.accent {
+    background: #f5a623;
+    box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
+  }
+
+  .timeline-connector {
+    flex: 1;
+    width: 3px;
+    background: linear-gradient(180deg, #cc0000 0%, #cc000020 100%);
+    z-index: 2;
+  }
+
+  .timeline-card {
+    background: #fdf8f8;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin: 0 0 10px 14px;
+    border: 1px solid #e8d8d8;
+    position: relative;
+  }
+
+  .timeline-card::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 12px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 9px solid #e8d8d8;
+  }
+
+  .timeline-card::after {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 13px;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 8px solid #fdf8f8;
+  }
+
+  .timeline-card-year {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: #cc0000;
+    margin-bottom: 3px;
+  }
+
+  .timeline-card-title {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a0000;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .timeline-card-desc {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #666666;
+  }
+
+  .timeline-card-tag {
+    display: inline-block;
+    background: #cc0000;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-top: 6px;
+  }
+
+  .timeline-card-tag.accent {
+    background: #f5a623;
+    color: #1a0000;
+  }
+
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 4px;
+  }
+
+  .chart-placeholder {
+    background: #fdf8f8;
+    border: 2px dashed #cc000030;
+    border-radius: 8px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='80' viewBox='0 0 300 80'%3E%3Cpath d='M0 60 Q50 20 100 40 Q150 60 200 25 Q250 0 300 30' fill='none' stroke='%23cc000020' stroke-width='2'/%3E%3Cpath d='M0 60 Q50 20 100 40 Q150 60 200 25 Q250 0 300 30 L300 80 L0 80 Z' fill='%23cc000008'/%3E%3C/svg%3E") no-repeat center bottom;
+    background-size: 100% auto;
+  }
+
+  .chart-placeholder-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #990000;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    z-index: 2;
+  }
+
+  .chart-placeholder-sub {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #666666;
+    z-index: 2;
+    margin-top: 2px;
+  }
+
+  .data-table-container {
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid #e8d8d8;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 10.5px;
+  }
+
+  .data-table thead th {
+    background: #cc0000;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0e0e0;
+    color: #1a0000;
+    line-height: 1.4;
+  }
+
+  .data-table tbody tr:nth-child(even) { background: #fdf8f8; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  .data-table .highlight-value {
+    font-weight: 700;
+    color: #cc0000;
+  }
+
+  .footer {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    background: #fdf8f8;
+    border-top: 2px solid #cc0000;
+  }
+
+  .footer-left {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #666666;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-center {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: #990000;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #666666;
+  }
+
+  .footer-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #cc0000;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    margin-left: 6px;
+  }
+
+  .wave-decoration {
+    position: absolute;
+    bottom: 58px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .wave-decoration svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .accent-bar-top {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    width: 6px;
+    height: 200px;
+    background: linear-gradient(180deg, #cc0000, #f5a623);
+    z-index: 10;
+    border-radius: 0 0 0 3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="accent-bar-top"></div>
+
+  <nav class="top-nav">
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <div class="header-section">
+    <div class="header-overline">{{ section_overline }}</div>
+    <h1 class="header-title">{{ page_title }}</h1>
+    <p class="header-subtitle">{{ page_subtitle }}</p>
+  </div>
+
+  <div class="main-content">
+
+    <div class="quote-block">
+      <div class="quote-text">{{ quote_text }}</div>
+      <div class="quote-attribution">{{ quote_author }} <span class="quote-role">— {{ quote_role }}</span></div>
+    </div>
+
+    <div class="timeline-section">
+      <div class="timeline-items">
+        {% for event in timeline_events %}
+        <div class="timeline-entry">
+          <div class="timeline-node-col">
+            <div class="timeline-node {% if event.accent %}accent{% endif %}">{{ event.step_number }}</div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-card-year">{{ event.year }}</div>
+            <div class="timeline-card-title">{{ event.title }}</div>
+            <div class="timeline-card-desc">{{ event.description }}</div>
+            {% if event.tag %}<span class="timeline-card-tag {% if event.accent %}accent{% endif %}">{{ event.tag }}</span>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="data-row">
+      <div class="chart-placeholder">
+        <div class="chart-placeholder-label">{{ chart_title }}</div>
+        <div class="chart-placeholder-sub">{{ chart_subtitle }}</div>
+      </div>
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.col_1 }}</td>
+              <td>{{ row.col_2 }}</td>
+              <td class="highlight-value">{{ row.col_3 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="wave-decoration">
+    <svg viewBox="0 0 794 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 Q100 10 200 25 Q350 42 500 18 Q650 0 794 20" fill="none" stroke="#cc000012" stroke-width="18"/>
+      <path d="M0 38 Q150 18 300 32 Q500 48 650 22 Q750 12 794 28" fill="none" stroke="#f5a62310" stroke-width="12"/>
+    </svg>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-left">{{ footer_organization }} &bull; {{ footer_document_title }}</div>
+    <div class="footer-center">{{ footer_section_label }}</div>
+    <div class="footer-right">
+      {{ footer_date }}
+      <span class="footer-page">{{ page_number }}</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0097",
+  "variables": {
+    "page_title": "string — Main heading displayed in the header area (e.g., 'Research Timeline')",
+    "section_overline": "string — Small overline text above the title (e.g., 'Historical Overview')",
+    "page_subtitle": "string — Subtitle paragraph below the main heading",
+    "nav_tabs": "array of objects — Navigation tab items, each with { label: string, active: boolean }",
+    "quote_text": "string — Pull quote text displayed in the quote block",
+    "quote_author": "string — Name of the person being quoted",
+    "quote_role": "string — Role/title and affiliation of the quoted person",
+    "timeline_events": "array of objects — Timeline entries, each with { step_number: string, year: string, title: string, description: string, tag: string|null, accent: boolean }",
+    "chart_title": "string — Title label for the chart placeholder box",
+    "chart_subtitle": "string — Subtitle for the chart placeholder box",
+    "table_headers": "array of strings — Column headers for the data table (3 columns)",
+    "table_rows": "array of objects — Table row data, each with { col_1: string, col_2: string, col_3: string }",
+    "footer_organization": "string — Organization name in the footer",
+    "footer_document_title": "string — Document title shown in the footer",
+    "footer_section_label": "string — Section label centered in the footer",
+    "footer_date": "string — Date or year shown in the footer",
+    "page_number": "string — Page number displayed in footer circle"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0045",
+  "industry": "oil_gas_energy",
+  "page_role": "team_or_org_chart",
+  "layout": {
+    "name": "sidebar_navigation",
+    "description": "Persistent left or right sidebar (20% width) with section labels, page numbers, or sub-navigation. Main content in remaining 80%."
+  },
+  "color_palette": {
+    "name": "consulting_charcoal",
+    "primary": "#1c1c1c",
+    "secondary": "#3d3d3d",
+    "accent": "#e85d04",
+    "bg": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#111111",
+    "muted": "#777777"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "hero_image_placeholder",
+    "footnotes_strip",
+    "top_navigation_tabs",
+    "tag_or_badge_row",
+    "sidebar_annotation",
+    "logo_or_brand_strip"
+  ],
+  "density": "sparse",
+  "motif": "none",
+  "design_direction": "Inspired by Pfizer regulatory submissions \u2014 clinical, precise, structured, neutral",
+  "seed": 28276
+}

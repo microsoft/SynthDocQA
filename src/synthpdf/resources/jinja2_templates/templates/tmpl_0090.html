@@ -1,0 +1,668 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #3e2723;
+    background: #fff8f0;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    background: #fff8f0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #5c4033 0%, #5c4033 60%, #795548 60%, #795548 80%, #8bc34a 80%, #8bc34a 100%);
+  }
+
+  .header {
+    padding: 20px 40px 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #5c4033;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .header-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #8d6e63;
+  }
+
+  .header-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.1;
+    color: #5c4033;
+    letter-spacing: -0.02em;
+  }
+
+  .header-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .header-client {
+    font-size: 10px;
+    font-weight: 700;
+    color: #3e2723;
+  }
+
+  .header-date {
+    font-size: 9px;
+    color: #8d6e63;
+  }
+
+  .header-confidential {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    background: #5c4033;
+    padding: 2px 8px;
+    margin-top: 2px;
+  }
+
+  .tag-row {
+    padding: 10px 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e0d5cc;
+  }
+
+  .tag {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .tag-primary { background: #5c4033; color: #ffffff; }
+  .tag-secondary { background: #795548; color: #ffffff; }
+  .tag-accent { background: #8bc34a; color: #3e2723; }
+  .tag-outline { background: transparent; color: #5c4033; border: 1px solid #5c4033; }
+
+  .main-content {
+    flex: 1;
+    padding: 16px 40px 10px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .overview-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .phase-card {
+    background: #ffffff;
+    border: 1px solid #e0d5cc;
+    padding: 12px 10px 10px 10px;
+    position: relative;
+  }
+
+  .phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .phase-card:nth-child(1)::before { background: #5c4033; }
+  .phase-card:nth-child(2)::before { background: #795548; }
+  .phase-card:nth-child(3)::before { background: #8d6e63; }
+  .phase-card:nth-child(4)::before { background: #8bc34a; }
+
+  .phase-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: #5c4033;
+    line-height: 1;
+    opacity: 0.2;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+  }
+
+  .phase-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8d6e63;
+    margin-bottom: 2px;
+  }
+
+  .phase-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: #3e2723;
+    margin-bottom: 4px;
+    line-height: 1.15;
+  }
+
+  .phase-desc {
+    font-size: 9px;
+    color: #3e2723;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .phase-duration {
+    font-size: 8px;
+    font-weight: 700;
+    color: #795548;
+    border-top: 1px solid #e0d5cc;
+    padding-top: 4px;
+    margin-top: auto;
+  }
+
+  .section-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #5c4033;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #5c4033;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-heading .accent-bar {
+    width: 4px;
+    height: 16px;
+    background: #8bc34a;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .data-grid-wide {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+  }
+
+  .mini-table-container {
+    background: #ffffff;
+    border: 1px solid #e0d5cc;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .mini-table-header {
+    background: #5c4033;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px 8px;
+  }
+
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+  }
+
+  .mini-table th {
+    background: #f5efe8;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #795548;
+    padding: 4px 6px;
+    text-align: left;
+    border-bottom: 1px solid #e0d5cc;
+  }
+
+  .mini-table td {
+    padding: 4px 6px;
+    border-bottom: 1px solid #f0ebe4;
+    color: #3e2723;
+    vertical-align: top;
+  }
+
+  .mini-table tr:last-child td { border-bottom: none; }
+  .mini-table .metric-value { font-weight: 700; color: #5c4033; }
+
+  .progress-section {
+    background: #ffffff;
+    border: 1px solid #e0d5cc;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .progress-header {
+    background: #795548;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px 8px;
+  }
+
+  .progress-list {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .progress-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .progress-label {
+    font-size: 9px;
+    color: #3e2723;
+    font-weight: 600;
+  }
+
+  .progress-pct {
+    font-size: 9px;
+    font-weight: 700;
+    color: #5c4033;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: #f0ebe4;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 1px;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid #e0d5cc;
+    padding: 8px 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #8d6e63;
+    line-height: 1.2;
+  }
+
+  .kpi-delta {
+    font-size: 8px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .delta-up { color: #8bc34a; }
+  .delta-down { color: #c0392b; }
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .insight-box {
+    background: #ffffff;
+    border: 1px solid #e0d5cc;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .insight-box-header {
+    background: #f5efe8;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #5c4033;
+    padding: 5px 8px;
+    border-bottom: 1px solid #e0d5cc;
+  }
+
+  .insight-box-body {
+    padding: 8px;
+    font-size: 9px;
+    line-height: 1.35;
+    color: #3e2723;
+  }
+
+  .insight-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .insight-list li {
+    padding: 3px 0;
+    border-bottom: 1px solid #f0ebe4;
+    font-size: 9px;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .insight-list li:last-child { border-bottom: none; }
+
+  .insight-bullet {
+    width: 4px;
+    height: 4px;
+    background: #8bc34a;
+    border-radius: 1px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .callout-box {
+    background: #5c4033;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  .callout-box .callout-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    margin-bottom: 4px;
+    color: #8bc34a;
+  }
+
+  .footer {
+    padding: 8px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e0d5cc;
+    background: #fff8f0;
+  }
+
+  .footer-left { font-size: 8px; color: #8d6e63; }
+  .footer-center { font-size: 8px; color: #8d6e63; }
+  .footer-right { font-size: 10px; font-weight: 700; color: #5c4033; }
+
+  .footer-bottom-band {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #5c4033 0%, #795548 50%, #8bc34a 100%);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-band"></div>
+
+  <div class="header">
+    <div class="header-left">
+      <span class="header-label">{{ header_label }}</span>
+      <div class="header-title">{{ page_title }}</div>
+    </div>
+    <div class="header-right">
+      <span class="header-client">{{ client_name }}</span>
+      <span class="header-date">{{ report_date }}</span>
+      <span class="header-confidential">{{ confidentiality_label }}</span>
+    </div>
+  </div>
+
+  <div class="tag-row">
+    {% for tag in methodology_tags %}
+    <span class="tag {% if loop.index == 1 %}tag-primary{% elif loop.index == 2 %}tag-secondary{% elif loop.index == 3 %}tag-accent{% else %}tag-outline{% endif %}">{{ tag.label }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="main-content">
+
+    <div class="overview-row">
+      {% for phase in phases %}
+      <div class="phase-card">
+        <span class="phase-number">{{ phase.number }}</span>
+        <div class="phase-label">{{ phase.label }}</div>
+        <div class="phase-title">{{ phase.title }}</div>
+        <div class="phase-desc">{{ phase.description }}</div>
+        <div class="phase-duration">{{ phase.duration }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="section-heading"><span class="accent-bar"></span>{{ kpi_section_heading }}</div>
+    <div class="kpi-row">
+      {% for kpi in kpis %}
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <div class="kpi-delta {{ kpi.delta_direction }}">{{ kpi.delta }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="data-grid-wide">
+      <div class="mini-table-container">
+        <div class="mini-table-header">{{ deliverables_table_title }}</div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>{{ deliverables_col_1 }}</th>
+              <th>{{ deliverables_col_2 }}</th>
+              <th>{{ deliverables_col_3 }}</th>
+              <th>{{ deliverables_col_4 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in deliverables_rows %}
+            <tr>
+              <td>{{ row.deliverable }}</td>
+              <td>{{ row.owner }}</td>
+              <td><span class="metric-value">{{ row.status }}</span></td>
+              <td>{{ row.due_date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">{{ progress_section_title }}</div>
+        <div class="progress-list">
+          {% for bar in progress_bars %}
+          <div class="progress-item">
+            <div class="progress-label-row">
+              <span class="progress-label">{{ bar.label }}</span>
+              <span class="progress-pct">{{ bar.percentage }}%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: {{ bar.percentage }}%; background: {{ bar.color }};"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="insight-box">
+        <div class="insight-box-header">{{ risks_title }}</div>
+        <div class="insight-box-body">
+          <ul class="insight-list">
+            {% for risk in risks %}
+            <li><span class="insight-bullet"></span>{{ risk.text }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="mini-table-container">
+        <div class="mini-table-header">{{ success_factors_title }}</div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>{{ sf_col_1 }}</th>
+              <th>{{ sf_col_2 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for factor in success_factors %}
+            <tr>
+              <td>{{ factor.name }}</td>
+              <td class="metric-value">{{ factor.score }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title">{{ callout_title }}</div>
+        <div>{{ callout_body }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">{{ footer_disclaimer }}</div>
+    <div class="footer-center">{{ footer_document_id }}</div>
+    <div class="footer-right">{{ page_number }}</div>
+  </div>
+  <div class="footer-bottom-band"></div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0090",
+  "variables": {
+    "page_title": "string",
+    "header_label": "string",
+    "client_name": "string",
+    "report_date": "string",
+    "confidentiality_label": "string",
+    "methodology_tags": "[{label: string}]",
+    "phases": "[{number: string, label: string, title: string, description: string, duration: string}]",
+    "kpi_section_heading": "string",
+    "kpis": "[{value: string, label: string, color: string, delta: string, delta_direction: string}]",
+    "deliverables_table_title": "string",
+    "deliverables_col_1": "string",
+    "deliverables_col_2": "string",
+    "deliverables_col_3": "string",
+    "deliverables_col_4": "string",
+    "deliverables_rows": "[{deliverable: string, owner: string, status: string, due_date: string}]",
+    "progress_section_title": "string",
+    "progress_bars": "[{label: string, percentage: number, color: string}]",
+    "risks_title": "string",
+    "risks": "[{text: string}]",
+    "success_factors_title": "string",
+    "sf_col_1": "string",
+    "sf_col_2": "string",
+    "success_factors": "[{name: string, score: string}]",
+    "callout_title": "string",
+    "callout_body": "string",
+    "footer_disclaimer": "string",
+    "footer_document_id": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

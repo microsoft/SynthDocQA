@@ -1,0 +1,697 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #201f1e;
+    background: #111318;
+  }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    background: #111318;
+  }
+
+  /* === FULL BLEED HERO IMAGE — covers top 65% === */
+  .hero-image-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 730px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.45) saturate(1.1);
+  }
+
+  .hero-image-area::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(17, 19, 24, 0.55) 0%,
+      rgba(17, 19, 24, 0.15) 30%,
+      rgba(17, 19, 24, 0.20) 55%,
+      rgba(17, 19, 24, 0.92) 85%,
+      rgba(17, 19, 24, 1) 100%
+    );
+    z-index: 2;
+  }
+
+  /* === DOTTED PATTERN OVERLAY === */
+  .dotted-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(0, 120, 212, 0.10) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .top-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 36px 12px 36px;
+    background: rgba(17, 19, 24, 0.72);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0, 120, 212, 0.18);
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 5px 14px;
+    font-size: 10.5px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 3px;
+  }
+
+  .nav-tab.active {
+    color: #ffffff;
+    background: rgba(0, 120, 212, 0.25);
+    font-weight: 600;
+  }
+
+  .nav-page-indicator {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-page-indicator .page-num {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* === TAG / BADGE ROW === */
+  .tag-row {
+    position: absolute;
+    top: 58px;
+    left: 36px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag-badge {
+    padding: 3px 12px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 2px;
+    color: #ffffff;
+  }
+
+  .tag-badge.primary { background: #0078d4; }
+  .tag-badge.accent { background: #00b294; }
+  .tag-badge.secondary { background: #005a9e; }
+
+  /* === HERO TEXT OVERLAY === */
+  .hero-text-panel {
+    position: absolute;
+    bottom: 30px;
+    left: 36px;
+    right: 36px;
+    z-index: 10;
+  }
+
+  .hero-text-panel h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-text-panel h1 span.accent { color: #00b294; }
+
+  .hero-subtitle {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  /* === KPI CARDS ROW === */
+  .kpi-row {
+    position: absolute;
+    top: 640px;
+    left: 36px;
+    right: 36px;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 14px 14px 12px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #0078d4; }
+  .kpi-card:nth-child(2)::before { background: #00b294; }
+  .kpi-card:nth-child(3)::before { background: #005a9e; }
+  .kpi-card:nth-child(4)::before { background: #0078d4; }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .kpi-label {
+    font-size: 9.5px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.50);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .kpi-delta {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 5px;
+    color: #00b294;
+  }
+
+  .kpi-delta.negative { color: #e74856; }
+
+  /* === MAIN CONTENT AREA === */
+  .content-area {
+    position: absolute;
+    top: 748px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    padding: 0 36px;
+  }
+
+  /* === PULL QUOTE === */
+  .pull-quote-block {
+    margin-bottom: 18px;
+    padding: 12px 0 12px 18px;
+    border-left: 3px solid #0078d4;
+  }
+
+  .pull-quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.55;
+  }
+
+  .pull-quote-attribution {
+    font-size: 9.5px;
+    color: #0078d4;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* === PROGRESS BARS === */
+  .progress-section { margin-bottom: 16px; }
+
+  .progress-section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .progress-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+
+  .progress-item { display: flex; flex-direction: column; gap: 3px; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .progress-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.03em;
+  }
+
+  .progress-value {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill { height: 100%; border-radius: 3px; }
+
+  /* === TWO COLUMN BODY TEXT === */
+  .two-col-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 14px;
+  }
+
+  .col-text {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.60);
+    line-height: 1.65;
+  }
+
+  .col-text strong {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+  }
+
+  /* === TIMELINE NODES === */
+  .timeline-section { margin-bottom: 10px; }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    right: 9px;
+    height: 2px;
+    background: rgba(0, 120, 212, 0.25);
+    z-index: 1;
+  }
+
+  .timeline-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #0078d4;
+    background: #111318;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timeline-dot.completed { background: #0078d4; }
+  .timeline-dot.completed::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+  }
+
+  .timeline-dot.current {
+    border-color: #00b294;
+    background: #00b294;
+    box-shadow: 0 0 8px rgba(0, 178, 148, 0.4);
+  }
+
+  .timeline-dot.current::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+  }
+
+  .timeline-year {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2px;
+  }
+
+  .timeline-desc {
+    font-size: 8.5px;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.4;
+    max-width: 100px;
+  }
+
+  /* === COMPARISON COLUMNS === */
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .comparison-col {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 5px;
+    padding: 10px 14px;
+  }
+
+  .comparison-col-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0078d4;
+    margin-bottom: 5px;
+  }
+
+  .comparison-col-value {
+    font-size: 22px;
+    font-weight: 300;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+
+  .comparison-col-desc {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.45;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 8px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(17, 19, 24, 0.9);
+  }
+
+  .footer-left {
+    font-size: 8.5px;
+    color: rgba(255, 255, 255, 0.30);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-right {
+    font-size: 8.5px;
+    color: rgba(255, 255, 255, 0.30);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-accent-bar {
+    width: 30px;
+    height: 2px;
+    background: #0078d4;
+  }
+
+  /* === DECORATIVE DOT CLUSTERS === */
+  .dot-cluster {
+    position: absolute;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .dot-cluster.top-right {
+    top: 90px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    background-image: radial-gradient(circle, rgba(0, 178, 148, 0.22) 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+  }
+
+  .dot-cluster.bottom-left {
+    bottom: 50px;
+    left: 8px;
+    width: 50px;
+    height: 50px;
+    background-image: radial-gradient(circle, rgba(0, 120, 212, 0.15) 1.2px, transparent 1.2px);
+    background-size: 8px 8px;
+  }
+
+  .accent-line {
+    position: absolute;
+    top: 635px;
+    left: 36px;
+    right: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, #0078d4, rgba(0, 178, 148, 0.4), transparent);
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero-image-area">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+  </div>
+
+  <div class="dotted-overlay"></div>
+  <div class="dot-cluster top-right"></div>
+  <div class="dot-cluster bottom-left"></div>
+
+  <div class="top-nav">
+    <div class="nav-tabs">
+      {% for tab in nav_tabs %}
+      <div class="nav-tab{% if tab.active %} active{% endif %}">{{ tab.label }}</div>
+      {% endfor %}
+    </div>
+    <div class="nav-page-indicator">
+      <span class="page-num">{{ page_number }}</span>
+    </div>
+  </div>
+
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag-badge {{ tag.style }}">{{ tag.label }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="hero-text-panel">
+    <h1>{{ page_title }} <span class="accent">{{ page_title_accent }}</span></h1>
+    <div class="hero-subtitle">{{ hero_subtitle }}</div>
+  </div>
+
+  <div class="accent-line"></div>
+
+  <div class="kpi-row">
+    {% for kpi in kpis %}
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="kpi-delta{% if kpi.delta_negative %} negative{% endif %}">{{ kpi.delta }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="content-area">
+
+    <div class="pull-quote-block">
+      <div class="pull-quote-text">"{{ pull_quote_text }}"</div>
+      <div class="pull-quote-attribution">— {{ pull_quote_attribution }}</div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-section-heading">{{ progress_section_heading }}</div>
+      <div class="progress-bars">
+        {% for bar in progress_bars %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">{{ bar.label }}</span>
+            <span class="progress-value">{{ bar.value }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: {{ bar.percent }}%; background: {{ bar.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="two-col-section">
+      <div class="col-text">{{ body_paragraph_1 }}</div>
+      <div class="col-text">{{ body_paragraph_2 }}</div>
+    </div>
+
+    <div class="timeline-section">
+      <div class="timeline">
+        {% for node in timeline_nodes %}
+        <div class="timeline-node">
+          <div class="timeline-dot {{ node.status }}"></div>
+          <div class="timeline-year">{{ node.year }}</div>
+          <div class="timeline-desc">{{ node.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="comparison-row">
+      <div class="comparison-col">
+        <div class="comparison-col-title">{{ comparison_left_title }}</div>
+        <div class="comparison-col-value">{{ comparison_left_value }}</div>
+        <div class="comparison-col-desc">{{ comparison_left_desc }}</div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-col-title">{{ comparison_right_title }}</div>
+        <div class="comparison-col-value">{{ comparison_right_value }}</div>
+        <div class="comparison-col-desc">{{ comparison_right_desc }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-left">{{ footer_text }}</div>
+    <div class="footer-right">
+      <div class="footer-accent-bar"></div>
+      <span>{{ footer_confidentiality }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0026",
+  "variables": {
+    "page_title": "string",
+    "page_title_accent": "string",
+    "hero_image_url": "string (URL or file path to hero photograph)",
+    "hero_image_alt": "string",
+    "hero_subtitle": "string",
+    "page_number": "string",
+    "nav_tabs": "array of {label: string, active: boolean}",
+    "tags": "array of {label: string, style: string ('primary'|'accent'|'secondary')}",
+    "kpis": "array of {value: string, label: string, color: string (hex), delta: string, delta_negative: boolean}",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "progress_section_heading": "string",
+    "progress_bars": "array of {label: string, value: string, percent: number, color: string (hex)}",
+    "body_paragraph_1": "string (HTML allowed)",
+    "body_paragraph_2": "string (HTML allowed)",
+    "timeline_nodes": "array of {year: string, description: string, status: string ('completed'|'current'|'')}",
+    "comparison_left_title": "string",
+    "comparison_left_value": "string",
+    "comparison_left_desc": "string",
+    "comparison_right_title": "string",
+    "comparison_right_value": "string",
+    "comparison_right_desc": "string",
+    "footer_text": "string",
+    "footer_confidentiality": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,788 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #1a0000;
+    background: #1a0000;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #1a0000;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto auto auto;
+  }
+
+  /* === GEOMETRIC ANGULAR DECORATIVE ELEMENTS === */
+  .geo-top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(135deg, #cc0000 0%, #cc0000 50%, transparent 50%);
+    z-index: 1;
+    opacity: 0.15;
+  }
+
+  .geo-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(225deg, #f5a623 0%, #f5a623 50%, transparent 50%);
+    z-index: 1;
+    opacity: 0.25;
+  }
+
+  .geo-bottom-right {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(315deg, #990000 0%, #990000 50%, transparent 50%);
+    z-index: 0;
+    opacity: 0.12;
+  }
+
+  .geo-mid-left {
+    position: absolute;
+    top: 380px;
+    left: -30px;
+    width: 60px;
+    height: 120px;
+    background: #cc0000;
+    transform: skewY(-25deg);
+    opacity: 0.10;
+    z-index: 0;
+  }
+
+  .geo-accent-bar {
+    position: absolute;
+    top: 92px;
+    left: 0;
+    width: 794px;
+    height: 3px;
+    background: linear-gradient(90deg, #cc0000, #f5a623, transparent);
+    z-index: 2;
+  }
+
+  /* === HEADER === */
+  .header {
+    position: relative;
+    z-index: 3;
+    padding: 28px 48px 0 48px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #cc0000;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 600;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 12px;
+    clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+  }
+
+  .header-year {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666666;
+    letter-spacing: 0.08em;
+  }
+
+  .page-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #f5a623;
+    font-weight: 600;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  /* === HERO IMAGE === */
+  .hero-section {
+    position: relative;
+    z-index: 3;
+    padding: 14px 48px 10px 48px;
+  }
+
+  .hero-image-container {
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, #2a0808 0%, #1a0000 40%, #330a0a 100%);
+    border-left: 4px solid #cc0000;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-container .hero-placeholder {
+    color: #666666;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .hero-image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(225deg, #f5a623 0%, #f5a623 30%, transparent 30%);
+    opacity: 0.18;
+  }
+
+  .hero-caption {
+    font-size: 9px;
+    color: #666666;
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  /* === KPI ROW === */
+  .kpi-row {
+    position: relative;
+    z-index: 3;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .kpi-card {
+    background: #2a0808;
+    padding: 10px 12px;
+    position: relative;
+    border-bottom: 3px solid var(--kpi-color, #cc0000);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+  }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .kpi-change {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .kpi-change.positive { color: #4caf50; }
+  .kpi-change.negative { color: #cc0000; }
+
+  /* === TIMELINE SECTION === */
+  .timeline-section {
+    position: relative;
+    z-index: 3;
+    padding: 0 48px;
+  }
+
+  .timeline-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .timeline-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #cc0000, transparent);
+  }
+
+  .timeline-intro {
+    font-size: 11px;
+    color: #cccccc;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    max-width: 620px;
+  }
+
+  .timeline-wrapper {
+    position: relative;
+    height: 310px;
+    margin-top: 8px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #cc0000, #990000, #f5a623);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .timeline-spine::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid #f5a623;
+  }
+
+  .timeline-events {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .timeline-event {
+    position: relative;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timeline-event.above {
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+
+  .timeline-event.above .event-content {
+    margin-bottom: 8px;
+  }
+
+  .timeline-event.above .event-connector {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(180deg, transparent, #cc0000);
+    max-height: 40px;
+  }
+
+  .timeline-event.above .event-dot {
+    order: 3;
+    position: absolute;
+    top: calc(50% - 7px);
+  }
+
+  .timeline-event.below {
+    justify-content: flex-end;
+    padding-bottom: 0;
+  }
+
+  .timeline-event.below .event-content {
+    margin-top: 8px;
+    order: 3;
+  }
+
+  .timeline-event.below .event-connector {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(0deg, transparent, #cc0000);
+    max-height: 40px;
+    order: 2;
+  }
+
+  .timeline-event.below .event-dot {
+    order: 1;
+    position: absolute;
+    top: calc(50% - 7px);
+  }
+
+  .event-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #cc0000;
+    border: 2px solid #f5a623;
+    z-index: 3;
+    flex-shrink: 0;
+  }
+
+  .event-content {
+    background: #2a0808;
+    border: 1px solid #3a1515;
+    padding: 8px 10px;
+    width: 120px;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  }
+
+  .event-year-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #f5a623;
+    margin-bottom: 2px;
+  }
+
+  .event-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.35;
+    margin-bottom: 2px;
+  }
+
+  .event-desc {
+    font-size: 9px;
+    color: #999999;
+    line-height: 1.4;
+  }
+
+  /* === COMPARISON COLUMNS === */
+  .comparison-section {
+    position: relative;
+    z-index: 3;
+    padding: 14px 48px 0 48px;
+  }
+
+  .comparison-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .comparison-heading .accent-diamond {
+    width: 8px;
+    height: 8px;
+    background: #f5a623;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .comparison-col {
+    background: #2a0808;
+    border-top: 3px solid var(--col-color, #cc0000);
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .comparison-col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(225deg, var(--col-color, #cc0000) 0%, var(--col-color, #cc0000) 30%, transparent 30%);
+    opacity: 0.15;
+  }
+
+  .comparison-col-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .comparison-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-list li {
+    font-size: 10px;
+    color: #cccccc;
+    line-height: 1.5;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(204,0,0,0.12);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .comparison-list li:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-list .list-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: #cc0000;
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: 600;
+    flex-shrink: 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  /* === ICON WITH TEXT GRID === */
+  .icon-grid-section {
+    position: relative;
+    z-index: 3;
+    padding: 12px 48px 0 48px;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .icon-grid-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(42, 8, 8, 0.6);
+    border-left: 2px solid #cc0000;
+  }
+
+  .icon-grid-item .icon-circle {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #cc0000, #990000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .icon-circle svg {
+    width: 14px;
+    height: 14px;
+    fill: #ffffff;
+  }
+
+  .icon-grid-text .icon-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+
+  .icon-grid-text .icon-desc {
+    font-size: 9px;
+    color: #999999;
+    line-height: 1.4;
+    margin-top: 1px;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    position: relative;
+    z-index: 3;
+    padding: 10px 48px 16px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #3a1515;
+    margin-top: auto;
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #cc0000, transparent 60%);
+  }
+
+  .footer-left {
+    font-size: 8px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-center {
+    font-size: 8px;
+    color: #666666;
+  }
+
+  .footer-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #cc0000;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    width: 28px;
+    height: 20px;
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  }
+
+  @media print {
+    html, body { background: #1a0000 !important; }
+    .page { background: #1a0000 !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="geo-top-left"></div>
+  <div class="geo-top-right"></div>
+  <div class="geo-bottom-right"></div>
+  <div class="geo-mid-left"></div>
+  <div class="geo-accent-bar"></div>
+
+  <div class="header">
+    <div class="header-top">
+      <div class="header-badge">{{ section_badge }}</div>
+      <div class="header-year">{{ report_year }}</div>
+    </div>
+    <div class="page-title">{{ page_title }}</div>
+    <div class="page-subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-image-container">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" onerror="this.style.display='none';this.parentNode.querySelector('.hero-placeholder').style.display='block';">
+      <div class="hero-placeholder" style="display:none;">{{ hero_image_alt }}</div>
+    </div>
+    <div class="hero-caption">{{ hero_caption }}</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-change {{ kpi_1_trend }}">{{ kpi_1_change }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-change {{ kpi_2_trend }}">{{ kpi_2_change }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-change {{ kpi_3_trend }}">{{ kpi_3_change }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-change {{ kpi_4_trend }}">{{ kpi_4_change }}</div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-heading">{{ section_heading }}</div>
+    <div class="timeline-intro">{{ body_paragraph_1 }}</div>
+    <div class="timeline-wrapper">
+      <div class="timeline-spine"></div>
+      <div class="timeline-events">
+        {% for event in timeline_events %}
+        <div class="timeline-event {{ 'above' if loop.index is odd else 'below' }}">
+          <div class="event-content">
+            <div class="event-year-label">{{ event.year }}</div>
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-desc">{{ event.description }}</div>
+          </div>
+          <div class="event-connector"></div>
+          <div class="event-dot"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="comparison-section">
+    <div class="comparison-heading">
+      <span class="accent-diamond"></span>
+      {{ comparison_heading }}
+    </div>
+    <div class="comparison-grid">
+      <div class="comparison-col" style="--col-color: #cc0000;">
+        <div class="comparison-col-title">{{ comparison_col_1_title }}</div>
+        <ol class="comparison-list">
+          {% for item in comparison_col_1_items %}
+          <li>
+            <span class="list-num">{{ loop.index }}</span>
+            <span>{{ item.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div class="comparison-col" style="--col-color: #f5a623;">
+        <div class="comparison-col-title">{{ comparison_col_2_title }}</div>
+        <ol class="comparison-list">
+          {% for item in comparison_col_2_items %}
+          <li>
+            <span class="list-num">{{ loop.index }}</span>
+            <span>{{ item.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="icon-grid-section">
+    <div class="icon-grid">
+      {% for feature in icon_features %}
+      <div class="icon-grid-item">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="{{ feature.icon_svg_path }}"/></svg>
+        </div>
+        <div class="icon-grid-text">
+          <div class="icon-title">{{ feature.title }}</div>
+          <div class="icon-desc">{{ feature.description }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">{{ footer_company }} &mdash; {{ footer_document_type }}</div>
+    <div class="footer-center">{{ footer_disclaimer }}</div>
+    <div class="footer-page">{{ page_number }}</div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0066",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "section_badge": "string",
+    "report_year": "string",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "hero_caption": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_change": "string",
+    "kpi_1_trend": "string ('positive' or 'negative')",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_2_change": "string",
+    "kpi_2_trend": "string ('positive' or 'negative')",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_3_change": "string",
+    "kpi_3_trend": "string ('positive' or 'negative')",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "kpi_4_change": "string",
+    "kpi_4_trend": "string ('positive' or 'negative')",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "timeline_events": "array of objects [{year: string, title: string, description: string}]",
+    "comparison_heading": "string",
+    "comparison_col_1_title": "string",
+    "comparison_col_1_items": "array of objects [{text: string}]",
+    "comparison_col_2_title": "string",
+    "comparison_col_2_items": "array of objects [{text: string}]",
+    "icon_features": "array of objects [{icon_svg_path: string, title: string, description: string}]",
+    "footer_company": "string",
+    "footer_document_type": "string",
+    "footer_disclaimer": "string",
+    "page_number": "string or number"
+  }
+}
+END_TEMPLATE_VARIABLES -->

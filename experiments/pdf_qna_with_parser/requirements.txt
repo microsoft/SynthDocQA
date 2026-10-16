@@ -1,0 +1,1 @@
+-r ../pdf_qna/requirements.txt

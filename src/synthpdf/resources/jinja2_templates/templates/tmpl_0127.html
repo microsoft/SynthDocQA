@@ -1,0 +1,609 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1a0000;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ===== LEFT PANE ===== */
+  .left-pane {
+    background: linear-gradient(175deg, #cc0000 0%, #990000 70%, #6b0000 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 32px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .left-pane::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    border: 30px solid rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+
+  .left-pane::after {
+    content: '';
+    position: absolute;
+    bottom: 120px;
+    left: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 22px solid rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+
+  .circular-motif-1 {
+    position: absolute;
+    top: 180px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(245,166,35,0.2);
+    pointer-events: none;
+  }
+
+  .circular-motif-2 {
+    position: absolute;
+    bottom: 220px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+
+  .left-brand {
+    margin-bottom: 6px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+  }
+
+  .left-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .left-subtitle {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.4;
+    opacity: 0.85;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .accent-line {
+    width: 48px;
+    height: 3px;
+    background: #f5a623;
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+
+  /* Hero Image Placeholder */
+  .hero-image-placeholder {
+    width: 100%;
+    height: 160px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .hero-image-fallback {
+    text-align: center;
+    opacity: 0.4;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Donut Chart */
+  .donut-section {
+    margin-top: auto;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .donut-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .donut-svg {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .donut-ring {
+    fill: none;
+    stroke: rgba(255,255,255,0.15);
+    stroke-width: 6;
+  }
+
+  .donut-segment {
+    fill: none;
+    stroke: #f5a623;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
+  .donut-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .donut-desc {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  /* Callout Box on Left */
+  .left-callout {
+    background: rgba(255,255,255,0.1);
+    border-left: 3px solid #f5a623;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 14px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .left-callout-text {
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+
+  /* ===== RIGHT PANE ===== */
+  .right-pane {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 40px 32px 44px;
+    position: relative;
+  }
+
+  .right-pane::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #cc0000, #f5a623);
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #990000;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .section-desc {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* Divider with Label */
+  .divider-labeled {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .divider-labeled::before,
+  .divider-labeled::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #cc0000 0%, rgba(204,0,0,0.1) 100%);
+  }
+
+  .divider-labeled::after {
+    background: linear-gradient(90deg, rgba(204,0,0,0.1) 0%, #cc0000 100%);
+  }
+
+  .divider-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #990000;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  /* Tag / Badge Row */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tag-primary {
+    background: #cc0000;
+    color: #ffffff;
+  }
+
+  .tag-accent {
+    background: #f5a623;
+    color: #1a0000;
+  }
+
+  .tag-outline {
+    background: transparent;
+    color: #990000;
+    border: 1px solid #cc0000;
+  }
+
+  /* TOC List */
+  .toc-list {
+    list-style: none;
+    margin: 0 0 20px 0;
+    padding: 0;
+    flex: 1;
+  }
+
+  .toc-item {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(204,0,0,0.08);
+  }
+
+  .toc-item:last-child {
+    border-bottom: none;
+  }
+
+  .toc-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: #cc0000;
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .toc-content {
+    padding-left: 8px;
+  }
+
+  .toc-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #1a0000;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .toc-description {
+    font-size: 10.5px;
+    color: #666666;
+    line-height: 1.5;
+  }
+
+  .toc-page {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #990000;
+    text-align: right;
+    min-width: 28px;
+    padding-top: 2px;
+  }
+
+  /* Circular decorative on right pane */
+  .right-circle-deco {
+    position: absolute;
+    bottom: 80px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 16px solid #fdf8f8;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .right-circle-deco-sm {
+    position: absolute;
+    top: 60px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(204,0,0,0.04);
+    pointer-events: none;
+  }
+
+  /* Footnotes Strip */
+  .footnotes-strip {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(204,0,0,0.1);
+  }
+
+  .footnote-text {
+    font-size: 9px;
+    color: #666666;
+    line-height: 1.5;
+    margin-bottom: 2px;
+  }
+
+  /* Page Number Footer */
+  .page-number-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 0 44px;
+    background: #fdf8f8;
+    border-top: 1px solid rgba(204,0,0,0.08);
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: #666666;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-right {
+    font-size: 9px;
+    color: #990000;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-accent-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #f5a623;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- LEFT PANE -->
+  <div class="left-pane">
+    <div class="circular-motif-1"></div>
+    <div class="circular-motif-2"></div>
+
+    <div class="left-brand">{{ company_name }}</div>
+    <h1 class="left-title">{{ page_title }}</h1>
+    <div class="accent-line"></div>
+    <div class="left-subtitle">{{ document_subtitle }}</div>
+
+    <!-- Hero Image Placeholder -->
+    <div class="hero-image-placeholder">
+      {% if hero_image_url %}
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      {% else %}
+        <div class="hero-image-fallback">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style="margin-bottom:6px;display:block;margin-left:auto;margin-right:auto;">
+            <circle cx="18" cy="18" r="17" stroke="rgba(255,255,255,0.3)" stroke-width="1" fill="none"/>
+            <path d="M10 26l6-8 4 5 4-6 6 9" stroke="rgba(255,255,255,0.3)" stroke-width="1" fill="none"/>
+            <circle cx="24" cy="13" r="2.5" stroke="rgba(255,255,255,0.3)" stroke-width="1" fill="none"/>
+          </svg>
+          {{ hero_image_alt }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Percentage Donut -->
+    <div class="donut-section">
+      <div class="donut-label">{{ donut_label }}</div>
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 42 42">
+          <circle class="donut-ring" cx="21" cy="21" r="16"/>
+          <circle class="donut-segment" cx="21" cy="21" r="16"
+                  stroke-dasharray="{{ donut_percentage }},{{ donut_remainder }}"
+                  stroke-dashoffset="0"/>
+        </svg>
+        <div>
+          <div class="donut-value">{{ donut_display_value }}</div>
+          <div class="donut-desc">{{ donut_description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Callout Box -->
+    <div class="left-callout">
+      <div class="left-callout-text">{{ callout_text }}</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANE -->
+  <div class="right-pane">
+    <div class="right-circle-deco"></div>
+    <div class="right-circle-deco-sm"></div>
+
+    <h2 class="section-heading">{{ section_heading }}</h2>
+    <p class="section-desc">{{ section_description }}</p>
+
+    <!-- Divider with Label -->
+    <div class="divider-labeled">
+      <span class="divider-label">{{ divider_label }}</span>
+    </div>
+
+    <!-- Tag / Badge Row -->
+    <div class="tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge {{ tag.style }}">{{ tag.label }}</span>
+      {% endfor %}
+    </div>
+
+    <!-- TOC List -->
+    <ol class="toc-list">
+      {% for entry in toc_entries %}
+      <li class="toc-item">
+        <span class="toc-number">{{ entry.number }}</span>
+        <div class="toc-content">
+          <div class="toc-title">{{ entry.title }}</div>
+          <div class="toc-description">{{ entry.description }}</div>
+        </div>
+        <span class="toc-page">{{ entry.page }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+
+    <!-- Footnotes Strip -->
+    <div class="footnotes-strip">
+      {% for fn in footnotes %}
+      <div class="footnote-text">{{ fn.marker }} {{ fn.text }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Page Number Footer -->
+    <div class="page-number-footer">
+      <span class="footer-left">{{ footer_left_text }}</span>
+      <span class="footer-right"><span class="footer-accent-dot"></span>{{ page_number }}</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0127",
+  "variables": {
+    "page_title": "string — Main title displayed on the left pane (e.g., 'Table of Contents')",
+    "company_name": "string — Company or brand name above the title (e.g., 'Meridian Insurance Group')",
+    "document_subtitle": "string — Subtitle or report name below the title (e.g., 'Annual Risk Assessment Report 2025')",
+    "hero_image_url": "string|optional — URL for the hero image on the left pane",
+    "hero_image_alt": "string — Alt text / fallback label for the hero image (e.g., 'Risk Overview')",
+    "donut_label": "string — Label above the donut chart (e.g., 'Portfolio Risk Score')",
+    "donut_percentage": "number — SVG stroke-dasharray value for filled portion (0–100 mapped to circumference, e.g., 73.5 for 73%)",
+    "donut_remainder": "number — SVG stroke-dasharray value for unfilled portion (e.g., 26.5)",
+    "donut_display_value": "string — Large display value inside donut section (e.g., '73%')",
+    "donut_description": "string — Description text next to donut (e.g., 'within acceptable threshold')",
+    "callout_text": "string — Text inside the callout box on the left pane",
+    "section_heading": "string — Heading on the right pane (e.g., 'Report Sections')",
+    "section_description": "string — Brief description below the heading",
+    "divider_label": "string — Label inside the divider line (e.g., 'Chapters')",
+    "tags": "array of {label: string, style: string} — Badge items; style is one of 'tag-primary', 'tag-accent', 'tag-outline'",
+    "toc_entries": "array of {number: string, title: string, description: string, page: string} — Table of contents entries",
+    "footnotes": "array of {marker: string, text: string} — Footnote entries (e.g., {marker: '†', text: 'Based on Q3 data'})",
+    "footer_left_text": "string — Left footer text (e.g., 'Confidential — Internal Use Only')",
+    "page_number": "string — Page number displayed in footer (e.g., '02')"
+  }
+}
+END_TEMPLATE_VARIABLES -->

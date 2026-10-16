@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0124",
+  "industry": "management_consulting",
+  "page_role": "team_or_org_chart",
+  "layout": {
+    "name": "timeline_horizontal",
+    "description": "Central horizontal timeline spine runs across the middle of the page. Events/milestones hang above and below it alternately."
+  },
+  "color_palette": {
+    "name": "real_estate_warm",
+    "primary": "#5c4033",
+    "secondary": "#795548",
+    "accent": "#8bc34a",
+    "bg": "#fff8f0",
+    "surface": "#ffffff",
+    "text": "#3e2723",
+    "muted": "#8d6e63"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "quote_attribution",
+    "hero_image_placeholder",
+    "numbered_list_items",
+    "tag_or_badge_row",
+    "timeline_nodes"
+  ],
+  "density": "sparse",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by Pfizer regulatory submissions \u2014 clinical, precise, structured, neutral",
+  "seed": 985898
+}

@@ -1,0 +1,753 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #201f1e;
+    background: #f3f2f1;
+  }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    background: #f3f2f1;
+  }
+
+  /* === FULL BLEED VISUAL AREA (top ~65%) === */
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    height: 680px;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 90, 158, 0.88) 0%,
+      rgba(0, 120, 212, 0.72) 35%,
+      rgba(0, 120, 212, 0.55) 60%,
+      rgba(0, 90, 158, 0.85) 100%
+    );
+  }
+
+  .header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #0078d4 0%, #00b294 60%, #0078d4 100%);
+  }
+
+  .report-brand {
+    position: absolute;
+    top: 28px;
+    left: 48px;
+    right: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .report-period {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.04em;
+  }
+
+  .hero-content {
+    position: absolute;
+    top: 80px;
+    left: 48px;
+    right: 48px;
+  }
+
+  .hero-content h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .hero-content .subtitle {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 3px;
+    background: #00b294;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  .hero-description {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.6;
+    max-width: 420px;
+  }
+
+  /* === CIRCULAR DECORATIVE ELEMENTS === */
+  .circle-deco-1 {
+    position: absolute;
+    top: 60px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    border: 2px solid rgba(0, 178, 148, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .circle-deco-2 {
+    position: absolute;
+    top: 110px;
+    right: -10px;
+    width: 140px;
+    height: 140px;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .circle-deco-3 {
+    position: absolute;
+    bottom: 80px;
+    left: -60px;
+    width: 180px;
+    height: 180px;
+    border: 2px solid rgba(0, 178, 148, 0.18);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* === KPI CARDS === */
+  .kpi-row {
+    position: absolute;
+    top: 260px;
+    left: 48px;
+    right: 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .kpi-card {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #00b294; }
+  .kpi-card:nth-child(2)::before { background: #0078d4; }
+  .kpi-card:nth-child(3)::before { background: #00b294; }
+  .kpi-card:nth-child(4)::before { background: #0078d4; }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.72);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+  }
+
+  .kpi-change {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0, 178, 148, 0.25);
+    color: #00b294;
+  }
+
+  .kpi-change.negative {
+    background: rgba(232, 17, 35, 0.2);
+    color: #f4a3a8;
+  }
+
+  /* === SECONDARY KPI STRIP === */
+  .kpi-strip {
+    position: absolute;
+    top: 440px;
+    left: 48px;
+    right: 48px;
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 6px;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kpi-strip-item {
+    text-align: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .kpi-strip-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .kpi-strip-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .kpi-strip-label {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* === CHART PANELS === */
+  .chart-area {
+    position: absolute;
+    top: 520px;
+    left: 48px;
+    right: 48px;
+    bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .chart-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .chart-panel-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 80px;
+    padding-top: 4px;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 28px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .bar-label {
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.55);
+    text-align: center;
+  }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .donut-ring {
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+  }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* === BOTTOM WHITE SECTION === */
+  .bottom-section {
+    position: absolute;
+    top: 680px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    padding: 28px 48px 40px;
+  }
+
+  .section-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .section-heading-row h2 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #005a9e;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .heading-accent-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #0078d4 0%, transparent 100%);
+    border-radius: 1px;
+  }
+
+  .two-column-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 20px;
+  }
+
+  .column-content h3 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #0078d4;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .column-content p {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #201f1e;
+    margin-bottom: 8px;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .comparison-card {
+    background: #f3f2f1;
+    border-radius: 6px;
+    padding: 14px 16px;
+    border-left: 3px solid;
+    position: relative;
+  }
+
+  .comparison-card.primary {
+    border-left-color: #0078d4;
+  }
+
+  .comparison-card.accent {
+    border-left-color: #00b294;
+  }
+
+  .comparison-card .comp-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #605e5c;
+    margin-bottom: 4px;
+  }
+
+  .comparison-card .comp-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #201f1e;
+    line-height: 1.2;
+  }
+
+  .comparison-card .comp-detail {
+    font-size: 10px;
+    color: #605e5c;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .bottom-circle-deco {
+    position: absolute;
+    bottom: 50px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border: 2px solid rgba(0, 120, 212, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .bottom-circle-deco-inner {
+    position: absolute;
+    bottom: 70px;
+    right: -5px;
+    width: 70px;
+    height: 70px;
+    border: 1.5px solid rgba(0, 178, 148, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: #005a9e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+
+  .footer-text {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.03em;
+  }
+
+  .page-number {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #ffffff;
+    background: rgba(0, 178, 148, 0.5);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- === FULL BLEED HERO VISUAL === -->
+  <div class="hero-visual">
+    <img class="hero-image" src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    <div class="hero-overlay"></div>
+
+    <div class="header-bar"></div>
+
+    <!-- Circular decorative elements -->
+    <div class="circle-deco-1"></div>
+    <div class="circle-deco-2"></div>
+    <div class="circle-deco-3"></div>
+
+    <!-- Branding -->
+    <div class="report-brand">
+      <span class="brand-name">{{ company_name }}</span>
+      <span class="report-period">{{ report_period }}</span>
+    </div>
+
+    <!-- Title & description -->
+    <div class="hero-content">
+      <h1>{{ page_title }}</h1>
+      <div class="subtitle">{{ page_subtitle }}</div>
+      <div class="hero-divider"></div>
+      <p class="hero-description">{{ hero_description }}</p>
+    </div>
+
+    <!-- Primary KPI Cards -->
+    <div class="kpi-row">
+      {% for kpi in primary_kpis %}
+      <div class="kpi-card">
+        <div class="kpi-value">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <span class="kpi-change {% if kpi.is_negative %}negative{% endif %}">{{ kpi.change }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Secondary KPI Strip -->
+    <div class="kpi-strip">
+      {% for metric in secondary_metrics %}
+      <div class="kpi-strip-item">
+        <div class="kpi-strip-value">{{ metric.value }}</div>
+        <div class="kpi-strip-label">{{ metric.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Chart Panels -->
+    <div class="chart-area">
+      <div class="chart-panel">
+        <div class="chart-panel-title">{{ bar_chart_title }}</div>
+        <div class="bar-chart">
+          {% for bar in bar_chart_data %}
+          <div class="bar-group">
+            <div class="bar" style="height: {{ bar.height }}px; background: {{ bar.color }};"></div>
+            <span class="bar-label">{{ bar.label }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-panel-title">{{ donut_chart_title }}</div>
+        <div class="donut-container">
+          <svg class="donut-ring" viewBox="0 0 42 42">
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+            {% for segment in donut_segments %}
+            <circle cx="21" cy="21" r="15.9" fill="none"
+                    stroke="{{ segment.color }}"
+                    stroke-width="4"
+                    stroke-dasharray="{{ segment.dash_value }} {{ segment.dash_remainder }}"
+                    stroke-dashoffset="{{ segment.dash_offset }}"
+                    stroke-linecap="round"/>
+            {% endfor %}
+          </svg>
+          <div class="donut-legend">
+            {% for item in donut_legend %}
+            <div class="legend-item">
+              <span class="legend-dot" style="background: {{ item.color }};"></span>
+              <span>{{ item.label }} — {{ item.value }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === BOTTOM WHITE SECTION === -->
+  <div class="bottom-section">
+
+    <div class="bottom-circle-deco"></div>
+    <div class="bottom-circle-deco-inner"></div>
+
+    <div class="section-heading-row">
+      <h2>{{ section_heading }}</h2>
+      <div class="heading-accent-line"></div>
+    </div>
+
+    <!-- Two-column body text -->
+    <div class="two-column-body">
+      <div class="column-content">
+        <h3>{{ column_1_heading }}</h3>
+        <p>{{ column_1_paragraph }}</p>
+      </div>
+      <div class="column-content">
+        <h3>{{ column_2_heading }}</h3>
+        <p>{{ column_2_paragraph }}</p>
+      </div>
+    </div>
+
+    <!-- Comparison Columns -->
+    <div class="comparison-row">
+      <div class="comparison-card primary">
+        <div class="comp-label">{{ comparison_1_label }}</div>
+        <div class="comp-value">{{ comparison_1_value }}</div>
+        <div class="comp-detail">{{ comparison_1_detail }}</div>
+      </div>
+      <div class="comparison-card accent">
+        <div class="comp-label">{{ comparison_2_label }}</div>
+        <div class="comp-value">{{ comparison_2_value }}</div>
+        <div class="comp-detail">{{ comparison_2_detail }}</div>
+      </div>
+    </div>
+
+    <!-- Page Footer -->
+    <div class="page-footer">
+      <span class="footer-text">{{ footer_text }}</span>
+      <span class="page-number">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0050",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "hero_description": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "company_name": "string",
+    "report_period": "string",
+    "section_heading": "string",
+    "column_1_heading": "string",
+    "column_1_paragraph": "string",
+    "column_2_heading": "string",
+    "column_2_paragraph": "string",
+    "comparison_1_label": "string",
+    "comparison_1_value": "string",
+    "comparison_1_detail": "string",
+    "comparison_2_label": "string",
+    "comparison_2_value": "string",
+    "comparison_2_detail": "string",
+    "footer_text": "string",
+    "page_number": "string",
+    "bar_chart_title": "string",
+    "donut_chart_title": "string",
+    "primary_kpis": [
+      {
+        "value": "string",
+        "label": "string",
+        "change": "string",
+        "is_negative": "boolean"
+      }
+    ],
+    "secondary_metrics": [
+      {
+        "value": "string",
+        "label": "string"
+      }
+    ],
+    "bar_chart_data": [
+      {
+        "height": "number",
+        "color": "string",
+        "label": "string"
+      }
+    ],
+    "donut_segments": [
+      {
+        "color": "string",
+        "dash_value": "number",
+        "dash_remainder": "number",
+        "dash_offset": "number"
+      }
+    ],
+    "donut_legend": [
+      {
+        "color": "string",
+        "label": "string",
+        "value": "string"
+      }
+    ]
+  }
+}
+END_TEMPLATE_VARIABLES -->

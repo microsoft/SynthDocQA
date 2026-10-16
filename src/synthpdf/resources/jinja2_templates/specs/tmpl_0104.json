@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0104",
+  "industry": "retail_consumer_goods",
+  "page_role": "team_or_org_chart",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "progress_bars",
+    "divider_with_label",
+    "data_table",
+    "colored_section_band",
+    "chart_placeholder_box"
+  ],
+  "density": "sparse",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by IKEA product catalogs \u2014 functional, grid-based, friendly, Scandinavian",
+  "seed": 510271
+}

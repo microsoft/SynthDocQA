@@ -1,0 +1,645 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fffff8;
+    color: #1a0a0a;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fffff8;
+  }
+
+  /* Fine grid lines motif — background overlay */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(123,30,30,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123,30,30,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Top navigation tabs */
+  .top-nav {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 38px;
+    background: #1a0a0a;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 0;
+  }
+
+  .top-nav .nav-tab {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #f5f5dc;
+    opacity: 0.6;
+    border-bottom: 2px solid transparent;
+    cursor: default;
+  }
+
+  .top-nav .nav-tab.active {
+    opacity: 1;
+    color: #fffff8;
+    border-bottom: 2px solid #a52a2a;
+  }
+
+  .top-nav .nav-logo {
+    margin-left: auto;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #f5f5dc;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  /* Hero section — top third */
+  .hero {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 336px;
+    background: linear-gradient(135deg, #7b1e1e 0%, #a52a2a 40%, #1a0a0a 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 48px;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(255,255,248,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,248,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #f5f5dc;
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #fffff8;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+
+  .hero-subtitle {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #f5f5dc;
+    opacity: 0.85;
+    line-height: 1.7;
+    max-width: 340px;
+  }
+
+  .hero-image-area {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-image-placeholder {
+    width: 300px;
+    height: 200px;
+    background: rgba(255,255,248,0.08);
+    border: 1px solid rgba(255,255,248,0.15);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #f5f5dc;
+    font-size: 10px;
+    opacity: 0.7;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  /* KPI strip between hero and columns */
+  .kpi-strip {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: #f5f5dc;
+    border-top: 3px solid #7b1e1e;
+    border-bottom: 1px solid rgba(123,30,30,0.15);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 16px 48px;
+    gap: 0;
+  }
+
+  .kpi-card {
+    text-align: center;
+    padding: 8px 12px;
+    border-right: 1px solid rgba(123,30,30,0.12);
+  }
+
+  .kpi-card:last-child {
+    border-right: none;
+  }
+
+  .kpi-value {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .kpi-label {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b6b6b;
+  }
+
+  /* Content columns area */
+  .content-area {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 28px 48px 24px 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .column {
+    position: relative;
+  }
+
+  .column:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -14px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(123,30,30,0.2), rgba(123,30,30,0.05));
+  }
+
+  .column h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #7b1e1e;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #a52a2a;
+    line-height: 1.3;
+  }
+
+  .column h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a0a0a;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  .column p {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: #1a0a0a;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+  }
+
+  .column ul li {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: #1a0a0a;
+    line-height: 1.7;
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+
+  .column ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: #a52a2a;
+    border-radius: 1px;
+  }
+
+  /* Sidebar annotation */
+  .sidebar-annotation {
+    background: #f5f5dc;
+    border-left: 3px solid #4682b4;
+    padding: 10px 12px;
+    margin: 12px 0;
+    font-size: 10px;
+    color: #6b6b6b;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .sidebar-annotation .annotation-label {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #4682b4;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, rgba(123,30,30,0.04) 0%, rgba(70,130,180,0.06) 100%);
+    border: 1px solid rgba(123,30,30,0.12);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(123,30,30,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123,30,30,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .chart-placeholder .chart-label {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6b6b6b;
+    z-index: 1;
+  }
+
+  .chart-placeholder .chart-icon {
+    font-size: 24px;
+    color: #a52a2a;
+    margin-bottom: 6px;
+    z-index: 1;
+    opacity: 0.4;
+  }
+
+  /* Mini table */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 10px;
+  }
+
+  .mini-table th {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #fffff8;
+    background: #7b1e1e;
+    padding: 6px 8px;
+    text-align: left;
+  }
+
+  .mini-table td {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(123,30,30,0.1);
+    color: #1a0a0a;
+  }
+
+  .mini-table tr:nth-child(even) td {
+    background: rgba(245,245,220,0.5);
+  }
+
+  /* Footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background: #1a0a0a;
+    padding: 10px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .page-footer .footer-text {
+    font-family: Georgia, serif;
+    font-size: 8px;
+    color: #f5f5dc;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+  }
+
+  .page-footer .footer-page {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fffff8;
+    opacity: 0.7;
+  }
+
+  /* Accent bar on top of page */
+  .accent-top-bar {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #7b1e1e, #a52a2a, #4682b4);
+    position: relative;
+    z-index: 3;
+  }
+
+  /* Tag / badge style */
+  .tag {
+    display: inline-block;
+    background: #4682b4;
+    color: #fffff8;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+
+  .tag-red {
+    background: #a52a2a;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Accent gradient bar -->
+  <div class="accent-top-bar"></div>
+
+  <!-- Top navigation tabs -->
+  <nav class="top-nav">
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if loop.first %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+    <div class="nav-logo">{{ company_name }}</div>
+  </nav>
+
+  <!-- Hero section -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">{{ hero_eyebrow }}</div>
+      <h1>{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_subtitle }}</p>
+    </div>
+    <div class="hero-image-area">
+      <div class="hero-image-placeholder">
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- Content columns -->
+  <div class="content-area">
+    <!-- Column 1 -->
+    <div class="column">
+      <h2>{{ col1_heading }}</h2>
+      <p>{{ col1_paragraph_1 }}</p>
+
+      <div class="sidebar-annotation">
+        <span class="annotation-label">{{ col1_annotation_label }}</span>
+        {{ col1_annotation_text }}
+      </div>
+
+      <h3>{{ col1_subheading }}</h3>
+      <ul>
+        {% for item in col1_list_items %}
+        <li>{{ item.text }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="column">
+      <h2>{{ col2_heading }}</h2>
+      <p>{{ col2_paragraph_1 }}</p>
+
+      <div class="chart-placeholder">
+        <div class="chart-icon">&#9638;</div>
+        <div class="chart-label">{{ col2_chart_title }}</div>
+      </div>
+
+      <p>{{ col2_paragraph_2 }}</p>
+
+      <span class="tag">{{ col2_tag }}</span>
+      <p style="font-size:10px; color:#6b6b6b;">{{ col2_tag_detail }}</p>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="column">
+      <h2>{{ col3_heading }}</h2>
+      <p>{{ col3_paragraph_1 }}</p>
+
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th>{{ table_header_1 }}</th>
+            <th>{{ table_header_2 }}</th>
+            <th>{{ table_header_3 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.col1 }}</td>
+            <td>{{ row.col2 }}</td>
+            <td>{{ row.col3 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="sidebar-annotation">
+        <span class="annotation-label">{{ col3_annotation_label }}</span>
+        {{ col3_annotation_text }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_disclaimer }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0030",
+  "variables": {
+    "page_title": "string",
+    "hero_eyebrow": "string",
+    "hero_subtitle": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "company_name": "string",
+    "nav_tabs": "[{label: string}]",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "col1_heading": "string",
+    "col1_paragraph_1": "string",
+    "col1_annotation_label": "string",
+    "col1_annotation_text": "string",
+    "col1_subheading": "string",
+    "col1_list_items": "[{text: string}]",
+    "col2_heading": "string",
+    "col2_paragraph_1": "string",
+    "col2_chart_title": "string",
+    "col2_paragraph_2": "string",
+    "col2_tag": "string",
+    "col2_tag_detail": "string",
+    "col3_heading": "string",
+    "col3_paragraph_1": "string",
+    "table_header_1": "string",
+    "table_header_2": "string",
+    "table_header_3": "string",
+    "table_rows": "[{col1: string, col2: string, col3: string}]",
+    "col3_annotation_label": "string",
+    "col3_annotation_text": "string",
+    "footer_disclaimer": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

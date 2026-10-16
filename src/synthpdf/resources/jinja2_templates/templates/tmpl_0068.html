@@ -1,0 +1,497 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    color: #1a0000;
+    background: #ffffff;
+    position: relative;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Large background watermark */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 280px;
+    color: rgba(204, 0, 0, 0.04);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  /* Top brand strip */
+  .brand-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #cc0000 0%, #cc0000 70%, #f5a623 70%, #f5a623 100%);
+    z-index: 10;
+  }
+
+  /* Logo area */
+  .logo-strip {
+    position: absolute;
+    top: 48px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 5;
+  }
+
+  .logo-strip img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .logo-strip .department-name {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #666666;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Section number */
+  .section-number {
+    position: absolute;
+    top: 200px;
+    left: 80px;
+    z-index: 5;
+  }
+
+  .section-number .num {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 120px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #cc0000;
+    display: block;
+  }
+
+  .section-number .section-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666666;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* Main title area */
+  .title-area {
+    position: absolute;
+    top: 340px;
+    left: 80px;
+    right: 80px;
+    z-index: 5;
+  }
+
+  .title-area h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1a0000;
+    margin-bottom: 24px;
+    max-width: 540px;
+  }
+
+  .title-divider {
+    width: 64px;
+    height: 4px;
+    background: #f5a623;
+    margin-bottom: 28px;
+  }
+
+  .title-area h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #990000;
+    max-width: 480px;
+  }
+
+  /* Two-column body text area */
+  .body-columns {
+    position: absolute;
+    top: 590px;
+    left: 80px;
+    right: 80px;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .body-columns p {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #1a0000;
+    margin-bottom: 14px;
+  }
+
+  /* KPI metric cards */
+  .kpi-cards {
+    position: absolute;
+    top: 780px;
+    left: 80px;
+    right: 80px;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .kpi-card {
+    background: #fdf8f8;
+    border-left: 4px solid #cc0000;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .kpi-card:nth-child(2) {
+    border-left-color: #990000;
+  }
+
+  .kpi-card:nth-child(3) {
+    border-left-color: #f5a623;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+
+  /* Percentage donut chart */
+  .donut-container {
+    position: absolute;
+    top: 220px;
+    right: 80px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .donut-svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #fdf8f8;
+    stroke-width: 10;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+  }
+
+  .donut-label {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: #1a0000;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+
+  .donut-sublabel {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #666666;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    max-width: 120px;
+  }
+
+  /* Footnotes strip */
+  .footnotes-strip {
+    position: absolute;
+    bottom: 60px;
+    left: 80px;
+    right: 80px;
+    border-top: 1px solid rgba(204, 0, 0, 0.15);
+    padding-top: 14px;
+    z-index: 5;
+  }
+
+  .footnotes-strip p {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    line-height: 1.6;
+    color: #666666;
+    margin-bottom: 3px;
+  }
+
+  .footnotes-strip .footnote-num {
+    font-size: 7px;
+    vertical-align: super;
+    color: #cc0000;
+    margin-right: 2px;
+  }
+
+  /* Bottom red bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: #cc0000;
+    z-index: 10;
+  }
+
+  /* Page number */
+  .page-number {
+    position: absolute;
+    bottom: 28px;
+    right: 80px;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #666666;
+    z-index: 5;
+  }
+
+  /* Decorative vertical accent line */
+  .accent-line {
+    position: absolute;
+    top: 180px;
+    left: 60px;
+    width: 3px;
+    height: 160px;
+    background: linear-gradient(180deg, #cc0000 0%, rgba(204, 0, 0, 0) 100%);
+    z-index: 5;
+  }
+
+  /* Numbered list items */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .numbered-list li {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #1a0000;
+    padding-left: 28px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .numbered-list li .list-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: #cc0000;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Large background watermark -->
+  <div class="watermark">{{ watermark_text }}</div>
+
+  <!-- Top colored brand strip -->
+  <div class="brand-strip"></div>
+
+  <!-- Logo / brand strip -->
+  <div class="logo-strip">
+    <img src="{{ logo_url }}" alt="{{ organization_name }}">
+    <span class="department-name">{{ department_name }}</span>
+  </div>
+
+  <!-- Decorative vertical accent line -->
+  <div class="accent-line"></div>
+
+  <!-- Section number -->
+  <div class="section-number">
+    <span class="num">{{ section_number }}</span>
+    <span class="section-label">{{ section_label }}</span>
+  </div>
+
+  <!-- Percentage donut chart -->
+  <div class="donut-container">
+    <svg class="donut-svg" viewBox="0 0 80 80">
+      <circle class="donut-track" cx="40" cy="40" r="34"></circle>
+      <circle class="donut-fill" cx="40" cy="40" r="34"
+        stroke="{{ donut_color }}"
+        stroke-dasharray="{{ donut_dasharray }}"
+        stroke-dashoffset="{{ donut_dashoffset }}">
+      </circle>
+    </svg>
+    <div class="donut-label">{{ donut_value }}</div>
+    <div class="donut-sublabel">{{ donut_label }}</div>
+  </div>
+
+  <!-- Main title area -->
+  <div class="title-area">
+    <h1>{{ page_title }}</h1>
+    <div class="title-divider"></div>
+    <h2>{{ section_heading }}</h2>
+  </div>
+
+  <!-- Two-column body text -->
+  <div class="body-columns">
+    <div class="column-left">
+      <p>{{ body_paragraph_1 }}</p>
+      <ol class="numbered-list">
+        {% for item in numbered_items %}
+        <li><span class="list-num">{{ item.number }}.</span> {{ item.text }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+    <div class="column-right">
+      <p>{{ body_paragraph_2 }}</p>
+      <p>{{ body_paragraph_3 }}</p>
+    </div>
+  </div>
+
+  <!-- KPI metric cards -->
+  <div class="kpi-cards">
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+  </div>
+
+  <!-- Footnotes strip -->
+  <div class="footnotes-strip">
+    {% for footnote in footnotes %}
+    <p><span class="footnote-num">{{ footnote.number }}</span> {{ footnote.text }}</p>
+    {% endfor %}
+  </div>
+
+  <!-- Page number -->
+  <div class="page-number">{{ page_number }}</div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar"></div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0068",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "watermark_text": "string",
+    "logo_url": "string (image URL)",
+    "organization_name": "string",
+    "department_name": "string",
+    "section_number": "string",
+    "section_label": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "body_paragraph_3": "string",
+    "numbered_items": "array of {number: string, text: string}",
+    "donut_value": "string (e.g. '78%')",
+    "donut_label": "string",
+    "donut_color": "string (hex color)",
+    "donut_dasharray": "string (SVG dash array, e.g. '213.6 213.6')",
+    "donut_dashoffset": "string (SVG dash offset, e.g. '47.0')",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "footnotes": "array of {number: string, text: string}",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

@@ -1,0 +1,582 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1a1a1a;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* === HEADER BAR === */
+  .header-bar {
+    width: 100%;
+    height: 72px;
+    background: #0a1628;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    flex-shrink: 0;
+  }
+
+  .header-bar .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-bar .logo-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #c8a96e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-bar .logo-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header-bar .org-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .header-bar .report-label {
+    font-size: 11px;
+    color: #c8a96e;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* === TITLE SECTION === */
+  .title-section {
+    width: 100%;
+    padding: 28px 40px 20px 40px;
+    background: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .title-section h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #0a1628;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .title-section .subtitle {
+    font-size: 13px;
+    color: #666666;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  .accent-line {
+    width: 60px;
+    height: 3px;
+    background: #c8a96e;
+    margin-top: 14px;
+  }
+
+  /* === TWO PANE SPLIT === */
+  .two-pane {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 0;
+  }
+
+  /* LEFT PANE */
+  .pane-left {
+    background: #f7f5f0;
+    padding: 30px 28px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pane-left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, #c8a96e 0%, #c8a96e 30%, #e0d6c4 100%);
+  }
+
+  /* RIGHT PANE */
+  .pane-right {
+    background: #0a1628;
+    padding: 30px 40px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+  }
+
+  /* === SECTION HEADINGS === */
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #0a1628;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+
+  .section-heading-light {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+
+  .sub-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #1a3a6b;
+    margin-bottom: 4px;
+  }
+
+  .sub-heading-light {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #c8a96e;
+    margin-bottom: 4px;
+  }
+
+  /* === BODY TEXT === */
+  .body-text {
+    font-size: 12px;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+
+  .body-text-light {
+    font-size: 12px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.6;
+  }
+
+  /* === KPI METRIC CARDS === */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 16px 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 3px solid #c8a96e;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #0a1628;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 10px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-delta {
+    font-size: 10px;
+    color: #3a8a5c;
+    margin-top: 2px;
+  }
+
+  /* Dark variant KPI */
+  .kpi-card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 16px 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 3px solid #c8a96e;
+  }
+
+  .kpi-card-dark .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .kpi-card-dark .kpi-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
+  .kpi-card-dark .kpi-delta {
+    font-size: 10px;
+    color: #c8a96e;
+    margin-top: 2px;
+  }
+
+  /* === PULL QUOTE BLOCK === */
+  .pull-quote {
+    background: #ffffff;
+    border-left: 3px solid #c8a96e;
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 4px 0;
+  }
+
+  .pull-quote .quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #0a1628;
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .pull-quote .quote-attribution {
+    font-size: 10px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .pull-quote-dark {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid #c8a96e;
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 4px 0;
+  }
+
+  .pull-quote-dark .quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #ffffff;
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .pull-quote-dark .quote-attribution {
+    font-size: 10px;
+    color: #c8a96e;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* === PERCENTAGE DONUT === */
+  .donut-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .donut-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 90px;
+  }
+
+  .donut-svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .donut-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+
+  /* === FOOTER === */
+  .footer-bar {
+    width: 100%;
+    height: 36px;
+    background: #0a1628;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    flex-shrink: 0;
+    border-top: 2px solid #c8a96e;
+  }
+
+  .footer-bar span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.03em;
+  }
+
+  /* === MISC === */
+  .section-divider {
+    width: 40px;
+    height: 2px;
+    background: #c8a96e;
+    margin: 2px 0;
+  }
+
+  .section-divider-light {
+    width: 40px;
+    height: 2px;
+    background: rgba(200,169,110,0.4);
+    margin: 2px 0;
+  }
+
+  .stat-inline {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 6px 0;
+  }
+
+  .stat-inline .stat-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 32px;
+    color: #0a1628;
+    line-height: 1;
+  }
+
+  .stat-inline .stat-unit {
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header-bar">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.18L18.36 7.5 12 10.82 5.64 7.5 12 4.18zM5 9.12l6 3.33v6.37l-6-3.33V9.12zm8 9.7v-6.37l6-3.33v6.37l-6 3.33z" fill="#0a1628"/>
+        </svg>
+      </div>
+      <span class="org-name">{{ organization_name }}</span>
+    </div>
+    <span class="report-label">{{ report_label }}</span>
+  </div>
+
+  <!-- TITLE SECTION -->
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+    <div class="accent-line"></div>
+  </div>
+
+  <!-- TWO PANE SPLIT -->
+  <div class="two-pane">
+
+    <!-- LEFT PANE — Data & KPIs -->
+    <div class="pane-left">
+
+      <div>
+        <h2 class="section-heading">{{ left_section_heading }}</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <p class="body-text">{{ left_body_paragraph }}</p>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        {% for kpi in kpi_cards %}
+        <div class="kpi-card" style="border-left-color: {{ kpi.color }};">
+          <span class="kpi-value">{{ kpi.value }}</span>
+          <span class="kpi-label">{{ kpi.label }}</span>
+          <span class="kpi-delta">{{ kpi.delta }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pull Quote -->
+      <div class="pull-quote">
+        <div class="quote-text">"{{ pull_quote_text }}"</div>
+        <div class="quote-attribution">— {{ pull_quote_attribution }}</div>
+      </div>
+
+      <!-- Inline Stat -->
+      <div>
+        <h3 class="sub-heading">{{ left_stat_heading }}</h3>
+        <div class="stat-inline">
+          <span class="stat-number">{{ left_stat_value }}</span>
+          <span class="stat-unit">{{ left_stat_unit }}</span>
+        </div>
+        <p class="body-text">{{ left_stat_description }}</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANE — Visualization & Impact -->
+    <div class="pane-right">
+
+      <div>
+        <h2 class="section-heading-light">{{ right_section_heading }}</h2>
+        <div class="section-divider-light"></div>
+      </div>
+
+      <p class="body-text-light">{{ right_body_paragraph }}</p>
+
+      <!-- Percentage Donuts -->
+      <div class="donut-row">
+        {% for donut in donut_metrics %}
+        <div class="donut-item">
+          <svg class="donut-svg" viewBox="0 0 42 42">
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="4"/>
+            <circle cx="21" cy="21" r="15.915" fill="none" stroke="{{ donut.color }}" stroke-width="4"
+              stroke-dasharray="{{ donut.percentage }}, {{ donut.remainder }}"
+              stroke-dashoffset="25" stroke-linecap="round" transform="rotate(-90 21 21)"/>
+            <text x="21" y="22.5" text-anchor="middle" fill="#ffffff" font-size="9" font-family="'Segoe UI', Arial, sans-serif" font-weight="300">{{ donut.display_value }}</text>
+          </svg>
+          <span class="donut-label">{{ donut.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Dark KPI Cards -->
+      <div class="kpi-grid">
+        {% for kpi in dark_kpi_cards %}
+        <div class="kpi-card-dark" style="border-left-color: {{ kpi.color }};">
+          <span class="kpi-value">{{ kpi.value }}</span>
+          <span class="kpi-label">{{ kpi.label }}</span>
+          <span class="kpi-delta">{{ kpi.delta }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Dark Pull Quote -->
+      <div class="pull-quote-dark">
+        <div class="quote-text">"{{ right_pull_quote_text }}"</div>
+        <div class="quote-attribution">— {{ right_pull_quote_attribution }}</div>
+      </div>
+
+      <div>
+        <h3 class="sub-heading-light">{{ right_closing_heading }}</h3>
+        <p class="body-text-light">{{ right_closing_paragraph }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-bar">
+    <span>{{ footer_left }}</span>
+    <span>{{ footer_center }}</span>
+    <span>{{ footer_right }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0028",
+  "variables": {
+    "organization_name": "string — Name of the NGO or sustainability organization",
+    "report_label": "string — Header label for the report type",
+    "page_title": "string — Main page title, H1",
+    "page_subtitle": "string — Subtitle or introductory sentence beneath the title",
+    "left_section_heading": "string — H2 heading for the left pane",
+    "left_body_paragraph": "string — Introductory paragraph for the left pane",
+    "kpi_cards": "array of objects — Each with: value (string), label (string), delta (string), color (hex string)",
+    "pull_quote_text": "string — Quoted text for the left-pane pull quote block",
+    "pull_quote_attribution": "string — Attribution for the pull quote",
+    "left_stat_heading": "string — H3 heading for the inline stat section",
+    "left_stat_value": "string — Large numeric value",
+    "left_stat_unit": "string — Unit label",
+    "left_stat_description": "string — Brief description below the stat",
+    "right_section_heading": "string — H2 heading for the right pane",
+    "right_body_paragraph": "string — Introductory paragraph for the right pane",
+    "donut_metrics": "array of objects — Each with: percentage (number), remainder (number), display_value (string), label (string), color (hex string)",
+    "dark_kpi_cards": "array of objects — Each with: value (string), label (string), delta (string), color (hex string)",
+    "right_pull_quote_text": "string — Quoted text for the right-pane pull quote block",
+    "right_pull_quote_attribution": "string — Attribution for the right-pane pull quote",
+    "right_closing_heading": "string — H3 closing heading in the right pane",
+    "right_closing_paragraph": "string — Closing paragraph text for the right pane",
+    "footer_left": "string — Footer left text",
+    "footer_center": "string — Footer center text",
+    "footer_right": "string — Footer right text"
+  }
+}
+END_TEMPLATE_VARIABLES -->

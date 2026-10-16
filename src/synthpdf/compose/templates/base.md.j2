@@ -1,0 +1,13 @@
+{# Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. #}# {{ title }}
+
+{% if subtitle %}*{{ subtitle }}*
+
+{% endif %}
+{% for sec in sections %}
+{{ sec.content }}
+{% if sec.type in ("table", "image") %}
+
+---
+
+{% endif %}
+{% endfor %}

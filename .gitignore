@@ -218,3 +218,38 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Standalone generator and experiment runtime artifacts
+.env.*
+!.env.example
+*.env
+secrets/
+credentials/
+*.pem
+*.key
+*.pfx
+output/
+outputs/
+results/
+result/
+runs/
+predictions/
+parser_outputs/
+parser_output/
+parser_markdown/
+parserMarkdown/
+sourceMarkdown/
+page_images/
+dataset/
+datasets/
+logs/
+weights/
+checkpoints/
+.hf_cache/
+.huggingface/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+node_modules/
+.playwright/

@@ -1,0 +1,750 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #212121;
+    background: #ffffff;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #e91e63 0%, #9c27b0 40%, #ff9800 100%);
+    z-index: 10;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    background: linear-gradient(180deg, #4a0e2a 0%, #2d0a1a 100%);
+    padding: 48px 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: linear-gradient(180deg, transparent, rgba(233, 30, 99, 0.15));
+    pointer-events: none;
+  }
+
+  .sidebar-logo {
+    padding: 0 18px;
+    margin-bottom: 28px;
+  }
+
+  .sidebar-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #e91e63, #ff9800);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-logo-icon span {
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .sidebar-company {
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), transparent);
+    margin: 0 18px 20px 18px;
+  }
+
+  .sidebar-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0 18px;
+    margin-bottom: 12px;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    flex: 1;
+  }
+
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 7px 18px;
+    cursor: default;
+    position: relative;
+  }
+
+  .sidebar-nav-item.active {
+    background: rgba(233, 30, 99, 0.25);
+  }
+
+  .sidebar-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #e91e63;
+  }
+
+  .sidebar-nav-number {
+    color: #ff9800;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-nav-text {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 8.5px;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .sidebar-nav-item.active .sidebar-nav-text {
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .sidebar-nav-page {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 8px;
+    margin-left: 6px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    padding: 16px 18px 0;
+    margin-top: auto;
+  }
+
+  .sidebar-footer-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 7px;
+    line-height: 1.5;
+  }
+
+  .sidebar-badge {
+    display: inline-block;
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+    font-size: 7px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 8px;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    padding: 48px 40px 32px 36px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-content::before {
+    content: '';
+    position: absolute;
+    top: 80px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(252, 228, 236, 0.5) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .main-content > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-header {
+    margin-bottom: 6px;
+  }
+
+  .page-header-label {
+    font-size: 9px;
+    color: #e91e63;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .page-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    color: #212121;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    color: #757575;
+    line-height: 1.4;
+    max-width: 420px;
+  }
+
+  .header-gradient-bar {
+    height: 3px;
+    background: linear-gradient(90deg, #e91e63, #9c27b0, transparent);
+    margin: 14px 0 18px 0;
+    border-radius: 2px;
+  }
+
+  /* Tag/Badge row */
+  .tag-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-badge--primary {
+    background: #fce4ec;
+    color: #e91e63;
+  }
+
+  .tag-badge--secondary {
+    background: #f3e5f5;
+    color: #9c27b0;
+  }
+
+  .tag-badge--accent {
+    background: #fff3e0;
+    color: #e65100;
+  }
+
+  .tag-badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .tag-badge--primary .tag-badge-dot { background: #e91e63; }
+  .tag-badge--secondary .tag-badge-dot { background: #9c27b0; }
+  .tag-badge--accent .tag-badge-dot { background: #ff9800; }
+
+  /* Icon + Text Grid */
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .toc-card {
+    background: #ffffff;
+    border: 1px solid #f0e0e6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--card-accent, #e91e63), transparent);
+  }
+
+  .toc-card-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #ffffff;
+  }
+
+  .toc-card-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .toc-card-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #212121;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+
+  .toc-card-desc {
+    font-size: 8.5px;
+    color: #757575;
+    line-height: 1.35;
+  }
+
+  .toc-card-page {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    color: #e91e63;
+    margin-top: 3px;
+  }
+
+  /* Numbered list items */
+  .toc-numbered-list {
+    margin-bottom: 14px;
+  }
+
+  .toc-numbered-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #fce4ec;
+    gap: 10px;
+  }
+
+  .toc-numbered-item:last-child {
+    border-bottom: none;
+  }
+
+  .toc-num-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .toc-num-title {
+    flex: 0 1 auto;
+    font-size: 10px;
+    color: #212121;
+    font-weight: bold;
+  }
+
+  .toc-num-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccc;
+    margin: 0 8px;
+    min-width: 30px;
+  }
+
+  .toc-num-page {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #9c27b0;
+    flex-shrink: 0;
+  }
+
+  /* Data table */
+  .section-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #212121;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #e91e63, transparent);
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 9px;
+  }
+
+  .data-table thead th {
+    background: linear-gradient(135deg, #e91e63, #9c27b0);
+    color: #ffffff;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    text-align: left;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 4px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 4px 0 0;
+  }
+
+  .data-table tbody td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #fce4ec;
+    color: #212121;
+    font-size: 9px;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #fef7f9;
+  }
+
+  .data-table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 4px;
+  }
+
+  .data-table tbody tr:last-child td:last-child {
+    border-radius: 0 0 4px 0;
+  }
+
+  .table-section-badge {
+    display: inline-block;
+    background: #fce4ec;
+    color: #e91e63;
+    font-size: 7px;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Chart placeholder */
+  .chart-placeholder {
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #fff3e0 100%);
+    border: 1px dashed #e91e63;
+    border-radius: 6px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(233, 30, 99, 0.04) 40px,
+      rgba(233, 30, 99, 0.04) 41px
+    );
+  }
+
+  .chart-placeholder-icon {
+    font-size: 22px;
+    color: #e91e63;
+    margin-bottom: 4px;
+    opacity: 0.6;
+  }
+
+  .chart-placeholder-text {
+    font-size: 9px;
+    color: #9c27b0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .chart-placeholder-sub {
+    font-size: 7.5px;
+    color: #757575;
+    margin-top: 2px;
+  }
+
+  /* Bottom gradient band */
+  .bottom-gradient-band {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9800, #e91e63, #9c27b0);
+    z-index: 10;
+  }
+
+  /* Footer */
+  .main-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #fce4ec;
+  }
+
+  .main-footer-left {
+    font-size: 7.5px;
+    color: #757575;
+  }
+
+  .main-footer-right {
+    font-size: 8px;
+    color: #e91e63;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <span>{{ logo_initials }}</span>
+      </div>
+      <div class="sidebar-company">{{ company_name }}</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">{{ sidebar_label }}</div>
+    <ul class="sidebar-nav">
+      {% for nav in sidebar_nav_items %}
+      <li class="sidebar-nav-item {{ 'active' if nav.active else '' }}">
+        <span class="sidebar-nav-number">{{ nav.number }}</span>
+        <span class="sidebar-nav-text">{{ nav.title }}</span>
+        <span class="sidebar-nav-page">{{ nav.page }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">{{ sidebar_footer_text }}</div>
+      <div class="sidebar-badge">{{ sidebar_badge_text }}</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-label">{{ page_header_label }}</div>
+      <h1 class="page-title">{{ page_title }}</h1>
+      <p class="page-subtitle">{{ page_subtitle }}</p>
+    </div>
+    <div class="header-gradient-bar"></div>
+
+    <!-- Tag/Badge Row -->
+    <div class="tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge tag-badge--{{ tag.style }}">
+        <span class="tag-badge-dot"></span>
+        {{ tag.label }}
+      </span>
+      {% endfor %}
+    </div>
+
+    <!-- Icon + Text Grid (Section Cards) -->
+    <div class="toc-grid">
+      {% for card in toc_cards %}
+      <div class="toc-card" style="--card-accent: {{ card.accent_color }};">
+        <div class="toc-card-icon" style="background: linear-gradient(135deg, {{ card.accent_color }}, {{ card.accent_color_end }});">{{ card.icon }}</div>
+        <div class="toc-card-body">
+          <div class="toc-card-title">{{ card.title }}</div>
+          <div class="toc-card-desc">{{ card.description }}</div>
+          <div class="toc-card-page">p. {{ card.page }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Section: Detailed Contents -->
+    <div class="section-label">
+      {{ section_heading }}
+      <span class="section-label-line"></span>
+    </div>
+
+    <!-- Numbered List -->
+    <div class="toc-numbered-list">
+      {% for item in numbered_items %}
+      <div class="toc-numbered-item">
+        <div class="toc-num-circle" style="background: {{ item.color }};">{{ item.number }}</div>
+        <span class="toc-num-title">{{ item.title }}</span>
+        <span class="toc-num-dots"></span>
+        <span class="toc-num-page">{{ item.page }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Data Table -->
+    <div class="section-label" style="font-size: 12px; margin-top: 2px;">
+      {{ table_heading }}
+      <span class="section-label-line"></span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          {% for header in table_headers %}
+          <th>{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td>{{ row.section }}</td>
+          <td><span class="table-section-badge">{{ row.category }}</span></td>
+          <td>{{ row.pages }}</td>
+          <td>{{ row.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Chart Placeholder -->
+    <div class="chart-placeholder">
+      <div class="chart-placeholder-icon">&#9638;</div>
+      <div class="chart-placeholder-text">{{ chart_title }}</div>
+      <div class="chart-placeholder-sub">{{ chart_subtitle }}</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="main-footer">
+      <span class="main-footer-left">{{ footer_text }}</span>
+      <span class="main-footer-right">{{ page_number }}</span>
+    </div>
+  </main>
+
+  <div class="bottom-gradient-band"></div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0077",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "page_header_label": "string",
+    "logo_initials": "string",
+    "company_name": "string",
+    "sidebar_label": "string",
+    "sidebar_nav_items": "[{number: string, title: string, page: string, active: boolean}]",
+    "sidebar_footer_text": "string",
+    "sidebar_badge_text": "string",
+    "tags": "[{label: string, style: 'primary'|'secondary'|'accent'}]",
+    "toc_cards": "[{icon: string, title: string, description: string, page: string, accent_color: string, accent_color_end: string}]",
+    "section_heading": "string",
+    "numbered_items": "[{number: string, title: string, page: string, color: string}]",
+    "table_heading": "string",
+    "table_headers": "[string]",
+    "table_rows": "[{section: string, category: string, pages: string, status: string}]",
+    "chart_title": "string",
+    "chart_subtitle": "string",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

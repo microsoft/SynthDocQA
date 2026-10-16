@@ -1,0 +1,736 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #1a1a1a;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 10px 72px auto 1fr auto 36px;
+    grid-template-columns: 1fr;
+  }
+
+  /* Top accent bar */
+  .top-accent {
+    background: #c8a96e;
+    width: 100%;
+    height: 10px;
+  }
+
+  /* Header / Brand strip */
+  .header-strip {
+    background: #0a1628;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 72px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: #1a3a6b;
+    border: 2px solid #c8a96e;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8a96e;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  .header-title {
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .header-subtitle {
+    color: #c8a96e;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-right {
+    text-align: right;
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .header-right .doc-id {
+    color: #c8a96e;
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  /* Title section */
+  .title-section {
+    padding: 24px 40px 16px 40px;
+    background: #ffffff;
+    border-bottom: 3px solid #0a1628;
+  }
+
+  .classification-tag {
+    display: inline-block;
+    background: #1a3a6b;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+  }
+
+  .page-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #0a1628;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #666666;
+    margin-bottom: 8px;
+  }
+
+  .title-divider {
+    width: 60px;
+    height: 3px;
+    background: #c8a96e;
+    margin-bottom: 10px;
+  }
+
+  .intro-text {
+    font-size: 11px;
+    color: #666666;
+    max-width: 620px;
+    line-height: 1.55;
+  }
+
+  /* Main dashboard body */
+  .dashboard-body {
+    padding: 16px 40px 12px 40px;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 14px;
+  }
+
+  /* KPI Row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: #f7f5f0;
+    border-left: 4px solid #c8a96e;
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .kpi-card.navy { border-left-color: #0a1628; }
+  .kpi-card.blue { border-left-color: #1a3a6b; }
+  .kpi-card.gold { border-left-color: #c8a96e; }
+  .kpi-card.accent { border-left-color: #5a7aa8; }
+
+  .kpi-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #666666;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .kpi-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: #0a1628;
+    line-height: 1.1;
+  }
+
+  .kpi-unit {
+    font-size: 11px;
+    color: #666666;
+    font-weight: 400;
+  }
+
+  .kpi-delta {
+    font-size: 10px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .kpi-delta.positive { color: #2e7d32; }
+  .kpi-delta.negative { color: #c62828; }
+  .kpi-delta.neutral { color: #666666; }
+
+  /* Process Flow Section */
+  .section-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #0a1628;
+    margin-bottom: 4px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #c8a96e;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .process-flow-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .process-step {
+    text-align: center;
+    position: relative;
+    padding: 0 6px;
+  }
+
+  .step-number-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0a1628;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .step-number-circle.active {
+    background: #c8a96e;
+    color: #0a1628;
+  }
+
+  .step-connector {
+    position: absolute;
+    top: 18px;
+    left: calc(50% + 18px);
+    right: calc(-50% + 18px);
+    height: 2px;
+    background: #1a3a6b;
+    z-index: 1;
+  }
+
+  .process-step:last-child .step-connector {
+    display: none;
+  }
+
+  .step-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #0a1628;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .step-desc {
+    font-size: 9.5px;
+    color: #666666;
+    line-height: 1.4;
+  }
+
+  .step-metric {
+    margin-top: 6px;
+    background: #f7f5f0;
+    padding: 4px 8px;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #1a3a6b;
+  }
+
+  /* Data Table and Quote row */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+  }
+
+  /* Data Table */
+  .data-table-wrapper {
+    background: #ffffff;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #0a1628;
+    color: #ffffff;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 7px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:first-child {
+    padding-left: 12px;
+  }
+
+  .data-table tbody tr {
+    border-bottom: 1px solid #e8e4dc;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f7f5f0;
+  }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    color: #1a1a1a;
+    font-size: 10px;
+    vertical-align: middle;
+  }
+
+  .data-table tbody td:first-child {
+    padding-left: 12px;
+    font-weight: 600;
+  }
+
+  .data-table .status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .status-green { background: #2e7d32; }
+  .status-amber { background: #f9a825; }
+  .status-red { background: #c62828; }
+
+  /* Pull Quote Block */
+  .pull-quote-block {
+    background: #0a1628;
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .pull-quote-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #c8a96e;
+  }
+
+  .pull-quote-mark {
+    color: #c8a96e;
+    font-size: 32px;
+    font-family: Georgia, serif;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .pull-quote-text {
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .pull-quote-attribution {
+    color: #c8a96e;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .pull-quote-role {
+    color: rgba(255,255,255,0.5);
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  /* Secondary metrics row */
+  .metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .metric-tile {
+    background: #f7f5f0;
+    padding: 10px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-tile::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1a3a6b;
+  }
+
+  .metric-tile-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #666666;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .metric-tile-value {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0a1628;
+    line-height: 1.15;
+  }
+
+  .metric-bar {
+    margin-top: 6px;
+    height: 6px;
+    background: #e0ddd5;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    border-radius: 1px;
+  }
+
+  .metric-bar-fill.navy { background: #0a1628; }
+  .metric-bar-fill.blue { background: #1a3a6b; }
+  .metric-bar-fill.gold { background: #c8a96e; }
+
+  .metric-tile-detail {
+    font-size: 9px;
+    color: #666666;
+    margin-top: 3px;
+  }
+
+  /* Footer */
+  .footer {
+    background: #0a1628;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 36px;
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-center {
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-size: 9px;
+    color: #c8a96e;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top Accent Bar -->
+  <div class="top-accent"></div>
+
+  <!-- Header / Brand Strip -->
+  <div class="header-strip">
+    <div class="header-left">
+      <div class="logo-mark">{{ logo_text }}</div>
+      <div>
+        <div class="header-title">{{ company_name }}</div>
+        <div class="header-subtitle">{{ division_name }}</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-id">{{ document_id }}</div>
+      <div>{{ report_date }}</div>
+    </div>
+  </div>
+
+  <!-- Title Section -->
+  <div class="title-section">
+    <div class="classification-tag">{{ classification_label }}</div>
+    <h1 class="page-title">{{ page_title }}</h1>
+    <p class="page-subtitle">{{ page_subtitle }}</p>
+    <div class="title-divider"></div>
+    <p class="intro-text">{{ intro_paragraph }}</p>
+  </div>
+
+  <!-- Dashboard Body -->
+  <div class="dashboard-body">
+
+    <!-- KPI Cards Row -->
+    <div class="kpi-row">
+      <div class="kpi-card navy">
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-value">{{ kpi_1_value }} <span class="kpi-unit">{{ kpi_1_unit }}</span></div>
+        <div class="kpi-delta {{ kpi_1_delta_class }}">{{ kpi_1_delta }}</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-value">{{ kpi_2_value }} <span class="kpi-unit">{{ kpi_2_unit }}</span></div>
+        <div class="kpi-delta {{ kpi_2_delta_class }}">{{ kpi_2_delta }}</div>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-value">{{ kpi_3_value }} <span class="kpi-unit">{{ kpi_3_unit }}</span></div>
+        <div class="kpi-delta {{ kpi_3_delta_class }}">{{ kpi_3_delta }}</div>
+      </div>
+      <div class="kpi-card accent">
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-value">{{ kpi_4_value }} <span class="kpi-unit">{{ kpi_4_unit }}</span></div>
+        <div class="kpi-delta {{ kpi_4_delta_class }}">{{ kpi_4_delta }}</div>
+      </div>
+    </div>
+
+    <!-- Process Flow -->
+    <div>
+      <div class="section-label">{{ process_section_label }}</div>
+      <div class="section-heading">{{ process_section_heading }}</div>
+      <div class="process-flow-container" style="margin-top: 12px;">
+        <div class="process-steps">
+          {% for step in process_steps %}
+          <div class="process-step">
+            {% if not loop.last %}<div class="step-connector"></div>{% endif %}
+            <div class="step-number-circle {% if step.active %}active{% endif %}">{{ step.number }}</div>
+            <div class="step-title">{{ step.title }}</div>
+            <div class="step-desc">{{ step.description }}</div>
+            <div class="step-metric">{{ step.metric }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table + Pull Quote -->
+    <div class="bottom-grid">
+      <div class="data-table-wrapper">
+        <div class="section-label">{{ table_section_label }}</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.col_1 }}</td>
+              <td><span class="status-indicator {{ row.status_color }}"></span>{{ row.col_2 }}</td>
+              <td>{{ row.col_3 }}</td>
+              <td>{{ row.col_4 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="pull-quote-block">
+        <div class="pull-quote-mark">&ldquo;</div>
+        <div class="pull-quote-text">{{ pull_quote_text }}</div>
+        <div class="pull-quote-attribution">{{ pull_quote_author }}</div>
+        <div class="pull-quote-role">{{ pull_quote_role }}</div>
+      </div>
+    </div>
+
+    <!-- Secondary Metrics Strip -->
+    <div class="metrics-strip">
+      <div class="metric-tile">
+        <div class="metric-tile-label">{{ metric_tile_1_label }}</div>
+        <div class="metric-tile-value">{{ metric_tile_1_value }}</div>
+        <div class="metric-bar"><div class="metric-bar-fill navy" style="width: {{ metric_tile_1_pct }};"></div></div>
+        <div class="metric-tile-detail">{{ metric_tile_1_detail }}</div>
+      </div>
+      <div class="metric-tile">
+        <div class="metric-tile-label">{{ metric_tile_2_label }}</div>
+        <div class="metric-tile-value">{{ metric_tile_2_value }}</div>
+        <div class="metric-bar"><div class="metric-bar-fill blue" style="width: {{ metric_tile_2_pct }};"></div></div>
+        <div class="metric-tile-detail">{{ metric_tile_2_detail }}</div>
+      </div>
+      <div class="metric-tile">
+        <div class="metric-tile-label">{{ metric_tile_3_label }}</div>
+        <div class="metric-tile-value">{{ metric_tile_3_value }}</div>
+        <div class="metric-bar"><div class="metric-bar-fill gold" style="width: {{ metric_tile_3_pct }};"></div></div>
+        <div class="metric-tile-detail">{{ metric_tile_3_detail }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">{{ footer_left_text }}</div>
+    <div class="footer-center">{{ footer_classification }}</div>
+    <div class="footer-right">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0040",
+  "variables": {
+    "logo_text": "string — Short logo mark text, e.g. 'ADS'",
+    "company_name": "string — Organization name, e.g. 'NORTHWIND AEROSPACE'",
+    "division_name": "string — Division or department, e.g. 'Defense Systems Division'",
+    "document_id": "string — Document reference number, e.g. 'RPT-2024-ADS-0471'",
+    "report_date": "string — Report date, e.g. 'December 31, 2024'",
+    "classification_label": "string — Classification tag, e.g. 'INTERNAL — PROCESS REVIEW'",
+    "page_title": "string — Primary page title, e.g. 'Production Process Flow Analysis'",
+    "page_subtitle": "string — Subtitle, e.g. 'FY2024 Manufacturing Readiness Assessment — Integrated Defense Platform'",
+    "intro_paragraph": "string — Introductory paragraph summarizing the page content",
+    "kpi_1_label": "string — First KPI label, e.g. 'Production Rate'",
+    "kpi_1_value": "string — First KPI value, e.g. '14.2'",
+    "kpi_1_unit": "string — First KPI unit, e.g. 'units/mo'",
+    "kpi_1_delta": "string — First KPI change indicator, e.g. '▲ +8.4% YoY'",
+    "kpi_1_delta_class": "string — CSS class: 'positive', 'negative', or 'neutral'",
+    "kpi_2_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_unit": "string",
+    "kpi_2_delta": "string",
+    "kpi_2_delta_class": "string",
+    "kpi_3_label": "string",
+    "kpi_3_value": "string",
+    "kpi_3_unit": "string",
+    "kpi_3_delta": "string",
+    "kpi_3_delta_class": "string",
+    "kpi_4_label": "string",
+    "kpi_4_value": "string",
+    "kpi_4_unit": "string",
+    "kpi_4_delta": "string",
+    "kpi_4_delta_class": "string",
+    "process_section_label": "string — Section label, e.g. 'PROCESS WORKFLOW'",
+    "process_section_heading": "string — Section heading, e.g. 'Integrated Manufacturing Process Flow'",
+    "process_steps": "array of objects — Each: { number: string, title: string, description: string, metric: string, active: boolean }",
+    "table_section_label": "string — Table section label, e.g. 'MILESTONE STATUS'",
+    "table_headers": "array of strings — Column headers, e.g. ['Milestone', 'Status', 'Target', 'Variance']",
+    "table_rows": "array of objects — Each: { col_1: string, status_color: string ('status-green'|'status-amber'|'status-red'), col_2: string, col_3: string, col_4: string }",
+    "pull_quote_text": "string — Quote text",
+    "pull_quote_author": "string — Author name",
+    "pull_quote_role": "string — Author title/role",
+    "metric_tile_1_label": "string",
+    "metric_tile_1_value": "string",
+    "metric_tile_1_pct": "string — CSS width percentage, e.g. '87%'",
+    "metric_tile_1_detail": "string — Supporting detail text",
+    "metric_tile_2_label": "string",
+    "metric_tile_2_value": "string",
+    "metric_tile_2_pct": "string",
+    "metric_tile_2_detail": "string",
+    "metric_tile_3_label": "string",
+    "metric_tile_3_value": "string",
+    "metric_tile_3_pct": "string",
+    "metric_tile_3_detail": "string",
+    "footer_left_text": "string — Footer left text, e.g. '© 2024 Northwind Aerospace. All Rights Reserved.'",
+    "footer_classification": "string — Footer classification, e.g. 'COMPANY CONFIDENTIAL'",
+    "page_number": "string — Page number, e.g. 'Page 7 of 24'"
+  }
+}
+END_TEMPLATE_VARIABLES -->

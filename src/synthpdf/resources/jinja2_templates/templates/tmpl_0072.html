@@ -1,0 +1,517 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #2c3e50;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    background: #ecf0f1;
+    overflow: hidden;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: "\25C9";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 580px;
+    color: #2c3e50;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .page::after {
+    content: "\2726";
+    position: absolute;
+    bottom: 80px;
+    right: 60px;
+    font-size: 200px;
+    color: #34495e;
+    opacity: 0.04;
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* Top navigation tabs */
+  .top-nav {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    height: 38px;
+    background: #2c3e50;
+    padding: 0 60px;
+    gap: 0;
+  }
+
+  .top-nav .tab {
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+  }
+
+  .top-nav .tab.active {
+    color: #ffffff;
+    border-bottom: 2px solid #e74c3c;
+    font-weight: 700;
+  }
+
+  /* Header area */
+  .header {
+    position: relative;
+    z-index: 2;
+    padding: 48px 60px 0 60px;
+  }
+
+  .header-label {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.15;
+    margin-bottom: 0;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    margin: 28px 60px 0 60px;
+    gap: 14px;
+  }
+
+  .divider-label .line {
+    flex: 1;
+    height: 1px;
+    background: #2c3e50;
+    opacity: 0.2;
+  }
+
+  .divider-label .label-text {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #7f8c8d;
+    white-space: nowrap;
+  }
+
+  /* Map / Geographic chart placeholder */
+  .map-container {
+    position: relative;
+    z-index: 2;
+    margin: 20px 60px 0 60px;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 340px;
+    background: #ffffff;
+    border: 1px solid rgba(44,62,80,0.1);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2c3e50, #e74c3c, #34495e);
+  }
+
+  .chart-placeholder .map-icon {
+    font-size: 64px;
+    color: #2c3e50;
+    opacity: 0.12;
+    margin-bottom: 12px;
+  }
+
+  .chart-placeholder .chart-label {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .chart-placeholder .chart-sublabel {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    color: #7f8c8d;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  .chart-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* Pull quote block */
+  .pull-quote {
+    position: relative;
+    z-index: 2;
+    margin: 30px 60px 0 60px;
+    padding: 24px 32px;
+    background: #ffffff;
+    border-left: 4px solid #e74c3c;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .pull-quote p {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    color: #2c3e50;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .pull-quote .attribution {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    color: #7f8c8d;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Comparison columns */
+  .comparison-section {
+    position: relative;
+    z-index: 2;
+    margin: 28px 60px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  .comparison-col {
+    background: #ffffff;
+    padding: 20px 18px;
+    border-radius: 3px;
+    border-top: 3px solid #2c3e50;
+  }
+
+  .comparison-col.accent {
+    border-top-color: #e74c3c;
+  }
+
+  .comparison-col.secondary {
+    border-top-color: #34495e;
+  }
+
+  .comparison-col .col-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .comparison-col.accent .col-number {
+    color: #e74c3c;
+  }
+
+  .comparison-col .col-label {
+    font-family: Georgia, serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+  }
+
+  .comparison-col .col-desc {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: #2c3e50;
+    line-height: 1.7;
+  }
+
+  /* Timeline nodes */
+  .timeline-section {
+    position: relative;
+    z-index: 2;
+    margin: 28px 60px 0 60px;
+  }
+
+  .timeline-section h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 16px;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 12px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2c3e50, #34495e, #7f8c8d);
+    opacity: 0.25;
+  }
+
+  .timeline-node {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+
+  .timeline-node .node-dot {
+    width: 12px;
+    height: 12px;
+    background: #2c3e50;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    position: relative;
+    z-index: 1;
+    border: 2px solid #ecf0f1;
+  }
+
+  .timeline-node.active .node-dot {
+    background: #e74c3c;
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-node .node-year {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 4px;
+  }
+
+  .timeline-node .node-text {
+    font-family: Georgia, serif;
+    font-size: 9px;
+    color: #7f8c8d;
+    line-height: 1.5;
+    padding: 0 6px;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    height: 36px;
+    background: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+  }
+
+  .footer .footer-text {
+    font-family: Georgia, serif;
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .footer .page-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top Navigation Tabs -->
+  <nav class="top-nav">
+    {% for tab in nav_tabs %}
+    <div class="tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">{{ header_label }}</div>
+    <h1>{{ page_title }}</h1>
+  </div>
+
+  <!-- Divider with label -->
+  <div class="divider-label">
+    <span class="line"></span>
+    <span class="label-text">{{ divider_label }}</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- Map / Geographic Chart -->
+  <div class="map-container">
+    <div class="chart-placeholder">
+      {% if map_image_url %}
+      <img src="{{ map_image_url }}" alt="{{ map_image_alt }}">
+      {% else %}
+      <div class="map-icon">&#127760;</div>
+      <div class="chart-label">{{ chart_title }}</div>
+      <div class="chart-sublabel">{{ chart_subtitle }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Pull Quote -->
+  <div class="pull-quote">
+    <p>&ldquo;{{ pull_quote_text }}&rdquo;</p>
+    <div class="attribution">&mdash; {{ pull_quote_attribution }}</div>
+  </div>
+
+  <!-- Comparison Columns -->
+  <div class="comparison-section">
+    <div class="comparison-col">
+      <div class="col-number">{{ kpi_1_value }}</div>
+      <div class="col-label">{{ kpi_1_label }}</div>
+      <div class="col-desc">{{ kpi_1_description }}</div>
+    </div>
+    <div class="comparison-col accent">
+      <div class="col-number">{{ kpi_2_value }}</div>
+      <div class="col-label">{{ kpi_2_label }}</div>
+      <div class="col-desc">{{ kpi_2_description }}</div>
+    </div>
+    <div class="comparison-col secondary">
+      <div class="col-number">{{ kpi_3_value }}</div>
+      <div class="col-label">{{ kpi_3_label }}</div>
+      <div class="col-desc">{{ kpi_3_description }}</div>
+    </div>
+  </div>
+
+  <!-- Timeline Nodes -->
+  <div class="timeline-section">
+    <h3>{{ timeline_heading }}</h3>
+    <div class="timeline">
+      {% for node in timeline_nodes %}
+      <div class="timeline-node {% if node.active %}active{% endif %}">
+        <div class="node-dot"></div>
+        <div class="node-year">{{ node.year }}</div>
+        <div class="node-text">{{ node.description }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-text">{{ footer_text }}</span>
+    <span class="page-number">{{ page_number }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0072",
+  "variables": {
+    "page_title": "string",
+    "header_label": "string",
+    "divider_label": "string",
+    "nav_tabs": "list of objects with 'label' (string) and 'active' (boolean)",
+    "map_image_url": "string (optional, URL to geographic/map image)",
+    "map_image_alt": "string (alt text for map image)",
+    "chart_title": "string (shown when no map image provided)",
+    "chart_subtitle": "string (shown when no map image provided)",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_description": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_description": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_description": "string",
+    "timeline_heading": "string",
+    "timeline_nodes": "list of objects with 'year' (string), 'description' (string), 'active' (boolean)",
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

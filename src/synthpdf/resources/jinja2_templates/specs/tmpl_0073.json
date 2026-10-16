@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0073",
+  "industry": "real_estate_infrastructure",
+  "page_role": "product_showcase",
+  "layout": {
+    "name": "card_mosaic",
+    "description": "Page composed entirely of rectangular cards of varying sizes, arranged in a masonry or Pinterest-style layout."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "percentage_donut",
+    "callout_box",
+    "colored_section_band",
+    "top_navigation_tabs",
+    "page_number_footer",
+    "footnotes_strip"
+  ],
+  "density": "balanced",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 731380
+}

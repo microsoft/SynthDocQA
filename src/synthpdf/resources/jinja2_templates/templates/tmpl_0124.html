@@ -1,0 +1,589 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fff8f0;
+    font-family: Georgia, serif;
+    color: #3e2723;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fff8f0;
+  }
+
+  .brand-strip {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #5c4033 0%, #795548 40%, #8bc34a 100%);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 52px 0 52px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-placeholder {
+    width: 44px;
+    height: 44px;
+    background: #5c4033;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff8f0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #5c4033;
+    line-height: 1.2;
+  }
+
+  .logo-text span {
+    display: block;
+    font-size: 9px;
+    font-weight: 400;
+    color: #8d6e63;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  .header-tag-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tag-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 8.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tag-primary { background: #5c4033; color: #fff8f0; }
+  .tag-accent { background: #8bc34a; color: #3e2723; }
+  .tag-outline { background: transparent; border: 1px solid #795548; color: #795548; }
+
+  .hero-section {
+    margin: 24px 52px 0 52px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .hero-content h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.15;
+    color: #5c4033;
+    margin-bottom: 10px;
+  }
+
+  .hero-content h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.3;
+    color: #795548;
+    margin-bottom: 14px;
+  }
+
+  .hero-content p {
+    font-size: 11px;
+    color: #3e2723;
+    line-height: 1.7;
+    max-width: 380px;
+  }
+
+  .hero-image-placeholder {
+    width: 280px;
+    height: 170px;
+    background: linear-gradient(135deg, #e8d5c4 0%, #d7c4b0 50%, #c9b39e 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .wave-divider {
+    width: 100%;
+    height: 36px;
+    margin: 18px 0 0 0;
+    overflow: hidden;
+  }
+
+  .wave-divider svg { width: 100%; height: 100%; }
+
+  .quote-section {
+    margin: 0 52px;
+    padding: 16px 24px;
+    background: #ffffff;
+    border-left: 4px solid #8bc34a;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .quote-section blockquote {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #5c4033;
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  .quote-attribution {
+    font-size: 9.5px;
+    color: #8d6e63;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .section-heading-area {
+    margin: 22px 52px 0 52px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-heading-area h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #5c4033;
+    white-space: nowrap;
+  }
+
+  .section-heading-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #795548 0%, transparent 100%);
+  }
+
+  .timeline-container {
+    margin: 20px 40px 0 40px;
+    position: relative;
+    height: 380px;
+  }
+
+  .timeline-spine {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, #5c4033 0%, #795548 50%, #8bc34a 100%);
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+
+  .timeline-nodes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .timeline-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+  }
+
+  .timeline-node.above {
+    bottom: 50%;
+    flex-direction: column-reverse;
+  }
+
+  .timeline-node.below {
+    top: 50%;
+  }
+
+  .node-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid #5c4033;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .node-dot.accent { border-color: #8bc34a; background: #8bc34a; }
+  .node-dot.secondary { border-color: #795548; }
+
+  .node-connector {
+    width: 2px;
+    height: 24px;
+    background: #795548;
+    flex-shrink: 0;
+  }
+
+  .node-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 10px 12px;
+    width: 120px;
+    box-shadow: 0 1px 4px rgba(92, 64, 51, 0.10);
+    border: 1px solid rgba(121, 85, 72, 0.12);
+    text-align: center;
+  }
+
+  .node-card .node-year {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #5c4033;
+    margin-bottom: 3px;
+  }
+
+  .node-card .node-title {
+    font-weight: 700;
+    font-size: 9.5px;
+    color: #795548;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .node-card .node-desc {
+    font-size: 9px;
+    color: #8d6e63;
+    line-height: 1.5;
+  }
+
+  .node-card .node-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5c4033;
+    color: #fff8f0;
+    font-weight: 700;
+    font-size: 9px;
+    margin-bottom: 5px;
+  }
+
+  .timeline-node:nth-child(1) { left: 16px; }
+  .timeline-node:nth-child(2) { left: 136px; }
+  .timeline-node:nth-child(3) { left: 256px; }
+  .timeline-node:nth-child(4) { left: 376px; }
+  .timeline-node:nth-child(5) { left: 496px; }
+  .timeline-node:nth-child(6) { left: 600px; }
+
+  .numbered-list {
+    margin: 0 52px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .numbered-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .numbered-item .num-circle {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 50%;
+    background: #5c4033;
+    color: #fff8f0;
+    font-weight: 700;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .numbered-item .num-text {
+    font-size: 9.5px;
+    color: #3e2723;
+    line-height: 1.5;
+  }
+
+  .numbered-item .num-text strong {
+    color: #5c4033;
+    font-size: 10px;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .bottom-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+  }
+
+  .bottom-wave svg { width: 100%; height: 100%; }
+
+  .footer {
+    position: absolute;
+    bottom: 12px;
+    left: 52px;
+    right: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8px;
+    color: #8d6e63;
+    z-index: 5;
+  }
+
+  .footer-left { text-transform: uppercase; letter-spacing: 1.5px; }
+  .footer-right { font-weight: 700; color: #5c4033; }
+
+  .organic-wave-left {
+    position: absolute;
+    top: 220px;
+    left: 0;
+    width: 52px;
+    height: 260px;
+    overflow: hidden;
+    opacity: 0.08;
+  }
+
+  .organic-wave-right {
+    position: absolute;
+    top: 400px;
+    right: 0;
+    width: 52px;
+    height: 300px;
+    overflow: hidden;
+    opacity: 0.06;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand-strip"></div>
+
+  <div class="organic-wave-left">
+    <svg viewBox="0 0 52 260" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 C30,40 10,80 25,120 C40,160 5,200 20,260" stroke="#5c4033" stroke-width="18" fill="none"/>
+      <path d="M0,30 C20,60 0,100 15,140 C30,180 0,220 10,260" stroke="#795548" stroke-width="12" fill="none"/>
+    </svg>
+  </div>
+  <div class="organic-wave-right">
+    <svg viewBox="0 0 52 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M52,0 C22,50 42,100 27,150 C12,200 47,250 32,300" stroke="#8bc34a" stroke-width="16" fill="none"/>
+      <path d="M52,20 C32,70 52,120 37,170 C22,220 52,270 42,300" stroke="#5c4033" stroke-width="10" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-placeholder">{{ logo_initials }}</div>
+      <div class="logo-text">
+        {{ company_name }}
+        <span>{{ company_tagline }}</span>
+      </div>
+    </div>
+    <div class="header-tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge {% if loop.index == 1 %}tag-primary{% elif loop.index == 2 %}tag-accent{% else %}tag-outline{% endif %}">{{ tag.label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>{{ page_title }}</h1>
+      <h2>{{ section_heading }}</h2>
+      <p>{{ body_paragraph_1 }}</p>
+    </div>
+    <div class="hero-image-placeholder">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 794 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,20 C100,8 200,32 300,18 C400,4 500,30 600,16 C700,2 750,28 794,14" stroke="#795548" stroke-width="1.5" fill="none" opacity="0.3"/>
+      <path d="M0,26 C120,12 220,34 340,20 C460,6 540,32 660,18 C740,8 770,30 794,22" stroke="#8bc34a" stroke-width="1" fill="none" opacity="0.25"/>
+    </svg>
+  </div>
+
+  <div class="quote-section">
+    <blockquote>"{{ quote_text }}"</blockquote>
+    <div class="quote-attribution">— {{ quote_author }}, {{ quote_role }}</div>
+  </div>
+
+  <div class="section-heading-area">
+    <h3>{{ timeline_heading }}</h3>
+    <div class="section-heading-line"></div>
+  </div>
+
+  <div class="timeline-container">
+    <div class="timeline-spine"></div>
+    <div class="timeline-nodes">
+      {% for event in timeline_events %}
+      <div class="timeline-node {% if loop.index is odd %}above{% else %}below{% endif %}" style="left: {{ event.position_px }}px;">
+        {% if loop.index is odd %}
+        <div class="node-card">
+          <div class="node-number">{{ loop.index }}</div>
+          <div class="node-year">{{ event.year }}</div>
+          <div class="node-title">{{ event.title }}</div>
+          <div class="node-desc">{{ event.description }}</div>
+        </div>
+        <div class="node-connector"></div>
+        <div class="node-dot {% if loop.index == 1 %}accent{% elif loop.index is even %}secondary{% endif %}"></div>
+        {% else %}
+        <div class="node-dot {% if loop.index == 2 %}accent{% elif loop.index is even %}secondary{% endif %}"></div>
+        <div class="node-connector"></div>
+        <div class="node-card">
+          <div class="node-number" style="background: #795548;">{{ loop.index }}</div>
+          <div class="node-year">{{ event.year }}</div>
+          <div class="node-title">{{ event.title }}</div>
+          <div class="node-desc">{{ event.description }}</div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="numbered-list">
+    {% for item in numbered_items %}
+    <div class="numbered-item">
+      <div class="num-circle" {% if item.color %}style="background: {{ item.color }};"{% endif %}>{{ loop.index }}</div>
+      <div class="num-text">
+        <strong>{{ item.heading }}</strong>
+        {{ item.description }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="bottom-wave">
+    <svg viewBox="0 0 794 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C80,20 160,50 240,30 C320,10 400,45 480,25 C560,5 640,40 720,20 C760,10 780,35 794,28" stroke="#5c4033" stroke-width="1.2" fill="none" opacity="0.12"/>
+      <path d="M0,50 C100,30 200,55 300,35 C400,15 500,50 600,30 C700,10 760,45 794,38" stroke="#8bc34a" stroke-width="1" fill="none" opacity="0.10"/>
+      <path d="M0,55 Q200,25 400,50 Q600,20 794,48" fill="rgba(92,64,51,0.03)"/>
+    </svg>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">{{ footer_text }}</div>
+    <div class="footer-right">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0124",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "logo_initials": "string",
+    "company_name": "string",
+    "company_tagline": "string",
+    "tags": [
+      {
+        "label": "string"
+      }
+    ],
+    "hero_image_url": "string (URL or path to image)",
+    "hero_image_alt": "string",
+    "quote_text": "string",
+    "quote_author": "string",
+    "quote_role": "string",
+    "timeline_heading": "string",
+    "timeline_events": [
+      {
+        "year": "string",
+        "title": "string",
+        "description": "string",
+        "position_px": "number (pixel offset from left, e.g. 16, 136, 256, 376, 496, 600)"
+      }
+    ],
+    "numbered_items": [
+      {
+        "heading": "string",
+        "description": "string",
+        "color": "string (optional hex color for circle, default #5c4033)"
+      }
+    ],
+    "footer_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

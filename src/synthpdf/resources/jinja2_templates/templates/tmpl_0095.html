@@ -1,0 +1,632 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #212121;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Large background watermark — NASA-inspired geometric compass rose */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    background:
+      conic-gradient(from 0deg at 50% 50%,
+        transparent 0deg, rgba(233,30,99,0.03) 10deg, transparent 20deg,
+        transparent 30deg, rgba(156,39,176,0.03) 40deg, transparent 50deg,
+        transparent 60deg, rgba(233,30,99,0.03) 70deg, transparent 80deg,
+        transparent 90deg, rgba(156,39,176,0.03) 100deg, transparent 110deg,
+        transparent 120deg, rgba(233,30,99,0.03) 130deg, transparent 140deg,
+        transparent 150deg, rgba(156,39,176,0.03) 160deg, transparent 170deg,
+        transparent 180deg, rgba(233,30,99,0.03) 190deg, transparent 200deg,
+        transparent 210deg, rgba(156,39,176,0.03) 220deg, transparent 230deg,
+        transparent 240deg, rgba(233,30,99,0.03) 250deg, transparent 260deg,
+        transparent 270deg, rgba(156,39,176,0.03) 280deg, transparent 290deg,
+        transparent 300deg, rgba(233,30,99,0.03) 310deg, transparent 320deg,
+        transparent 330deg, rgba(156,39,176,0.03) 340deg, transparent 350deg,
+        transparent 360deg
+      );
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border: 1px solid rgba(233,30,99,0.06);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Watermark text overlay */
+  .watermark-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 120px;
+    color: rgba(233,30,99,0.03);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Top navigation tabs */
+  .top-nav {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+    display: flex;
+    align-items: stretch;
+  }
+
+  .nav-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    cursor: default;
+  }
+
+  .nav-tab.active {
+    color: #ffffff;
+    background: rgba(255,255,255,0.15);
+    font-weight: 600;
+  }
+
+  .nav-tab:last-child {
+    border-right: none;
+  }
+
+  /* Brand strip */
+  .brand-strip {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 18px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #fce4ec;
+  }
+
+  .brand-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #212121;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-name span {
+    font-weight: 600;
+    color: #e91e63;
+  }
+
+  .brand-meta {
+    text-align: right;
+    font-size: 10px;
+    color: #757575;
+    line-height: 1.5;
+  }
+
+  .brand-meta .doc-id {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 9px;
+    color: #9c27b0;
+  }
+
+  /* Main content area */
+  .content-area {
+    position: relative;
+    z-index: 2;
+    padding: 32px 56px 24px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Page title */
+  .page-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #e91e63;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .page-subtitle {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #757575;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* Tag / badge row */
+  .tag-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-badge.primary {
+    background: #fce4ec;
+    color: #e91e63;
+  }
+
+  .tag-badge.secondary {
+    background: #f3e5f5;
+    color: #9c27b0;
+  }
+
+  .tag-badge.accent {
+    background: #fff3e0;
+    color: #e65100;
+  }
+
+  .tag-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .tag-badge.primary .tag-badge-dot { background: #e91e63; }
+  .tag-badge.secondary .tag-badge-dot { background: #9c27b0; }
+  .tag-badge.accent .tag-badge-dot { background: #ff9800; }
+
+  /* Infographic flow container */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  /* Flow intro paragraph */
+  .flow-intro {
+    font-size: 12px;
+    color: #212121;
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 4px;
+  }
+
+  /* Numbered flow step */
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+  }
+
+  .flow-step-number {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-step:nth-child(odd) .flow-step-number {
+    background: #e91e63;
+  }
+
+  .flow-step:nth-child(even) .flow-step-number {
+    background: #9c27b0;
+  }
+
+  /* Connector line between steps */
+  .flow-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    width: 2px;
+    height: calc(100% + 2px);
+    background: linear-gradient(to bottom, #e91e63, #9c27b0);
+    opacity: 0.2;
+    z-index: 0;
+  }
+
+  .flow-step-content {
+    flex: 1;
+    padding-top: 2px;
+  }
+
+  .flow-step-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #212121;
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+
+  .flow-step-text {
+    font-size: 11.5px;
+    color: #757575;
+    line-height: 1.6;
+  }
+
+  /* Pull quote block */
+  .pull-quote-block {
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+    border-left: 4px solid #e91e63;
+    padding: 20px 28px;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .pull-quote-mark {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-size: 40px;
+    color: #e91e63;
+    opacity: 0.2;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .pull-quote-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: #212121;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 10px;
+    padding-left: 16px;
+  }
+
+  .quote-attribution {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 16px;
+  }
+
+  .quote-attribution-line {
+    width: 24px;
+    height: 2px;
+    background: #e91e63;
+  }
+
+  .quote-attribution-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #e91e63;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .quote-attribution-title {
+    font-size: 10px;
+    color: #757575;
+    margin-left: 8px;
+    font-weight: 400;
+  }
+
+  /* Closing paragraph */
+  .closing-section {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #212121;
+    line-height: 1.7;
+  }
+
+  /* Signature area */
+  .signature-area {
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .signature-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .signature-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #212121;
+  }
+
+  .signature-title {
+    font-size: 11px;
+    color: #757575;
+    font-weight: 400;
+  }
+
+  .signature-line {
+    width: 160px;
+    height: 1px;
+    background: #212121;
+    margin-bottom: 6px;
+    opacity: 0.3;
+  }
+
+  /* Footer */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    height: 48px;
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+  }
+
+  .footer-text {
+    font-size: 9px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-page {
+    font-size: 9px;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* Decorative top accent line */
+  .accent-line-top {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff9800 0%, #e91e63 35%, #9c27b0 100%);
+  }
+
+  /* Subtle grid watermark lines */
+  .watermark-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(233,30,99,0.015) 79px, rgba(233,30,99,0.015) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(156,39,176,0.015) 79px, rgba(156,39,176,0.015) 80px);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Watermark layers -->
+  <div class="watermark-grid"></div>
+  <div class="watermark-text">{{ watermark_text }}</div>
+
+  <!-- Top accent line -->
+  <div class="accent-line-top"></div>
+
+  <!-- Navigation tabs -->
+  <nav class="top-nav">
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="brand-logo-area">
+      <div class="brand-icon">{{ brand_icon_text }}</div>
+      <div class="brand-name">{{ brand_name_prefix }}<span>{{ brand_name_highlight }}</span></div>
+    </div>
+    <div class="brand-meta">
+      <div class="doc-id">{{ document_id }}</div>
+      <div>{{ report_period }}</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content-area">
+    <!-- Title -->
+    <h1 class="page-title">{{ page_title }}</h1>
+    <div class="page-subtitle">{{ page_subtitle }}</div>
+
+    <!-- Tag / badge row -->
+    <div class="tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge {{ tag.style }}">
+        <span class="tag-badge-dot"></span>
+        {{ tag.label }}
+      </span>
+      {% endfor %}
+    </div>
+
+    <!-- Opening paragraph -->
+    <div class="flow-intro">{{ opening_paragraph }}</div>
+
+    <!-- Infographic flow: numbered strategic priorities -->
+    <div class="flow-container">
+      {% for step in flow_steps %}
+      <div class="flow-step">
+        <div class="flow-step-number">{{ step.number }}</div>
+        <div class="flow-step-content">
+          <div class="flow-step-heading">{{ step.heading }}</div>
+          <div class="flow-step-text">{{ step.text }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pull quote -->
+    <div class="pull-quote-block">
+      <div class="pull-quote-mark">&ldquo;</div>
+      <div class="pull-quote-text">{{ pull_quote_text }}</div>
+      <div class="quote-attribution">
+        <div class="quote-attribution-line"></div>
+        <span class="quote-attribution-name">{{ quote_author_name }}</span>
+        <span class="quote-attribution-title">{{ quote_author_title }}</span>
+      </div>
+    </div>
+
+    <!-- Closing section -->
+    <div class="closing-section">{{ closing_paragraph }}</div>
+
+    <!-- Signature -->
+    <div class="signature-area">
+      <div class="signature-block">
+        <div class="signature-line"></div>
+        <div class="signature-name">{{ ceo_name }}</div>
+        <div class="signature-title">{{ ceo_title }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <span class="footer-text">{{ footer_left_text }}</span>
+    <span class="footer-page">{{ footer_page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0095",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "watermark_text": "string",
+    "brand_icon_text": "string",
+    "brand_name_prefix": "string",
+    "brand_name_highlight": "string",
+    "document_id": "string",
+    "report_period": "string",
+    "nav_tabs": "[{label: string, active: boolean}]",
+    "tags": "[{label: string, style: 'primary'|'secondary'|'accent'}]",
+    "opening_paragraph": "string",
+    "flow_steps": "[{number: string, heading: string, text: string}]",
+    "pull_quote_text": "string",
+    "quote_author_name": "string",
+    "quote_author_title": "string",
+    "closing_paragraph": "string",
+    "ceo_name": "string",
+    "ceo_title": "string",
+    "footer_left_text": "string",
+    "footer_page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

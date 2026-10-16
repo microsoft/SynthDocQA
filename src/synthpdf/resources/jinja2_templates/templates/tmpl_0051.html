@@ -1,0 +1,703 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fffff8;
+    color: #1a0a0a;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fffff8;
+  }
+
+  .header-band {
+    width: 100%;
+    height: 72px;
+    background: #7b1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .header-band .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-band .logo-block {
+    width: 38px;
+    height: 38px;
+    background: #a52a2a;
+    border: 2px solid #fffff8;
+  }
+
+  .header-band .company-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fffff8;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .header-band .page-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #f5f5dc;
+    letter-spacing: 0.08em;
+  }
+
+  .sub-header {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, #a52a2a 0%, #a52a2a 33%, #4682b4 33%, #4682b4 66%, #7b1e1e 66%, #7b1e1e 100%);
+  }
+
+  .title-section {
+    padding: 28px 40px 18px 40px;
+    border-bottom: 2px solid #7b1e1e;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .title-section h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #7b1e1e;
+    line-height: 1.15;
+    letter-spacing: 0.05em;
+  }
+
+  .title-section .report-period {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #6b6b6b;
+    text-align: right;
+    letter-spacing: 0.08em;
+  }
+
+  .section-band {
+    background: #f5f5dc;
+    border-left: 5px solid #7b1e1e;
+    padding: 8px 16px 8px 35px;
+    margin: 0 40px;
+  }
+
+  .section-band h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #7b1e1e;
+    letter-spacing: 0.05em;
+  }
+
+  .content-area {
+    padding: 16px 40px 0 40px;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .kpi-card {
+    background: #f5f5dc;
+    border-top: 4px solid #7b1e1e;
+    padding: 12px 14px 10px 14px;
+    text-align: center;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    color: #7b1e1e;
+    line-height: 1.2;
+  }
+
+  .kpi-card .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .kpi-card .kpi-trend {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .timeline-section {
+    margin-bottom: 16px;
+  }
+
+  .timeline-section h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #7b1e1e;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #a52a2a;
+    padding-bottom: 4px;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline-grid::before {
+    content: '';
+    position: absolute;
+    left: 88px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #a52a2a;
+  }
+
+  .timeline-entry {
+    display: contents;
+  }
+
+  .timeline-year {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fffff8;
+    background: #7b1e1e;
+    padding: 8px 10px;
+    text-align: center;
+    margin-bottom: 3px;
+  }
+
+  .timeline-entry:nth-child(even) .timeline-year {
+    background: #a52a2a;
+  }
+
+  .timeline-content {
+    background: #f5f5dc;
+    padding: 8px 14px;
+    margin-bottom: 3px;
+    margin-left: 12px;
+    border-left: 3px solid #4682b4;
+  }
+
+  .timeline-content .event-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1a0a0a;
+    margin-bottom: 2px;
+  }
+
+  .timeline-content .event-desc {
+    font-size: 10px;
+    color: #6b6b6b;
+    line-height: 1.4;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .tag-badge {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid #7b1e1e;
+    color: #7b1e1e;
+    background: #fffff8;
+  }
+
+  .tag-badge.active {
+    background: #7b1e1e;
+    color: #fffff8;
+  }
+
+  .tag-badge.accent {
+    border-color: #4682b4;
+    color: #4682b4;
+  }
+
+  .tag-badge.accent.active {
+    background: #4682b4;
+    color: #fffff8;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .comparison-col {
+    background: #f5f5dc;
+    padding: 12px 14px;
+    border-top: 4px solid #a52a2a;
+  }
+
+  .comparison-col:nth-child(2) {
+    border-top-color: #4682b4;
+  }
+
+  .comparison-col h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #7b1e1e;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .comparison-col:nth-child(2) h3 {
+    color: #4682b4;
+  }
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .donut-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5dc;
+    padding: 14px;
+    border: 1px solid #e0ddd0;
+  }
+
+  .donut-svg {
+    width: 130px;
+    height: 130px;
+  }
+
+  .donut-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #7b1e1e;
+    margin-top: 8px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .data-table-wrap {
+    overflow: hidden;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #7b1e1e;
+    color: #fffff8;
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 2px solid #a52a2a;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #e0ddd0;
+    color: #1a0a0a;
+    font-size: 10px;
+    vertical-align: top;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f5f5dc;
+  }
+
+  .data-table .num-cell {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 80px;
+    background: #f5f5dc;
+    border: 1px dashed #a52a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .chart-placeholder span {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-band {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    background: #7b1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .footer-band .footer-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: #f5f5dc;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-band .footer-divider {
+    width: 1px;
+    height: 18px;
+    background: #a52a2a;
+  }
+
+  .deco-block-left {
+    position: absolute;
+    left: 0;
+    top: 300px;
+    width: 8px;
+    height: 180px;
+    background: #a52a2a;
+  }
+
+  .deco-block-right {
+    position: absolute;
+    right: 0;
+    top: 520px;
+    width: 8px;
+    height: 120px;
+    background: #4682b4;
+  }
+
+  .deco-block-corner {
+    position: absolute;
+    right: 40px;
+    top: 78px;
+    width: 40px;
+    height: 6px;
+    background: #4682b4;
+  }
+
+  .intro-paragraph {
+    font-size: 11px;
+    color: #1a0a0a;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .comparison-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .comparison-list li {
+    font-size: 10px;
+    color: #1a0a0a;
+    padding: 3px 0;
+    border-bottom: 1px dotted #c0bdb0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .comparison-list li:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-list .metric-val {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #7b1e1e;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="deco-block-left"></div>
+  <div class="deco-block-right"></div>
+  <div class="deco-block-corner"></div>
+
+  <div class="header-band">
+    <div class="logo-area">
+      <div class="logo-block"></div>
+      <span class="company-name">{{ company_name }}</span>
+    </div>
+    <span class="page-number">{{ page_number }}</span>
+  </div>
+
+  <div class="sub-header"></div>
+
+  <div class="title-section">
+    <h1>{{ page_title }}</h1>
+    <div class="report-period">{{ report_period }}</div>
+  </div>
+
+  <div class="section-band" style="margin-top: 14px;">
+    <h2>{{ section_heading }}</h2>
+  </div>
+
+  <div class="content-area">
+
+    <p class="intro-paragraph">{{ body_paragraph_1 }}</p>
+
+    <div class="tag-row">
+      {% for tag in tags %}
+      <span class="tag-badge {% if tag.active %}active{% endif %} {% if tag.accent %}accent{% endif %}">{{ tag.label }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card" style="border-top-color: {{ kpi_1_color }};">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-trend" style="color: {{ kpi_1_trend_color }};">{{ kpi_1_trend }}</div>
+      </div>
+      <div class="kpi-card" style="border-top-color: {{ kpi_2_color }};">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-trend" style="color: {{ kpi_2_trend_color }};">{{ kpi_2_trend }}</div>
+      </div>
+      <div class="kpi-card" style="border-top-color: {{ kpi_3_color }};">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-trend" style="color: {{ kpi_3_trend_color }};">{{ kpi_3_trend }}</div>
+      </div>
+      <div class="kpi-card" style="border-top-color: {{ kpi_4_color }};">
+        <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-trend" style="color: {{ kpi_4_trend_color }};">{{ kpi_4_trend }}</div>
+      </div>
+    </div>
+
+    <div class="timeline-section">
+      <h3>{{ timeline_heading }}</h3>
+      <div class="timeline-grid">
+        {% for event in timeline_events %}
+        <div class="timeline-entry">
+          <div class="timeline-year">{{ event.year }}</div>
+          <div class="timeline-content">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-desc">{{ event.description }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="15.915" fill="none" stroke="#f5f5dc" stroke-width="4"/>
+          <circle cx="21" cy="21" r="15.915" fill="none" stroke="{{ donut_segment_1_color }}" stroke-width="4"
+                  stroke-dasharray="{{ donut_segment_1_pct }} {{ donut_segment_1_remainder }}"
+                  stroke-dashoffset="25" transform="rotate(-90 21 21)"/>
+          <circle cx="21" cy="21" r="15.915" fill="none" stroke="{{ donut_segment_2_color }}" stroke-width="4"
+                  stroke-dasharray="{{ donut_segment_2_pct }} {{ donut_segment_2_remainder }}"
+                  stroke-dashoffset="{{ donut_segment_2_offset }}" transform="rotate(-90 21 21)"/>
+          <circle cx="21" cy="21" r="15.915" fill="none" stroke="{{ donut_segment_3_color }}" stroke-width="4"
+                  stroke-dasharray="{{ donut_segment_3_pct }} {{ donut_segment_3_remainder }}"
+                  stroke-dashoffset="{{ donut_segment_3_offset }}" transform="rotate(-90 21 21)"/>
+          <text x="21" y="22.5" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-weight="700" font-size="7" fill="#7b1e1e">{{ donut_center_value }}</text>
+        </svg>
+        <div class="donut-label">{{ donut_label }}</div>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for col in table_columns %}
+              <th>{{ col }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.col1 }}</td>
+              <td class="num-cell">{{ row.col2 }}</td>
+              <td class="num-cell">{{ row.col3 }}</td>
+              <td class="num-cell">{{ row.col4 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="comparison-columns">
+      <div class="comparison-col">
+        <h3>{{ comparison_col_1_title }}</h3>
+        <ul class="comparison-list">
+          {% for item in comparison_col_1_items %}
+          <li><span>{{ item.label }}</span><span class="metric-val">{{ item.value }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="comparison-col">
+        <h3>{{ comparison_col_2_title }}</h3>
+        <ul class="comparison-list">
+          {% for item in comparison_col_2_items %}
+          <li><span>{{ item.label }}</span><span class="metric-val">{{ item.value }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="chart-placeholder">
+      <span>{{ chart_placeholder_label }}</span>
+    </div>
+
+  </div>
+
+  <div class="footer-band">
+    <span class="footer-text">{{ footer_left }}</span>
+    <div class="footer-divider"></div>
+    <span class="footer-text">{{ footer_center }}</span>
+    <div class="footer-divider"></div>
+    <span class="footer-text">{{ footer_right }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0051",
+  "variables": {
+    "page_title": "string",
+    "company_name": "string",
+    "page_number": "string",
+    "report_period": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "tags": "array of {label: string, active: boolean, accent: boolean}",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_trend": "string",
+    "kpi_1_trend_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_2_trend": "string",
+    "kpi_2_trend_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_3_trend": "string",
+    "kpi_3_trend_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "kpi_4_trend": "string",
+    "kpi_4_trend_color": "string (hex color)",
+    "timeline_heading": "string",
+    "timeline_events": "array of {year: string, title: string, description: string}",
+    "donut_segment_1_color": "string (hex color)",
+    "donut_segment_1_pct": "number",
+    "donut_segment_1_remainder": "number",
+    "donut_segment_2_color": "string (hex color)",
+    "donut_segment_2_pct": "number",
+    "donut_segment_2_remainder": "number",
+    "donut_segment_2_offset": "number",
+    "donut_segment_3_color": "string (hex color)",
+    "donut_segment_3_pct": "number",
+    "donut_segment_3_remainder": "number",
+    "donut_segment_3_offset": "number",
+    "donut_center_value": "string",
+    "donut_label": "string",
+    "table_columns": "array of string",
+    "table_rows": "array of {col1: string, col2: string, col3: string, col4: string}",
+    "comparison_col_1_title": "string",
+    "comparison_col_1_items": "array of {label: string, value: string}",
+    "comparison_col_2_title": "string",
+    "comparison_col_2_items": "array of {label: string, value: string}",
+    "chart_placeholder_label": "string",
+    "footer_left": "string",
+    "footer_center": "string",
+    "footer_right": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

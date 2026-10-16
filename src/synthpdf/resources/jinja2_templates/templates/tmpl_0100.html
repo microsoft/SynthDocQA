@@ -1,0 +1,630 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1a0000;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── LEFT PANE ── */
+  .left-pane {
+    background: #990000;
+    color: #ffffff;
+    padding: 48px 32px 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .left-pane::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: #f5a623;
+  }
+
+  .brand-tag {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 28px;
+  }
+
+  .left-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .left-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .accent-divider {
+    width: 40px;
+    height: 3px;
+    background: #f5a623;
+    margin-bottom: 28px;
+  }
+
+  .kpi-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .kpi-card {
+    background: rgba(0,0,0,0.18);
+    border-left: 3px solid #f5a623;
+    padding: 14px 16px;
+    border-radius: 2px;
+  }
+
+  .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.15;
+    color: #ffffff;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+  }
+
+  .kpi-change {
+    font-size: 11px;
+    color: #f5a623;
+    margin-top: 2px;
+  }
+
+  .quote-block {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+  }
+
+  .quote-text {
+    font-style: italic;
+    font-size: 12px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 10px;
+  }
+
+  .quote-attribution {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── RIGHT PANE ── */
+  .right-pane {
+    background: #ffffff;
+    padding: 48px 36px 36px 38px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .right-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a0000;
+    line-height: 1.25;
+  }
+
+  .fiscal-period {
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .red-rule {
+    width: 100%;
+    height: 2px;
+    background: #cc0000;
+    margin-bottom: 20px;
+  }
+
+  .body-paragraph {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #1a0000;
+    margin-bottom: 18px;
+  }
+
+  .comparison-section-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #990000;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .comparison-col {
+    background: #fdf8f8;
+    padding: 16px 14px;
+    border-top: 3px solid #cc0000;
+    border-radius: 0 0 2px 2px;
+  }
+
+  .comparison-col.secondary {
+    border-top-color: #990000;
+  }
+
+  .col-year {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #666666;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .col-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .col-metric:last-child {
+    border-bottom: none;
+  }
+
+  .col-metric-label {
+    font-size: 10.5px;
+    color: #666666;
+  }
+
+  .col-metric-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #1a0000;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .icon-grid-item {
+    text-align: center;
+    padding: 14px 8px;
+    background: #fdf8f8;
+    border-radius: 2px;
+  }
+
+  .icon-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .icon-grid-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: #1a0000;
+    line-height: 1.2;
+  }
+
+  .icon-grid-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666666;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .chart-section {
+    margin-bottom: 18px;
+  }
+
+  .chart-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #990000;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 130px;
+    background: #fdf8f8;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #cc0000 0%, #f5a623 100%);
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    height: 90px;
+    padding: 0 20px;
+  }
+
+  .chart-bar {
+    width: 28px;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+  }
+
+  .chart-bar-label {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: #666666;
+    white-space: nowrap;
+  }
+
+  .donut-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+    align-items: center;
+  }
+
+  .donut-container {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .donut-svg {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-track {
+    fill: none;
+    stroke: #fdf8f8;
+    stroke-width: 8;
+  }
+
+  .donut-fill {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+  }
+
+  .donut-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #1a0000;
+  }
+
+  .donut-info {
+    flex: 1;
+  }
+
+  .donut-info-label {
+    font-size: 13px;
+    color: #1a0000;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .donut-info-desc {
+    font-size: 11px;
+    color: #666666;
+    line-height: 1.5;
+  }
+
+  .footer-strip {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding-top: 10px;
+  }
+
+  .footer-label {
+    font-size: 9px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-page {
+    font-size: 9px;
+    color: #990000;
+    font-weight: 600;
+  }
+
+  .solid-block-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #cc0000, #f5a623);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- LEFT PANE -->
+  <div class="left-pane">
+    <div class="brand-tag">{{ company_name }} — {{ report_type }}</div>
+    <h1 class="left-title">{{ page_title }}</h1>
+    <p class="left-subtitle">{{ page_subtitle }}</p>
+    <div class="accent-divider"></div>
+
+    <div class="kpi-stack">
+      <div class="kpi-card">
+        <div class="kpi-value">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+        <div class="kpi-change">{{ kpi_1_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+        <div class="kpi-change">{{ kpi_2_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+        <div class="kpi-change">{{ kpi_3_change }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">{{ kpi_4_value }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+        <div class="kpi-change">{{ kpi_4_change }}</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">"{{ quote_text }}"</p>
+      <div class="quote-attribution">— {{ quote_author }}, {{ quote_title }}</div>
+    </div>
+
+    <div class="solid-block-accent"></div>
+  </div>
+
+  <!-- RIGHT PANE -->
+  <div class="right-pane">
+    <div class="right-header">
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <span class="fiscal-period">{{ fiscal_period }}</span>
+    </div>
+    <div class="red-rule"></div>
+
+    <p class="body-paragraph">{{ body_paragraph_1 }}</p>
+
+    <!-- Comparison Columns -->
+    <h3 class="comparison-section-title">{{ comparison_title }}</h3>
+    <div class="comparison-columns">
+      <div class="comparison-col">
+        <div class="col-year">{{ comparison_col_1_year }}</div>
+        {% for metric in comparison_col_1_metrics %}
+        <div class="col-metric">
+          <span class="col-metric-label">{{ metric.label }}</span>
+          <span class="col-metric-value">{{ metric.value }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="comparison-col secondary">
+        <div class="col-year">{{ comparison_col_2_year }}</div>
+        {% for metric in comparison_col_2_metrics %}
+        <div class="col-metric">
+          <span class="col-metric-label">{{ metric.label }}</span>
+          <span class="col-metric-value">{{ metric.value }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Icon with Text Grid -->
+    <div class="icon-grid">
+      {% for item in icon_grid_items %}
+      <div class="icon-grid-item">
+        <div class="icon-circle" style="background: {{ item.color }};">{{ item.icon }}</div>
+        <div class="icon-grid-value">{{ item.value }}</div>
+        <div class="icon-grid-label">{{ item.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Chart Placeholder -->
+    <div class="chart-section">
+      <h3 class="chart-title">{{ chart_title }}</h3>
+      <div class="chart-placeholder">
+        <div class="chart-bars">
+          {% for bar in chart_bars %}
+          <div class="chart-bar" style="height: {{ bar.height }}px; background: {{ bar.color }};">
+            <span class="chart-bar-label">{{ bar.label }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Percentage Donut -->
+    <div class="donut-row">
+      <div class="donut-container">
+        <svg class="donut-svg" viewBox="0 0 80 80">
+          <circle class="donut-track" cx="40" cy="40" r="32"></circle>
+          <circle class="donut-fill" cx="40" cy="40" r="32"
+            stroke="{{ donut_color }}"
+            stroke-dasharray="{{ donut_dash }}, 201"
+          ></circle>
+        </svg>
+        <span class="donut-center-text">{{ donut_value }}</span>
+      </div>
+      <div class="donut-info">
+        <div class="donut-info-label">{{ donut_label }}</div>
+        <div class="donut-info-desc">{{ donut_description }}</div>
+      </div>
+    </div>
+
+    <div class="footer-strip">
+      <span class="footer-label">{{ footer_disclaimer }}</span>
+      <span class="footer-page">{{ page_number }}</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0100",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "company_name": "string",
+    "report_type": "string",
+    "section_heading": "string",
+    "fiscal_period": "string",
+    "body_paragraph_1": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_change": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_change": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_change": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_change": "string",
+    "quote_text": "string",
+    "quote_author": "string",
+    "quote_title": "string",
+    "comparison_title": "string",
+    "comparison_col_1_year": "string",
+    "comparison_col_1_metrics": "list of {label: string, value: string}",
+    "comparison_col_2_year": "string",
+    "comparison_col_2_metrics": "list of {label: string, value: string}",
+    "icon_grid_items": "list of {icon: string, value: string, label: string, color: string}",
+    "chart_title": "string",
+    "chart_bars": "list of {height: number, color: string, label: string}",
+    "donut_value": "string",
+    "donut_label": "string",
+    "donut_description": "string",
+    "donut_color": "string",
+    "donut_dash": "number",
+    "footer_disclaimer": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

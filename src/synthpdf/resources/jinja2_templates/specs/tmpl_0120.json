@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0120",
+  "industry": "legal_compliance",
+  "page_role": "timeline_page",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "aerospace_dark",
+    "primary": "#0d1b2a",
+    "secondary": "#1b263b",
+    "accent": "#415a77",
+    "bg": "#e0e1dd",
+    "surface": "#ffffff",
+    "text": "#0d1b2a",
+    "muted": "#778da9"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "colored_section_band",
+    "page_number_footer",
+    "comparison_columns",
+    "logo_or_brand_strip"
+  ],
+  "density": "balanced",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by JP Morgan market research \u2014 dense text, subtle color, professional",
+  "seed": 527335
+}

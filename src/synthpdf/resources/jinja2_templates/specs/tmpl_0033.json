@@ -1,0 +1,40 @@
+{
+  "id": "tmpl_0033",
+  "industry": "management_consulting",
+  "page_role": "kpi_dashboard",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "consulting_charcoal",
+    "primary": "#1c1c1c",
+    "secondary": "#3d3d3d",
+    "accent": "#e85d04",
+    "bg": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#111111",
+    "muted": "#777777"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "quote_attribution",
+    "chart_placeholder_box",
+    "colored_section_band"
+  ],
+  "density": "dense",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by Deloitte industry reports \u2014 teal accents, clear hierarchy, business-formal",
+  "seed": 635656
+}

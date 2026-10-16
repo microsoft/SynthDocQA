@@ -1,0 +1,765 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: #111111;
+    background: #f8f8f8;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* LEFT PANE — Dark Panel */
+  .left-pane {
+    background: #1c1c1c;
+    color: #f8f8f8;
+    padding: 48px 32px 36px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .left-pane::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    background: #3d3d3d;
+    transform: rotate(35deg);
+    opacity: 0.35;
+    z-index: 0;
+  }
+
+  .left-pane::after {
+    content: '';
+    position: absolute;
+    bottom: 80px;
+    left: -50px;
+    width: 160px;
+    height: 160px;
+    border: 3px solid #e85d04;
+    transform: rotate(-20deg);
+    opacity: 0.4;
+    z-index: 0;
+  }
+
+  .left-pane > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* RIGHT PANE — Light Panel */
+  .right-pane {
+    background: #f8f8f8;
+    padding: 40px 36px 32px 36px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .right-pane::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg, #e85d04 0%, #e85d04 35%, #1c1c1c 35%, #1c1c1c 100%);
+    z-index: 3;
+  }
+
+  .right-pane::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    background: #e85d04;
+    opacity: 0.07;
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .right-pane > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  h2 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  h3 {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+
+  .org-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #e85d04;
+    margin-bottom: 24px;
+  }
+
+  .org-badge .badge-line {
+    width: 28px;
+    height: 3px;
+    background: #e85d04;
+  }
+
+  .left-title {
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .left-title span {
+    color: #e85d04;
+  }
+
+  .left-subtitle {
+    font-size: 13px;
+    color: #aaaaaa;
+    line-height: 1.5;
+    margin-bottom: 32px;
+    max-width: 280px;
+  }
+
+  .map-placeholder {
+    width: 100%;
+    height: 260px;
+    background: #2a2a2a;
+    border: 1px solid #444444;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .map-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    border: 1px dashed #555555;
+    border-radius: 2px;
+  }
+
+  .map-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .map-placeholder .map-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #777777;
+  }
+
+  .map-placeholder .map-icon {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e85d04;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .map-placeholder .map-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #e85d04;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: #2a2a2a;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #e85d04; }
+  .kpi-card:nth-child(2)::before { background: #e85d04; }
+  .kpi-card:nth-child(3)::before { background: #777777; }
+  .kpi-card:nth-child(4)::before { background: #777777; }
+
+  .kpi-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999999;
+  }
+
+  .pull-quote {
+    border-left: 4px solid #e85d04;
+    padding: 14px 18px;
+    margin-top: auto;
+    margin-bottom: 0;
+    background: rgba(232, 93, 4, 0.06);
+  }
+
+  .pull-quote .quote-text {
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.55;
+    color: #dddddd;
+  }
+
+  .pull-quote .quote-attr {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #e85d04;
+    margin-top: 8px;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #e85d04;
+    margin-bottom: 16px;
+    padding-left: 14px;
+  }
+
+  .section-label .label-diamond {
+    width: 8px;
+    height: 8px;
+    background: #e85d04;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .right-heading {
+    color: #1c1c1c;
+    margin-bottom: 14px;
+    padding-left: 14px;
+  }
+
+  .body-text {
+    font-size: 11px;
+    line-height: 1.55;
+    color: #333333;
+    margin-bottom: 18px;
+    padding-left: 14px;
+    padding-right: 10px;
+  }
+
+  .section-band {
+    background: #1c1c1c;
+    color: #ffffff;
+    padding: 14px 20px;
+    margin: 8px 0 18px 0;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+  }
+
+  .section-band span {
+    color: #e85d04;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 0 14px;
+    margin-bottom: 18px;
+  }
+
+  .comp-col {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 16px;
+    position: relative;
+  }
+
+  .comp-col::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .comp-col:nth-child(1)::after { background: #e85d04; }
+  .comp-col:nth-child(2)::after { background: #3d3d3d; }
+
+  .comp-col-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1c1c1c;
+    margin-bottom: 8px;
+  }
+
+  .comp-col-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #e85d04;
+    margin-bottom: 6px;
+  }
+
+  .comp-col:nth-child(2) .comp-col-value {
+    color: #3d3d3d;
+  }
+
+  .comp-col-desc {
+    font-size: 10px;
+    color: #777777;
+    line-height: 1.45;
+  }
+
+  .icon-text-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 0 14px;
+    margin-bottom: 18px;
+  }
+
+  .icon-text-item {
+    text-align: center;
+    padding: 14px 8px;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    position: relative;
+  }
+
+  .icon-text-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background: #e85d04;
+  }
+
+  .icon-circle {
+    width: 34px;
+    height: 34px;
+    background: #f8f8f8;
+    border: 2px solid #e85d04;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px auto;
+  }
+
+  .icon-circle svg {
+    width: 14px;
+    height: 14px;
+    fill: #e85d04;
+  }
+
+  .icon-text-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+  }
+
+  .icon-text-value {
+    font-size: 10px;
+    color: #777777;
+    line-height: 1.35;
+  }
+
+  .callout-box {
+    background: #ffffff;
+    border-left: 4px solid #e85d04;
+    padding: 14px 18px;
+    margin: 0 14px 16px 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .callout-box h3 {
+    color: #1c1c1c;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .callout-box p {
+    font-size: 10px;
+    color: #555555;
+    line-height: 1.5;
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 130px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px dashed #cccccc;
+  }
+
+  .chart-placeholder span {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #aaaaaa;
+  }
+
+  .footnotes-strip {
+    margin-top: auto;
+    padding: 10px 14px;
+    border-top: 1px solid #dddddd;
+    font-size: 8px;
+    color: #999999;
+    line-height: 1.5;
+  }
+
+  .footnotes-strip .fn-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #777777;
+    margin-bottom: 3px;
+  }
+
+  .geo-triangle-tl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 80px 80px 0;
+    border-color: transparent #e85d04 transparent transparent;
+    opacity: 0.1;
+    z-index: 1;
+  }
+
+  .geo-bar-bottom {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    width: 60px;
+    height: 6px;
+    background: #e85d04;
+    transform: skewX(-25deg);
+    opacity: 0.15;
+    z-index: 1;
+  }
+
+  .geo-bar-bottom-2 {
+    position: absolute;
+    bottom: 42px;
+    right: 30px;
+    width: 40px;
+    height: 6px;
+    background: #3d3d3d;
+    transform: skewX(-25deg);
+    opacity: 0.15;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- LEFT PANE: Dark geographic/map panel -->
+  <div class="left-pane">
+    <div class="org-badge">
+      <span class="badge-line"></span>
+      {{ organization_name }}
+    </div>
+
+    <h1 class="left-title">{{ page_title }}<br><span>{{ title_accent }}</span></h1>
+
+    <p class="left-subtitle">{{ subtitle_description }}</p>
+
+    <!-- Map Placeholder -->
+    <div class="map-placeholder">
+      {% if map_image_url %}
+      <img src="{{ map_image_url }}" alt="{{ map_image_alt }}">
+      {% else %}
+      <div class="map-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <span class="map-label">{{ map_label }}</span>
+      {% endif %}
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="kpi-label">{{ kpi_1_label }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+        <div class="kpi-label">{{ kpi_2_label }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+        <div class="kpi-label">{{ kpi_3_label }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+        <div class="kpi-label">{{ kpi_4_label }}</div>
+      </div>
+    </div>
+
+    <!-- Pull Quote -->
+    <div class="pull-quote">
+      <div class="quote-text">"{{ pull_quote_text }}"</div>
+      <div class="quote-attr">{{ pull_quote_attribution }}</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANE: Light analysis panel -->
+  <div class="right-pane">
+    <div class="geo-triangle-tl"></div>
+    <div class="geo-bar-bottom"></div>
+    <div class="geo-bar-bottom-2"></div>
+
+    <div class="section-label">
+      <span class="label-diamond"></span>
+      {{ section_label }}
+    </div>
+
+    <h2 class="right-heading">{{ section_heading }}</h2>
+
+    <p class="body-text">{{ body_paragraph_1 }}</p>
+
+    <!-- Colored Section Band -->
+    <div class="section-band">{{ band_title }} — <span>{{ band_highlight }}</span></div>
+
+    <!-- Comparison Columns -->
+    <div class="comparison-columns">
+      <div class="comp-col">
+        <div class="comp-col-title">{{ comparison_1_title }}</div>
+        <div class="comp-col-value">{{ comparison_1_value }}</div>
+        <div class="comp-col-desc">{{ comparison_1_description }}</div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-col-title">{{ comparison_2_title }}</div>
+        <div class="comp-col-value">{{ comparison_2_value }}</div>
+        <div class="comp-col-desc">{{ comparison_2_description }}</div>
+      </div>
+    </div>
+
+    <!-- Icon with Text Grid -->
+    <div class="icon-text-grid">
+      {% for item in focus_areas %}
+      <div class="icon-text-item">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24"><path d="{{ item.icon_path }}"/></svg>
+        </div>
+        <div class="icon-text-label">{{ item.label }}</div>
+        <div class="icon-text-value">{{ item.value }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Callout Box -->
+    <div class="callout-box">
+      <h3>{{ callout_title }}</h3>
+      <p>{{ callout_text }}</p>
+    </div>
+
+    <!-- Chart Placeholder -->
+    <div style="padding: 0 14px;">
+      <div class="chart-placeholder">
+        <span>{{ chart_label }}</span>
+      </div>
+    </div>
+
+    <!-- Footnotes Strip -->
+    <div class="footnotes-strip">
+      <div class="fn-label">{{ footnotes_label }}</div>
+      {{ footnote_1 }}<br>
+      {{ footnote_2 }}
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0008",
+  "variables": {
+    "page_title": "string",
+    "title_accent": "string",
+    "subtitle_description": "string",
+    "organization_name": "string",
+    "map_image_url": "string (optional)",
+    "map_image_alt": "string (optional)",
+    "map_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "section_label": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "band_title": "string",
+    "band_highlight": "string",
+    "comparison_1_title": "string",
+    "comparison_1_value": "string",
+    "comparison_1_description": "string",
+    "comparison_2_title": "string",
+    "comparison_2_value": "string",
+    "comparison_2_description": "string",
+    "focus_areas": "array of {icon_path: string, label: string, value: string}",
+    "callout_title": "string",
+    "callout_text": "string",
+    "chart_label": "string",
+    "footnotes_label": "string",
+    "footnote_1": "string",
+    "footnote_2": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

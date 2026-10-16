@@ -1,0 +1,831 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #212121;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .page-container::before {
+    content: "{{ watermark_text }}";
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%) rotate(-35deg);
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 140px;
+    font-weight: 800;
+    color: rgba(233, 30, 99, 0.04);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    background: linear-gradient(180deg, #9c27b0 0%, #7b1fa2 40%, #6a1b9a 100%);
+    padding: 32px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar-logo-area {
+    padding: 0 16px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .sidebar-logo-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    margin: 0 auto 8px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-logo-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: #ffffff;
+  }
+
+  .sidebar-org-name {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .sidebar-nav-item {
+    padding: 10px 16px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 9px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-left: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar-nav-item.active {
+    color: #ffffff;
+    background: rgba(255,255,255,0.1);
+    border-left-color: #ff9800;
+    font-weight: 700;
+  }
+
+  .sidebar-nav-item .nav-page {
+    margin-left: auto;
+    font-size: 8px;
+    opacity: 0.6;
+  }
+
+  .sidebar-nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    flex-shrink: 0;
+  }
+
+  .sidebar-nav-item.active .sidebar-nav-dot {
+    background: #ff9800;
+  }
+
+  .sidebar-section-label {
+    padding: 14px 16px 6px 16px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: auto;
+  }
+
+  .sidebar-footer-text {
+    font-size: 7px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* === MAIN CONTENT === */
+  .main-content {
+    padding: 32px 36px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e91e63 0%, #ff9800 50%, #9c27b0 100%);
+  }
+
+  .header-section {
+    margin-bottom: 18px;
+  }
+
+  .document-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #e91e63;
+    margin-bottom: 4px;
+  }
+
+  .page-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.05;
+    color: #212121;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-heading {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #9c27b0;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .header-divider {
+    width: 64px;
+    height: 3px;
+    background: #e91e63;
+    margin: 10px 0;
+  }
+
+  .intro-text {
+    font-size: 11px;
+    color: #757575;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  /* === RISK MATRIX === */
+  .risk-matrix-section {
+    margin-bottom: 14px;
+  }
+
+  .matrix-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #212121;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .matrix-title-icon {
+    width: 20px;
+    height: 20px;
+    background: #e91e63;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .matrix-title-icon svg {
+    width: 12px;
+    height: 12px;
+    fill: #ffffff;
+  }
+
+  .risk-matrix-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(5, 1fr);
+    grid-template-rows: auto repeat(5, 38px);
+    gap: 1px;
+    background: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .matrix-corner {
+    background: #fafafa;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .matrix-header-col {
+    background: #fce4ec;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    color: #e91e63;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  .matrix-header-row {
+    background: #f3e5f5;
+    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    color: #9c27b0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .matrix-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    font-size: 8px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .matrix-cell .cell-label {
+    font-size: 7px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .risk-low { background: #4caf50; }
+  .risk-moderate { background: #ff9800; }
+  .risk-high { background: #f44336; }
+  .risk-critical { background: #b71c1c; }
+  .risk-negligible { background: #8bc34a; }
+
+  .matrix-axis-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+  }
+
+  .axis-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: #757575;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* === ICON WITH TEXT GRID === */
+  .risk-items-section {
+    margin-bottom: 12px;
+  }
+
+  .risk-items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .risk-item-card {
+    background: #fce4ec;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border-left: 3px solid;
+  }
+
+  .risk-item-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .risk-item-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
+  }
+
+  .risk-item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .risk-item-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: #212121;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+
+  .risk-item-desc {
+    font-size: 9px;
+    color: #757575;
+    line-height: 1.35;
+  }
+
+  .risk-item-level {
+    font-size: 7px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #ffffff;
+    display: inline-block;
+    margin-top: 3px;
+  }
+
+  /* === TIMELINE === */
+  .timeline-section {
+    margin-bottom: 12px;
+  }
+
+  .timeline-section-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #212121;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: linear-gradient(90deg, #e91e63, #ff9800, #9c27b0);
+  }
+
+  .timeline-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 2px #e91e63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    font-size: 8px;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .timeline-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    color: #212121;
+    text-align: center;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-date {
+    font-size: 8px;
+    color: #757575;
+    text-align: center;
+  }
+
+  .timeline-desc {
+    font-size: 8px;
+    color: #757575;
+    text-align: center;
+    margin-top: 2px;
+    line-height: 1.3;
+    max-width: 90px;
+  }
+
+  /* === PULL QUOTE === */
+  .pull-quote-block {
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+    border-left: 4px solid #e91e63;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .pull-quote-block::before {
+    content: '\201C';
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(233, 30, 99, 0.15);
+    position: absolute;
+    top: -4px;
+    left: 10px;
+    line-height: 1;
+  }
+
+  .pull-quote-text {
+    font-size: 12px;
+    font-style: italic;
+    color: #212121;
+    line-height: 1.5;
+    padding-left: 20px;
+  }
+
+  .pull-quote-attribution {
+    font-size: 9px;
+    color: #9c27b0;
+    font-weight: 700;
+    margin-top: 6px;
+    padding-left: 20px;
+  }
+
+  /* === FOOTNOTES === */
+  .footnotes-strip {
+    background: #fafafa;
+    border-top: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    margin-top: auto;
+    border-radius: 4px;
+  }
+
+  .footnotes-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    color: #9c27b0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .footnote-item {
+    font-size: 8px;
+    color: #757575;
+    line-height: 1.4;
+    padding-left: 10px;
+    position: relative;
+    margin-bottom: 1px;
+  }
+
+  .footnote-item::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 0;
+    font-size: 7px;
+    font-weight: 700;
+    color: #e91e63;
+    top: 0;
+  }
+
+  /* === PAGE FOOTER === */
+  .page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 2px solid #e91e63;
+    margin-top: 8px;
+  }
+
+  .footer-left {
+    font-size: 8px;
+    color: #757575;
+  }
+
+  .footer-center {
+    font-size: 7px;
+    color: #757575;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-page-number {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #e91e63;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo-area">
+      <div class="sidebar-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l7 3.5v7.64l-7 3.5-7-3.5V7.68l7-3.5z"/></svg>
+      </div>
+      <div class="sidebar-org-name">{{ organization_name }}</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">{{ sidebar_section_1 }}</div>
+      {% for nav_item in sidebar_nav_items %}
+      <div class="sidebar-nav-item {{ nav_item.class }}">
+        <span class="sidebar-nav-dot"></span>
+        {{ nav_item.label }}
+        <span class="nav-page">{{ nav_item.page }}</span>
+      </div>
+      {% endfor %}
+
+      <div class="sidebar-section-label">{{ sidebar_section_2 }}</div>
+      {% for nav_item_2 in sidebar_nav_items_2 %}
+      <div class="sidebar-nav-item {{ nav_item_2.class }}">
+        <span class="sidebar-nav-dot"></span>
+        {{ nav_item_2.label }}
+        <span class="nav-page">{{ nav_item_2.page }}</span>
+      </div>
+      {% endfor %}
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">{{ sidebar_footer_text }}</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- Header -->
+    <div class="header-section">
+      <div class="document-label">{{ document_label }}</div>
+      <h1 class="page-title">{{ page_title }}</h1>
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <div class="header-divider"></div>
+      <p class="intro-text">{{ body_paragraph_1 }}</p>
+    </div>
+
+    <!-- Risk Matrix Grid -->
+    <div class="risk-matrix-section">
+      <div class="matrix-title">
+        <span class="matrix-title-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg></span>
+        {{ matrix_title }}
+      </div>
+      <div class="risk-matrix-grid">
+        <!-- Header row -->
+        <div class="matrix-corner" style="font-size:7px;font-weight:800;color:#757575;">{{ matrix_y_axis }} &#8595; / {{ matrix_x_axis }} &#8594;</div>
+        {% for col_header in matrix_col_headers %}
+        <div class="matrix-header-col">{{ col_header }}</div>
+        {% endfor %}
+        <!-- Data rows -->
+        {% for row in matrix_rows %}
+        <div class="matrix-header-row">{{ row.label }}</div>
+        {% for cell in row.cells %}
+        <div class="matrix-cell {{ cell.risk_class }}"><span class="cell-label">{{ cell.label }}</span></div>
+        {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="matrix-axis-labels">
+        <span class="axis-label">{{ axis_low_label }}</span>
+        <span class="axis-label">{{ axis_high_label }}</span>
+      </div>
+    </div>
+
+    <!-- Icon with Text Grid — Key Risk Items -->
+    <div class="risk-items-section">
+      <div class="risk-items-grid">
+        {% for risk in risk_items %}
+        <div class="risk-item-card" style="border-left-color: {{ risk.color }};">
+          <div class="risk-item-icon" style="background: {{ risk.color }};">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="risk-item-content">
+            <div class="risk-item-title">{{ risk.title }}</div>
+            <div class="risk-item-desc">{{ risk.description }}</div>
+            <span class="risk-item-level" style="background: {{ risk.color }};">{{ risk.level }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Timeline Nodes — Mitigation Timeline -->
+    <div class="timeline-section">
+      <div class="timeline-section-title">
+        <span class="matrix-title-icon"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></span>
+        {{ timeline_title }}
+      </div>
+      <div class="timeline">
+        {% for node in timeline_nodes %}
+        <div class="timeline-node">
+          <div class="timeline-dot" style="background: {{ node.color }}; box-shadow: 0 0 0 2px {{ node.color }};">{{ node.number }}</div>
+          <div class="timeline-label">{{ node.label }}</div>
+          <div class="timeline-date">{{ node.date }}</div>
+          <div class="timeline-desc">{{ node.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Pull Quote -->
+    <div class="pull-quote-block">
+      <div class="pull-quote-text">{{ pull_quote_text }}</div>
+      <div class="pull-quote-attribution">— {{ pull_quote_attribution }}</div>
+    </div>
+
+    <!-- Footnotes Strip -->
+    <div class="footnotes-strip">
+      <div class="footnotes-title">{{ footnotes_title }}</div>
+      {% for footnote in footnotes %}
+      <div class="footnote-item" data-num="{{ footnote.number }}">{{ footnote.text }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Page Footer -->
+    <div class="page-footer">
+      <span class="footer-left">{{ footer_left_text }}</span>
+      <span class="footer-center">{{ footer_center_text }}</span>
+      <span class="footer-page-number">{{ page_number }}</span>
+    </div>
+  </main>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0023",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "document_label": "string",
+    "organization_name": "string",
+    "watermark_text": "string",
+    "sidebar_section_1": "string",
+    "sidebar_section_2": "string",
+    "sidebar_nav_items": [
+      {
+        "label": "string",
+        "page": "string",
+        "class": "string ('' or 'active')"
+      }
+    ],
+    "sidebar_nav_items_2": [
+      {
+        "label": "string",
+        "page": "string",
+        "class": "string ('' or 'active')"
+      }
+    ],
+    "sidebar_footer_text": "string",
+    "matrix_title": "string",
+    "matrix_y_axis": "string",
+    "matrix_x_axis": "string",
+    "matrix_col_headers": ["string"],
+    "matrix_rows": [
+      {
+        "label": "string",
+        "cells": [
+          {
+            "label": "string",
+            "risk_class": "string (risk-negligible | risk-low | risk-moderate | risk-high | risk-critical)"
+          }
+        ]
+      }
+    ],
+    "axis_low_label": "string",
+    "axis_high_label": "string",
+    "risk_items": [
+      {
+        "title": "string",
+        "description": "string",
+        "level": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "timeline_title": "string",
+    "timeline_nodes": [
+      {
+        "number": "string",
+        "label": "string",
+        "date": "string",
+        "description": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "footnotes_title": "string",
+    "footnotes": [
+      {
+        "number": "string",
+        "text": "string"
+      }
+    ],
+    "footer_left_text": "string",
+    "footer_center_text": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

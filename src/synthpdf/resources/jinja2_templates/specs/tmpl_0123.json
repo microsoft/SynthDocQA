@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0123",
+  "industry": "legal_compliance",
+  "page_role": "financial_highlights",
+  "layout": {
+    "name": "sidebar_navigation",
+    "description": "Persistent left or right sidebar (20% width) with section labels, page numbers, or sub-navigation. Main content in remaining 80%."
+  },
+  "color_palette": {
+    "name": "government_slate",
+    "primary": "#2c3e50",
+    "secondary": "#34495e",
+    "accent": "#e74c3c",
+    "bg": "#ecf0f1",
+    "surface": "#ffffff",
+    "text": "#2c3e50",
+    "muted": "#7f8c8d"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "icon_with_text_grid",
+    "hero_image_placeholder",
+    "top_navigation_tabs",
+    "data_table",
+    "tag_or_badge_row"
+  ],
+  "density": "balanced",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by Goldman Sachs investment memoranda \u2014 conservative, trust-signaling, formal",
+  "seed": 40163
+}

@@ -1,0 +1,751 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f9f7f4;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #0d0d0d;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -60px;
+    width: 280px;
+    height: 160px;
+    background: linear-gradient(135deg, #b8960c 0%, #b8960c 48%, transparent 48%, transparent 52%, #1a1a1a 52%, #1a1a1a 100%);
+    transform: rotate(-12deg);
+    opacity: 0.18;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: 50px;
+    left: -80px;
+    width: 220px;
+    height: 120px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #1a1a1a 48%, transparent 48%, transparent 52%, #b8960c 52%, #b8960c 100%);
+    transform: rotate(-12deg);
+    opacity: 0.10;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .top-nav {
+    width: 100%;
+    height: 44px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    gap: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .top-nav .brand {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #b8960c;
+    margin-right: 32px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .top-nav .tab {
+    font-family: Georgia, serif;
+    font-size: 10.5px;
+    color: #888888;
+    padding: 12px 16px;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .top-nav .tab.active {
+    color: #ffffff;
+    border-bottom-color: #b8960c;
+  }
+
+  .section-band {
+    width: 100%;
+    height: 72px;
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-band::after {
+    content: '';
+    position: absolute;
+    right: 36px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+    width: 48px;
+    height: 48px;
+    border: 2px solid #b8960c;
+    opacity: 0.3;
+  }
+
+  .section-band h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .section-band h1 span {
+    color: #b8960c;
+  }
+
+  .section-band .subtitle {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: #888888;
+    margin-left: 24px;
+    line-height: 1.5;
+    max-width: 340px;
+  }
+
+  .content-area {
+    padding: 20px 28px 0 28px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .card-inner {
+    padding: 18px 16px 16px 16px;
+  }
+
+  .card h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .card h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #2d2d2d;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .card p {
+    font-size: 10px;
+    color: #0d0d0d;
+    line-height: 1.65;
+  }
+
+  .card .muted {
+    color: #888888;
+    font-size: 9.5px;
+  }
+
+  .card.span-2-col {
+    grid-column: span 2;
+  }
+
+  .card.span-2-row {
+    grid-row: span 2;
+  }
+
+  .card.span-full {
+    grid-column: span 3;
+  }
+
+  .card.featured {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 280px;
+  }
+
+  .card.featured .card-image {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+    background: #2d2d2d;
+  }
+
+  .card.featured .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card.featured .card-image .overlay-label {
+    position: absolute;
+    bottom: 10px;
+    left: 14px;
+    background: #b8960c;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 9px;
+    padding: 3px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 2px;
+  }
+
+  .card.featured h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .card.gold-accent {
+    border-top: 3px solid #b8960c;
+  }
+
+  .card.dark {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .card.dark h2, .card.dark h3 {
+    color: #ffffff;
+  }
+
+  .card.dark p {
+    color: #cccccc;
+  }
+
+  .card.dark .muted {
+    color: #888888;
+  }
+
+  .kpi-value {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-label {
+    font-size: 9.5px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .kpi-change {
+    font-size: 10px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  .kpi-change.positive { color: #2a7d3f; }
+  .kpi-change.negative { color: #c0392b; }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .donut {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .donut::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a1a1a;
+    background: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9.5px;
+    color: #0d0d0d;
+  }
+
+  .donut-legend-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .callout-box {
+    background: #f9f7f4;
+    border-left: 3px solid #b8960c;
+    padding: 10px 12px;
+    margin-top: 10px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .callout-box p {
+    font-size: 10px;
+    font-style: italic;
+    color: #2d2d2d;
+    line-height: 1.6;
+  }
+
+  .callout-box .callout-author {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 9px;
+    color: #b8960c;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .property-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+
+  .property-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 10px;
+  }
+
+  .property-list li:last-child {
+    border-bottom: none;
+  }
+
+  .property-list .prop-name {
+    color: #0d0d0d;
+  }
+
+  .property-list .prop-value {
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 8.5px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+
+  .tag.gold {
+    background: rgba(184,150,12,0.12);
+    color: #b8960c;
+  }
+
+  .tag.dark {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .tag.muted {
+    background: #f0ede8;
+    color: #888888;
+  }
+
+  .diagonal-slash-card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -30px;
+    width: 100px;
+    height: 80px;
+    background: linear-gradient(135deg, #b8960c 0%, #b8960c 48%, transparent 48%, transparent 52%, #2d2d2d 52%, #2d2d2d 100%);
+    transform: rotate(-12deg);
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .item-block {
+    background: #f9f7f4;
+    padding: 8px 10px;
+    border-radius: 3px;
+  }
+
+  .item-block .item-label {
+    font-size: 9px;
+    color: #888888;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .item-block .item-value {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+
+  .footnotes-strip {
+    position: absolute;
+    bottom: 30px;
+    left: 28px;
+    right: 28px;
+    border-top: 1px solid #e0ddd7;
+    padding-top: 6px;
+    z-index: 2;
+  }
+
+  .footnotes-strip p {
+    font-size: 8px;
+    color: #888888;
+    line-height: 1.5;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    z-index: 2;
+  }
+
+  .page-footer .footer-left {
+    font-size: 8px;
+    color: #888888;
+  }
+
+  .page-footer .footer-right {
+    font-size: 8px;
+    color: #888888;
+  }
+
+  .page-footer .footer-right .page-num {
+    color: #b8960c;
+    font-weight: 700;
+  }
+
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top Navigation Tabs -->
+  <nav class="top-nav">
+    <span class="brand">{{ brand_name }}</span>
+    <span class="tab">{{ nav_tab_1 }}</span>
+    <span class="tab active">{{ nav_tab_2 }}</span>
+    <span class="tab">{{ nav_tab_3 }}</span>
+    <span class="tab">{{ nav_tab_4 }}</span>
+    <span class="tab">{{ nav_tab_5 }}</span>
+  </nav>
+
+  <!-- Colored Section Band -->
+  <div class="section-band">
+    <h1>{{ page_title }} <span>{{ page_title_accent }}</span></h1>
+    <p class="subtitle">{{ page_subtitle }}</p>
+  </div>
+
+  <!-- Card Mosaic Content -->
+  <div class="content-area">
+    <div class="mosaic-grid">
+
+      <!-- Featured property card (spans 2 cols, 2 rows) -->
+      <div class="card featured">
+        <div class="card-image">
+          <img src="{{ featured_image_url }}" alt="{{ featured_image_alt }}">
+          <span class="overlay-label">{{ featured_badge }}</span>
+        </div>
+        <div class="card-inner">
+          <div style="margin-bottom: 6px;">
+            <span class="tag gold">{{ featured_tag_1 }}</span>
+            <span class="tag dark">{{ featured_tag_2 }}</span>
+          </div>
+          <h2>{{ featured_title }}</h2>
+          <p>{{ featured_description }}</p>
+          <div class="items-grid">
+            {% for spec in featured_specs %}
+            <div class="item-block">
+              <div class="item-label">{{ spec.label }}</div>
+              <div class="item-value">{{ spec.value }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Card 1 -->
+      <div class="card gold-accent diagonal-slash-card">
+        <div class="card-inner">
+          <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+          <div class="kpi-label">{{ kpi_1_label }}</div>
+          <div class="kpi-change positive">{{ kpi_1_change }}</div>
+          <p class="muted" style="margin-top: 8px;">{{ kpi_1_note }}</p>
+        </div>
+      </div>
+
+      <!-- KPI Card 2 -->
+      <div class="card dark">
+        <div class="card-inner">
+          <div class="kpi-value" style="color: #b8960c;">{{ kpi_2_value }}</div>
+          <div class="kpi-label" style="color: #888888;">{{ kpi_2_label }}</div>
+          <div class="kpi-change positive" style="color: #5cb85c;">{{ kpi_2_change }}</div>
+          <p class="muted" style="margin-top: 8px;">{{ kpi_2_note }}</p>
+        </div>
+      </div>
+
+      <!-- Donut Chart Card (spans 2 cols) -->
+      <div class="card span-2-col">
+        <div class="card-inner">
+          <h3>{{ donut_title }}</h3>
+          <div class="donut-container">
+            <div class="donut" data-label="{{ donut_center_label }}" style="background: conic-gradient({{ donut_segment_1_color }} 0% {{ donut_segment_1_pct }}, {{ donut_segment_2_color }} {{ donut_segment_1_pct }} {{ donut_segment_2_pct }}, {{ donut_segment_3_color }} {{ donut_segment_2_pct }} {{ donut_segment_3_pct }}, #e8e4de {{ donut_segment_3_pct }} 100%);"></div>
+            <div class="donut-legend">
+              {% for seg in donut_segments %}
+              <div class="donut-legend-item">
+                <span class="dot" style="background: {{ seg.color }};"></span>
+                {{ seg.label }} — {{ seg.value }}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Specs Card -->
+      <div class="card gold-accent">
+        <div class="card-inner">
+          <h3>{{ specs_card_title }}</h3>
+          <ul class="property-list">
+            {% for prop in property_specs %}
+            <li>
+              <span class="prop-name">{{ prop.name }}</span>
+              <span class="prop-value">{{ prop.value }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Callout / Testimonial Card -->
+      <div class="card span-2-col">
+        <div class="card-inner">
+          <h3>{{ callout_heading }}</h3>
+          <div class="callout-box">
+            <p>{{ callout_quote }}</p>
+            <span class="callout-author">{{ callout_author }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Small highlights card -->
+      <div class="card diagonal-slash-card">
+        <div class="card-inner">
+          <h3>{{ highlights_title }}</h3>
+          <ul class="property-list">
+            {% for highlight in highlights %}
+            <li>
+              <span class="prop-name">{{ highlight.label }}</span>
+              <span class="prop-value" style="color: #b8960c;">{{ highlight.value }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Additional property cards row -->
+      {% for card in product_cards %}
+      <div class="card gold-accent">
+        <div class="card-inner">
+          <div style="margin-bottom: 4px;">
+            <span class="tag gold">{{ card.tag }}</span>
+          </div>
+          <h3>{{ card.title }}</h3>
+          <p class="muted">{{ card.location }}</p>
+          <p style="margin-top: 4px;">{{ card.description }}</p>
+          <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 16px; color: #b8960c;">{{ card.price }}</span>
+            <span class="muted" style="font-size: 9px;">{{ card.area }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+  <!-- Footnotes Strip -->
+  <div class="footnotes-strip">
+    <p>{{ footnote_1 }} &nbsp;|&nbsp; {{ footnote_2 }} &nbsp;|&nbsp; {{ footnote_3 }}</p>
+  </div>
+
+  <!-- Page Number Footer -->
+  <div class="page-footer">
+    <span class="footer-left">{{ footer_document_title }} &mdash; {{ footer_date }}</span>
+    <span class="footer-right">Page <span class="page-num">{{ page_number }}</span> of {{ total_pages }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0073",
+  "variables": {
+    "brand_name": "string",
+    "nav_tab_1": "string",
+    "nav_tab_2": "string",
+    "nav_tab_3": "string",
+    "nav_tab_4": "string",
+    "nav_tab_5": "string",
+    "page_title": "string",
+    "page_title_accent": "string",
+    "page_subtitle": "string",
+    "featured_image_url": "string (URL)",
+    "featured_image_alt": "string",
+    "featured_badge": "string",
+    "featured_tag_1": "string",
+    "featured_tag_2": "string",
+    "featured_title": "string",
+    "featured_description": "string",
+    "featured_specs": "array of {label: string, value: string}",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_change": "string",
+    "kpi_1_note": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_change": "string",
+    "kpi_2_note": "string",
+    "donut_title": "string",
+    "donut_center_label": "string",
+    "donut_segment_1_color": "string (hex color)",
+    "donut_segment_1_pct": "string (e.g. '42%')",
+    "donut_segment_2_color": "string (hex color)",
+    "donut_segment_2_pct": "string (e.g. '72%')",
+    "donut_segment_3_color": "string (hex color)",
+    "donut_segment_3_pct": "string (e.g. '90%')",
+    "donut_segments": "array of {color: string, label: string, value: string}",
+    "specs_card_title": "string",
+    "property_specs": "array of {name: string, value: string}",
+    "callout_heading": "string",
+    "callout_quote": "string",
+    "callout_author": "string",
+    "highlights_title": "string",
+    "highlights": "array of {label: string, value: string}",
+    "product_cards": "array of {tag: string, title: string, location: string, description: string, price: string, area: string}",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "footnote_3": "string",
+    "footer_document_title": "string",
+    "footer_date": "string",
+    "page_number": "string or number",
+    "total_pages": "string or number"
+  }
+}
+END_TEMPLATE_VARIABLES -->

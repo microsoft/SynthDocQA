@@ -1,0 +1,41 @@
+{
+  "id": "tmpl_0057",
+  "industry": "ngo_sustainability",
+  "page_role": "appendix_data",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "consulting_charcoal",
+    "primary": "#1c1c1c",
+    "secondary": "#3d3d3d",
+    "accent": "#e85d04",
+    "bg": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#111111",
+    "muted": "#777777"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "data_table",
+    "progress_bars",
+    "top_navigation_tabs",
+    "percentage_donut"
+  ],
+  "density": "dense",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 226895
+}

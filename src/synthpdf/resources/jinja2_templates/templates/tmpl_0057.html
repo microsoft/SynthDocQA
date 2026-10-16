@@ -1,0 +1,679 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #111111;
+    background: #f8f8f8;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f8f8f8;
+    display: grid;
+    grid-template-rows: 44px 1fr;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .top-nav {
+    display: flex;
+    align-items: stretch;
+    background: #1c1c1c;
+    padding: 0 24px;
+    gap: 0;
+    z-index: 10;
+  }
+
+  .nav-tab {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #777777;
+    border-bottom: 3px solid transparent;
+    cursor: default;
+  }
+
+  .nav-tab.active {
+    color: #ffffff;
+    border-bottom-color: #e85d04;
+  }
+
+  .nav-tab:nth-child(2) {
+    color: #aaaaaa;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #e85d04;
+    letter-spacing: 0.1em;
+  }
+
+  /* === MAIN CONTENT AREA === */
+  .main-area {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    position: relative;
+  }
+
+  /* === HERO / FULL BLEED VISUAL === */
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+  }
+
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: linear-gradient(to top, rgba(28, 28, 28, 0.92) 0%, rgba(28, 28, 28, 0.6) 60%, transparent 100%);
+  }
+
+  .hero-text {
+    position: absolute;
+    bottom: 20px;
+    left: 32px;
+    right: 32px;
+    z-index: 5;
+  }
+
+  .hero-text h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #ffffff;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .hero-text .subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #e85d04;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Organic wave curve divider */
+  .wave-divider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    z-index: 6;
+  }
+
+  .wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 36px;
+  }
+
+  /* === CONTENT BELOW HERO === */
+  .content-body {
+    padding: 20px 32px 24px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 16px 24px;
+    align-content: start;
+  }
+
+  .section-heading-row {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #e85d04;
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+  }
+
+  .section-heading-row h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #1c1c1c;
+    letter-spacing: 0.05em;
+  }
+
+  .section-heading-row .appendix-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #e85d04;
+    padding: 2px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .body-text-row {
+    grid-column: 1 / -1;
+    font-size: 11px;
+    color: #3d3d3d;
+    line-height: 1.6;
+  }
+
+  /* === DATA TABLE === */
+  .data-table-panel {
+    grid-column: 1 / -1;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .data-table-panel .panel-header {
+    background: #1c1c1c;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .data-table-panel .panel-header h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+  }
+
+  .data-table-panel .panel-header .record-count {
+    font-size: 10px;
+    color: #777777;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    background: #3d3d3d;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 7px 12px;
+    text-align: left;
+    border-bottom: 2px solid #e85d04;
+  }
+
+  .data-table tbody td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #eeeeee;
+    color: #111111;
+    font-size: 10px;
+    vertical-align: middle;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table .val-highlight {
+    font-weight: 700;
+    color: #e85d04;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .data-table .status-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .status-on-track { background: #d4edda; color: #155724; }
+  .status-at-risk { background: #fff3cd; color: #856404; }
+  .status-delayed { background: #f8d7da; color: #721c24; }
+
+  /* === PROGRESS BARS PANEL === */
+  .progress-panel {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    padding: 14px 16px;
+  }
+
+  .progress-panel h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1c1c1c;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .progress-item { margin-bottom: 10px; }
+  .progress-item:last-child { margin-bottom: 0; }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .progress-label .label-text { font-size: 10px; color: #3d3d3d; font-weight: 600; }
+
+  .progress-label .label-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1c1c1c;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #eeeeee;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill { height: 100%; border-radius: 4px; }
+
+  /* === DONUT CHART PANEL === */
+  .donut-panel {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .donut-panel h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1c1c1c;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+    align-self: flex-start;
+  }
+
+  .donut-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+  }
+
+  .donut-container svg { transform: rotate(-90deg); }
+
+  .donut-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .donut-center-text .donut-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 22px;
+    color: #1c1c1c;
+    display: block;
+    line-height: 1;
+  }
+
+  .donut-center-text .donut-sublabel {
+    font-size: 8px;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .donut-legend { width: 100%; }
+
+  .donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 9px;
+    color: #3d3d3d;
+  }
+
+  .donut-legend-item .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .donut-legend-item .legend-val {
+    margin-left: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #1c1c1c;
+    font-size: 10px;
+  }
+
+  /* === FOOTER === */
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 10;
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: #777777;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-right {
+    font-size: 9px;
+    color: #777777;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #e85d04 0%, #e85d04 30%, #3d3d3d 30%, #3d3d3d 100%);
+    z-index: 10;
+  }
+
+  .side-wave-decoration {
+    position: absolute;
+    right: 0;
+    top: 340px;
+    width: 60px;
+    height: 400px;
+    z-index: 0;
+    opacity: 0.06;
+  }
+
+  @media print {
+    html, body { width: 794px; height: 1123px; }
+    .page { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAVIGATION TABS -->
+  <nav class="top-nav">
+    <div class="nav-logo">{{ org_short_name }}</div>
+    {% for tab in nav_tabs %}
+    <div class="nav-tab {% if tab.active %}active{% endif %}">{{ tab.label }}</div>
+    {% endfor %}
+  </nav>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+
+    <!-- HERO / FULL BLEED VISUAL -->
+    <div class="hero-visual">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-overlay"></div>
+      <div class="hero-text">
+        <div class="subtitle">{{ appendix_identifier }}</div>
+        <h1>{{ page_title }}</h1>
+      </div>
+      <div class="wave-divider">
+        <svg viewBox="0 0 794 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,24 C80,8 160,32 240,20 C320,8 400,28 480,18 C560,8 640,30 720,22 C760,18 780,20 794,16 L794,36 L0,36 Z" fill="#f8f8f8"/>
+          <path d="M0,28 C90,14 170,34 260,24 C340,14 420,32 500,22 C580,12 660,34 740,26 C770,22 784,24 794,20 L794,36 L0,36 Z" fill="#f8f8f8" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Side organic wave decoration -->
+    <div class="side-wave-decoration">
+      <svg viewBox="0 0 60 400" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30,0 C50,40 10,80 30,120 C50,160 10,200 30,240 C50,280 10,320 30,360 C40,380 20,400 30,400" stroke="#e85d04" stroke-width="3" fill="none"/>
+        <path d="M40,0 C60,40 20,80 40,120 C60,160 20,200 40,240 C60,280 20,320 40,360 C50,380 30,400 40,400" stroke="#1c1c1c" stroke-width="2" fill="none"/>
+        <path d="M20,0 C40,40 0,80 20,120 C40,160 0,200 20,240 C40,280 0,320 20,360 C30,380 10,400 20,400" stroke="#3d3d3d" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- CONTENT BODY -->
+    <div class="content-body">
+
+      <div class="section-heading-row">
+        <span class="appendix-label">{{ appendix_code }}</span>
+        <h2>{{ section_heading }}</h2>
+      </div>
+
+      <div class="body-text-row">
+        {{ body_paragraph_1 }}
+      </div>
+
+      <!-- DATA TABLE -->
+      <div class="data-table-panel">
+        <div class="panel-header">
+          <h3>{{ table_title }}</h3>
+          <span class="record-count">{{ table_record_count }}</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for col in table_columns %}
+              <th>{{ col }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.indicator }}</td>
+              <td>{{ row.baseline }}</td>
+              <td>{{ row.target }}</td>
+              <td class="val-highlight">{{ row.actual }}</td>
+              <td>{{ row.unit }}</td>
+              <td><span class="status-badge {{ row.status_class }}">{{ row.status }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PROGRESS BARS -->
+      <div class="progress-panel">
+        <h3>{{ progress_title }}</h3>
+        {% for bar in progress_bars %}
+        <div class="progress-item">
+          <div class="progress-label">
+            <span class="label-text">{{ bar.label }}</span>
+            <span class="label-value">{{ bar.value }}%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ bar.value }}%; background: {{ bar.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- DONUT CHART -->
+      <div class="donut-panel">
+        <h3>{{ donut_title }}</h3>
+        <div class="donut-container">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#eeeeee" stroke-width="12"/>
+            {% for segment in donut_segments %}
+            <circle cx="60" cy="60" r="48" fill="none"
+                    stroke="{{ segment.color }}"
+                    stroke-width="12"
+                    stroke-dasharray="{{ segment.dash }} {{ segment.gap }}"
+                    stroke-dashoffset="{{ segment.offset }}"/>
+            {% endfor %}
+          </svg>
+          <div class="donut-center-text">
+            <span class="donut-value">{{ donut_center_value }}</span>
+            <span class="donut-sublabel">{{ donut_center_label }}</span>
+          </div>
+        </div>
+        <div class="donut-legend">
+          {% for legend in donut_legend_items %}
+          <div class="donut-legend-item">
+            <span class="legend-dot" style="background: {{ legend.color }};"></span>
+            <span>{{ legend.label }}</span>
+            <span class="legend-val">{{ legend.value }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-accent-bar"></div>
+    <div class="page-footer">
+      <span class="footer-left">{{ footer_org_name }} — {{ footer_report_title }}</span>
+      <span class="footer-right">{{ footer_page_label }}</span>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0057",
+  "variables": {
+    "page_title": "string",
+    "org_short_name": "string",
+    "appendix_identifier": "string",
+    "appendix_code": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "nav_tabs": [
+      {
+        "label": "string",
+        "active": "boolean"
+      }
+    ],
+    "table_title": "string",
+    "table_record_count": "string",
+    "table_columns": ["string"],
+    "table_rows": [
+      {
+        "indicator": "string",
+        "baseline": "string",
+        "target": "string",
+        "actual": "string",
+        "unit": "string",
+        "status": "string",
+        "status_class": "string (status-on-track | status-at-risk | status-delayed)"
+      }
+    ],
+    "progress_title": "string",
+    "progress_bars": [
+      {
+        "label": "string",
+        "value": "number",
+        "color": "string (hex color)"
+      }
+    ],
+    "donut_title": "string",
+    "donut_center_value": "string",
+    "donut_center_label": "string",
+    "donut_segments": [
+      {
+        "color": "string (hex color)",
+        "dash": "number",
+        "gap": "number",
+        "offset": "number"
+      }
+    ],
+    "donut_legend_items": [
+      {
+        "label": "string",
+        "value": "string",
+        "color": "string (hex color)"
+      }
+    ],
+    "footer_org_name": "string",
+    "footer_report_title": "string",
+    "footer_page_label": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

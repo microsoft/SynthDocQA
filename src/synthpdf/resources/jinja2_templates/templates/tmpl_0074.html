@@ -1,0 +1,640 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #1a1a2e;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* === ORGANIC WAVE CURVES === */
+  .wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 0;
+  }
+
+  .wave-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 0;
+  }
+
+  .wave-accent {
+    position: absolute;
+    top: 200px;
+    right: -60px;
+    width: 200px;
+    height: 600px;
+    z-index: 0;
+    opacity: 0.08;
+  }
+
+  /* === TOP NAVIGATION TABS === */
+  .nav-tabs {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: stretch;
+    height: 44px;
+    background: #006d77;
+    padding: 0 30px;
+    gap: 0;
+  }
+
+  .nav-tab {
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.65);
+    border-bottom: 3px solid transparent;
+    cursor: default;
+    transition: none;
+  }
+
+  .nav-tab.active {
+    color: #ffffff;
+    border-bottom: 3px solid #e29578;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .nav-tab-accent {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #e29578;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* === HEADER SECTION === */
+  .header-band {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(135deg, #006d77 0%, #00555c 100%);
+    padding: 30px 40px 28px 40px;
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+  }
+
+  .header-content {
+    flex: 1;
+  }
+
+  .header-eyebrow {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #e29578;
+    margin-bottom: 8px;
+  }
+
+  .header-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .header-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.8);
+    max-width: 460px;
+  }
+
+  .header-badge {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-badge-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: #e29578;
+    line-height: 1;
+  }
+
+  .header-badge-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+  }
+
+  /* === INTRO SECTION === */
+  .intro-section {
+    position: relative;
+    z-index: 10;
+    padding: 22px 40px 16px 40px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .intro-text {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #1a1a2e;
+  }
+
+  .intro-image-wrap {
+    flex-shrink: 0;
+    width: 180px;
+    height: 110px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid #edf6f9;
+    background: #edf6f9;
+  }
+
+  .intro-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* === INFOGRAPHIC FLOW === */
+  .flow-section {
+    position: relative;
+    z-index: 10;
+    padding: 0 40px;
+  }
+
+  .flow-heading {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: #006d77;
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 18px;
+  }
+
+  .flow-heading::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 5px;
+    background: #e29578;
+    border-radius: 3px;
+  }
+
+  .flow-track {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 28px;
+  }
+
+  .flow-track::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    bottom: 18px;
+    width: 3px;
+    background: linear-gradient(180deg, #006d77 0%, #83c5be 50%, #e29578 100%);
+    border-radius: 2px;
+  }
+
+  .flow-step {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 10px 0;
+  }
+
+  .flow-node {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: #ffffff;
+    z-index: 2;
+    position: relative;
+    left: -28px;
+    margin-right: -28px;
+    box-shadow: 0 2px 8px rgba(0,109,119,0.25);
+  }
+
+  .flow-step:nth-child(1) .flow-node { background: #006d77; }
+  .flow-step:nth-child(2) .flow-node { background: #1a8a8f; }
+  .flow-step:nth-child(3) .flow-node { background: #83c5be; color: #1a1a2e; }
+  .flow-step:nth-child(4) .flow-node { background: #e29578; }
+
+  .flow-card {
+    flex: 1;
+    background: #edf6f9;
+    border-radius: 8px;
+    padding: 14px 18px;
+    border-left: 4px solid #83c5be;
+    position: relative;
+  }
+
+  .flow-step:nth-child(even) .flow-card {
+    border-left-color: #006d77;
+  }
+
+  .flow-card-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: #006d77;
+    margin-bottom: 4px;
+  }
+
+  .flow-card-body {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #1a1a2e;
+  }
+
+  .flow-card-metric {
+    display: inline-block;
+    margin-top: 6px;
+    background: #006d77;
+    color: #ffffff;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  /* === CALLOUT BOX === */
+  .callout-box {
+    position: relative;
+    z-index: 10;
+    margin: 18px 40px 0 40px;
+    background: linear-gradient(135deg, #edf6f9 0%, #d9f0ee 100%);
+    border: 1px solid #83c5be;
+    border-left: 5px solid #e29578;
+    border-radius: 8px;
+    padding: 16px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .callout-icon {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e29578;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .callout-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+  }
+
+  .callout-content {
+    flex: 1;
+  }
+
+  .callout-title {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: #006d77;
+    margin-bottom: 4px;
+  }
+
+  .callout-text {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1a1a2e;
+  }
+
+  /* === KPI ROW === */
+  .kpi-row {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    gap: 14px;
+    padding: 18px 40px 0 40px;
+  }
+
+  .kpi-card {
+    flex: 1;
+    background: #edf6f9;
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+    border-top: 4px solid;
+    position: relative;
+  }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #4a7c82;
+    margin-top: 4px;
+  }
+
+  .kpi-sublabel {
+    font-size: 9px;
+    color: #4a7c82;
+    margin-top: 2px;
+  }
+
+  /* === FOOTNOTES STRIP === */
+  .footnotes-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #006d77;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footnotes-text {
+    font-size: 8px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+    max-width: 520px;
+  }
+
+  .footnotes-text sup {
+    color: #e29578;
+    font-weight: 700;
+  }
+
+  .footnotes-page {
+    font-size: 9px;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(255,255,255,0.12);
+    padding: 4px 12px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .footnotes-logo {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: #e29578;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ORGANIC WAVE CURVES — TOP -->
+  <svg class="wave-top" viewBox="0 0 794 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L794,0 L794,70 Q650,120 500,85 Q350,50 200,80 Q80,105 0,90 Z" fill="#006d77" opacity="0.07"/>
+    <path d="M0,0 L794,0 L794,50 Q600,100 400,65 Q200,30 0,70 Z" fill="#83c5be" opacity="0.05"/>
+  </svg>
+
+  <!-- ORGANIC WAVE CURVES — RIGHT SIDE ACCENT -->
+  <svg class="wave-accent" viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg">
+    <path d="M200,0 Q80,100 150,200 Q60,300 180,400 Q90,500 200,600 L200,0 Z" fill="#006d77"/>
+  </svg>
+
+  <!-- ORGANIC WAVE CURVES — BOTTOM -->
+  <svg class="wave-bottom" viewBox="0 0 794 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 Q200,0 400,30 Q600,60 794,20 L794,80 L0,80 Z" fill="#006d77" opacity="0.04"/>
+  </svg>
+
+  <!-- TOP NAVIGATION TABS -->
+  <div class="nav-tabs">
+    <div class="nav-tab">{{ nav_tab_1 }}</div>
+    <div class="nav-tab active">{{ nav_tab_2 }}</div>
+    <div class="nav-tab">{{ nav_tab_3 }}</div>
+    <div class="nav-tab">{{ nav_tab_4 }}</div>
+    <div class="nav-tab-accent">{{ nav_report_label }}</div>
+  </div>
+
+  <!-- HEADER BAND -->
+  <div class="header-band">
+    <div class="header-content">
+      <div class="header-eyebrow">{{ header_eyebrow }}</div>
+      <div class="header-title">{{ page_title }}</div>
+      <div class="header-subtitle">{{ header_subtitle }}</div>
+    </div>
+    <div class="header-badge">
+      <div class="header-badge-value">{{ badge_value }}</div>
+      <div class="header-badge-label">{{ badge_label }}</div>
+    </div>
+  </div>
+
+  <!-- INTRO SECTION -->
+  <div class="intro-section">
+    <div class="intro-text">{{ body_paragraph_1 }}</div>
+    <div class="intro-image-wrap">
+      <img src="{{ product_image_url }}" alt="{{ product_image_alt }}">
+    </div>
+  </div>
+
+  <!-- INFOGRAPHIC FLOW -->
+  <div class="flow-section">
+    <div class="flow-heading">{{ section_heading }}</div>
+    <div class="flow-track">
+      {% for step in flow_steps %}
+      <div class="flow-step">
+        <div class="flow-node">{{ step.number }}</div>
+        <div class="flow-card">
+          <div class="flow-card-title">{{ step.title }}</div>
+          <div class="flow-card-body">{{ step.description }}</div>
+          {% if step.metric %}<span class="flow-card-metric">{{ step.metric }}</span>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CALLOUT BOX -->
+  <div class="callout-box">
+    <div class="callout-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-6h2v6h-2zm0-8V7h2v2h-2z"/></svg>
+    </div>
+    <div class="callout-content">
+      <div class="callout-title">{{ callout_title }}</div>
+      <div class="callout-text">{{ callout_text }}</div>
+    </div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card" style="border-top-color: {{ kpi_1_color }};">
+      <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_1_sublabel }}</div>
+    </div>
+    <div class="kpi-card" style="border-top-color: {{ kpi_2_color }};">
+      <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_2_sublabel }}</div>
+    </div>
+    <div class="kpi-card" style="border-top-color: {{ kpi_3_color }};">
+      <div class="kpi-value" style="color: {{ kpi_3_color }};">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_3_sublabel }}</div>
+    </div>
+    <div class="kpi-card" style="border-top-color: {{ kpi_4_color }};">
+      <div class="kpi-value" style="color: {{ kpi_4_color }};">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <div class="kpi-sublabel">{{ kpi_4_sublabel }}</div>
+    </div>
+  </div>
+
+  <!-- FOOTNOTES STRIP -->
+  <div class="footnotes-strip">
+    <div class="footnotes-text">
+      <sup>1</sup> {{ footnote_1 }} &nbsp; <sup>2</sup> {{ footnote_2 }}
+    </div>
+    <div class="footnotes-logo">{{ company_name }}</div>
+    <div class="footnotes-page">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0074",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "header_eyebrow": "string",
+    "header_subtitle": "string",
+    "badge_value": "string",
+    "badge_label": "string",
+    "body_paragraph_1": "string",
+    "product_image_url": "string (URL)",
+    "product_image_alt": "string",
+    "nav_tab_1": "string",
+    "nav_tab_2": "string",
+    "nav_tab_3": "string",
+    "nav_tab_4": "string",
+    "nav_report_label": "string",
+    "flow_steps": "array of objects [{number: string, title: string, description: string, metric: string|null}]",
+    "callout_title": "string",
+    "callout_text": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_sublabel": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_sublabel": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_sublabel": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_sublabel": "string",
+    "kpi_4_color": "string (hex color)",
+    "footnote_1": "string",
+    "footnote_2": "string",
+    "company_name": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

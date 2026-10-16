@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0037",
+  "industry": "oil_gas_energy",
+  "page_role": "infographic_story",
+  "layout": {
+    "name": "hero_plus_columns",
+    "description": "Top third is a full-width hero section (color band or image), bottom two-thirds splits into 3-4 equal content columns."
+  },
+  "color_palette": {
+    "name": "fintech_gradient",
+    "primary": "#6c3483",
+    "secondary": "#1a5276",
+    "accent": "#17a589",
+    "bg": "#fdfcff",
+    "surface": "#f4ecf7",
+    "text": "#1c1c1c",
+    "muted": "#7d7d7d"
+  },
+  "typography": {
+    "name": "expressive_brand",
+    "heading_font": "'Arial Black', Gadget, sans-serif",
+    "body_font": "Verdana, Geneva, sans-serif",
+    "heading_weight": "800",
+    "h1_size": "42px",
+    "h2_size": "28px",
+    "h3_size": "16px",
+    "body_size": "11px",
+    "line_height": "1.4",
+    "letter_spacing": "0.03em"
+  },
+  "elements": [
+    "logo_or_brand_strip",
+    "page_number_footer",
+    "progress_bars",
+    "divider_with_label",
+    "callout_box"
+  ],
+  "density": "dense",
+  "motif": "organic_wave_curves",
+  "design_direction": "Inspired by Bloomberg terminal data pages \u2014 dense, monochromatic, information-first",
+  "seed": 297571
+}

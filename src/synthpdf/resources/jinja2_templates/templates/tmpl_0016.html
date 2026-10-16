@@ -1,0 +1,977 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: linear-gradient(180deg, #003087 0%, #0053a0 60%, #003087 100%);
+    padding: 36px 18px 28px 18px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(0, 166, 81, 0.12);
+    z-index: 0;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 60px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+  }
+
+  .sidebar-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.13);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-logo-text {
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .sidebar-section-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 2px;
+  }
+
+  .sidebar-nav a {
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 10px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    line-height: 1.4;
+  }
+
+  .sidebar-nav a.active {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .sidebar-nav .nav-page {
+    float: right;
+    opacity: 0.45;
+    font-size: 9px;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 8px 0 18px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-badge {
+    display: inline-block;
+    background: #00a651;
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-stat {
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-stat-value {
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.1;
+  }
+
+  .sidebar-stat-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-footer-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    padding: 36px 36px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .circle-deco-1 {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 166, 81, 0.07), rgba(0, 83, 160, 0.05));
+    z-index: 0;
+  }
+
+  .circle-deco-2 {
+    position: absolute;
+    bottom: 40px;
+    right: 80px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 48, 135, 0.06);
+    z-index: 0;
+  }
+
+  .circle-deco-3 {
+    position: absolute;
+    bottom: -20px;
+    left: 50px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0, 166, 81, 0.04);
+    z-index: 0;
+  }
+
+  .content-inner {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header {
+    margin-bottom: 22px;
+  }
+
+  .page-tag-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    line-height: 1.4;
+  }
+
+  .tag--primary {
+    background: #003087;
+    color: #ffffff;
+  }
+
+  .tag--accent {
+    background: #00a651;
+    color: #ffffff;
+  }
+
+  .tag--outline {
+    background: transparent;
+    color: #0053a0;
+    border: 1px solid #0053a0;
+  }
+
+  .page-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: #003087;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    color: #5c6876;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #00a651, #0053a0);
+    border-radius: 2px;
+    margin-top: 12px;
+  }
+
+  .intro-text {
+    font-size: 11px;
+    color: #1a1a1a;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    max-width: 540px;
+  }
+
+  .leadership-section-heading {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #003087;
+    margin-bottom: 14px;
+  }
+
+  .org-chart-leader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #003087, #0053a0);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .org-chart-leader::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(0, 166, 81, 0.15);
+  }
+
+  .leader-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .leader-avatar-initials {
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .leader-info {
+    flex: 1;
+    z-index: 1;
+  }
+
+  .leader-name {
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .leader-role {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px;
+    margin-top: 1px;
+  }
+
+  .leader-stat {
+    color: #ffffff;
+    font-size: 9px;
+    opacity: 0.6;
+    margin-top: 3px;
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 12px;
+    background: #0053a0;
+    margin: 0 auto 0 42px;
+    border-radius: 1px;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .team-card {
+    background: #f0f4fb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+  }
+
+  .team-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    border-radius: 2px;
+  }
+
+  .team-card:nth-child(odd)::before {
+    background: #003087;
+  }
+
+  .team-card:nth-child(even)::before {
+    background: #00a651;
+  }
+
+  .member-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #ffffff;
+  }
+
+  .member-avatar--blue { background: #0053a0; }
+  .member-avatar--green { background: #00a651; }
+  .member-avatar--dark { background: #003087; }
+
+  .member-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .member-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .member-title {
+    font-size: 9px;
+    color: #5c6876;
+    margin-top: 1px;
+    line-height: 1.3;
+  }
+
+  .member-specialty-tag {
+    display: inline-block;
+    font-size: 7.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-top: 4px;
+    background: rgba(0, 48, 135, 0.08);
+    color: #003087;
+  }
+
+  .section-heading-h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #003087;
+    margin-bottom: 10px;
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .comparison-col {
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .comparison-col--left {
+    background: #f0f4fb;
+    border-top: 3px solid #003087;
+  }
+
+  .comparison-col--right {
+    background: #f0f4fb;
+    border-top: 3px solid #00a651;
+  }
+
+  .comparison-col-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: #003087;
+  }
+
+  .comparison-col--right .comparison-col-title {
+    color: #00a651;
+  }
+
+  .comparison-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-list li {
+    font-size: 9.5px;
+    color: #1a1a1a;
+    padding: 3px 0;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .comparison-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #0053a0;
+  }
+
+  .comparison-col--right .comparison-list li::before {
+    background: #00a651;
+  }
+
+  .callout-box {
+    background: linear-gradient(135deg, rgba(0, 48, 135, 0.04), rgba(0, 166, 81, 0.04));
+    border-left: 4px solid #00a651;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .callout-box::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 166, 81, 0.08);
+  }
+
+  .callout-quote {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: #003087;
+    line-height: 1.6;
+  }
+
+  .callout-attribution {
+    font-size: 9px;
+    color: #5c6876;
+    margin-top: 5px;
+  }
+
+  .progress-section {
+    margin-bottom: 16px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .progress-label {
+    font-size: 9px;
+    color: #1a1a1a;
+    width: 100px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .progress-bar-track {
+    flex: 1;
+    height: 8px;
+    background: #e8ecf2;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #003087, #0053a0);
+  }
+
+  .progress-bar-fill--accent {
+    background: linear-gradient(90deg, #00a651, #0053a0);
+  }
+
+  .progress-value {
+    font-size: 9px;
+    font-weight: 700;
+    color: #003087;
+    width: 30px;
+    flex-shrink: 0;
+  }
+
+  .data-table-wrapper {
+    margin-bottom: 14px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+  }
+
+  .data-table thead th {
+    background: #003087;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
+    padding: 6px 10px;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .data-table thead th:first-child { border-radius: 6px 0 0 0; }
+  .data-table thead th:last-child { border-radius: 0 6px 0 0; }
+
+  .data-table tbody td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e8ecf2;
+    color: #1a1a1a;
+  }
+
+  .data-table tbody tr:nth-child(even) { background: #f0f4fb; }
+  .data-table tbody tr:last-child td:first-child { border-radius: 0 0 0 6px; }
+  .data-table tbody tr:last-child td:last-child { border-radius: 0 0 6px 0; }
+
+  .table-status {
+    display: inline-block;
+    font-size: 7.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  .table-status--active {
+    background: rgba(0, 166, 81, 0.12);
+    color: #00a651;
+  }
+
+  .table-status--pending {
+    background: rgba(0, 83, 160, 0.1);
+    color: #0053a0;
+  }
+
+  .chart-placeholder {
+    background: #f0f4fb;
+    border: 1px dashed #c5d0e0;
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .chart-placeholder-label {
+    font-size: 10px;
+    color: #5c6876;
+    font-style: italic;
+  }
+
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 48, 135, 0.06);
+  }
+
+  .page-footer {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #e8ecf2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-size: 8px;
+    color: #5c6876;
+  }
+
+  .footer-right {
+    font-size: 8px;
+    color: #5c6876;
+  }
+
+  .footer-page-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #003087;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 9px;
+    margin-left: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo-text">{{ firm_logo_text }}</span>
+    </div>
+
+    <span class="sidebar-section-label">Contents</span>
+    <ul class="sidebar-nav">
+      {% for nav in sidebar_nav_items %}
+      <li><a href="#" class="{{ 'active' if nav.active else '' }}">{{ nav.label }}<span class="nav-page">{{ nav.page }}</span></a></li>
+      {% endfor %}
+    </ul>
+
+    <div class="sidebar-divider"></div>
+
+    <span class="sidebar-badge">{{ sidebar_badge_text }}</span>
+
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">{{ sidebar_stat_1_value }}</div>
+      <div class="sidebar-stat-label">{{ sidebar_stat_1_label }}</div>
+    </div>
+
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">{{ sidebar_stat_2_value }}</div>
+      <div class="sidebar-stat-label">{{ sidebar_stat_2_label }}</div>
+    </div>
+
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">{{ sidebar_stat_3_value }}</div>
+      <div class="sidebar-stat-label">{{ sidebar_stat_3_label }}</div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">{{ sidebar_footer_text }}</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="circle-deco-1"></div>
+    <div class="circle-deco-2"></div>
+    <div class="circle-deco-3"></div>
+
+    <div class="content-inner">
+
+      <!-- Header -->
+      <header class="page-header">
+        <div class="page-tag-row">
+          {% for tag in header_tags %}
+          <span class="tag tag--{{ tag.style }}">{{ tag.label }}</span>
+          {% endfor %}
+        </div>
+        <h1 class="page-title">{{ page_title }}</h1>
+        <p class="page-subtitle">{{ page_subtitle }}</p>
+        <div class="header-divider"></div>
+      </header>
+
+      <p class="intro-text">{{ body_paragraph_1 }}</p>
+
+      <!-- Leadership -->
+      <h3 class="leadership-section-heading">{{ leadership_heading }}</h3>
+
+      <div class="org-chart-leader">
+        <div class="leader-avatar">
+          <span class="leader-avatar-initials">{{ leader_initials }}</span>
+        </div>
+        <div class="leader-info">
+          <div class="leader-name">{{ leader_name }}</div>
+          <div class="leader-role">{{ leader_role }}</div>
+          <div class="leader-stat">{{ leader_stat }}</div>
+        </div>
+      </div>
+
+      <div class="connector-line"></div>
+
+      <!-- Team Grid -->
+      <div class="team-grid">
+        {% for member in team_members %}
+        <div class="team-card">
+          <div class="member-avatar member-avatar--{{ member.avatar_color }}">{{ member.initials }}</div>
+          <div class="member-info">
+            <div class="member-name">{{ member.name }}</div>
+            <div class="member-title">{{ member.title }}</div>
+            <span class="member-specialty-tag">{{ member.specialty }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Comparison Columns -->
+      <h3 class="section-heading-h2">{{ comparison_heading }}</h3>
+      <div class="comparison-columns">
+        <div class="comparison-col comparison-col--left">
+          <div class="comparison-col-title">{{ comparison_col_1_title }}</div>
+          <ul class="comparison-list">
+            {% for item in comparison_col_1_items %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="comparison-col comparison-col--right">
+          <div class="comparison-col-title">{{ comparison_col_2_title }}</div>
+          <ul class="comparison-list">
+            {% for item in comparison_col_2_items %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Callout Box -->
+      <div class="callout-box">
+        <div class="callout-quote">"{{ callout_quote }}"</div>
+        <div class="callout-attribution">— {{ callout_attribution }}</div>
+      </div>
+
+      <!-- Progress Bars -->
+      <h3 class="section-heading-h2">{{ progress_heading }}</h3>
+      <div class="progress-section">
+        {% for bar in progress_bars %}
+        <div class="progress-row">
+          <span class="progress-label">{{ bar.label }}</span>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill {{ 'progress-bar-fill--accent' if bar.accent else '' }}" style="width: {{ bar.value }}%"></div>
+          </div>
+          <span class="progress-value">{{ bar.value }}%</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Data Table -->
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td>{{ row.engagement }}</td>
+              <td>{{ row.lead }}</td>
+              <td>{{ row.sector }}</td>
+              <td><span class="table-status table-status--{{ row.status_style }}">{{ row.status }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Chart Placeholder -->
+      <div class="chart-placeholder">
+        <span class="chart-placeholder-label">{{ chart_placeholder_label }}</span>
+      </div>
+
+      <!-- Footer -->
+      <div class="page-footer">
+        <span class="footer-left">{{ footer_text }}</span>
+        <span class="footer-right">{{ footer_document_title }}<span class="footer-page-num">{{ page_number }}</span></span>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0016",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "body_paragraph_1": "string",
+    "firm_logo_text": "string",
+    "sidebar_badge_text": "string",
+    "sidebar_stat_1_value": "string",
+    "sidebar_stat_1_label": "string",
+    "sidebar_stat_2_value": "string",
+    "sidebar_stat_2_label": "string",
+    "sidebar_stat_3_value": "string",
+    "sidebar_stat_3_label": "string",
+    "sidebar_footer_text": "string",
+    "sidebar_nav_items": [{"label": "string", "page": "string", "active": "boolean"}],
+    "header_tags": [{"label": "string", "style": "string (primary|accent|outline)"}],
+    "leadership_heading": "string",
+    "leader_initials": "string",
+    "leader_name": "string",
+    "leader_role": "string",
+    "leader_stat": "string",
+    "team_members": [{"initials": "string", "name": "string", "title": "string", "specialty": "string", "avatar_color": "string (blue|green|dark)"}],
+    "comparison_heading": "string",
+    "comparison_col_1_title": "string",
+    "comparison_col_1_items": ["string"],
+    "comparison_col_2_title": "string",
+    "comparison_col_2_items": ["string"],
+    "callout_quote": "string",
+    "callout_attribution": "string",
+    "progress_heading": "string",
+    "progress_bars": [{"label": "string", "value": "number", "accent": "boolean"}],
+    "table_headers": ["string"],
+    "table_rows": [{"engagement": "string", "lead": "string", "sector": "string", "status": "string", "status_style": "string (active|pending)"}],
+    "chart_placeholder_label": "string",
+    "footer_text": "string",
+    "footer_document_title": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

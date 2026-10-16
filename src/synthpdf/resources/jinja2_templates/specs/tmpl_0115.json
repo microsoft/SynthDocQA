@@ -1,0 +1,42 @@
+{
+  "id": "tmpl_0115",
+  "industry": "government_public_sector",
+  "page_role": "section_divider",
+  "layout": {
+    "name": "two_pane_split",
+    "description": "Page is divided vertically into two distinct panels, each with different background color or texture. Each pane tells its own story."
+  },
+  "color_palette": {
+    "name": "retail_vibrant",
+    "primary": "#e91e63",
+    "secondary": "#9c27b0",
+    "accent": "#ff9800",
+    "bg": "#ffffff",
+    "surface": "#fce4ec",
+    "text": "#212121",
+    "muted": "#757575"
+  },
+  "typography": {
+    "name": "bold_display",
+    "heading_font": "Impact, 'Arial Black', sans-serif",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "900",
+    "h1_size": "52px",
+    "h2_size": "32px",
+    "h3_size": "18px",
+    "body_size": "12px",
+    "line_height": "1.2",
+    "letter_spacing": "-0.02em"
+  },
+  "elements": [
+    "timeline_nodes",
+    "page_number_footer",
+    "quote_attribution",
+    "pull_quote_block",
+    "top_navigation_tabs"
+  ],
+  "density": "sparse",
+  "motif": "none",
+  "design_direction": "Inspired by Goldman Sachs investment memoranda \u2014 conservative, trust-signaling, formal",
+  "seed": 961278
+}

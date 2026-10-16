@@ -1,0 +1,48 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; background: #0d0d14; }
+.page { width: 100%; height: 100%; display: flex; }
+.sidebar { width: 6px; background: {{ primary_color|default('#1a237e') }}; flex-shrink: 0; }
+.main { flex: 1; padding: 72px 96px; display: flex; flex-direction: column; justify-content: space-between; }
+.top-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.company-name { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 3px; text-transform: uppercase; }
+.report-meta { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 2px; margin-top: 6px; }
+.year-badge { padding: 6px 14px; border: 1px solid rgba(255,255,255,0.12); font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+.accent-rule { width: 56px; height: 3px; background: {{ primary_color|default('#1a237e') }}; margin-bottom: 32px; }
+.title { font-size: 52px; font-weight: 800; color: #ffffff; line-height: 1.15; max-width: 900px; margin-bottom: 24px; }
+.subtitle { font-size: 20px; color: {{ accent_color|default('#3949ab') }}; font-weight: 300; }
+.bottom-row { display: flex; align-items: center; gap: 24px; }
+.tagline-txt { font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 2px; text-transform: uppercase; }
+.dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="sidebar"></div>
+  <div class="main">
+    <div class="top-row">
+      <div>
+        <div class="company-name">{{ company_name|default('Sample Organization') }}</div>
+        <div class="report-meta">{{ report_type|default('Annual Report') }}</div>
+      </div>
+      <div class="year-badge">{{ year|default('2025') }}</div>
+    </div>
+    <div>
+      <div class="accent-rule"></div>
+      <div class="title">{{ document_title|default('Strategic Performance Review') }}</div>
+      <div class="subtitle">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+    </div>
+    <div class="bottom-row">
+      <span class="tagline-txt">{{ tagline|default('Data-Driven Decisions') }}</span>
+      <div class="dot"></div>
+      <span class="tagline-txt">Confidential</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

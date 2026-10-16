@@ -1,0 +1,643 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #0d2137;
+    background: #e3f2fd;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #e3f2fd;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .page::before {
+    content: '{{ watermark_text }}';
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 180px;
+    font-weight: 600;
+    color: rgba(21, 101, 192, 0.04);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+
+  .header-band {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    background: linear-gradient(135deg, #1565c0 0%, #0277bd 100%);
+    padding: 28px 48px 22px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #f9a825;
+  }
+
+  .header-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-logo-area img {
+    height: 32px;
+    width: auto;
+  }
+
+  .header-firm-name {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-doc-label {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    grid-row: 2;
+    background: #ffffff;
+    border-right: 1px solid rgba(21, 101, 192, 0.12);
+    padding: 32px 0 24px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0 20px 14px 20px;
+    border-bottom: 1px solid rgba(21, 101, 192, 0.08);
+    margin-bottom: 8px;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    flex: 1;
+  }
+
+  .sidebar-nav-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 9px 20px 9px 20px;
+    font-size: 10px;
+    color: #0d2137;
+    cursor: default;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-nav-item.active {
+    background: rgba(21, 101, 192, 0.06);
+    border-left-color: #1565c0;
+    font-weight: 600;
+  }
+
+  .sidebar-nav-item .nav-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 8px;
+  }
+
+  .sidebar-nav-item .nav-page {
+    font-size: 9px;
+    color: #546e7a;
+    font-weight: 600;
+    min-width: 18px;
+    text-align: right;
+  }
+
+  .sidebar-section-divider {
+    height: 1px;
+    background: rgba(21, 101, 192, 0.06);
+    margin: 6px 20px;
+  }
+
+  .sidebar-badge-area {
+    padding: 16px 20px 0 20px;
+    border-top: 1px solid rgba(21, 101, 192, 0.08);
+    margin-top: auto;
+  }
+
+  .sidebar-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-badge.primary {
+    background: rgba(21, 101, 192, 0.1);
+    color: #1565c0;
+  }
+
+  .sidebar-badge.accent {
+    background: rgba(249, 168, 37, 0.15);
+    color: #c17900;
+  }
+
+  .main-content {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 40px 48px 32px 44px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #0d2137;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .main-subtitle {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #546e7a;
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+  }
+
+  .accent-rule {
+    width: 48px;
+    height: 3px;
+    background: #f9a825;
+    margin-bottom: 28px;
+    border-radius: 1px;
+  }
+
+  .toc-section {
+    margin-bottom: 22px;
+  }
+
+  .toc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .toc-section-number {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #1565c0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .toc-section-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0d2137;
+  }
+
+  .toc-section-page {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1565c0;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .toc-entries {
+    list-style: none;
+    padding-left: 32px;
+  }
+
+  .toc-entry {
+    display: flex;
+    align-items: baseline;
+    padding: 4px 0;
+    font-size: 11px;
+    color: #0d2137;
+    line-height: 1.55;
+  }
+
+  .toc-entry-label {
+    flex-shrink: 0;
+  }
+
+  .toc-entry-dots {
+    flex: 1;
+    border-bottom: 1px dotted #546e7a;
+    margin: 0 6px;
+    min-width: 30px;
+    position: relative;
+    top: -3px;
+    opacity: 0.4;
+  }
+
+  .toc-entry-page {
+    font-size: 10px;
+    color: #546e7a;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .progress-section {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(21, 101, 192, 0.08);
+  }
+
+  .progress-label-row {
+    font-size: 9px;
+    font-weight: 600;
+    color: #546e7a;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+  }
+
+  .progress-name {
+    font-size: 10px;
+    color: #0d2137;
+    width: 120px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(21, 101, 192, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #1565c0, #0277bd);
+  }
+
+  .progress-bar-fill.accent {
+    background: linear-gradient(90deg, #f9a825, #f57f17);
+  }
+
+  .progress-pct {
+    font-size: 9px;
+    font-weight: 600;
+    color: #546e7a;
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .callout-box {
+    background: #ffffff;
+    border: 1px solid rgba(21, 101, 192, 0.12);
+    border-left: 3px solid #f9a825;
+    border-radius: 2px;
+    padding: 14px 18px;
+    margin-top: 18px;
+    margin-bottom: 12px;
+  }
+
+  .callout-title {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #1565c0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .callout-text {
+    font-size: 10px;
+    color: #546e7a;
+    line-height: 1.55;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: rgba(21, 101, 192, 0.08);
+    color: #1565c0;
+  }
+
+  .tag.accent {
+    background: rgba(249, 168, 37, 0.12);
+    color: #c17900;
+  }
+
+  .tag.secondary {
+    background: rgba(2, 119, 189, 0.08);
+    color: #0277bd;
+  }
+
+  .footer-strip {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    background: #ffffff;
+    border-top: 1px solid rgba(21, 101, 192, 0.1);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-strip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #1565c0, #0277bd, #f9a825);
+  }
+
+  .footnote-text {
+    font-size: 8px;
+    color: #546e7a;
+    line-height: 1.4;
+    max-width: 500px;
+  }
+
+  .footer-page {
+    font-size: 9px;
+    font-weight: 600;
+    color: #1565c0;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-brand {
+    font-size: 8px;
+    color: #546e7a;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header Band with Logo -->
+  <div class="header-band">
+    <div class="header-logo-area">
+      <img src="{{ logo_url }}" alt="{{ firm_name }} logo">
+      <span class="header-firm-name">{{ firm_name }}</span>
+    </div>
+    <span class="header-doc-label">{{ document_classification }}</span>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <div class="sidebar-title">{{ sidebar_title }}</div>
+    <ul class="sidebar-nav">
+      {% for nav in sidebar_nav_items %}
+      <li class="sidebar-nav-item{% if nav.active %} active{% endif %}">
+        <span class="nav-label">{{ nav.label }}</span>
+        <span class="nav-page">{{ nav.page }}</span>
+      </li>
+      {% if nav.divider_after %}<li class="sidebar-section-divider"></li>{% endif %}
+      {% endfor %}
+    </ul>
+    <div class="sidebar-badge-area">
+      {% for badge in sidebar_badges %}
+      <span class="sidebar-badge {{ badge.style }}">{{ badge.label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <h1 class="main-title">{{ page_title }}</h1>
+    <div class="main-subtitle">{{ page_subtitle }}</div>
+    <div class="accent-rule"></div>
+
+    <!-- TOC Sections -->
+    {% for section in toc_sections %}
+    <div class="toc-section">
+      <div class="toc-section-header">
+        <span class="toc-section-number">{{ section.number }}</span>
+        <span class="toc-section-title">{{ section.title }}</span>
+        <span class="toc-section-page">{{ section.page }}</span>
+      </div>
+      <ul class="toc-entries">
+        {% for entry in section.entries %}
+        <li class="toc-entry">
+          <span class="toc-entry-label">{{ entry.label }}</span>
+          <span class="toc-entry-dots"></span>
+          <span class="toc-entry-page">{{ entry.page }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+
+    <!-- Tag row -->
+    <div class="tag-row">
+      {% for tag in document_tags %}
+      <span class="tag {{ tag.style }}">{{ tag.label }}</span>
+      {% endfor %}
+    </div>
+
+    <!-- Callout box -->
+    <div class="callout-box">
+      <div class="callout-title">{{ callout_title }}</div>
+      <div class="callout-text">{{ callout_text }}</div>
+    </div>
+
+    <!-- Progress bars -->
+    <div class="progress-section">
+      <div class="progress-label-row">{{ progress_section_title }}</div>
+      {% for bar in progress_bars %}
+      <div class="progress-row">
+        <span class="progress-name">{{ bar.label }}</span>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill {{ bar.style }}" style="width: {{ bar.percent }}%;"></div>
+        </div>
+        <span class="progress-pct">{{ bar.percent }}%</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Footer Strip -->
+  <div class="footer-strip">
+    <span class="footnote-text">{{ footnote_text }}</span>
+    <span class="footer-brand">{{ footer_brand }}</span>
+    <span class="footer-page">{{ page_number }}</span>
+  </div>
+
+</div>
+
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0007",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "watermark_text": "string",
+    "logo_url": "string (image URL)",
+    "firm_name": "string",
+    "document_classification": "string",
+    "sidebar_title": "string",
+    "sidebar_nav_items": [
+      {
+        "label": "string",
+        "page": "string",
+        "active": "boolean",
+        "divider_after": "boolean"
+      }
+    ],
+    "sidebar_badges": [
+      {
+        "label": "string",
+        "style": "string ('primary' | 'accent')"
+      }
+    ],
+    "toc_sections": [
+      {
+        "number": "string",
+        "title": "string",
+        "page": "string",
+        "entries": [
+          {
+            "label": "string",
+            "page": "string"
+          }
+        ]
+      }
+    ],
+    "document_tags": [
+      {
+        "label": "string",
+        "style": "string ('primary' | 'accent' | 'secondary' | '')"
+      }
+    ],
+    "callout_title": "string",
+    "callout_text": "string",
+    "progress_section_title": "string",
+    "progress_bars": [
+      {
+        "label": "string",
+        "percent": "number",
+        "style": "string ('' | 'accent')"
+      }
+    ],
+    "footnote_text": "string",
+    "footer_brand": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

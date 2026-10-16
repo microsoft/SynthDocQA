@@ -1,0 +1,659 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #fffff8;
+    color: #1a0a0a;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fffff8;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -30px;
+    width: 180px;
+    height: 300px;
+    background: linear-gradient(135deg, #7b1e1e 0%, #a52a2a 100%);
+    transform: rotate(25deg);
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -50px;
+    width: 160px;
+    height: 260px;
+    background: linear-gradient(135deg, #4682b4 0%, #7b1e1e 100%);
+    transform: rotate(25deg);
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+  .header-band {
+    width: 100%;
+    height: 82px;
+    background: #7b1e1e;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+    z-index: 2;
+  }
+
+  .header-band::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 40%, #a52a2a 40%, #a52a2a 60%, transparent 60%);
+    opacity: 0.5;
+  }
+
+  .header-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fffff8;
+    letter-spacing: 0.03em;
+    z-index: 1;
+  }
+
+  .header-subtitle {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10px;
+    color: rgba(255,255,248,0.7);
+    margin-left: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .sub-band {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #a52a2a 0%, #a52a2a 35%, #4682b4 35%, #4682b4 50%, #7b1e1e 50%, #7b1e1e 100%);
+    position: relative;
+    z-index: 2;
+  }
+
+  .content {
+    padding: 20px 36px 14px 36px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-heading-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 12px;
+    gap: 16px;
+  }
+
+  .section-heading {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #7b1e1e;
+    letter-spacing: 0.03em;
+  }
+
+  .section-date {
+    font-size: 10px;
+    color: #6b6b6b;
+    letter-spacing: 0.04em;
+  }
+
+  .card-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .card {
+    background: #f5f5dc;
+    border: 1px solid rgba(123,30,30,0.12);
+    border-radius: 3px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #7b1e1e;
+  }
+
+  .card.accent-blue::before {
+    background: #4682b4;
+  }
+
+  .card.accent-secondary::before {
+    background: #a52a2a;
+  }
+
+  .card.span-2 {
+    grid-column: span 2;
+  }
+
+  .card.span-row-2 {
+    grid-row: span 2;
+  }
+
+  .card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .card-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b6b;
+    margin-bottom: 6px;
+  }
+
+  .card-value {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #7b1e1e;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .card-value.blue { color: #4682b4; }
+  .card-value.secondary { color: #a52a2a; }
+
+  .card-description {
+    font-size: 10px;
+    color: #1a0a0a;
+    line-height: 1.4;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .comparison-table thead th {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fffff8;
+    background: #7b1e1e;
+    padding: 8px 10px;
+    text-align: left;
+    border: none;
+  }
+
+  .comparison-table thead th:first-child { border-radius: 2px 0 0 0; }
+  .comparison-table thead th:last-child { border-radius: 0 2px 0 0; }
+
+  .comparison-table tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(123,30,30,0.1);
+    color: #1a0a0a;
+    vertical-align: top;
+  }
+
+  .comparison-table tbody tr:nth-child(even) td {
+    background: rgba(245,245,220,0.5);
+  }
+
+  .comparison-table .metric-name { font-weight: 700; font-size: 10px; }
+  .comparison-table .value-highlight { font-family: 'Arial Black', Gadget, sans-serif; font-weight: 800; color: #7b1e1e; }
+  .comparison-table .value-positive { color: #2e7d32; font-weight: 700; }
+  .comparison-table .value-negative { color: #a52a2a; font-weight: 700; }
+
+  .pull-quote-card {
+    background: #7b1e1e;
+    border: none;
+    padding: 18px 20px 14px 20px;
+    position: relative;
+  }
+
+  .pull-quote-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 70%, rgba(165,42,42,0.4) 70%);
+  }
+
+  .pull-quote-mark {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 36px;
+    color: rgba(255,255,248,0.25);
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pull-quote-text {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    color: #fffff8;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+    margin: 4px 0 8px 0;
+  }
+
+  .quote-attribution {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    color: rgba(255,255,248,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .donut-svg { width: 68px; height: 68px; flex-shrink: 0; }
+  .donut-track { fill: none; stroke: #e8e4d8; stroke-width: 7; }
+
+  .donut-value {
+    fill: none;
+    stroke-width: 7;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+
+  .donut-label-center {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    fill: #1a0a0a;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .donut-info { flex: 1; }
+
+  .donut-info .donut-title {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #1a0a0a;
+    margin-bottom: 3px;
+  }
+
+  .donut-info .donut-desc {
+    font-size: 9.5px;
+    color: #6b6b6b;
+    line-height: 1.35;
+  }
+
+  .two-col-text {
+    column-count: 2;
+    column-gap: 16px;
+    font-size: 10px;
+    color: #1a0a0a;
+    line-height: 1.45;
+  }
+
+  .numbered-list { list-style: none; padding: 0; margin: 0; }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 7px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .numbered-list .num {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #fffff8;
+    background: #7b1e1e;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .numbered-list .num.blue-num { background: #4682b4; }
+  .numbered-list li span.item-text { flex: 1; color: #1a0a0a; }
+
+  .footnotes-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #f5f5dc;
+    border-top: 2px solid #7b1e1e;
+    padding: 8px 36px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .footnotes-strip::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 120px;
+    height: 2px;
+    background: #4682b4;
+  }
+
+  .footnotes-text {
+    font-size: 8px;
+    color: #6b6b6b;
+    line-height: 1.5;
+    max-width: 560px;
+  }
+
+  .footnotes-text sup { color: #7b1e1e; font-weight: 700; margin-right: 2px; }
+
+  .page-number {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    color: #7b1e1e;
+    white-space: nowrap;
+  }
+
+  .card-slash {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 50px;
+    height: 80px;
+    background: rgba(123,30,30,0.06);
+    transform: rotate(25deg);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header Band -->
+  <div class="header-band">
+    <span class="header-title">{{ page_title }}</span>
+    <span class="header-subtitle">{{ header_subtitle }}</span>
+  </div>
+  <div class="sub-band"></div>
+
+  <!-- Main Content -->
+  <div class="content">
+
+    <!-- Section Heading Row -->
+    <div class="section-heading-row">
+      <span class="section-heading">{{ section_heading }}</span>
+      <span class="section-date">{{ report_date }}</span>
+    </div>
+
+    <!-- Row 1: Three KPI Cards -->
+    <div class="card-mosaic">
+      <div class="card">
+        <div class="card-slash"></div>
+        <div class="card-label">{{ kpi_1_label }}</div>
+        <div class="card-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}</div>
+        <div class="card-description">{{ kpi_1_description }}</div>
+      </div>
+      <div class="card accent-blue">
+        <div class="card-slash"></div>
+        <div class="card-label">{{ kpi_2_label }}</div>
+        <div class="card-value blue">{{ kpi_2_value }}</div>
+        <div class="card-description">{{ kpi_2_description }}</div>
+      </div>
+      <div class="card accent-secondary">
+        <div class="card-slash"></div>
+        <div class="card-label">{{ kpi_3_label }}</div>
+        <div class="card-value secondary">{{ kpi_3_value }}</div>
+        <div class="card-description">{{ kpi_3_description }}</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Comparison Table + Pull Quote + Donut -->
+    <div class="card-mosaic" style="grid-template-columns: 2fr 1fr; grid-template-rows: auto auto;">
+
+      <!-- Comparison Table Card -->
+      <div class="card" style="grid-column: 1 / 2; grid-row: 1 / 3; padding: 14px 12px;">
+        <div class="card-label" style="margin-bottom: 8px;">{{ table_title }}</div>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>{{ table_col_1_header }}</th>
+              <th>{{ table_col_2_header }}</th>
+              <th>{{ table_col_3_header }}</th>
+              <th>{{ table_col_4_header }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              <td class="metric-name">{{ row.metric }}</td>
+              <td>{{ row.value_a }}</td>
+              <td>{{ row.value_b }}</td>
+              <td class="{{ row.delta_class }}">{{ row.delta }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pull Quote Card -->
+      <div class="card pull-quote-card" style="grid-column: 2 / 3; grid-row: 1 / 2; border: none;">
+        <div class="pull-quote-mark">&ldquo;</div>
+        <div class="pull-quote-text">{{ pull_quote_text }}</div>
+        <div class="quote-attribution">&mdash; {{ quote_author }}, {{ quote_title }}</div>
+      </div>
+
+      <!-- Donut Chart Card -->
+      <div class="card accent-blue" style="grid-column: 2 / 3; grid-row: 2 / 3;">
+        <div class="card-label">{{ donut_1_label }}</div>
+        <div class="donut-container" style="margin-top: 6px;">
+          <svg class="donut-svg" viewBox="0 0 42 42">
+            <circle class="donut-track" cx="21" cy="21" r="16"/>
+            <circle class="donut-value" cx="21" cy="21" r="16"
+              stroke="{{ donut_1_color }}"
+              stroke-dasharray="{{ donut_1_percent }}, {{ donut_1_remainder }}"
+            />
+            <text class="donut-label-center" x="21" y="21">{{ donut_1_display }}</text>
+          </svg>
+          <div class="donut-info">
+            <div class="donut-title">{{ donut_1_title }}</div>
+            <div class="donut-desc">{{ donut_1_description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Numbered List + Two-Column Text + Second Donut -->
+    <div class="card-mosaic" style="grid-template-columns: 1fr 1.4fr 0.8fr;">
+
+      <!-- Numbered List Card -->
+      <div class="card" style="grid-column: 1 / 2;">
+        <div class="card-label" style="margin-bottom: 8px;">{{ numbered_list_title }}</div>
+        <ol class="numbered-list">
+          {% for item in numbered_items %}
+          <li>
+            <span class="num {% if loop.index is odd %}blue-num{% endif %}">{{ loop.index }}</span>
+            <span class="item-text">{{ item.text }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+
+      <!-- Two-Column Body Text Card -->
+      <div class="card accent-blue" style="grid-column: 2 / 3;">
+        <div class="card-label" style="margin-bottom: 6px;">{{ body_text_title }}</div>
+        <div class="two-col-text">
+          {{ body_paragraph_1 }}
+          <br/><br/>
+          {{ body_paragraph_2 }}
+        </div>
+      </div>
+
+      <!-- Second Donut Card -->
+      <div class="card accent-secondary" style="grid-column: 3 / 4;">
+        <div class="card-label">{{ donut_2_label }}</div>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 8px;">
+          <svg class="donut-svg" viewBox="0 0 42 42" style="width: 72px; height: 72px;">
+            <circle class="donut-track" cx="21" cy="21" r="16"/>
+            <circle class="donut-value" cx="21" cy="21" r="16"
+              stroke="{{ donut_2_color }}"
+              stroke-dasharray="{{ donut_2_percent }}, {{ donut_2_remainder }}"
+            />
+            <text class="donut-label-center" x="21" y="21">{{ donut_2_display }}</text>
+          </svg>
+          <div style="text-align: center; margin-top: 6px;">
+            <div style="font-family: 'Arial Black', Gadget, sans-serif; font-weight: 800; font-size: 10px; color: #1a0a0a;">{{ donut_2_title }}</div>
+            <div style="font-size: 9px; color: #6b6b6b; line-height: 1.3; margin-top: 2px;">{{ donut_2_description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Summary Metric Cards -->
+    <div class="card-mosaic" style="grid-template-columns: 1fr 1fr 1fr 1fr; margin-bottom: 0;">
+      {% for metric in summary_metrics %}
+      <div class="card{% if loop.index == 2 %} accent-blue{% elif loop.index == 3 %} accent-secondary{% endif %}" style="padding: 10px 12px;">
+        <div class="card-label">{{ metric.label }}</div>
+        <div class="card-value" style="font-size: 20px; color: {{ metric.color }};">{{ metric.value }}</div>
+        <div class="card-description" style="font-size: 9px;">{{ metric.comparison }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <!-- Footnotes Strip -->
+  <div class="footnotes-strip">
+    <div class="footnotes-text">
+      {% for note in footnotes %}
+      <sup>{{ note.number }}</sup>{{ note.text }}&nbsp;&nbsp;
+      {% endfor %}
+    </div>
+    <div class="page-number">{{ page_number }}</div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0116",
+  "variables": {
+    "page_title": "string",
+    "header_subtitle": "string",
+    "section_heading": "string",
+    "report_date": "string",
+    "kpi_1_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_1_description": "string",
+    "kpi_2_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_description": "string",
+    "kpi_3_label": "string",
+    "kpi_3_value": "string",
+    "kpi_3_description": "string",
+    "table_title": "string",
+    "table_col_1_header": "string",
+    "table_col_2_header": "string",
+    "table_col_3_header": "string",
+    "table_col_4_header": "string",
+    "table_rows": "array of {metric: string, value_a: string, value_b: string, delta: string, delta_class: string}",
+    "pull_quote_text": "string",
+    "quote_author": "string",
+    "quote_title": "string",
+    "donut_1_label": "string",
+    "donut_1_color": "string (hex color)",
+    "donut_1_percent": "number",
+    "donut_1_remainder": "number",
+    "donut_1_display": "string",
+    "donut_1_title": "string",
+    "donut_1_description": "string",
+    "numbered_list_title": "string",
+    "numbered_items": "array of {text: string}",
+    "body_text_title": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "donut_2_label": "string",
+    "donut_2_color": "string (hex color)",
+    "donut_2_percent": "number",
+    "donut_2_remainder": "number",
+    "donut_2_display": "string",
+    "donut_2_title": "string",
+    "donut_2_description": "string",
+    "summary_metrics": "array of {label: string, value: string, color: string, comparison: string}",
+    "footnotes": "array of {number: string, text: string}",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

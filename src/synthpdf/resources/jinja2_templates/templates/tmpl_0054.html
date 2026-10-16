@@ -1,0 +1,742 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #f9f7f4;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: #0d0d0d;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f9f7f4;
+  }
+
+  /* Large background watermark motif */
+  .page::before {
+    content: 'CASE STUDY';
+    position: absolute;
+    top: 340px;
+    left: -40px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 160px;
+    font-weight: 700;
+    color: rgba(184, 150, 12, 0.04);
+    letter-spacing: 0.08em;
+    transform: rotate(-90deg);
+    transform-origin: center center;
+    white-space: nowrap;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184, 150, 12, 0.03) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Top classification band */
+  .top-band {
+    width: 100%;
+    height: 32px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .top-band .classification {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .top-band .doc-ref {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero image section — asymmetric, dominating top half */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 310px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    z-index: 1;
+  }
+
+  .hero-image-container {
+    position: relative;
+    overflow: hidden;
+    background: #2d2d2d;
+  }
+
+  .hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.92;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to top, rgba(26, 26, 26, 0.85), transparent);
+  }
+
+  .hero-text-panel {
+    background: #1a1a1a;
+    padding: 30px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  .hero-text-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: #b8960c;
+  }
+
+  .case-study-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #888888;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-client-tag {
+    margin-top: 18px;
+    display: inline-block;
+    background: rgba(184, 150, 12, 0.12);
+    border: 1px solid rgba(184, 150, 12, 0.3);
+    padding: 4px 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Gold accent band */
+  .accent-band {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #b8960c 0%, #b8960c 60%, transparent 100%);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* KPI section */
+  .kpi-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 0 40px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .kpi-card {
+    text-align: center;
+    padding: 14px 10px;
+    border-right: 1px solid rgba(136, 136, 136, 0.2);
+    position: relative;
+  }
+
+  .kpi-card:last-child {
+    border-right: none;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--kpi-color, #b8960c);
+  }
+
+  .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .kpi-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Main content area */
+  .content-area {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 30px;
+    padding: 22px 40px 0 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-column {
+    position: relative;
+  }
+
+  .section-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #b8960c;
+    display: inline-block;
+  }
+
+  .body-text {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #0d0d0d;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+    text-align: justify;
+  }
+
+  .sub-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d2d2d;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+
+  /* Timeline section */
+  .timeline {
+    margin-top: 16px;
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(to bottom, #b8960c, rgba(184, 150, 12, 0.2));
+  }
+
+  .timeline-node {
+    position: relative;
+    margin-bottom: 14px;
+    padding-left: 8px;
+  }
+
+  .timeline-node::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #b8960c;
+    border: 2px solid #f9f7f4;
+    box-shadow: 0 0 0 1px #b8960c;
+  }
+
+  .timeline-date {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .timeline-text {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #0d0d0d;
+    line-height: 1.45;
+    margin-top: 2px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Callout box */
+  .callout-box {
+    background: #ffffff;
+    border: 1px solid rgba(184, 150, 12, 0.25);
+    border-left: 4px solid #b8960c;
+    padding: 16px 14px;
+    position: relative;
+  }
+
+  .callout-box::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #b8960c 50%, transparent 50%);
+    opacity: 0.15;
+  }
+
+  .callout-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .callout-quote {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-style: italic;
+    color: #2d2d2d;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+  }
+
+  .callout-attribution {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    color: #888888;
+    letter-spacing: 0.08em;
+  }
+
+  /* Progress bars */
+  .progress-section {
+    background: #ffffff;
+    border: 1px solid rgba(45, 45, 45, 0.1);
+    padding: 16px 14px;
+  }
+
+  .progress-section-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(45, 45, 45, 0.1);
+  }
+
+  .progress-item {
+    margin-bottom: 10px;
+  }
+
+  .progress-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .progress-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #2d2d2d;
+    letter-spacing: 0.04em;
+  }
+
+  .progress-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .progress-bar-track {
+    width: 100%;
+    height: 6px;
+    background: #f9f7f4;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 0.3s ease;
+  }
+
+  /* Colored section band at bottom */
+  .bottom-section-band {
+    position: absolute;
+    bottom: 42px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    z-index: 2;
+  }
+
+  .bottom-band-content {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .bottom-band-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .bottom-band-text {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #888888;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+
+  .bottom-band-logo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.1em;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
+    background: #2d2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 2;
+  }
+
+  .footer-left {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: #888888;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-center {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    color: #888888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: #b8960c;
+    letter-spacing: 0.05em;
+  }
+
+  /* Watermark grid pattern */
+  .watermark-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(184, 150, 12, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184, 150, 12, 0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="watermark-grid"></div>
+
+  <!-- Top classification band -->
+  <div class="top-band">
+    <span class="classification">{{ document_classification }}</span>
+    <span class="doc-ref">{{ document_reference }}</span>
+  </div>
+
+  <!-- Hero section — asymmetric editorial layout -->
+  <div class="hero-section">
+    <div class="hero-image-container">
+      <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+      <div class="hero-image-overlay"></div>
+    </div>
+    <div class="hero-text-panel">
+      <div class="case-study-label">{{ case_study_label }}</div>
+      <h1 class="hero-title">{{ page_title }}</h1>
+      <p class="hero-subtitle">{{ hero_subtitle }}</p>
+      <div class="hero-client-tag">{{ client_name }}</div>
+    </div>
+  </div>
+
+  <!-- Gold accent band -->
+  <div class="accent-band"></div>
+
+  <!-- KPI cards -->
+  <div class="kpi-section">
+    <div class="kpi-card" style="--kpi-color: {{ kpi_1_color }};">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_2_color }};">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_3_color }};">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: {{ kpi_4_color }};">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="content-area">
+    <div class="main-column">
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <p class="body-text">{{ body_paragraph_1 }}</p>
+      <p class="body-text">{{ body_paragraph_2 }}</p>
+
+      <h3 class="sub-heading">{{ approach_heading }}</h3>
+      <p class="body-text">{{ approach_paragraph }}</p>
+
+      <!-- Timeline -->
+      <h3 class="sub-heading">{{ timeline_heading }}</h3>
+      <div class="timeline">
+        {% for node in timeline_nodes %}
+        <div class="timeline-node">
+          <div class="timeline-date">{{ node.date }}</div>
+          <div class="timeline-text">{{ node.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Callout box -->
+      <div class="callout-box">
+        <div class="callout-label">{{ callout_label }}</div>
+        <div class="callout-quote">"{{ callout_quote }}"</div>
+        <div class="callout-attribution">— {{ callout_attribution_name }}<br>{{ callout_attribution_title }}</div>
+      </div>
+
+      <!-- Progress bars -->
+      <div class="progress-section">
+        <div class="progress-section-title">{{ progress_section_title }}</div>
+        {% for metric in progress_metrics %}
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">{{ metric.label }}</span>
+            <span class="progress-value">{{ metric.value }}%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width: {{ metric.value }}%; background: {{ metric.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Secondary callout -->
+      <div class="callout-box">
+        <div class="callout-label">{{ secondary_callout_label }}</div>
+        <p style="font-family: Arial, sans-serif; font-size: 10px; color: #2d2d2d; line-height: 1.5; letter-spacing: 0.04em;">{{ secondary_callout_text }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom colored section band -->
+  <div class="bottom-section-band">
+    <div class="bottom-band-content">
+      <span class="bottom-band-label">{{ bottom_band_label }}</span>
+      <span class="bottom-band-text">{{ bottom_band_text }}</span>
+      <span class="bottom-band-logo">{{ company_name }}</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-left">{{ footer_document_title }}</span>
+    <span class="footer-center">{{ footer_confidentiality }}</span>
+    <span class="footer-right">{{ page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0054",
+  "variables": {
+    "page_title": "string",
+    "document_classification": "string",
+    "document_reference": "string",
+    "hero_image_url": "string (URL)",
+    "hero_image_alt": "string",
+    "case_study_label": "string",
+    "hero_subtitle": "string",
+    "client_name": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string (hex color)",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string (hex color)",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string (hex color)",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string (hex color)",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "approach_heading": "string",
+    "approach_paragraph": "string",
+    "timeline_heading": "string",
+    "timeline_nodes": "array of {date: string, description: string}",
+    "callout_label": "string",
+    "callout_quote": "string",
+    "callout_attribution_name": "string",
+    "callout_attribution_title": "string",
+    "progress_section_title": "string",
+    "progress_metrics": "array of {label: string, value: number, color: string}",
+    "secondary_callout_label": "string",
+    "secondary_callout_text": "string",
+    "bottom_band_label": "string",
+    "bottom_band_text": "string",
+    "company_name": "string",
+    "footer_document_title": "string",
+    "footer_confidentiality": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

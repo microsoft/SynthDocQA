@@ -1,0 +1,45 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8">
+<style>
+@page { size: {{ page_size_css|default('1440px 900px') }}; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; background: #f8f9fc; }
+.page { width: 100%; height: 100%; position: relative; }
+.geo1 { position: absolute; top: -140px; right: -140px; width: 420px; height: 420px; background: {{ primary_color|default('#1a237e') }}; transform: rotate(45deg); opacity: 0.07; }
+.geo2 { position: absolute; bottom: -90px; left: -90px; width: 300px; height: 300px; background: {{ accent_color|default('#3949ab') }}; transform: rotate(45deg); opacity: 0.05; }
+.header-bar { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, {{ primary_color|default('#1a237e') }}, {{ accent_color|default('#3949ab') }}); }
+.badge { position: absolute; top: 28px; left: 48px; display: flex; align-items: center; gap: 12px; }
+.badge-box { width: 40px; height: 40px; background: {{ primary_color|default('#1a237e') }}; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: white; }
+.badge-name { font-size: 13px; font-weight: 700; color: {{ primary_color|default('#1a237e') }}; letter-spacing: 1px; text-transform: uppercase; }
+.content { position: absolute; top: 50%; left: 48px; transform: translateY(-50%); max-width: 700px; }
+.report-label { font-size: 11px; font-weight: 600; color: {{ accent_color|default('#3949ab') }}; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+.title { font-size: 50px; font-weight: 800; color: #1a1a2e; line-height: 1.15; margin-bottom: 20px; }
+.rule { width: 48px; height: 4px; background: {{ primary_color|default('#1a237e') }}; margin-bottom: 20px; }
+.subtitle { font-size: 18px; color: #555; font-weight: 300; line-height: 1.5; }
+.footer { position: absolute; bottom: 28px; left: 48px; right: 48px; display: flex; justify-content: space-between; }
+.footer-txt { font-size: 11px; color: #aaa; letter-spacing: 1.5px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="geo1"></div><div class="geo2"></div>
+  <div class="header-bar"></div>
+  <div class="badge">
+    <div class="badge-box">{{ initials|default('SO') }}</div>
+    <span class="badge-name">{{ company_name|default('Sample Organization') }}</span>
+  </div>
+  <div class="content">
+    <div class="report-label">{{ report_type|default('Annual Report') }}</div>
+    <div class="title">{{ document_title|default('Strategic Performance Review') }}</div>
+    <div class="rule"></div>
+    <div class="subtitle">{{ subtitle|default('Comprehensive Analysis and Outlook') }}</div>
+  </div>
+  <div class="footer">
+    <span class="footer-txt">{{ tagline|default('Data-Driven Decisions') }}</span>
+    <span class="footer-txt">{{ year|default('2025') }}</span>
+  </div>
+</div>
+</body>
+</html>

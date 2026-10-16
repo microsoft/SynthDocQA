@@ -1,0 +1,43 @@
+{
+  "id": "tmpl_0116",
+  "industry": "government_public_sector",
+  "page_role": "comparison_table",
+  "layout": {
+    "name": "card_mosaic",
+    "description": "Page composed entirely of rectangular cards of varying sizes, arranged in a masonry or Pinterest-style layout."
+  },
+  "color_palette": {
+    "name": "academic_classic",
+    "primary": "#7b1e1e",
+    "secondary": "#a52a2a",
+    "accent": "#4682b4",
+    "bg": "#fffff8",
+    "surface": "#f5f5dc",
+    "text": "#1a0a0a",
+    "muted": "#6b6b6b"
+  },
+  "typography": {
+    "name": "expressive_brand",
+    "heading_font": "'Arial Black', Gadget, sans-serif",
+    "body_font": "Verdana, Geneva, sans-serif",
+    "heading_weight": "800",
+    "h1_size": "42px",
+    "h2_size": "28px",
+    "h3_size": "16px",
+    "body_size": "11px",
+    "line_height": "1.4",
+    "letter_spacing": "0.03em"
+  },
+  "elements": [
+    "pull_quote_block",
+    "quote_attribution",
+    "numbered_list_items",
+    "two_column_body_text",
+    "percentage_donut",
+    "footnotes_strip"
+  ],
+  "density": "dense",
+  "motif": "diagonal_color_slash",
+  "design_direction": "Inspired by Goldman Sachs investment memoranda \u2014 conservative, trust-signaling, formal",
+  "seed": 702667
+}

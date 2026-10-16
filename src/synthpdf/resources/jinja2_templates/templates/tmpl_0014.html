@@ -1,0 +1,854 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #212121;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* Geometric angular shapes - decorative background */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    background: #fce4ec;
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -50px;
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(135deg, #9c27b0 0%, transparent 60%);
+    opacity: 0.08;
+    transform: rotate(25deg);
+    z-index: 0;
+  }
+
+  /* Brand strip / Logo bar */
+  .brand-strip {
+    width: 100%;
+    height: 56px;
+    background: #e91e63;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-strip::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #9c27b0, #e91e63, #ff9800);
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-logo-icon-inner {
+    width: 16px;
+    height: 16px;
+    background: #e91e63;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .brand-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .brand-year {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.08em;
+  }
+
+  /* Card mosaic container */
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+    padding: 20px 28px 16px 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-elevated {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  }
+
+  .card-surface {
+    background: #fce4ec;
+  }
+
+  /* Card: Title / CEO Header */
+  .card-title {
+    grid-column: 1 / 9;
+    padding: 22px 24px 18px 24px;
+  }
+
+  .card-title h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    color: #212121;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .card-title .subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #e91e63;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Card: CEO Photo */
+  .card-photo {
+    grid-column: 9 / 13;
+    min-height: 130px;
+    position: relative;
+    overflow: hidden;
+    background: #fce4ec;
+  }
+
+  .card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-photo .photo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(transparent, rgba(233,30,99,0.85));
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* Divider with label */
+  .divider-label {
+    grid-column: 1 / 13;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 0;
+  }
+
+  .divider-label::before,
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: #e91e63;
+  }
+
+  .divider-label span {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #9c27b0;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Card: Main letter body left column */
+  .card-letter-main {
+    grid-column: 1 / 8;
+    padding: 18px 22px;
+  }
+
+  .card-letter-main h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 20px;
+    color: #212121;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .card-letter-main p {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #212121;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .card-letter-main .greeting {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #9c27b0;
+    margin-bottom: 12px;
+  }
+
+  /* Card: KPI sidebar */
+  .card-kpi-stack {
+    grid-column: 8 / 13;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .kpi-card {
+    padding: 14px 16px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 10px;
+    color: #757575;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Card: Icon with text grid */
+  .card-icon-grid {
+    grid-column: 1 / 13;
+    padding: 16px 20px;
+  }
+
+  .card-icon-grid h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #212121;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .icon-grid-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .icon-hex {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffffff;
+  }
+
+  .icon-grid-item .icon-text-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #212121;
+    margin-bottom: 2px;
+  }
+
+  .icon-grid-item .icon-text-desc {
+    font-size: 10px;
+    color: #757575;
+    line-height: 1.4;
+  }
+
+  /* Divider variant 2 */
+  .divider-label-2 {
+    grid-column: 1 / 13;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 2px 0;
+  }
+
+  .divider-label-2::before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: #ff9800;
+  }
+
+  .divider-label-2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+  }
+
+  .divider-label-2 span {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #ff9800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Card: Comparison columns */
+  .card-comparison {
+    grid-column: 1 / 7;
+    padding: 16px 18px;
+  }
+
+  .card-comparison h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #212121;
+    margin-bottom: 10px;
+  }
+
+  .comparison-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .comparison-col-header {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: #e91e63;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e91e63;
+    margin-bottom: 6px;
+  }
+
+  .comparison-col-header.secondary {
+    color: #9c27b0;
+    border-bottom-color: #9c27b0;
+  }
+
+  .comparison-item {
+    font-size: 10px;
+    color: #212121;
+    line-height: 1.5;
+    padding: 3px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  /* Card: Data table */
+  .card-table {
+    grid-column: 7 / 13;
+    padding: 16px 18px;
+  }
+
+  .card-table h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #212121;
+    margin-bottom: 10px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  .data-table thead th {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 10px;
+    color: #ffffff;
+    background: #e91e63;
+    padding: 6px 8px;
+    text-align: left;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 3px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 3px 0 0;
+  }
+
+  .data-table tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #212121;
+  }
+
+  .data-table tbody tr:nth-child(even) td {
+    background: #fce4ec;
+  }
+
+  .data-table tbody td:last-child {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #9c27b0;
+  }
+
+  /* Card: Numbered list / priorities */
+  .card-numbered {
+    grid-column: 1 / 7;
+    padding: 16px 18px;
+  }
+
+  .card-numbered h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #212121;
+    margin-bottom: 10px;
+  }
+
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .numbered-list .num {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    background: #e91e63;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .numbered-list .num-text {
+    font-size: 11px;
+    color: #212121;
+    line-height: 1.5;
+    padding-top: 2px;
+  }
+
+  .numbered-list .num-text strong {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    color: #9c27b0;
+  }
+
+  /* Card: Closing / Signature */
+  .card-signature {
+    grid-column: 7 / 13;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-signature .closing-text {
+    font-size: 11px;
+    color: #212121;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .signature-block {
+    border-top: 2px solid #e91e63;
+    padding-top: 10px;
+  }
+
+  .signature-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: #e91e63;
+    margin-bottom: 2px;
+  }
+
+  .signature-title {
+    font-size: 10px;
+    color: #757575;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Bottom strip */
+  .bottom-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: #212121;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 2;
+  }
+
+  .bottom-strip span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.08em;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .bottom-strip .page-num {
+    color: #ff9800;
+    font-weight: 700;
+  }
+
+  /* Geometric decorative accents */
+  .geo-accent-1 {
+    position: absolute;
+    top: 180px;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-right: 20px solid #fce4ec;
+    border-bottom: 20px solid transparent;
+    z-index: 0;
+  }
+
+  .geo-accent-2 {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 12px;
+    height: 60px;
+    background: linear-gradient(180deg, #e91e63, #ff9800);
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  .geo-diamond {
+    position: absolute;
+    top: 420px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    background: #ff9800;
+    transform: rotate(45deg);
+    opacity: 0.1;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Geometric decorative accents -->
+  <div class="geo-accent-1"></div>
+  <div class="geo-accent-2"></div>
+  <div class="geo-diamond"></div>
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="brand-logo">
+      <div class="brand-logo-icon"><div class="brand-logo-icon-inner"></div></div>
+      <span class="brand-name">{{ company_name }}</span>
+    </div>
+    <span class="brand-year">{{ report_year }} {{ report_label }}</span>
+  </div>
+
+  <!-- Card mosaic -->
+  <div class="mosaic">
+
+    <!-- Row 1: Title card + Photo card -->
+    <div class="card card-elevated card-title">
+      <h1>{{ page_title }}</h1>
+      <span class="subtitle">{{ section_heading }}</span>
+    </div>
+
+    <div class="card card-elevated card-photo">
+      <img src="{{ ceo_image_url }}" alt="{{ ceo_image_alt }}">
+      <div class="photo-overlay">{{ ceo_name }}, {{ ceo_title_short }}</div>
+    </div>
+
+    <!-- Divider with label -->
+    <div class="divider-label">
+      <span>{{ divider_label_1 }}</span>
+    </div>
+
+    <!-- Row 2: Letter body + KPI stack -->
+    <div class="card card-elevated card-letter-main">
+      <p class="greeting">{{ greeting }}</p>
+      <h2>{{ letter_heading }}</h2>
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+      <p>{{ body_paragraph_3 }}</p>
+    </div>
+
+    <div class="card-kpi-stack">
+      {% for kpi in kpis %}
+      <div class="kpi-card card-elevated card-surface">
+        <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:{{ kpi.color }};"></div>
+        <div class="kpi-value" style="color: {{ kpi.color }};">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Icon with text grid -->
+    <div class="card card-elevated card-icon-grid">
+      <h3>{{ icon_grid_title }}</h3>
+      <div class="icon-grid">
+        {% for pillar in strategic_pillars %}
+        <div class="icon-grid-item">
+          <div class="icon-hex" style="background: {{ pillar.color }};">{{ pillar.icon }}</div>
+          <div>
+            <div class="icon-text-label">{{ pillar.title }}</div>
+            <div class="icon-text-desc">{{ pillar.description }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Divider 2 -->
+    <div class="divider-label-2">
+      <span>{{ divider_label_2 }}</span>
+    </div>
+
+    <!-- Row 3: Comparison columns + Data table -->
+    <div class="card card-elevated card-comparison">
+      <h3>{{ comparison_title }}</h3>
+      <div class="comparison-cols">
+        <div>
+          <div class="comparison-col-header">{{ comparison_col_1_header }}</div>
+          {% for item in comparison_col_1_items %}
+          <div class="comparison-item">{{ item }}</div>
+          {% endfor %}
+        </div>
+        <div>
+          <div class="comparison-col-header secondary">{{ comparison_col_2_header }}</div>
+          {% for item in comparison_col_2_items %}
+          <div class="comparison-item">{{ item }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-elevated card-table">
+      <h3>{{ table_title }}</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            {% for header in table_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table_rows %}
+          <tr>
+            <td>{{ row.metric }}</td>
+            <td>{{ row.prior_year }}</td>
+            <td>{{ row.current_year }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Row 4: Numbered priorities + Signature -->
+    <div class="card card-elevated card-numbered">
+      <h3>{{ priorities_title }}</h3>
+      <ol class="numbered-list">
+        {% for priority in priorities %}
+        <li>
+          <span class="num">{{ loop.index }}</span>
+          <span class="num-text"><strong>{{ priority.title }}:</strong> {{ priority.description }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="card card-elevated card-signature">
+      <p class="closing-text">{{ closing_paragraph }}</p>
+      <div class="signature-block">
+        <div class="signature-name">{{ ceo_name }}</div>
+        <div class="signature-title">{{ ceo_title }}</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom strip -->
+  <div class="bottom-strip">
+    <span>{{ confidentiality_notice }}</span>
+    <span class="page-num">{{ page_number }}</span>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0014",
+  "variables": {
+    "page_title": "string",
+    "section_heading": "string",
+    "company_name": "string",
+    "report_year": "string",
+    "report_label": "string",
+    "ceo_image_url": "string",
+    "ceo_image_alt": "string",
+    "ceo_name": "string",
+    "ceo_title_short": "string",
+    "ceo_title": "string",
+    "divider_label_1": "string",
+    "divider_label_2": "string",
+    "greeting": "string",
+    "letter_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "body_paragraph_3": "string",
+    "kpis": [
+      {
+        "value": "string",
+        "label": "string",
+        "color": "string (hex)"
+      }
+    ],
+    "icon_grid_title": "string",
+    "strategic_pillars": [
+      {
+        "icon": "string (1-2 chars)",
+        "title": "string",
+        "description": "string",
+        "color": "string (hex)"
+      }
+    ],
+    "comparison_title": "string",
+    "comparison_col_1_header": "string",
+    "comparison_col_1_items": ["string"],
+    "comparison_col_2_header": "string",
+    "comparison_col_2_items": ["string"],
+    "table_title": "string",
+    "table_headers": ["string"],
+    "table_rows": [
+      {
+        "metric": "string",
+        "prior_year": "string",
+        "current_year": "string"
+      }
+    ],
+    "priorities_title": "string",
+    "priorities": [
+      {
+        "title": "string",
+        "description": "string"
+      }
+    ],
+    "closing_paragraph": "string",
+    "confidentiality_notice": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

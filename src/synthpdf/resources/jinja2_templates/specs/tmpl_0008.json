@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0008",
+  "industry": "ngo_sustainability",
+  "page_role": "map_or_geographic",
+  "layout": {
+    "name": "two_pane_split",
+    "description": "Page is divided vertically into two distinct panels, each with different background color or texture. Each pane tells its own story."
+  },
+  "color_palette": {
+    "name": "consulting_charcoal",
+    "primary": "#1c1c1c",
+    "secondary": "#3d3d3d",
+    "accent": "#e85d04",
+    "bg": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#111111",
+    "muted": "#777777"
+  },
+  "typography": {
+    "name": "expressive_brand",
+    "heading_font": "'Arial Black', Gadget, sans-serif",
+    "body_font": "Verdana, Geneva, sans-serif",
+    "heading_weight": "800",
+    "h1_size": "42px",
+    "h2_size": "28px",
+    "h3_size": "16px",
+    "body_size": "11px",
+    "line_height": "1.4",
+    "letter_spacing": "0.03em"
+  },
+  "elements": [
+    "chart_placeholder_box",
+    "comparison_columns",
+    "footnotes_strip",
+    "colored_section_band",
+    "icon_with_text_grid",
+    "pull_quote_block",
+    "callout_box"
+  ],
+  "density": "sparse",
+  "motif": "geometric_angular_shapes",
+  "design_direction": "Inspired by National Geographic spreads \u2014 bold imagery, adventurous typography",
+  "seed": 160265
+}

@@ -1,0 +1,692 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #2c3e50;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page-container {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #ecf0f1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    z-index: 10;
+  }
+
+  .wave-top svg {
+    display: block;
+    width: 100%;
+    height: 8px;
+  }
+
+  .top-nav {
+    background: #2c3e50;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    height: 44px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .top-nav .nav-brand {
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background: #1a252f;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .top-nav .nav-tabs {
+    display: flex;
+    align-items: stretch;
+    margin-left: auto;
+  }
+
+  .top-nav .nav-tab {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 10.5px;
+    color: #bdc3c7;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  .top-nav .nav-tab.active {
+    color: #ffffff;
+    border-bottom-color: #e74c3c;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .header-bar {
+    background: #ffffff;
+    border-bottom: 1px solid #d5d8dc;
+    padding: 18px 32px 16px 32px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .header-bar h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #2c3e50;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .header-bar .header-meta {
+    text-align: right;
+    font-size: 11px;
+    color: #7f8c8d;
+    line-height: 1.5;
+  }
+
+  .header-bar .header-meta .doc-id {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #7f8c8d;
+  }
+
+  .main-area {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    background: #2c3e50;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to top, rgba(26,37,47,0.95), transparent);
+    pointer-events: none;
+  }
+
+  .sidebar-section-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #7f8c8d;
+    padding: 0 20px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  .sidebar-section-label:first-child {
+    margin-top: 0;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 9px 20px;
+    font-size: 11px;
+    color: #bdc3c7;
+    cursor: default;
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+  }
+
+  .sidebar-item.active {
+    background: rgba(255,255,255,0.07);
+    color: #ffffff;
+    border-left-color: #e74c3c;
+  }
+
+  .sidebar-item .sidebar-page {
+    margin-left: auto;
+    font-size: 9px;
+    color: #7f8c8d;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sidebar-item.active .sidebar-page {
+    color: #bdc3c7;
+  }
+
+  .content-area {
+    background: #ffffff;
+    padding: 28px 32px 24px 32px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 12px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .badge-primary {
+    background: #2c3e50;
+    color: #ffffff;
+  }
+
+  .badge-accent {
+    background: #e74c3c;
+    color: #ffffff;
+  }
+
+  .badge-muted {
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #d5d8dc;
+  }
+
+  .section-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .section-subheading {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .hero-image-wrapper {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    border-radius: 3px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-wrapper .hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-wave-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .hero-wave-decoration svg {
+    display: block;
+    width: 100%;
+    height: 40px;
+  }
+
+  .hero-stat-overlay {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+  }
+
+  .hero-stat-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid #d5d8dc;
+    border-radius: 3px;
+    padding: 14px 12px 12px 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card .kpi-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: #2c3e50;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 9.5px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+  }
+
+  .kpi-card .kpi-change {
+    font-size: 10px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  .kpi-change.positive { color: #27ae60; }
+  .kpi-change.negative { color: #e74c3c; }
+
+  .body-text {
+    font-size: 12px;
+    color: #2c3e50;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .sub-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ecf0f1;
+  }
+
+  .data-table-wrapper {
+    margin-bottom: 18px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .data-table thead th {
+    background: #2c3e50;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 8px 12px;
+    text-align: left;
+    border: none;
+  }
+
+  .data-table thead th:first-child {
+    border-radius: 2px 0 0 0;
+  }
+
+  .data-table thead th:last-child {
+    border-radius: 0 2px 0 0;
+    text-align: right;
+  }
+
+  .data-table tbody td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #ecf0f1;
+    color: #2c3e50;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .data-table tbody td:last-child {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .data-table tbody tr:nth-child(even) {
+    background: #f8f9fa;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 2px solid #2c3e50;
+  }
+
+  .data-table tfoot td {
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 11.5px;
+    background: #ecf0f1;
+    border: none;
+  }
+
+  .data-table tfoot td:last-child {
+    text-align: right;
+  }
+
+  .wave-divider {
+    width: 100%;
+    height: 16px;
+    margin: 4px 0 16px 0;
+  }
+
+  .wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 16px;
+  }
+
+  .content-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: #7f8c8d;
+    border-top: 1px solid #ecf0f1;
+    background: #ffffff;
+  }
+
+  .content-footer .footer-classification {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #e74c3c;
+  }
+
+  .wave-bottom-decoration {
+    position: absolute;
+    bottom: 30px;
+    left: 160px;
+    right: 0;
+    height: 24px;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .wave-bottom-decoration svg {
+    width: 100%;
+    height: 24px;
+  }
+</style>
+</head>
+<body>
+<div class="page-container">
+  <!-- Top wave decoration -->
+  <div class="wave-top">
+    <svg viewBox="0 0 794 8" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,4 C132,0 265,8 397,4 C529,0 662,8 794,4 L794,0 L0,0 Z" fill="#e74c3c"/>
+    </svg>
+  </div>
+
+  <!-- Top Navigation Tabs -->
+  <div class="top-nav">
+    <div class="nav-brand">{{ firm_name }}</div>
+    <div class="nav-tabs">
+      {% for tab in nav_tabs %}
+      <div class="nav-tab {{ 'active' if tab.active else '' }}">{{ tab.label }}</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Header Bar -->
+  <div class="header-bar">
+    <h1>{{ page_title }}</h1>
+    <div class="header-meta">
+      <div>{{ report_period }}</div>
+      <div class="doc-id">{{ document_id }}</div>
+    </div>
+  </div>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      {% for section in sidebar_sections %}
+      <div class="sidebar-section-label">{{ section.label }}</div>
+      {% for item in section.items %}
+      <div class="sidebar-item {{ 'active' if item.active else '' }}">
+        {{ item.name }}
+        <span class="sidebar-page">{{ item.page }}</span>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Tag / Badge Row -->
+      <div class="badge-row">
+        {% for badge in badges %}
+        <span class="badge badge-{{ badge.style }}">{{ badge.text }}</span>
+        {% endfor %}
+      </div>
+
+      <!-- Section Heading -->
+      <h2 class="section-heading">{{ section_heading }}</h2>
+      <div class="section-subheading">{{ section_subheading }}</div>
+
+      <!-- Hero Image Placeholder -->
+      <div class="hero-image-wrapper">
+        <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+        <div class="hero-overlay">
+          <div class="hero-stat-overlay">
+            <div class="hero-stat-value">{{ hero_stat_value }}</div>
+            <div class="hero-stat-label">{{ hero_stat_label }}</div>
+          </div>
+        </div>
+        <div class="hero-wave-decoration">
+          <svg viewBox="0 0 600 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,20 C100,35 200,5 300,20 C400,35 500,5 600,20 L600,40 L0,40 Z" fill="rgba(255,255,255,0.12)"/>
+            <path d="M0,28 C150,38 300,12 450,28 C525,36 562,22 600,28 L600,40 L0,40 Z" fill="rgba(255,255,255,0.08)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- KPI Icon + Text Grid -->
+      <div class="kpi-grid">
+        {% for kpi in kpis %}
+        <div class="kpi-card" style="border-top: none;">
+          <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:{{ kpi.color }};"></div>
+          <div class="kpi-icon" style="background:{{ kpi.color }};">{{ kpi.icon }}</div>
+          <div class="kpi-value">{{ kpi.value }}</div>
+          <div class="kpi-label">{{ kpi.label }}</div>
+          <div class="kpi-change {{ kpi.trend }}">{{ kpi.change }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Body paragraph -->
+      <p class="body-text">{{ body_paragraph_1 }}</p>
+
+      <!-- Wave Divider -->
+      <div class="wave-divider">
+        <svg viewBox="0 0 560 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,8 C93,2 187,14 280,8 C373,2 467,14 560,8" fill="none" stroke="#d5d8dc" stroke-width="1"/>
+          <path d="M0,10 C93,4 187,16 280,10 C373,4 467,16 560,10" fill="none" stroke="#ecf0f1" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- Sub Heading + Table -->
+      <h3 class="sub-heading">{{ table_heading }}</h3>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              {% for header in table_headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_rows %}
+            <tr>
+              {% for cell in row.cells %}
+              <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              {% for cell in table_footer_cells %}
+              <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Bottom wave decoration -->
+      <div class="wave-bottom-decoration">
+        <svg viewBox="0 0 600 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,12 C75,4 150,20 225,12 C300,4 375,20 450,12 C525,4 600,20 600,12" fill="none" stroke="#2c3e50" stroke-width="2"/>
+          <path d="M0,16 C100,8 200,24 300,16 C400,8 500,24 600,16" fill="none" stroke="#34495e" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- Footer -->
+      <div class="content-footer">
+        <span class="footer-classification">{{ classification_label }}</span>
+        <span>{{ footer_text }}</span>
+        <span>{{ page_number }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_legal_compliance_financial_highlights_001",
+  "variables": {
+    "page_title": "string",
+    "firm_name": "string",
+    "report_period": "string",
+    "document_id": "string",
+    "section_heading": "string",
+    "section_subheading": "string",
+    "body_paragraph_1": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "hero_stat_value": "string",
+    "hero_stat_label": "string",
+    "table_heading": "string",
+    "classification_label": "string",
+    "footer_text": "string",
+    "page_number": "string",
+    "nav_tabs": "[{label: string, active: boolean}]",
+    "sidebar_sections": "[{label: string, items: [{name: string, page: string, active: boolean}]}]",
+    "badges": "[{text: string, style: 'primary'|'accent'|'muted'}]",
+    "kpis": "[{icon: string, value: string, label: string, color: string, change: string, trend: 'positive'|'negative'}]",
+    "table_headers": "[string]",
+    "table_rows": "[{cells: [string]}]",
+    "table_footer_cells": "[string]"
+  }
+}
+END_TEMPLATE_VARIABLES -->

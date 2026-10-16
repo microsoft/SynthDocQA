@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0082",
+  "industry": "real_estate_infrastructure",
+  "page_role": "team_or_org_chart",
+  "layout": {
+    "name": "full_bleed_visual",
+    "description": "Large photograph or illustration covers 60-70% of the page. Text overlaid with semi-transparent panels or in white margins."
+  },
+  "color_palette": {
+    "name": "aerospace_dark",
+    "primary": "#0d1b2a",
+    "secondary": "#1b263b",
+    "accent": "#415a77",
+    "bg": "#e0e1dd",
+    "surface": "#ffffff",
+    "text": "#0d1b2a",
+    "muted": "#778da9"
+  },
+  "typography": {
+    "name": "classic_editorial",
+    "heading_font": "Georgia, 'Times New Roman', serif",
+    "body_font": "Georgia, serif",
+    "heading_weight": "700",
+    "h1_size": "40px",
+    "h2_size": "26px",
+    "h3_size": "18px",
+    "body_size": "11px",
+    "line_height": "1.7",
+    "letter_spacing": "0"
+  },
+  "elements": [
+    "colored_section_band",
+    "icon_with_text_grid",
+    "progress_bars",
+    "timeline_nodes",
+    "pull_quote_block",
+    "data_table",
+    "kpi_metric_cards"
+  ],
+  "density": "balanced",
+  "motif": "dotted_pattern_overlay",
+  "design_direction": "Inspired by Apple's product launch materials \u2014 extreme whitespace, single focal element",
+  "seed": 607727
+}

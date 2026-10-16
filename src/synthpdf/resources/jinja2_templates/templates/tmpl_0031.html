@@ -1,0 +1,616 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    background: {{ background_color | default('#fff8f0') }};
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #3e2723;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fff8f0;
+  }
+
+  .brand-strip {
+    width: 100%;
+    height: 6px;
+    display: flex;
+  }
+
+  .brand-strip-seg-1 {
+    flex: 3;
+    background: #5c4033;
+  }
+
+  .brand-strip-seg-2 {
+    flex: 2;
+    background: #795548;
+  }
+
+  .brand-strip-seg-3 {
+    flex: 1;
+    background: #8bc34a;
+  }
+
+  .geo-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 280px;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .geo-top-right::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    background: rgba(92, 64, 51, 0.06);
+    transform: rotate(45deg);
+  }
+
+  .geo-top-right::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 180px;
+    height: 180px;
+    background: rgba(139, 195, 74, 0.08);
+    transform: rotate(45deg);
+  }
+
+  .geo-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .geo-bottom-left::before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(121, 85, 72, 0.05);
+    transform: rotate(45deg);
+  }
+
+  .geo-bottom-left::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 120px;
+    height: 120px;
+    background: rgba(92, 64, 51, 0.04);
+    transform: rotate(45deg);
+  }
+
+  .section-band {
+    margin-top: 60px;
+    padding: 0 64px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-number {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 96px;
+    color: rgba(92, 64, 51, 0.12);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .section-label {
+    display: inline-block;
+    background: #5c4033;
+    color: #ffffff;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 6px 20px;
+    margin-top: 4px;
+  }
+
+  .title-area {
+    padding: 28px 64px 0 64px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-area h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #3e2723;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .title-divider {
+    width: 80px;
+    height: 3px;
+    background: #8bc34a;
+    margin-bottom: 16px;
+  }
+
+  .title-subtitle {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: #8d6e63;
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .flow-area {
+    padding: 36px 64px 0 64px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-heading {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #5c4033;
+    margin-bottom: 28px;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: 56px 3px 1fr;
+    gap: 0 20px;
+    min-height: 90px;
+    position: relative;
+  }
+
+  .flow-step-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .flow-step-icon-inner {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #ffffff;
+    transform: rotate(45deg);
+  }
+
+  .flow-step-icon-inner span {
+    transform: rotate(-45deg);
+    display: block;
+  }
+
+  .flow-step:nth-child(1) .flow-step-icon-inner { background: #5c4033; }
+  .flow-step:nth-child(2) .flow-step-icon-inner { background: #795548; }
+  .flow-step:nth-child(3) .flow-step-icon-inner { background: #8bc34a; }
+  .flow-step:nth-child(4) .flow-step-icon-inner { background: #5c4033; }
+
+  .flow-step-line {
+    width: 3px;
+    background: linear-gradient(to bottom, #795548, rgba(121, 85, 72, 0.15));
+    justify-self: center;
+    min-height: 100%;
+  }
+
+  .flow-step:last-child .flow-step-line {
+    background: linear-gradient(to bottom, #795548, transparent);
+  }
+
+  .flow-step-content {
+    padding: 6px 0 24px 0;
+  }
+
+  .flow-step-title {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #3e2723;
+    margin-bottom: 4px;
+  }
+
+  .flow-step-desc {
+    font-size: 12px;
+    color: #8d6e63;
+    line-height: 1.6;
+    max-width: 460px;
+  }
+
+  .progress-section {
+    padding: 20px 64px 0 64px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 40px;
+  }
+
+  .progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .progress-label-text {
+    font-size: 11px;
+    color: #5c4033;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .progress-label-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #3e2723;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(92, 64, 51, 0.08);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .two-col-text {
+    padding: 32px 64px 0 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .two-col-text p {
+    font-size: 12px;
+    color: #3e2723;
+    line-height: 1.6;
+  }
+
+  .icon-text-grid {
+    padding: 28px 64px 0 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .icon-text-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #ffffff;
+    border-left: 3px solid #795548;
+  }
+
+  .icon-text-item:nth-child(2) {
+    border-left-color: #8bc34a;
+  }
+
+  .icon-text-item:nth-child(3) {
+    border-left-color: #5c4033;
+  }
+
+  .icon-text-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #5c4033;
+  }
+
+  .icon-text-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-text-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #5c4033;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+
+  .icon-text-value {
+    font-size: 11px;
+    color: #8d6e63;
+    line-height: 1.5;
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    z-index: 2;
+  }
+
+  .footer-line {
+    position: absolute;
+    top: 0;
+    left: 64px;
+    right: 64px;
+    height: 1px;
+    background: rgba(92, 64, 51, 0.15);
+  }
+
+  .footer-brand {
+    font-size: 10px;
+    color: #8d6e63;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-page {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: #5c4033;
+  }
+
+  .footer-confidential {
+    font-size: 9px;
+    color: #8d6e63;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-strip-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    display: flex;
+  }
+
+  .brand-strip-bottom .brand-strip-seg-1 { flex: 1; background: #8bc34a; }
+  .brand-strip-bottom .brand-strip-seg-2 { flex: 2; background: #795548; }
+  .brand-strip-bottom .brand-strip-seg-3 { flex: 3; background: #5c4033; }
+
+  .geo-mid-right {
+    position: absolute;
+    right: 32px;
+    top: 380px;
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(139, 195, 74, 0.2);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  .geo-mid-right::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(92, 64, 51, 0.1);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top brand strip -->
+  <div class="brand-strip">
+    <div class="brand-strip-seg-1"></div>
+    <div class="brand-strip-seg-2"></div>
+    <div class="brand-strip-seg-3"></div>
+  </div>
+
+  <!-- Geometric decorations -->
+  <div class="geo-top-right"></div>
+  <div class="geo-bottom-left"></div>
+  <div class="geo-mid-right"></div>
+
+  <!-- Section number + label band -->
+  <div class="section-band">
+    <div class="section-number">{{ section_number | default('03') }}</div>
+    <div class="section-label">{{ section_label | default('Section III') }}</div>
+  </div>
+
+  <!-- Title area -->
+  <div class="title-area">
+    <h1>{{ page_title | default('Advanced Propulsion Systems & Strategic Capabilities') }}</h1>
+    <div class="title-divider"></div>
+    <div class="title-subtitle">{{ section_subtitle | default('An integrated overview of next-generation propulsion technology development milestones, operational readiness benchmarks, and strategic deployment frameworks across the defense portfolio.') }}</div>
+  </div>
+
+  <!-- Infographic flow steps -->
+  <div class="flow-area">
+    <h2 class="flow-heading">{{ flow_heading | default('Development Lifecycle') }}</h2>
+    <div class="flow-steps">
+      {% for step in flow_steps %}
+      <div class="flow-step">
+        <div class="flow-step-icon">
+          <div class="flow-step-icon-inner"><span>{{ step.number }}</span></div>
+        </div>
+        <div class="flow-step-line"></div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">{{ step.title }}</div>
+          <div class="flow-step-desc">{{ step.description }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Progress bars -->
+  <div class="progress-section">
+    <div class="progress-bars">
+      {% for bar in progress_bars %}
+      <div class="progress-item">
+        <div class="progress-label">
+          <span class="progress-label-text">{{ bar.label }}</span>
+          <span class="progress-label-value">{{ bar.value }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: {{ bar.value }}%; background: {{ bar.color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Two column body text -->
+  <div class="two-col-text">
+    <p>{{ body_paragraph_1 | default('Our aerospace division continues to advance critical defense programs through disciplined engineering processes and rigorous systems integration. Each phase of the development lifecycle incorporates feedback loops and quality assurance gates to ensure mission-critical reliability standards are met.') }}</p>
+    <p>{{ body_paragraph_2 | default('Strategic partnerships with allied defense agencies strengthen our capabilities in next-generation platform development. Cross-functional teams collaborate across engineering, manufacturing, and sustainment disciplines to deliver solutions that meet evolving operational requirements.') }}</p>
+  </div>
+
+  <!-- Icon + text grid -->
+  <div class="icon-text-grid">
+    {% for highlight in section_highlights %}
+    <div class="icon-text-item">
+      <div class="icon-text-icon">
+        <svg viewBox="0 0 24 24">
+          {% if loop.index == 1 %}
+          <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" />
+          {% elif loop.index == 2 %}
+          <circle cx="12" cy="12" r="9" /><polyline points="9,12 11,14 15,10" />
+          {% else %}
+          <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="3" x2="9" y2="21" />
+          {% endif %}
+        </svg>
+      </div>
+      <div>
+        <div class="icon-text-label">{{ highlight.label }}</div>
+        <div class="icon-text-value">{{ highlight.value }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Page footer -->
+  <div class="page-footer">
+    <div class="footer-line"></div>
+    <div class="footer-brand">{{ company_name | default('Northfield Aerospace & Defense') }}</div>
+    <div class="footer-confidential">{{ footer_notice | default('Proprietary & Confidential') }}</div>
+    <div class="footer-page">{{ page_number | default('18') }}</div>
+  </div>
+
+  <!-- Bottom brand strip -->
+  <div class="brand-strip-bottom">
+    <div class="brand-strip-seg-1"></div>
+    <div class="brand-strip-seg-2"></div>
+    <div class="brand-strip-seg-3"></div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0031",
+  "variables": {
+    "page_title": "string — Main section title displayed prominently",
+    "section_number": "string — Large decorative section number (e.g. '03')",
+    "section_label": "string — Uppercase label in the colored band (e.g. 'Section III')",
+    "section_subtitle": "string — Descriptive subtitle below the main title",
+    "flow_heading": "string — Heading above the infographic flow steps",
+    "flow_steps": "array — List of flow step objects with: number (string), title (string), description (string)",
+    "progress_bars": "array — List of progress bar objects with: label (string), value (number 0-100), color (hex string)",
+    "body_paragraph_1": "string — Left column body text",
+    "body_paragraph_2": "string — Right column body text",
+    "section_highlights": "array — List of 3 highlight objects with: label (string), value (string). Icons auto-assigned by index.",
+    "company_name": "string — Brand name shown in footer",
+    "footer_notice": "string — Confidentiality or legal notice in footer",
+    "page_number": "string — Page number displayed in footer",
+    "background_color": "string — Optional background color override (default #fff8f0)"
+  }
+}
+END_TEMPLATE_VARIABLES -->

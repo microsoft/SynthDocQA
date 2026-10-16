@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0013",
+  "industry": "big_tech",
+  "page_role": "table_of_contents",
+  "layout": {
+    "name": "timeline_horizontal",
+    "description": "Central horizontal timeline spine runs across the middle of the page. Events/milestones hang above and below it alternately."
+  },
+  "color_palette": {
+    "name": "luxury_black_gold",
+    "primary": "#1a1a1a",
+    "secondary": "#2d2d2d",
+    "accent": "#b8960c",
+    "bg": "#f9f7f4",
+    "surface": "#ffffff",
+    "text": "#0d0d0d",
+    "muted": "#888888"
+  },
+  "typography": {
+    "name": "modern_humanist",
+    "heading_font": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "body_font": "'Segoe UI', Arial, sans-serif",
+    "heading_weight": "300",
+    "h1_size": "36px",
+    "h2_size": "24px",
+    "h3_size": "16px",
+    "body_size": "12px",
+    "line_height": "1.6",
+    "letter_spacing": "0.02em"
+  },
+  "elements": [
+    "pull_quote_block",
+    "page_number_footer",
+    "callout_box",
+    "percentage_donut",
+    "sidebar_annotation",
+    "timeline_nodes",
+    "chart_placeholder_box"
+  ],
+  "density": "sparse",
+  "motif": "solid_color_blocks",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 747581
+}

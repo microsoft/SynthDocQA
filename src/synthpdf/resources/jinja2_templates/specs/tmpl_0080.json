@@ -1,0 +1,44 @@
+{
+  "id": "tmpl_0080",
+  "industry": "insurance_risk",
+  "page_role": "cover_page",
+  "layout": {
+    "name": "dashboard_metrics",
+    "description": "KPI cards, gauges, and metric tiles dominate. Feels like a business intelligence dashboard printed to PDF."
+  },
+  "color_palette": {
+    "name": "ngo_hopeful",
+    "primary": "#1565c0",
+    "secondary": "#0277bd",
+    "accent": "#f9a825",
+    "bg": "#e3f2fd",
+    "surface": "#ffffff",
+    "text": "#0d2137",
+    "muted": "#546e7a"
+  },
+  "typography": {
+    "name": "technical_precision",
+    "heading_font": "'Courier New', Courier, monospace",
+    "body_font": "Arial, sans-serif",
+    "heading_weight": "700",
+    "h1_size": "28px",
+    "h2_size": "20px",
+    "h3_size": "14px",
+    "body_size": "11px",
+    "line_height": "1.5",
+    "letter_spacing": "0.05em"
+  },
+  "elements": [
+    "sidebar_annotation",
+    "numbered_list_items",
+    "logo_or_brand_strip",
+    "colored_section_band",
+    "two_column_body_text",
+    "chart_placeholder_box",
+    "timeline_nodes"
+  ],
+  "density": "balanced",
+  "motif": "large_background_watermark",
+  "design_direction": "Inspired by Microsoft Azure product documentation \u2014 clean, systematic, blue-accented",
+  "seed": 403380
+}

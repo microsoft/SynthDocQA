@@ -1,0 +1,668 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: #1c1c1c;
+    background: #fdfcff;
+  }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    background: #fdfcff;
+  }
+
+  /* ── Full-bleed background image (60-70% of page) ── */
+  .hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 794px;
+    height: 730px;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, rgba(108,52,131,0.82) 0%, rgba(26,82,118,0.78) 55%, rgba(23,165,137,0.55) 100%);
+    z-index: 1;
+  }
+
+  /* ── Diagonal color slash motif ── */
+  .diagonal-slash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .diagonal-slash::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 480px;
+    width: 180px;
+    height: 900px;
+    background: linear-gradient(165deg, rgba(23,165,137,0.18) 0%, rgba(108,52,131,0.10) 100%);
+    transform: skewX(-12deg);
+  }
+
+  .diagonal-slash::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 520px;
+    width: 4px;
+    height: 850px;
+    background: rgba(23,165,137,0.35);
+    transform: skewX(-12deg);
+  }
+
+  /* ── Brand strip / logo bar ── */
+  .brand-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 10;
+    background: rgba(28,28,28,0.25);
+    backdrop-filter: blur(2px);
+  }
+
+  .brand-strip .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-strip .logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #6c3483, #17a589);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .brand-strip .brand-name {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    color: #fff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .brand-strip .page-number {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Title panel (overlaid on hero image) ── */
+  .title-panel {
+    position: absolute;
+    top: 72px;
+    left: 40px;
+    width: 420px;
+    z-index: 10;
+  }
+
+  .title-panel h1 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .title-panel .subtitle {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+    max-width: 380px;
+  }
+
+  /* ── Divider with label ── */
+  .divider-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 14px 0;
+  }
+
+  .divider-label .label-text {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.65);
+    white-space: nowrap;
+  }
+
+  .divider-label .label-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .divider-label-dark .label-text {
+    color: #7d7d7d;
+  }
+
+  .divider-label-dark .label-line {
+    background: #e0d6e8;
+  }
+
+  /* ── KPI metric cards ── */
+  .kpi-row {
+    position: absolute;
+    top: 220px;
+    left: 40px;
+    right: 40px;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .kpi-card {
+    background: rgba(255,255,255,0.13);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+
+  .kpi-card .kpi-value {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .kpi-card .kpi-indicator {
+    display: inline-block;
+    width: 24px;
+    height: 3px;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  /* ── Comparison table in semi-transparent panel ── */
+  .table-panel {
+    position: absolute;
+    top: 346px;
+    left: 30px;
+    right: 30px;
+    z-index: 10;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 24px 22px 18px 22px;
+    box-shadow: 0 4px 24px rgba(108,52,131,0.10);
+  }
+
+  .table-panel h2 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #1a5276;
+    margin-bottom: 4px;
+  }
+
+  .table-panel .table-description {
+    font-size: 11px;
+    color: #7d7d7d;
+    margin-bottom: 14px;
+    max-width: 500px;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .comparison-table thead th {
+    background: linear-gradient(135deg, #6c3483, #1a5276);
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: none;
+  }
+
+  .comparison-table thead th:first-child {
+    border-radius: 6px 0 0 0;
+  }
+
+  .comparison-table thead th:last-child {
+    border-radius: 0 6px 0 0;
+  }
+
+  .comparison-table tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #ede5f2;
+    color: #1c1c1c;
+    vertical-align: top;
+  }
+
+  .comparison-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-table tbody tr:nth-child(even) td {
+    background: #f4ecf7;
+  }
+
+  .comparison-table tbody tr:nth-child(odd) td {
+    background: #fff;
+  }
+
+  .comparison-table .cell-highlight {
+    font-weight: 600;
+    color: #6c3483;
+  }
+
+  .comparison-table .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .badge-high {
+    background: rgba(23,165,137,0.15);
+    color: #17a589;
+  }
+
+  .badge-medium {
+    background: rgba(108,52,131,0.12);
+    color: #6c3483;
+  }
+
+  .badge-low {
+    background: rgba(125,125,125,0.12);
+    color: #7d7d7d;
+  }
+
+  /* ── Transition from image to white bottom section ── */
+  .edge-transition {
+    position: absolute;
+    top: 718px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(253,252,255,0), #fdfcff);
+    z-index: 4;
+  }
+
+  /* ── Bottom content area (white margin ~30%) ── */
+  .bottom-section {
+    position: absolute;
+    top: 738px;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    background: #fdfcff;
+    z-index: 5;
+    padding: 22px 40px 20px 40px;
+  }
+
+  .bottom-section h3 {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #6c3483;
+    margin-bottom: 10px;
+  }
+
+  /* ── Two-column body text ── */
+  .two-column-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+
+  .two-column-text p {
+    font-size: 11px;
+    color: #1c1c1c;
+    line-height: 1.65;
+  }
+
+  /* ── Numbered list items ── */
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 28px;
+  }
+
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #1c1c1c;
+    padding: 4px 0;
+  }
+
+  .numbered-list .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6c3483, #1a5276);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Bottom diagonal slash accent ── */
+  .bottom-accent {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+    width: 200px;
+    height: 120px;
+    overflow: hidden;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  .bottom-accent::before {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -40px;
+    width: 160px;
+    height: 180px;
+    background: linear-gradient(160deg, rgba(23,165,137,0.08), rgba(108,52,131,0.06));
+    transform: skewX(-12deg);
+  }
+
+  .bottom-accent::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 60px;
+    width: 3px;
+    height: 140px;
+    background: rgba(108,52,131,0.12);
+    transform: skewX(-12deg);
+  }
+
+  /* ── Footer bar ── */
+  .footer-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(90deg, #6c3483, #1a5276);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 20;
+  }
+
+  .footer-bar span {
+    font-size: 8px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Full-bleed hero image covering ~65% of page -->
+  <div class="hero-image">
+    <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}">
+    <div class="hero-overlay"></div>
+  </div>
+
+  <!-- Diagonal slash decorative motif -->
+  <div class="diagonal-slash"></div>
+
+  <!-- Brand strip / logo bar -->
+  <div class="brand-strip">
+    <div class="logo-area">
+      <div class="logo-mark">{{ logo_letter }}</div>
+      <span class="brand-name">{{ institution_name }}</span>
+    </div>
+    <span class="page-number">{{ page_label }}</span>
+  </div>
+
+  <!-- Title panel overlaid on hero image -->
+  <div class="title-panel">
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+    <div class="divider-label">
+      <span class="label-text">{{ divider_label_1 }}</span>
+      <span class="label-line"></span>
+    </div>
+  </div>
+
+  <!-- KPI metric cards row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_1_value }}</div>
+      <div class="kpi-label">{{ kpi_1_label }}</div>
+      <span class="kpi-indicator" style="background: {{ kpi_1_color }};"></span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_2_value }}</div>
+      <div class="kpi-label">{{ kpi_2_label }}</div>
+      <span class="kpi-indicator" style="background: {{ kpi_2_color }};"></span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_3_value }}</div>
+      <div class="kpi-label">{{ kpi_3_label }}</div>
+      <span class="kpi-indicator" style="background: {{ kpi_3_color }};"></span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ kpi_4_value }}</div>
+      <div class="kpi-label">{{ kpi_4_label }}</div>
+      <span class="kpi-indicator" style="background: {{ kpi_4_color }};"></span>
+    </div>
+  </div>
+
+  <!-- Comparison table in frosted-glass panel -->
+  <div class="table-panel">
+    <h2>{{ section_heading }}</h2>
+    <div class="table-description">{{ table_description }}</div>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          {% for header in table_headers %}
+          <th>{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table_rows %}
+        <tr>
+          <td class="cell-highlight">{{ row.label }}</td>
+          <td>{{ row.col_1 }}</td>
+          <td>{{ row.col_2 }}</td>
+          <td>{{ row.col_3 }}</td>
+          <td><span class="badge badge-{{ row.rating_class }}">{{ row.rating }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Gradient transition edge -->
+  <div class="edge-transition"></div>
+
+  <!-- Bottom white-margin content section -->
+  <div class="bottom-section">
+    <h3>{{ bottom_heading }}</h3>
+
+    <div class="divider-label divider-label-dark">
+      <span class="label-text">{{ divider_label_2 }}</span>
+      <span class="label-line"></span>
+    </div>
+
+    <div class="two-column-text">
+      <p>{{ body_paragraph_1 }}</p>
+      <p>{{ body_paragraph_2 }}</p>
+    </div>
+
+    <div class="divider-label divider-label-dark">
+      <span class="label-text">{{ divider_label_3 }}</span>
+      <span class="label-line"></span>
+    </div>
+
+    <ol class="numbered-list">
+      {% for item in key_findings %}
+      <li>
+        <span class="num">{{ loop.index }}</span>
+        <span>{{ item }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <!-- Bottom diagonal accent decoration -->
+  <div class="bottom-accent"></div>
+
+  <!-- Footer gradient bar -->
+  <div class="footer-bar">
+    <span>{{ footer_left }}</span>
+    <span>{{ footer_right }}</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0111",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "section_heading": "string",
+    "table_description": "string",
+    "bottom_heading": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "hero_image_url": "string",
+    "hero_image_alt": "string",
+    "logo_letter": "string",
+    "institution_name": "string",
+    "page_label": "string",
+    "divider_label_1": "string",
+    "divider_label_2": "string",
+    "divider_label_3": "string",
+    "kpi_1_value": "string",
+    "kpi_1_label": "string",
+    "kpi_1_color": "string",
+    "kpi_2_value": "string",
+    "kpi_2_label": "string",
+    "kpi_2_color": "string",
+    "kpi_3_value": "string",
+    "kpi_3_label": "string",
+    "kpi_3_color": "string",
+    "kpi_4_value": "string",
+    "kpi_4_label": "string",
+    "kpi_4_color": "string",
+    "table_headers": "list of strings",
+    "table_rows": "list of objects with keys: label, col_1, col_2, col_3, rating_class, rating",
+    "key_findings": "list of strings",
+    "footer_left": "string",
+    "footer_right": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

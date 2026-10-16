@@ -1,0 +1,604 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    background: #fffff8;
+    color: #1a0a0a;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #fffff8;
+  }
+
+  .top-bar {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #7b1e1e 0%, #7b1e1e 60%, #a52a2a 60%, #a52a2a 80%, #4682b4 80%, #4682b4 100%);
+  }
+
+  .header {
+    padding: 28px 48px 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .header-left { flex: 1; }
+  .header-right { text-align: right; flex-shrink: 0; }
+
+  .breadcrumb {
+    font-size: 9px;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .breadcrumb span { color: #7b1e1e; font-weight: 900; }
+
+  h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #1a0a0a;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #6b6b6b;
+    margin-top: 6px;
+    max-width: 420px;
+  }
+
+  .page-number {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: #a52a2a;
+    opacity: 0.3;
+  }
+
+  .header-divider {
+    margin: 16px 48px 0 48px;
+    height: 2px;
+    background: #7b1e1e;
+  }
+
+  .mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 12px;
+    padding: 18px 48px 0 48px;
+  }
+
+  .card {
+    background: #f5f5dc;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-inner { padding: 16px; }
+
+  .card-map {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+    min-height: 340px;
+  }
+
+  .card-kpi-1 { grid-column: 3 / 4; grid-row: 1 / 2; }
+  .card-kpi-2 { grid-column: 3 / 4; grid-row: 2 / 3; }
+  .card-region-comparison { grid-column: 1 / 4; grid-row: 3 / 4; }
+  .card-progress { grid-column: 1 / 2; grid-row: 4 / 5; }
+  .card-body-text { grid-column: 2 / 4; grid-row: 4 / 5; }
+
+  .card-stripe { height: 4px; width: 100%; }
+  .card-stripe-primary { background: #7b1e1e; }
+  .card-stripe-secondary { background: #a52a2a; }
+  .card-stripe-accent { background: #4682b4; }
+
+  h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #1a0a0a;
+    margin-bottom: 6px;
+  }
+
+  h3 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1a0a0a;
+    margin-bottom: 6px;
+  }
+
+  .card-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6b6b;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-image-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #e8e4d4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .map-overlay-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 248, 0.92);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+  }
+
+  .legend-item:last-child { margin-bottom: 0; }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .map-title-bar {
+    padding: 12px 16px 10px 16px;
+    background: #f5f5dc;
+  }
+
+  .kpi-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .kpi-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 42px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+  }
+
+  .kpi-unit { font-size: 18px; font-weight: 900; opacity: 0.6; }
+
+  .kpi-label {
+    font-size: 11px;
+    color: #6b6b6b;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .kpi-change {
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 6px;
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .kpi-change-positive { background: rgba(70, 130, 180, 0.12); color: #4682b4; }
+  .kpi-change-negative { background: rgba(123, 30, 30, 0.1); color: #7b1e1e; }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+
+  .comparison-col {
+    text-align: center;
+    padding: 10px 6px;
+    border-right: 1px solid rgba(26, 10, 10, 0.06);
+  }
+
+  .comparison-col:last-child { border-right: none; }
+
+  .comparison-col-header {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7b1e1e;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7b1e1e;
+  }
+
+  .comparison-value {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1.0;
+    color: #1a0a0a;
+  }
+
+  .comparison-sublabel { font-size: 9px; color: #6b6b6b; margin-top: 3px; }
+
+  .comparison-bar {
+    height: 4px;
+    background: #e8e4d4;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .comparison-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: #a52a2a;
+  }
+
+  .progress-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .progress-item-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #1a0a0a;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-item-label span { color: #6b6b6b; font-weight: 400; }
+
+  .progress-bar {
+    height: 8px;
+    background: #e8e4d4;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill { height: 100%; border-radius: 4px; }
+
+  .two-col-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .two-col-text p { font-size: 11px; line-height: 1.45; color: #1a0a0a; }
+
+  .color-block { position: absolute; }
+
+  .block-corner-br {
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: #7b1e1e;
+    opacity: 0.08;
+  }
+
+  .bottom-section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 48px 20px 48px;
+  }
+
+  .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .bottom-left { font-size: 9px; color: #6b6b6b; }
+  .bottom-right { font-size: 9px; color: #6b6b6b; text-align: right; }
+
+  .bottom-bar { height: 3px; background: #7b1e1e; margin-bottom: 10px; }
+
+  .footnote-row {
+    padding: 10px 48px 0 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .footnote-card {
+    background: #7b1e1e;
+    color: #fffff8;
+    border-radius: 4px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footnote-card-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 248, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+  }
+
+  .footnote-card-text {
+    font-size: 10px;
+    line-height: 1.35;
+    color: rgba(255, 255, 248, 0.88);
+  }
+
+  .footnote-card-text strong {
+    color: #fffff8;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar"></div>
+
+  <div class="header">
+    <div class="header-left">
+      <div class="breadcrumb">{{ breadcrumb_section }} | <span>{{ breadcrumb_active }}</span></div>
+      <h1>{{ page_title }}</h1>
+      <div class="subtitle">{{ page_subtitle }}</div>
+    </div>
+    <div class="header-right">
+      <div class="page-number">{{ page_number }}</div>
+    </div>
+  </div>
+
+  <div class="header-divider"></div>
+
+  <div class="mosaic">
+
+    <div class="card card-map">
+      <div class="map-container">
+        <div class="map-title-bar">
+          <div class="card-label">{{ map_card_label }}</div>
+          <h3>{{ map_title }}</h3>
+        </div>
+        <div class="map-image-wrap">
+          <img src="{{ map_image_url }}" alt="{{ map_image_alt }}">
+          <div class="map-overlay-legend">
+            {% for legend in legend_items %}
+            <div class="legend-item">
+              <div class="legend-dot" style="background: {{ legend.color }};"></div>
+              <span>{{ legend.label }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-kpi-1">
+      <div class="card-stripe card-stripe-primary"></div>
+      <div class="card-inner">
+        <div class="kpi-card">
+          <div class="card-label">{{ kpi_1_label }}</div>
+          <div class="kpi-value" style="color: {{ kpi_1_color }};">{{ kpi_1_value }}<span class="kpi-unit"> {{ kpi_1_unit }}</span></div>
+          <div class="kpi-label">{{ kpi_1_description }}</div>
+          <div class="kpi-change {{ kpi_1_change_class }}">{{ kpi_1_change }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-kpi-2">
+      <div class="card-stripe card-stripe-accent"></div>
+      <div class="card-inner">
+        <div class="kpi-card">
+          <div class="card-label">{{ kpi_2_label }}</div>
+          <div class="kpi-value" style="color: {{ kpi_2_color }};">{{ kpi_2_value }}<span class="kpi-unit"> {{ kpi_2_unit }}</span></div>
+          <div class="kpi-label">{{ kpi_2_description }}</div>
+          <div class="kpi-change {{ kpi_2_change_class }}">{{ kpi_2_change }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-region-comparison">
+      <div class="card-stripe card-stripe-secondary"></div>
+      <div class="card-inner">
+        <div class="card-label">{{ comparison_card_label }}</div>
+        <h3>{{ comparison_title }}</h3>
+        <div class="comparison-grid">
+          {% for region in regions %}
+          <div class="comparison-col">
+            <div class="comparison-col-header">{{ region.name }}</div>
+            <div class="comparison-value">{{ region.value }}</div>
+            <div class="comparison-sublabel">{{ region.sublabel }}</div>
+            <div class="comparison-bar">
+              <div class="comparison-bar-fill" style="width: {{ region.bar_percent }}%; background: {{ region.bar_color }};"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-progress">
+      <div class="card-stripe card-stripe-primary"></div>
+      <div class="card-inner">
+        <div class="card-label">{{ progress_card_label }}</div>
+        <h3>{{ progress_title }}</h3>
+        <div class="progress-list">
+          {% for bar in progress_bars %}
+          <div class="progress-item">
+            <div class="progress-item-label">{{ bar.label }} <span>{{ bar.value }}%</span></div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: {{ bar.value }}%; background: {{ bar.color }};"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-body-text">
+      <div class="card-stripe card-stripe-accent"></div>
+      <div class="card-inner">
+        <div class="card-label">{{ body_text_card_label }}</div>
+        <h3>{{ body_text_title }}</h3>
+        <div class="two-col-text">
+          <p>{{ body_paragraph_1 }}</p>
+          <p>{{ body_paragraph_2 }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footnote-row">
+    <div class="footnote-card">
+      <div class="footnote-card-icon">{{ footnote_1_icon }}</div>
+      <div class="footnote-card-text">
+        <strong>{{ footnote_1_title }}</strong>
+        {{ footnote_1_text }}
+      </div>
+    </div>
+    <div class="footnote-card">
+      <div class="footnote-card-icon">{{ footnote_2_icon }}</div>
+      <div class="footnote-card-text">
+        <strong>{{ footnote_2_title }}</strong>
+        {{ footnote_2_text }}
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="bottom-bar"></div>
+    <div class="bottom-row">
+      <div class="bottom-left">{{ footer_left }}</div>
+      <div class="bottom-right">{{ footer_right }}</div>
+    </div>
+  </div>
+
+  <div class="color-block block-corner-br"></div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0020",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "page_number": "string",
+    "breadcrumb_section": "string",
+    "breadcrumb_active": "string",
+    "map_card_label": "string",
+    "map_title": "string",
+    "map_image_url": "string",
+    "map_image_alt": "string",
+    "legend_items": "[{color: string, label: string}]",
+    "kpi_1_label": "string",
+    "kpi_1_value": "string",
+    "kpi_1_unit": "string",
+    "kpi_1_color": "string",
+    "kpi_1_description": "string",
+    "kpi_1_change": "string",
+    "kpi_1_change_class": "string",
+    "kpi_2_label": "string",
+    "kpi_2_value": "string",
+    "kpi_2_unit": "string",
+    "kpi_2_color": "string",
+    "kpi_2_description": "string",
+    "kpi_2_change": "string",
+    "kpi_2_change_class": "string",
+    "comparison_card_label": "string",
+    "comparison_title": "string",
+    "regions": "[{name: string, value: string, sublabel: string, bar_percent: string, bar_color: string}]",
+    "progress_card_label": "string",
+    "progress_title": "string",
+    "progress_bars": "[{label: string, value: string, color: string}]",
+    "body_text_card_label": "string",
+    "body_text_title": "string",
+    "body_paragraph_1": "string",
+    "body_paragraph_2": "string",
+    "footnote_1_icon": "string",
+    "footnote_1_title": "string",
+    "footnote_1_text": "string",
+    "footnote_2_icon": "string",
+    "footnote_2_title": "string",
+    "footnote_2_text": "string",
+    "footer_left": "string",
+    "footer_right": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->

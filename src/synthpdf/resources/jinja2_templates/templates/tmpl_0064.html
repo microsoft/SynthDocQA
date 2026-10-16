@@ -1,0 +1,543 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License; see LICENSE.txt. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page_title }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 794px;
+    height: 1123px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    color: #201f1e;
+    background: #f3f2f1;
+  }
+
+  .page {
+    width: 794px;
+    height: 1123px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f2f1;
+  }
+
+  /* --- Organic Wave Curves --- */
+  .wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 0;
+  }
+
+  .wave-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 0;
+  }
+
+  .wave-accent-mid {
+    position: absolute;
+    top: 195px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 0;
+    opacity: 0.10;
+  }
+
+  /* --- Header Band --- */
+  .header-band {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    padding: 38px 56px 28px 56px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .header-band .doc-type {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+  }
+
+  .header-band h1 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #ffffff;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .header-band .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  /* --- Tag / Badge Row --- */
+  .tag-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 18px 56px 14px 56px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1dfdd;
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 14px;
+    border-radius: 14px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-badge--primary {
+    background: rgba(0,120,212,0.10);
+    color: #0078d4;
+    border: 1px solid rgba(0,120,212,0.22);
+  }
+
+  .tag-badge--accent {
+    background: rgba(0,178,148,0.10);
+    color: #00806a;
+    border: 1px solid rgba(0,178,148,0.22);
+  }
+
+  .tag-badge--secondary {
+    background: rgba(0,90,158,0.10);
+    color: #005a9e;
+    border: 1px solid rgba(0,90,158,0.22);
+  }
+
+  /* --- Content Area --- */
+  .content-area {
+    position: relative;
+    z-index: 2;
+    padding: 24px 56px 0 56px;
+  }
+
+  .section-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #005a9e;
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .section-intro {
+    font-size: 11px;
+    color: #605e5c;
+    margin-bottom: 22px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* --- Infographic Flow --- */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .flow-container::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 18px;
+    bottom: 18px;
+    width: 2px;
+    background: linear-gradient(to bottom, #0078d4 0%, #00b294 50%, #005a9e 100%);
+    border-radius: 2px;
+  }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 10px 0;
+    position: relative;
+  }
+
+  .flow-step-node {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0,120,212,0.18);
+    flex-shrink: 0;
+  }
+
+  .flow-step-node--1 { background: #0078d4; }
+  .flow-step-node--2 { background: #005a9e; }
+  .flow-step-node--3 { background: #00b294; }
+  .flow-step-node--4 { background: #0078d4; }
+  .flow-step-node--5 { background: #005a9e; }
+
+  .flow-step-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 14px 20px;
+    border: 1px solid #e1dfdd;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    position: relative;
+  }
+
+  .flow-step-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 6px 0 0 6px;
+  }
+
+  .flow-step:nth-child(1) .flow-step-card::before { background: #0078d4; }
+  .flow-step:nth-child(2) .flow-step-card::before { background: #005a9e; }
+  .flow-step:nth-child(3) .flow-step-card::before { background: #00b294; }
+  .flow-step:nth-child(4) .flow-step-card::before { background: #0078d4; }
+  .flow-step:nth-child(5) .flow-step-card::before { background: #005a9e; }
+
+  .flow-step-card h3 {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #201f1e;
+    margin-bottom: 4px;
+  }
+
+  .flow-step-card p {
+    font-size: 11px;
+    color: #605e5c;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* --- Pull Quote Block --- */
+  .pull-quote-block {
+    position: relative;
+    z-index: 2;
+    margin: 20px 56px 0 56px;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    border-radius: 8px;
+    padding: 20px 26px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pull-quote-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .pull-quote-content {
+    flex: 1;
+  }
+
+  .pull-quote-text {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .pull-quote-attr {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.02em;
+  }
+
+  /* --- Numbered Outcomes --- */
+  .outcomes-section {
+    position: relative;
+    z-index: 2;
+    margin: 20px 56px 0 56px;
+  }
+
+  .outcomes-heading {
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #005a9e;
+    margin-bottom: 12px;
+  }
+
+  .numbered-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .numbered-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 12px 14px;
+    border: 1px solid #e1dfdd;
+  }
+
+  .numbered-item-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .numbered-item-content {
+    flex: 1;
+  }
+
+  .numbered-item-label {
+    font-weight: 600;
+    font-size: 11px;
+    color: #201f1e;
+    margin-bottom: 2px;
+  }
+
+  .numbered-item-value {
+    font-size: 10px;
+    color: #605e5c;
+    line-height: 1.45;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 56px;
+    background: #ffffff;
+    border-top: 1px solid #e1dfdd;
+    font-size: 9px;
+    color: #605e5c;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-confidential {
+    background: rgba(0,120,212,0.08);
+    color: #0078d4;
+    font-weight: 600;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .footer-right {
+    font-size: 9px;
+    color: #605e5c;
+  }
+
+  .footer-page {
+    font-weight: 600;
+    color: #0078d4;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Organic Wave Curves - Top -->
+  <svg class="wave-top" viewBox="0 0 794 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L794,0 L794,80 Q650,120 500,90 Q350,60 200,95 Q80,120 0,100 Z" fill="#0078d4" opacity="1"/>
+    <path d="M0,0 L794,0 L794,60 Q600,105 400,75 Q200,45 0,85 Z" fill="#005a9e" opacity="0.6"/>
+  </svg>
+
+  <!-- Organic Wave Curves - Bottom -->
+  <svg class="wave-bottom" viewBox="0 0 794 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,80 L794,80 L794,20 Q650,0 500,30 Q300,65 150,25 Q50,5 0,35 Z" fill="#0078d4" opacity="0.06"/>
+    <path d="M0,80 L794,80 L794,40 Q550,10 350,45 Q150,78 0,55 Z" fill="#00b294" opacity="0.05"/>
+  </svg>
+
+  <!-- Mid-section organic wave accent -->
+  <svg class="wave-accent-mid" viewBox="0 0 794 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,20 Q200,0 400,20 Q600,40 794,20" stroke="#0078d4" stroke-width="2" fill="none"/>
+    <path d="M0,28 Q200,8 400,28 Q600,48 794,28" stroke="#00b294" stroke-width="1.5" fill="none"/>
+  </svg>
+
+  <!-- Header Band -->
+  <div class="header-band">
+    <div class="doc-type">{{ document_type }}</div>
+    <h1>{{ page_title }}</h1>
+    <div class="subtitle">{{ page_subtitle }}</div>
+  </div>
+
+  <!-- Tag / Badge Row -->
+  <div class="tag-row">
+    {% for tag in tags %}
+    <span class="tag-badge tag-badge--{{ tag.style }}">{{ tag.label }}</span>
+    {% endfor %}
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <div class="section-heading">{{ section_heading }}</div>
+    <div class="section-intro">{{ body_paragraph_1 }}</div>
+
+    <!-- Infographic Flow Steps (Timeline Nodes) -->
+    <div class="flow-container">
+      {% for step in methodology_steps %}
+      <div class="flow-step">
+        <div class="flow-step-node flow-step-node--{{ loop.index }}">{{ loop.index }}</div>
+        <div class="flow-step-card">
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Pull Quote Block -->
+  <div class="pull-quote-block">
+    <div class="pull-quote-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 17.5C5 14.5 6.5 11 10.5 8L12 10C9.5 12 8.5 14 8.5 15.5H11.5C12.3 15.5 13 16.2 13 17V22C13 22.8 12.3 23.5 11.5 23.5H6.5C5.7 23.5 5 22.8 5 22V17.5ZM15 17.5C15 14.5 16.5 11 20.5 8L22 10C19.5 12 18.5 14 18.5 15.5H21.5C22.3 15.5 23 16.2 23 17V22C23 22.8 22.3 23.5 21.5 23.5H16.5C15.7 23.5 15 22.8 15 22V17.5Z" fill="rgba(255,255,255,0.35)"/>
+      </svg>
+    </div>
+    <div class="pull-quote-content">
+      <div class="pull-quote-text">{{ pull_quote_text }}</div>
+      <div class="pull-quote-attr">{{ pull_quote_attribution }}</div>
+    </div>
+  </div>
+
+  <!-- Numbered Outcomes Section -->
+  <div class="outcomes-section">
+    <div class="outcomes-heading">{{ outcomes_heading }}</div>
+    <div class="numbered-list">
+      {% for outcome in outcomes %}
+      <div class="numbered-item">
+        <div class="numbered-item-num" style="background: {{ outcome.color }};">{{ loop.index }}</div>
+        <div class="numbered-item-content">
+          <div class="numbered-item-label">{{ outcome.label }}</div>
+          <div class="numbered-item-value">{{ outcome.value }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      <span class="footer-confidential">{{ confidentiality_label }}</span>
+      <span>{{ company_name }} &mdash; {{ document_title }}</span>
+    </div>
+    <div class="footer-right">
+      <span>{{ footer_date }}</span>
+      &nbsp;&middot;&nbsp;
+      <span class="footer-page">{{ page_number }}</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+
+<!-- TEMPLATE_VARIABLES
+{
+  "id": "tmpl_0064",
+  "variables": {
+    "page_title": "string",
+    "page_subtitle": "string",
+    "document_type": "string",
+    "section_heading": "string",
+    "body_paragraph_1": "string",
+    "tags": "[{label: string, style: 'primary'|'accent'|'secondary'}]",
+    "methodology_steps": "[{title: string, description: string}]",
+    "pull_quote_text": "string",
+    "pull_quote_attribution": "string",
+    "outcomes_heading": "string",
+    "outcomes": "[{label: string, value: string, color: string}]",
+    "confidentiality_label": "string",
+    "company_name": "string",
+    "document_title": "string",
+    "footer_date": "string",
+    "page_number": "string"
+  }
+}
+END_TEMPLATE_VARIABLES -->
