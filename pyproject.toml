@@ -47,6 +47,7 @@ packages = ["src/synthpdf"]
 include = [
     "/src",
     "/tests",
+    "/docs",
     "/experiments",
     "/README.md",
     "/LICENSE.txt",
