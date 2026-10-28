@@ -13,7 +13,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). The paragraphs above describe the required contribution process; maintainers must configure and verify CLA enforcement before accepting external contributions. This staging copy does not demonstrate that a bot is active.
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for the project's conduct policy.
 
 ## Development
 
@@ -41,4 +41,4 @@ Authorized first-party Python sources, entry points, retained scripts, and tests
 
 Use an equivalent comment for other source languages. Apply ownership headers only where ownership and licensing authority are established. Preserve third-party copyright and license notices.
 
-For any new dependency or bundled asset, document its upstream source/version, affected paths, modifications, license, redistribution obligations, and authorization evidence in [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES). Do not assume the project's MIT license covers upstream fonts, templates, libraries, or model weights. Assets with unconfirmed provenance or redistribution rights must not be published.
+For any new dependency or bundled asset, describe its upstream source/version, purpose, affected paths, modifications, and license in [NOTICE.md](NOTICE.md). Preserve original copyright, attribution, and license information in third-party code and assets. The project's MIT license does not replace the licenses of upstream fonts, templates, libraries, or model weights.
