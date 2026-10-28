@@ -21,14 +21,6 @@ The following ten font files are included, unmodified, in [`src/synthpdf/resourc
 
 The attributions above summarize the notices in the font files. Retain the accompanying full notices when redistributing the fonts. Changes to font software remain subject to its own license and any reserved font names.
 
-## Repository policy templates
-
-`LICENSE.txt`, `SECURITY.md`, and `CODE_OF_CONDUCT.md` use the corresponding Microsoft repository templates from [`microsoft/repo-templates`](https://github.com/microsoft/repo-templates/tree/e9c5e27ff1fa70dd4cff5690ad6da3c7b6472b81), revision `e9c5e27ff1fa70dd4cff5690ad6da3c7b6472b81`.
-
-- **Copyright:** Microsoft Corporation.
-- **License:** MIT; see [LICENSE.txt](LICENSE.txt).
-- **Source paths:** `shared/LICENSE`, `shared/SECURITY.md`, and `shared/CODE_OF_CONDUCT.md`.
-
 ## Separately installed dependencies
 
 The following libraries are referenced by the generator's [`pyproject.toml`](pyproject.toml); their source distributions are not vendored in this repository. These descriptions identify their role and upstream licensing, not a change to their terms. Refer to the installed version's license files for the complete terms and any bundled subcomponents.
