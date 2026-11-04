@@ -9,7 +9,7 @@ description = "LLM-backed synthetic PDF and question-answer dataset generation"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-license-files = ["LICENSE.txt", "THIRD_PARTY_NOTICES", "src/synthpdf/resources/fonts/*OFL.txt"]
+license-files = ["LICENSE.txt", "NOTICE.md", "src/synthpdf/resources/fonts/*OFL.txt"]
 dependencies = [
     "pydantic>=2.0",
     "numpy>=1.24",
@@ -47,10 +47,11 @@ packages = ["src/synthpdf"]
 include = [
     "/src",
     "/tests",
+    "/docs",
     "/experiments",
     "/README.md",
     "/LICENSE.txt",
-    "/THIRD_PARTY_NOTICES",
+    "/NOTICE.md",
     "/CONTRIBUTING.md",
     "/CODE_OF_CONDUCT.md",
     "/SECURITY.md",
