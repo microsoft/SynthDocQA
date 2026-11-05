@@ -1,6 +1,11 @@
 # SynthDocQA
 
-**Generate synthetic PDFs and question-answer datasets for document understanding research.**
+Official implementation of the paper **SynthDocQA: Infinite Ground Truth for File-Grounded Enterprise LLM Evaluation**.
+
+> [!TIP]
+> Question: Ready to ship your AI model, but running out of challenging evaluation set to test it on?
+>
+> Answer: Don't let limited evaluation data limit your confidence. **SynthDocQA generates diverse synthetic PDFs and question-answer datasets with structured ground truth, helping you stress-test document understanding before production.**
 
 SynthDocQA combines sampled document structures, LLM-generated content, and local PDF rendering to produce documents with structured ground truth, questions, expected answers, and evaluation assertions. It supports business-style prose, complex tables, charts, forms, scanned pages, handwriting, and infographics.
 
@@ -8,10 +13,10 @@ The repository also includes experiments for comparing question-answering models
 
 ## Contents
 
-- [Architecture](#architecture)
-- [Content families](#content-families)
 - [Quickstart](#quickstart)
 - [Using the Python API](#using-the-python-api)
+- [Architecture](#architecture)
+- [Content families](#content-families)
 - [Configuration and reproducibility](#configuration-and-reproducibility)
 - [Template engine and rendering](#template-engine-and-rendering)
 - [Dataset outputs](#dataset-outputs)
@@ -21,6 +26,129 @@ The repository also includes experiments for comparing question-answering models
 - [Repository structure](#repository-structure)
 - [Development](#development)
 - [License and third-party software](#license-and-third-party-software)
+
+
+## Quickstart
+
+### 1. Install
+
+Use Python **3.10 or later** and a virtual environment. From the repository root, on Windows:
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e .
+python -m playwright install chromium
+```
+
+Chromium is downloaded during browser setup. Templates, topics, neutral logo placeholders, and handwriting fonts are included in the Python package.
+
+Optional fallback renderers can be installed with:
+
+```powershell
+python -m pip install -e ".[fallback-renderers]"
+```
+
+WeasyPrint may require platform-specific native libraries. Installing fallback renderers does not change the default Playwright backend.
+
+### 2. Configure model access
+
+Copy [.env.example](.env.example) to `.env` in the working directory and supply your Azure OpenAI settings:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Alternatively, set environment variables directly:
+
+```powershell
+$env:AZURE_OPENAI_ENDPOINT = "https://<your-resource>.openai.azure.com/"
+$env:AZURE_OPENAI_DEPLOYMENT = "<your-deployment>"
+$env:AZURE_OPENAI_API_VERSION = "<your-supported-api-version>"
+$env:AZURE_OPENAI_API_KEY = "<your-key>"
+```
+
+An API key is optional when using the client's Entra ID authentication:
+
+- Set `AZURE_TENANT_ID` for the intended tenant.
+- Leave `AZURE_OPENAI_API_KEY` unset and omit `AZURE_OPENAI_ACCESS_TOKEN` to use interactive browser authentication.
+- A caller-provided Entra bearer token can instead be supplied through `AZURE_OPENAI_ACCESS_TOKEN`; the caller is responsible for its validity.
+
+Your account must have access to the configured endpoint and deployments. Generation sends synthetic content and QA context to that service and may incur charges. Never commit credentials.
+
+### 3. Generate documents
+
+Start with one document:
+
+```powershell
+synthpdf generate --seed 42 --num-documents 1 --pages 8 --output-dir output
+```
+
+Generate a larger batch:
+
+```powershell
+synthpdf generate --seed 42 --num-documents 20 --pages 8 --output-dir output_batch
+```
+
+The module entry point is equivalent:
+
+```powershell
+python -m synthpdf generate --seed 42 --num-documents 1 --pages 8 --output-dir output
+```
+
+| Option | Meaning |
+|---|---|
+| `--seed` | Local sampling seed, from 0 to 2147483647. Random when omitted. |
+| `--num-documents`, `-n` | Positive document count. Randomly chosen from 2–6 when omitted. |
+| `--pages`, `-p` | Positive page budget per document. Randomly chosen from 4–20 for the batch when omitted. |
+| `--output-dir`, `-o` | Output directory. Defaults to a timestamped run under `output\generated` in the working directory. |
+
+Use `synthpdf generate --help` for the command reference. A seed controls local random sampling, not deterministic LLM responses or byte-identical PDFs. Page counts are managed by layout heuristics and a final page cap, not by an exact-length content guarantee.
+
+### Model tiers
+
+The generator routes calls through three deployment tiers:
+
+| Tier | Environment variable | Representative calls |
+|---|---|---|
+| EASY | `AZURE_OPENAI_DEPLOYMENT_EASY` | Prose, titles, subtitles, and structured-element questions. |
+| MEDIUM | `AZURE_OPENAI_DEPLOYMENT_MEDIUM` | Table data, chart specifications, and generic QA candidates. |
+| HARD | `AZURE_OPENAI_DEPLOYMENT_HARD` | Document briefs and complex-table generation. |
+
+All overrides are optional. HARD defaults to `AZURE_OPENAI_DEPLOYMENT`; MEDIUM defaults to HARD; EASY defaults to MEDIUM. The public connection settings do not currently configure PRO/FAST routes or reasoning effort.
+
+## Using the Python API
+
+After installation, call the same unconditional batch wrapper from Python:
+
+```python
+from synthpdf.document_generator import generate_documents
+
+result = generate_documents(
+    num_pages=8,
+    num_pdfs=3,
+    seed=42,
+    output_dir="output_python",
+)
+
+print(result["output_dir"])
+print(result["config_path"])
+print(result["manifest_jsonl"])
+print(result["elapsed_seconds"])
+
+for document in result["documents"]:
+    print(document["doc_id"])
+    print(document["pdf_path"])
+    print(document["manifest_path"])
+    print(document["quest_json_path"])
+    print(document["quest_xlsx_path"])
+    print(document["markdown_path"])
+```
+
+The wrapper returns `Path` objects for output locations and per-document files. Optional files may be `None`; in particular, mixed composition does not populate every Markdown reference in the same way as the plain-Markdown route. Use the actual files and manifests when consuming a run.
+
+With omitted arguments, the wrapper samples a document count and page budget, creates a timestamped output directory, and records the generated configuration. Both the API and CLI require the model connection settings described above.
+
 
 ## Architecture
 
@@ -144,126 +272,6 @@ Annotation utilities support HTML-level visual emphasis, true-PDF annotations, a
 
 The public random configuration samples annotation variant types. True-PDF and inline passes have separate internal configuration flags; they are not dedicated public CLI options and are not enabled automatically merely because annotation utilities are present.
 
-## Quickstart
-
-### 1. Install
-
-Use Python **3.10 or later** and a virtual environment. From the repository root, on Windows:
-
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e .
-python -m playwright install chromium
-```
-
-Chromium is downloaded during browser setup. Templates, topics, neutral logo placeholders, and handwriting fonts are included in the Python package.
-
-Optional fallback renderers can be installed with:
-
-```powershell
-python -m pip install -e ".[fallback-renderers]"
-```
-
-WeasyPrint may require platform-specific native libraries. Installing fallback renderers does not change the default Playwright backend.
-
-### 2. Configure model access
-
-Copy [.env.example](.env.example) to `.env` in the working directory and supply your Azure OpenAI settings:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Alternatively, set environment variables directly:
-
-```powershell
-$env:AZURE_OPENAI_ENDPOINT = "https://<your-resource>.openai.azure.com/"
-$env:AZURE_OPENAI_DEPLOYMENT = "<your-deployment>"
-$env:AZURE_OPENAI_API_VERSION = "<your-supported-api-version>"
-$env:AZURE_OPENAI_API_KEY = "<your-key>"
-```
-
-An API key is optional when using the client's Entra ID authentication:
-
-- Set `AZURE_TENANT_ID` for the intended tenant.
-- Leave `AZURE_OPENAI_API_KEY` unset and omit `AZURE_OPENAI_ACCESS_TOKEN` to use interactive browser authentication.
-- A caller-provided Entra bearer token can instead be supplied through `AZURE_OPENAI_ACCESS_TOKEN`; the caller is responsible for its validity.
-
-Your account must have access to the configured endpoint and deployments. Generation sends synthetic content and QA context to that service and may incur charges. Never commit credentials.
-
-### 3. Generate documents
-
-Start with one document:
-
-```powershell
-synthpdf generate --seed 42 --num-documents 1 --pages 8 --output-dir output
-```
-
-Generate a larger batch:
-
-```powershell
-synthpdf generate --seed 42 --num-documents 20 --pages 8 --output-dir output_batch
-```
-
-The module entry point is equivalent:
-
-```powershell
-python -m synthpdf generate --seed 42 --num-documents 1 --pages 8 --output-dir output
-```
-
-| Option | Meaning |
-|---|---|
-| `--seed` | Local sampling seed, from 0 to 2147483647. Random when omitted. |
-| `--num-documents`, `-n` | Positive document count. Randomly chosen from 2–6 when omitted. |
-| `--pages`, `-p` | Positive page budget per document. Randomly chosen from 4–20 for the batch when omitted. |
-| `--output-dir`, `-o` | Output directory. Defaults to a timestamped run under `output\generated` in the working directory. |
-
-Use `synthpdf generate --help` for the command reference. A seed controls local random sampling, not deterministic LLM responses or byte-identical PDFs. Page counts are managed by layout heuristics and a final page cap, not by an exact-length content guarantee.
-
-### Model tiers
-
-The generator routes calls through three deployment tiers:
-
-| Tier | Environment variable | Representative calls |
-|---|---|---|
-| EASY | `AZURE_OPENAI_DEPLOYMENT_EASY` | Prose, titles, subtitles, and structured-element questions. |
-| MEDIUM | `AZURE_OPENAI_DEPLOYMENT_MEDIUM` | Table data, chart specifications, and generic QA candidates. |
-| HARD | `AZURE_OPENAI_DEPLOYMENT_HARD` | Document briefs and complex-table generation. |
-
-All overrides are optional. HARD defaults to `AZURE_OPENAI_DEPLOYMENT`; MEDIUM defaults to HARD; EASY defaults to MEDIUM. The public connection settings do not currently configure PRO/FAST routes or reasoning effort.
-
-## Using the Python API
-
-After installation, call the same unconditional batch wrapper from Python:
-
-```python
-from synthpdf.document_generator import generate_documents
-
-result = generate_documents(
-    num_pages=8,
-    num_pdfs=3,
-    seed=42,
-    output_dir="output_python",
-)
-
-print(result["output_dir"])
-print(result["config_path"])
-print(result["manifest_jsonl"])
-print(result["elapsed_seconds"])
-
-for document in result["documents"]:
-    print(document["doc_id"])
-    print(document["pdf_path"])
-    print(document["manifest_path"])
-    print(document["quest_json_path"])
-    print(document["quest_xlsx_path"])
-    print(document["markdown_path"])
-```
-
-The wrapper returns `Path` objects for output locations and per-document files. Optional files may be `None`; in particular, mixed composition does not populate every Markdown reference in the same way as the plain-Markdown route. Use the actual files and manifests when consuming a run.
-
-With omitted arguments, the wrapper samples a document count and page budget, creates a timestamped output directory, and records the generated configuration. Both the API and CLI require the model connection settings described above.
 
 ## Configuration and reproducibility
 
